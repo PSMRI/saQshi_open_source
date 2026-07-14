@@ -1,0 +1,171 @@
+<!--
+==========================================================
+SaQshi Login Page
+----------------------------------------------------------
+Project : SaQshi Open Source
+Module  : Login
+File    : login.html
+License : MIT
+==========================================================
+-->
+
+<section class="sq-login-page">
+
+    <div class="sq-login-shell">
+
+        <aside class="sq-login-intro">
+
+            <div class="sq-login-brandmark">
+                <img
+                    src="/ui/assets/images/logo.png"
+                    alt="SaQshi Logo"
+                    class="sq-login-logo">
+
+                <div>
+                    <h1>SaQshi</h1>
+                    <p>Open Source Digital Quality Assessment</p>
+                </div>
+            </div>
+
+            <div class="sq-login-copy">
+                <span class="sq-login-kicker">Healthcare Quality Platform</span>
+                <h2>Structured assessments for facility improvement.</h2>
+                <p>
+                    Manage NQAS, MusQan and LaQshya assessment workflows with
+                    department activation, checkpoint scoring and CQI tracking.
+                </p>
+            </div>
+
+            <div class="sq-login-meta-grid">
+                <div>
+                    <strong>MIT</strong>
+                    <span>Open source license</span>
+                </div>
+                <div>
+                    <strong>NQAS</strong>
+                    <span>Framework ready</span>
+                </div>
+                <div>
+                    <strong>CQI</strong>
+                    <span>Gap to closure flow</span>
+                </div>
+            </div>
+
+        </aside>
+
+        <main class="sq-login-panel" aria-label="Login form">
+
+            <div class="sq-login-card">
+
+                <div class="sq-login-card-header">
+                    <span class="sq-login-chip">
+                        <i class="bi bi-shield-check"></i>
+                        Secure Access
+                    </span>
+
+                    <h2>Sign in</h2>
+                    <p>Use your SaQshi account to continue.</p>
+                </div>
+
+                <form
+                    id="loginForm"
+                    class="sq-login-form"
+                    autocomplete="off">
+
+                    <div class="sq-form-group">
+                        <label for="username">Username</label>
+                        <input
+                            id="username"
+                            name="username"
+                            type="text"
+                            class="sq-form-control"
+                            placeholder="Enter username"
+                            required aria-label="Enter Username">
+                    </div>
+
+                    <div class="sq-form-group">
+                        <label for="password">Password</label>
+
+                        <div class="sq-password-group">
+                            <input
+                                id="password"
+                                name="password"
+                                type="password"
+                                class="sq-form-control"
+                                placeholder="Enter password"
+                                required aria-label="Enter Password">
+
+                            <button
+                                type="button"
+                                class="sq-password-toggle"
+                                id="togglePassword"
+                                aria-label="Show or hide password">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="sq-form-group">
+                        <div class="sq-label-row">
+                            <label for="captcha">Captcha</label>
+
+                            <button
+                                type="button"
+                                class="sq-captcha-refresh"
+                                id="refreshCaptcha">
+                                <i class="bi bi-arrow-clockwise"></i>
+                                Refresh
+                            </button>
+                        </div>
+
+                        <div class="sq-captcha-box">
+                            <span id="captchaQuestion">Loading...</span>
+                        </div>
+
+                        <input
+                            id="captcha"
+                            name="captcha"
+                            type="text"
+                            inputmode="numeric"
+                            class="sq-form-control"
+                            placeholder="Enter captcha answer"
+                            required aria-label="Enter Captcha Answer">
+                    </div>
+
+                    <div class="sq-login-options">
+                        <label class="sq-checkbox">
+                            <input
+                                type="checkbox"
+                                id="rememberMe" aria-label="Remember Me">
+                            <span>Remember me</span>
+                        </label>
+
+                        <a
+                            href="#"
+                            id="forgotPasswordLink">
+                            Forgot password?
+                        </a>
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="sq-btn sq-btn-primary sq-btn-block"
+                        id="loginButton">
+                        <i class="bi bi-box-arrow-in-right"></i>
+                        Login
+                    </button>
+
+                </form>
+
+                <div class="sq-login-card-footer">
+                    <span>Version 1.0.0</span>
+                    <span>SaQshi Open Source</span>
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+</section>

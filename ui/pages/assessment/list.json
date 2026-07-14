@@ -1,0 +1,42 @@
+{
+    "id": "assessment-list",
+    "name": "Assessment List",
+    "title": "Assessment List",
+    "layout": "dashboard",
+    "moduleName": "assessmentList",
+
+    "pageHeader": {
+        "title": "Assessment List",
+        "subtitle": "Facility assessment history, status and score."
+    },
+
+    "authentication": {
+        "required": true
+    },
+
+    "assets": {
+        "css": [
+            "/ui/pages/assessment/list.css?v=20260702-3"
+        ],
+        "js": [
+            "/ui/pages/assessment/list.js?v=20260702-3"
+        ]
+    },
+
+    "api": {
+        "list": "/assessment/v1/list.php"
+    },
+
+    "breadcrumb": [
+        {
+            "label": "Dashboard",
+            "url": "/ui/dashboard.html"
+        },
+        {
+            "label": "Assessment"
+        },
+        {
+            "label": "List"
+        }
+    ]
+}

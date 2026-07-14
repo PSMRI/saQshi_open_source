@@ -1,0 +1,326 @@
+<!--
+==========================================================
+SQ Header Component
+----------------------------------------------------------
+Project : SaQshi Open Source
+Component : Application Header
+License : MIT
+
+Loaded automatically by:
+
+<div data-component="header"></div>
+
+==========================================================
+-->
+
+<header class="sq-header" role="banner">
+
+    <!-- Left Section -->
+
+    <div class="sq-header-left">
+
+        <button
+    type="button"
+    class="sq-header-toggle"
+    id="sq-sidebar-toggle"
+    data-sq-sidebar-toggle
+    aria-label="Toggle Sidebar">
+    <i class="bi bi-list"></i>
+</button>
+
+        <!-- Logo -->
+
+        <a
+            href="/ui/dashboard.html"
+            class="sq-header-logo">
+
+            <img
+                src="/ui/assets/images/logo.svg"
+                alt="SaQshi Logo"
+                class="sq-logo">
+
+            <div class="sq-header-brand">
+
+                <div
+                    class="sq-header-title"
+                    id="sq-app-name">
+
+                    SaQshi
+
+                </div>
+
+                <div
+                    class="sq-header-version"
+                    id="sq-app-version">
+
+                    Version 1.0
+
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+    <!-- Center -->
+
+    <div class="sq-header-center">
+
+        <form
+            class="sq-header-search"
+            role="search">
+
+            <i class="bi bi-search"></i>
+
+            <input
+                type="search"
+                placeholder="Search assessment, facility, user..."
+                aria-label="Global Search">
+
+        </form>
+
+    </div>
+
+    <!-- Right -->
+
+    <div class="sq-header-right">
+
+        <!-- AI Assistant -->
+
+        <button
+            type="button"
+            class="sq-icon-button"
+            id="sq-ai-button"
+            title="AI Assistant"
+            aria-label="Open AI Assistant">
+
+            <i class="bi bi-robot"></i>
+
+        </button>
+
+        <!-- Notification -->
+
+        <button
+            type="button"
+            class="sq-icon-button"
+            title="Notifications"
+            aria-label="Open notifications">
+
+            <i class="bi bi-bell"></i>
+
+            <span
+                class="sq-badge sq-badge-danger"
+                id="sq-notification-count">
+
+                0
+
+            </span>
+
+        </button>
+
+        <!-- Accessibility -->
+
+        <div class="sq-accessibility-menu">
+
+            <button
+                type="button"
+                class="sq-icon-button"
+                id="sq-accessibility-button"
+                data-sq-dropdown="#sq-accessibility-dropdown"
+                title="Accessibility Options"
+                aria-label="Open accessibility options"
+                aria-expanded="false">
+
+                <span class="sq-accessibility-trigger-mark" aria-hidden="true">A</span>
+
+            </button>
+
+            <div
+                class="sq-dropdown-menu sq-accessibility-dropdown"
+                id="sq-accessibility-dropdown"
+                role="menu"
+                aria-label="Accessibility options">
+
+                <div class="sq-accessibility-section">
+
+                    <div class="sq-accessibility-label">
+                        Text size
+                    </div>
+
+                    <div
+                        class="sq-accessibility-controls"
+                        role="group"
+                        aria-label="Text size controls">
+
+                        <button type="button" data-sq-font-size="small" aria-label="Decrease text size">
+                            A--
+                        </button>
+
+                        <button type="button" data-sq-font-size="normal" aria-label="Reset text size">
+                            A
+                        </button>
+
+                        <button type="button" data-sq-font-size="large" aria-label="Increase text size">
+                            A+
+                        </button>
+
+                        <button type="button" data-sq-font-size="xlarge" aria-label="Set extra large text size">
+                            A++
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <button
+                    type="button"
+                    class="sq-accessibility-toggle"
+                    data-sq-screen-reader-mode
+                    aria-pressed="false">
+
+                    Screen reader mode
+
+                </button>
+
+                <div
+                    class="sq-accessibility-speech"
+                    role="group"
+                    aria-label="Speech controls">
+
+                    <button
+                        type="button"
+                        data-sq-speak-page
+                        aria-label="Read current page aloud">
+
+                        Read page
+
+                    </button>
+
+                    <button
+                        type="button"
+                        data-sq-stop-speech
+                        aria-label="Stop speech">
+
+                        Stop
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Theme -->
+
+        <button
+            type="button"
+            class="sq-icon-button"
+            data-sq-theme-toggle
+            title="Toggle Theme"
+            aria-label="Toggle dark or light theme">
+
+            <i class="bi bi-moon-stars"></i>
+
+        </button>
+
+        <!-- Language -->
+
+        <div class="sq-header-language">
+
+    <!--select
+        class="sq-language-select"
+        id="sq-language-select"
+        aria-label="Language">
+
+        <option value="en">
+            English
+        </option>
+
+        <option value="hi">
+            हिन्दी
+        </option>
+
+    </select-->
+
+</div>
+
+        <!-- User -->
+
+        <div
+            class="sq-user-menu">
+
+            <button
+                type="button"
+                class="sq-user-button"
+                data-sq-dropdown="#sq-user-dropdown"
+                aria-label="Open user menu"
+                aria-expanded="false">
+
+                <img
+                    src="/ui/assets/images/avatar.png"
+                    alt="User"
+                    class="sq-user-avatar">
+
+                <div class="sq-user-details">
+
+                    <div
+                        data-sq-user-name>
+
+                        User
+
+                    </div>
+
+                    <small
+                        data-sq-user-role>
+
+                        Role
+
+                    </small>
+
+                </div>
+
+                <i class="bi bi-chevron-down"></i>
+
+            </button>
+
+            <div
+                class="sq-dropdown-menu"
+                id="sq-user-dropdown">
+
+                <a href="#" data-sq-route="facilityusers/users">
+
+                    <i class="bi bi-person"></i>
+
+                    My Profile
+
+                </a>
+
+                <a href="#" data-sq-route="facilityusers/users">
+
+                    <i class="bi bi-key"></i>
+
+                    Change Password
+
+                </a>
+
+                <hr>
+
+                <a
+                    href="#"
+                    data-sq-logout>
+
+                    <i class="bi bi-box-arrow-right"></i>
+
+                    Logout
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</header>

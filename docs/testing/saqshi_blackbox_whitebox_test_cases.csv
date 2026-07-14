@@ -1,0 +1,20 @@
+test_id,type,area,priority,title,steps,expected_result,status,remarks
+BB-AUTH-001,Black Box,Auth,P0,Login page opens,Open /ui/login.html,Login UI loads with captcha,Not Run,
+BB-AUTH-002,Black Box,Auth,P0,Invalid login,Enter wrong credential/captcha,Friendly error no raw PHP or DB error,Not Run,
+BB-AUTH-003,Black Box,Auth,P0,Valid facility login,Login with valid facility user,Facility dashboard opens,Not Run,
+BB-AUTH-004,Black Box,Auth,P0,Monitoring login,Login role 9/5/4/8,Monitoring sidebar only and scoped pages open,Not Run,
+BB-ASM-001,Black Box,Assessment,P0,Create assessment rule,Create when no active assessment exists,Assessment created,Not Run,
+BB-ASM-002,Black Box,Assessment,P0,Active assessment rule,Try create while active exists,Creation blocked with friendly message,Not Run,
+BB-CHK-001,Black Box,Checklist,P0,Load checkpoint,Select department area subtype,Checkpoint loads one by one,Not Run,
+BB-CHK-002,Black Box,Checklist,P0,Save response,Save 0 1 and 2 responses,Scores save and progress updates,Not Run,
+BB-RPT-001,Black Box,Reports,P0,Scorecard download,Download score report,Excel contains live checklist data,Not Run,
+BB-MON-001,Black Box,Monitoring,P1,State dashboard,Open state dashboard,Current month and status cards load,Not Run,
+BB-SMOKE-001,Black Box,API,P0,CSRF endpoint smoke,Run load-test CSRF smoke,360 requests 0 failures,Passed,Executed 2026-07-13
+WB-PHP-001,White Box,Syntax,P0,PHP syntax scan,Run php -l over api PHP files,No syntax errors,Passed,146 files checked
+WB-JS-001,White Box,Syntax,P1,JS syntax scan,Run node -c on load-test runner,No syntax errors,Passed,
+WB-SQL-001,White Box,SQL Injection,P0,Raw SQL review,Search query dynamic IN ORDER BY LIMIT,User input bound or whitelisted,In Progress,SQLI-001 fixed
+WB-SQL-002,White Box,SQL Injection,P0,Action plan suggestion query,Inspect action_plan.php,Dynamic IN uses placeholders,Passed,SQLI-001 closed
+WB-CSRF-001,White Box,CSRF,P0,State-changing APIs,Inspect CSRF enforcement,POST PUT DELETE require CSRF,Not Run,
+WB-AUTH-001,White Box,Authorization,P0,Monitoring role scope,Inspect state bootstrap and service scope,Role 9/5/4/8 scopes applied centrally,Not Run,
+WB-FILE-001,White Box,Upload,P0,Path traversal,Inspect upload delete path resolution,File operations stay inside uploads,Not Run,
+WB-ERR-001,White Box,Error Handling,P0,Friendly errors,Inspect Response ErrorHandler bootstrap,User sees friendly message,Not Run,

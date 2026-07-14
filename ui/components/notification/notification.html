@@ -1,0 +1,73 @@
+<!--
+==========================================================
+SQ Notification Component
+----------------------------------------------------------
+Project   : SaQshi Open Source
+Component : Notification / Toast Container
+File      : notification.html
+License   : MIT
+==========================================================
+
+Usage:
+
+SQ.notification.success("Saved successfully");
+SQ.notification.error("Unable to save");
+SQ.notification.warning("Please check required fields");
+SQ.notification.info("Assessment loaded");
+
+==========================================================
+-->
+
+<section
+    id="sq-notification-root"
+    class="sq-notification-root"
+    aria-live="polite"
+    aria-atomic="false">
+
+    <!-- Toast notifications will be injected here dynamically -->
+
+</section>
+
+<section
+    id="sq-notification-panel"
+    class="sq-notification-panel"
+    aria-label="Notifications"
+    hidden>
+
+    <header class="sq-notification-panel-header">
+
+        <div>
+            <h2 class="sq-notification-panel-title">
+                Notifications
+            </h2>
+
+            <p class="sq-notification-panel-subtitle">
+                Recent system messages and alerts
+            </p>
+        </div>
+
+        <button
+            type="button"
+            class="sq-notification-close"
+            data-sq-notification-close
+            aria-label="Close notifications">
+
+            ×
+
+        </button>
+
+    </header>
+
+    <div
+        id="sq-notification-list"
+        class="sq-notification-list">
+
+        <div class="sq-notification-empty">
+
+            No notifications available.
+
+        </div>
+
+    </div>
+
+</section>

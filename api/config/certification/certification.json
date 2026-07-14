@@ -1,0 +1,12 @@
+{
+  "module": "Certification",
+  "types": ["STATE", "NATIONAL"],
+  "assessment_modes": ["PHYSICAL", "VIRTUAL"],
+  "statuses": [
+    { "code": "CONDITIONAL", "validity_years": 1 },
+    { "code": "CERTIFIED", "validity_years": 3 }
+  ],
+  "national_requires_state": true,
+  "allow_multiple_history": true,
+  "renewal_due_days": 90
+}

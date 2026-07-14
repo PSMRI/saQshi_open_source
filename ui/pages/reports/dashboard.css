@@ -1,0 +1,238 @@
+/*!
+ * ==========================================================
+ * SaQshi Open Source
+ * Report Dashboard
+ * dashboard.css
+ * ==========================================================
+ */
+
+.sq-report-dashboard{
+    display:flex;
+    flex-direction:column;
+    gap:.6rem;
+}
+
+.sq-report-kpis{
+    display:grid;
+    grid-template-columns:repeat(7,minmax(110px,1fr));
+    gap:.5rem;
+}
+
+.sq-report-kpi{
+    padding:.55rem .65rem;
+    border:1px solid var(--sq-border);
+    border-radius:8px;
+    background:var(--sq-bg-surface);
+}
+
+.sq-report-kpi span{
+    display:block;
+    margin-bottom:.18rem;
+    color:var(--sq-text-muted);
+    font-size:.66rem;
+}
+
+.sq-report-kpi strong{
+    color:var(--sq-text-primary);
+    font-size:1.2rem;
+    line-height:1;
+}
+
+.sq-report-grid{
+    display:grid;
+    grid-template-columns:minmax(0,1.45fr) minmax(280px,.55fr);
+    gap:.6rem;
+}
+
+.sq-report-dashboard .sq-card-header{
+    padding:.45rem .6rem !important;
+}
+
+.sq-report-dashboard .sq-card-header h3{
+    margin:0;
+    font-size:.95rem;
+    line-height:1.1;
+}
+
+.sq-report-dashboard .sq-card-header p{
+    margin:.1rem 0 0;
+    color:var(--sq-text-muted);
+    font-size:.68rem;
+}
+
+.sq-report-dashboard .sq-card-body{
+    padding:.6rem !important;
+}
+
+.sq-report-current{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(220px,.55fr);
+    gap:.6rem;
+}
+
+.sq-report-current-title strong{
+    display:block;
+    color:var(--sq-text-primary);
+    font-size:.9rem;
+}
+
+.sq-report-current-title span,
+.sq-report-meta span{
+    color:var(--sq-text-muted);
+    font-size:.68rem;
+}
+
+.sq-report-meta{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:.45rem;
+    margin-top:.5rem;
+}
+
+.sq-report-meta div,
+.sq-report-score-box{
+    padding:.45rem .5rem;
+    border:1px solid var(--sq-border);
+    border-radius:8px;
+    background:var(--sq-bg-muted);
+}
+
+.sq-report-meta strong,
+.sq-report-score-box strong{
+    display:block;
+    color:var(--sq-text-primary);
+    font-size:.82rem;
+}
+
+.sq-report-score-box{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    gap:.25rem;
+}
+
+.sq-report-progress{
+    height:7px;
+    overflow:hidden;
+    border-radius:999px;
+    background:var(--sq-border);
+}
+
+.sq-report-progress span{
+    display:block;
+    width:0;
+    height:100%;
+    border-radius:inherit;
+    background:var(--sq-color-primary);
+}
+
+.sq-report-shortcuts{
+    display:grid;
+    gap:.45rem;
+}
+
+.sq-report-shortcut{
+    display:flex;
+    align-items:center;
+    gap:.45rem;
+    width:100%;
+    padding:.5rem .55rem;
+    border:1px solid var(--sq-border);
+    border-radius:8px;
+    background:var(--sq-bg-muted);
+    color:var(--sq-text-primary);
+    font-weight:700;
+    text-align:left;
+    cursor:pointer;
+}
+
+.sq-report-shortcut:hover{
+    border-color:var(--sq-color-primary);
+    color:var(--sq-color-primary);
+}
+
+.sq-report-filter{
+    width:150px;
+    min-height:30px;
+    padding:.3rem .45rem;
+    font-size:.72rem;
+}
+
+.sq-report-table td,
+.sq-report-table th{
+    padding:.45rem .55rem !important;
+    font-size:.72rem;
+}
+
+.sq-report-name strong{
+    display:block;
+    color:var(--sq-text-primary);
+    font-size:.74rem;
+}
+
+.sq-report-name span,
+.sq-report-subtext{
+    display:block;
+    margin-top:.08rem;
+    color:var(--sq-text-muted);
+    font-size:.63rem;
+}
+
+.sq-report-status,
+.sq-report-score{
+    display:inline-flex;
+    align-items:center;
+    min-height:22px;
+    padding:0 .45rem;
+    border-radius:999px;
+    font-size:.66rem;
+    font-weight:800;
+}
+
+.sq-report-status.is-active{
+    background:var(--sq-color-warning-50);
+    color:var(--sq-color-warning-700);
+}
+
+.sq-report-status.is-completed{
+    background:var(--sq-color-success-50);
+    color:var(--sq-color-success-700);
+}
+
+.sq-report-status.is-cancelled{
+    background:var(--sq-color-danger-50);
+    color:var(--sq-color-danger-700);
+}
+
+.sq-report-score{
+    background:var(--sq-color-info-50);
+    color:var(--sq-color-info-700);
+}
+
+.sq-report-empty{
+    padding:.8rem;
+    color:var(--sq-text-muted);
+    text-align:center;
+}
+
+@media (max-width:1050px){
+    .sq-report-kpis{
+        grid-template-columns:repeat(3,minmax(110px,1fr));
+    }
+
+    .sq-report-grid,
+    .sq-report-current{
+        grid-template-columns:1fr;
+    }
+}
+
+@media (max-width:680px){
+    .sq-report-kpis,
+    .sq-report-meta{
+        grid-template-columns:1fr;
+    }
+
+    .sq-report-filter{
+        width:100%;
+    }
+}

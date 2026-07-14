@@ -1,0 +1,487 @@
+{
+  "info": {
+    "name": "SaQshi API Testing Collection",
+    "description": "Postman collection for SaQshi API testing. Set baseUrl, csrfToken, assessmentId, departmentId and checkpointId variables before running state-changing requests.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "1.0.0"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:94/api" },
+    { "key": "csrfToken", "value": "" },
+    { "key": "assessmentId", "value": "1" },
+    { "key": "departmentId", "value": "1" },
+    { "key": "checkpointId", "value": "1" },
+    { "key": "entryMonth", "value": "7" },
+    { "key": "entryYear", "value": "2026" }
+  ],
+  "auth": {
+    "type": "noauth"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Get CSRF Token",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/auth/v1/csrf.php"
+          }
+        },
+        {
+          "name": "Get Captcha",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/auth/v1/captcha.php"
+          }
+        },
+        {
+          "name": "Get Login Public Key",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/auth/v1/login_key.php"
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-CSRF-TOKEN", "value": "{{csrfToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"test-user\",\n  \"password_enc\": \"BASE64_RSA_OAEP_ENCRYPTED_PASSWORD\",\n  \"captcha\": \"1234\"\n}"
+            },
+            "url": "{{baseUrl}}/auth/v1/login.php"
+          }
+        },
+        {
+          "name": "Me",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/auth/v1/me.php"
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-CSRF-TOKEN", "value": "{{csrfToken}}" }
+            ],
+            "url": "{{baseUrl}}/auth/v1/logout.php"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Assessment",
+      "item": [
+        {
+          "name": "Active Assessment",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/assessment/v1/active_assessment.php"
+          }
+        },
+        {
+          "name": "Assessment List",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/assessment/v1/list.php"
+          }
+        },
+        {
+          "name": "Create Assessment",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-CSRF-TOKEN", "value": "{{csrfToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"assessment_name\": \"NQAS Internal Assessment July 2026\",\n  \"framework_code\": \"saqshi-nqas\",\n  \"start_date\": \"2026-07-01\",\n  \"end_date\": \"2026-07-31\",\n  \"remarks\": \"Monthly quality assessment\"\n}"
+            },
+            "url": "{{baseUrl}}/assessment/v1/create_assessment.php"
+          }
+        },
+        {
+          "name": "Cancel Assessment",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-CSRF-TOKEN", "value": "{{csrfToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"assessment_id\": {{assessmentId}},\n  \"remarks\": \"Cancelled for retest\"\n}"
+            },
+            "url": "{{baseUrl}}/assessment/v1/cancel_assessment.php"
+          }
+        },
+        {
+          "name": "Complete Assessment",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-CSRF-TOKEN", "value": "{{csrfToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"assessment_id\": {{assessmentId}}\n}"
+            },
+            "url": "{{baseUrl}}/assessment/v1/complete_assessment.php"
+          }
+        },
+        {
+          "name": "Department Status List",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/assessment/v1/department-status/list.php?assessment_id={{assessmentId}}"
+          }
+        },
+        {
+          "name": "Department Status Save",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-CSRF-TOKEN", "value": "{{csrfToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"assessment_id\": {{assessmentId}},\n  \"dept_id\": {{departmentId}},\n  \"is_active\": 1\n}"
+            },
+            "url": "{{baseUrl}}/assessment/v1/department-status/save.php"
+          }
+        },
+        {
+          "name": "Assessor Info Get",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/assessment/v1/assessor_info_get.php?assessment_id={{assessmentId}}&dept_id={{departmentId}}"
+          }
+        },
+        {
+          "name": "Assessor Info Save",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-CSRF-TOKEN", "value": "{{csrfToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"assessment_id\": {{assessmentId}},\n  \"dept_id\": {{departmentId}},\n  \"assessor_name\": \"Dr. Assessor\",\n  \"assessee_name\": \"Facility Incharge\",\n  \"assessment_date\": \"2026-07-13\",\n  \"assessment_type\": \"INTERNAL\"\n}"
+            },
+            "url": "{{baseUrl}}/assessment/v1/assessor_info_save.php"
+          }
+        },
+        {
+          "name": "Get Checkpoint",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/assessment/v1/get_checkpoint.php?assessment_id={{assessmentId}}&dept_id={{departmentId}}"
+          }
+        },
+        {
+          "name": "Save Checklist Response",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-CSRF-TOKEN", "value": "{{csrfToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"assessment_id\": {{assessmentId}},\n  \"dept_id\": {{departmentId}},\n  \"checkpoint_id\": {{checkpointId}},\n  \"score\": 2,\n  \"response_value\": \"2\",\n  \"remarks\": \"Fully compliant\"\n}"
+            },
+            "url": "{{baseUrl}}/assessment/v1/save-response.php"
+          }
+        },
+        {
+          "name": "Assessment Progress",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/assessment/v1/progress.php?assessment_id={{assessmentId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "CQI",
+      "item": [
+        {
+          "name": "Gap Analysis",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/assessment/v1/gap_analysis.php?assessment_id={{assessmentId}}"
+          }
+        },
+        {
+          "name": "Action Plan List",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/assessment/v1/action_plan.php?assessment_id={{assessmentId}}"
+          }
+        },
+        {
+          "name": "Action Plan Save",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-CSRF-TOKEN", "value": "{{csrfToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"assessment_id\": {{assessmentId}},\n  \"dept_id\": {{departmentId}},\n  \"checkpoint_id\": {{checkpointId}},\n  \"action_plan\": \"Ensure availability and update records.\",\n  \"responsible_person\": \"MOIC\",\n  \"target_date\": \"2026-08-15\",\n  \"status\": \"OPEN\",\n  \"remarks\": \"Initial plan\"\n}"
+            },
+            "url": "{{baseUrl}}/assessment/v1/action_plan_save.php"
+          }
+        },
+        {
+          "name": "Action Plan Closure",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-CSRF-TOKEN", "value": "{{csrfToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"assessment_id\": {{assessmentId}},\n  \"dept_id\": {{departmentId}},\n  \"checkpoint_id\": {{checkpointId}},\n  \"status\": \"COMPLETED\",\n  \"revised_score\": 2,\n  \"closure_remarks\": \"Completed and verified\",\n  \"evidence_url\": \"/uploads/assessment/evidence/sample.pdf\"\n}"
+            },
+            "url": "{{baseUrl}}/assessment/v1/action_plan_closure.php"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Files",
+      "item": [
+        {
+          "name": "Upload Evidence",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-CSRF-TOKEN", "value": "{{csrfToken}}" }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "category", "value": "gap_closure", "type": "text" },
+                { "key": "file", "type": "file", "src": "" }
+              ]
+            },
+            "url": "{{baseUrl}}/files/v1/upload.php"
+          }
+        },
+        {
+          "name": "Delete Evidence",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-CSRF-TOKEN", "value": "{{csrfToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"url\": \"/uploads/assessment/gap_closure/2026/07/sample.pdf\"\n}"
+            },
+            "url": "{{baseUrl}}/files/v1/delete.php"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Performance",
+      "item": [
+        {
+          "name": "Performance Dashboard",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/performance/v1/dashboard.php"
+          }
+        },
+        {
+          "name": "KPI List",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/performance/v1/kpi_list.php?dept_id={{departmentId}}&entry_month={{entryMonth}}&entry_year={{entryYear}}"
+          }
+        },
+        {
+          "name": "KPI Save",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-CSRF-TOKEN", "value": "{{csrfToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"dept_id\": {{departmentId}},\n  \"indicator_id\": 1,\n  \"entry_month\": {{entryMonth}},\n  \"entry_year\": {{entryYear}},\n  \"numerator_value\": 10,\n  \"denominator_value\": 20,\n  \"result_value\": 50,\n  \"remarks\": \"Monthly KPI entry\"\n}"
+            },
+            "url": "{{baseUrl}}/performance/v1/kpi_save.php"
+          }
+        },
+        {
+          "name": "Outcome List",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/performance/v1/outcome_list.php?dept_id={{departmentId}}&entry_month={{entryMonth}}&entry_year={{entryYear}}"
+          }
+        },
+        {
+          "name": "Outcome Save",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-CSRF-TOKEN", "value": "{{csrfToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"dept_id\": {{departmentId}},\n  \"indicator_id\": 1,\n  \"entry_month\": {{entryMonth}},\n  \"entry_year\": {{entryYear}},\n  \"numerator_value\": 100,\n  \"denominator_value\": 0,\n  \"result_value\": 100,\n  \"remarks\": \"Monthly outcome entry\"\n}"
+            },
+            "url": "{{baseUrl}}/performance/v1/outcome_save.php"
+          }
+        },
+        {
+          "name": "Trend",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/performance/v1/trend.php?indicator_type=OUTCOME"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Certification",
+      "item": [
+        {
+          "name": "Certification Dashboard",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/certification/v1/dashboard.php"
+          }
+        },
+        {
+          "name": "Save Certification",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-CSRF-TOKEN", "value": "{{csrfToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cert_type\": \"STATE\",\n  \"ass_mod\": \"PHYSICAL\",\n  \"date_of_ass\": \"2026-07-13\",\n  \"applied_date\": \"2026-07-01\",\n  \"status\": \"CONDITIONAL\",\n  \"score\": 72,\n  \"remarks\": \"State certification entry\"\n}"
+            },
+            "url": "{{baseUrl}}/certification/v1/save.php"
+          }
+        },
+        {
+          "name": "Certification History",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/certification/v1/history.php"
+          }
+        }
+      ]
+    },
+    {
+      "name": "State Regional District Block Monitoring",
+      "item": [
+        {
+          "name": "Monitoring Dashboard",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/state/v1/dashboard.php"
+          }
+        },
+        {
+          "name": "Facility Category",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/state/v1/facility_category.php?search="
+          }
+        },
+        {
+          "name": "Certification Summary",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/state/v1/certification_summary.php?page=1&per_page=25"
+          }
+        },
+        {
+          "name": "Assessment Progress",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/state/v1/assessment_progress.php?page=1&per_page=25"
+          }
+        },
+        {
+          "name": "CQI Summary",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/state/v1/cqi_summary.php?page=1&per_page=25"
+          }
+        },
+        {
+          "name": "Performance Summary",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/state/v1/performance_summary.php?page=1&per_page=25"
+          }
+        },
+        {
+          "name": "Indicator Analytics",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/state/v1/indicator_analytics.php?page=1&per_page=25&min_facilities=1"
+          }
+        },
+        {
+          "name": "State Reports Catalog",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/state/v1/reports.php"
+          }
+        },
+        {
+          "name": "Download Facilities Report",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/state/v1/reports.php?download=facilities"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reports",
+      "item": [
+        {
+          "name": "Checkpoint Scorecard",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/reports/v1/checkpoint_scorecard.php?assessment_id={{assessmentId}}"
+          }
+        },
+        {
+          "name": "Checkpoint Progress Report",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/reports/v1/checkpoint_progress_report.php?assessment_id={{assessmentId}}"
+          }
+        }
+      ]
+    }
+  ]
+}

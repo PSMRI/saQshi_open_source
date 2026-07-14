@@ -1,0 +1,35 @@
+<!-- SaQshi Open Source | State Facility Drill-down | facility-detail.html | Version 1.1.0 -->
+<section class="sq-state-page">
+    <div class="sq-state-toolbar">
+        <div>
+            <h3>Facility Drill-down</h3>
+            <p>Browse State, Division, District, Block and facility-level monitoring details.</p>
+        </div>
+        <div class="sq-state-filters">
+            <input class="sq-form-control" id="stateFacilitySearch" type="search" placeholder="Search facility, NIN, district or block" aria-label="Search Facility, NIN, District Or Block">
+            <button class="sq-btn sq-btn-primary" id="stateFacilityLoad">Search</button>
+        </div>
+    </div>
+
+    <div class="sq-state-grid">
+        <div class="sq-card">
+            <div class="sq-card-header">
+                <h3>Facility Hierarchy</h3>
+                <span id="stateFacilityTreeCount" class="sq-state-badge">0 facilities</span>
+            </div>
+            <div class="sq-card-body" id="stateFacilityTree"></div>
+        </div>
+
+        <div class="sq-card">
+            <div class="sq-card-header">
+                <h3>Facility Details</h3>
+                <span id="stateFacilitySelected" class="sq-state-badge">Select facility</span>
+            </div>
+            <div class="sq-card-body">
+                <div id="stateFacilityInfo"></div>
+                <div id="stateFacilitySummary" class="sq-state-kpis"></div>
+                <div id="stateFacilityAssessments"></div>
+            </div>
+        </div>
+    </div>
+</section>

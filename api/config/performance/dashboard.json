@@ -1,0 +1,229 @@
+{
+  "module": "Performance Monitoring",
+  "config_type": "Dashboard Configuration",
+  "version": "1.0.0",
+  "description": "Dashboard configuration for monthly KPI and Outcome Indicator monitoring.",
+  "route": "performance/dashboard",
+  "page": {
+    "title": "Performance Monitoring Dashboard",
+    "subtitle": "Monthly KPI and Outcome Indicator summary",
+    "icon": "bi bi-graph-up-arrow",
+    "layout": "dashboard"
+  },
+  "filters": [
+    {
+      "filter_id": "month",
+      "label": "Month",
+      "type": "select",
+      "required": true,
+      "default": "CURRENT_MONTH"
+    },
+    {
+      "filter_id": "year",
+      "label": "Year",
+      "type": "select",
+      "required": true,
+      "default": "CURRENT_YEAR"
+    },
+    {
+      "filter_id": "facility_type_id",
+      "label": "Facility Type",
+      "type": "select",
+      "required": false,
+      "source": "facility_types"
+    },
+    {
+      "filter_id": "department_id",
+      "label": "Department",
+      "type": "select",
+      "required": false,
+      "source": "departments"
+    },
+    {
+      "filter_id": "indicator_type",
+      "label": "Indicator Type",
+      "type": "select",
+      "required": false,
+      "default": "ALL",
+      "options": [
+        {
+          "value": "ALL",
+          "label": "All"
+        },
+        {
+          "value": "KPI",
+          "label": "KPI"
+        },
+        {
+          "value": "OUTCOME",
+          "label": "Outcome"
+        }
+      ]
+    }
+  ],
+  "summary_cards": [
+    {
+      "card_id": "total_indicators",
+      "title": "Total Indicators",
+      "metric": "total_indicators",
+      "icon": "bi bi-list-check",
+      "format": "number"
+    },
+    {
+      "card_id": "submitted_indicators",
+      "title": "Submitted",
+      "metric": "submitted_indicators",
+      "icon": "bi bi-check2-circle",
+      "format": "number"
+    },
+    {
+      "card_id": "pending_indicators",
+      "title": "Pending",
+      "metric": "pending_indicators",
+      "icon": "bi bi-hourglass-split",
+      "format": "number"
+    },
+    {
+      "card_id": "completion_percent",
+      "title": "Completion %",
+      "metric": "completion_percent",
+      "icon": "bi bi-pie-chart",
+      "format": "percent",
+      "precision": 2
+    },
+    {
+      "card_id": "average_result",
+      "title": "Average Result",
+      "metric": "average_result",
+      "icon": "bi bi-activity",
+      "format": "decimal",
+      "precision": 2
+    }
+  ],
+  "widgets": [
+    {
+      "widget_id": "monthly_completion",
+      "title": "Monthly Data Completion",
+      "type": "progress",
+      "metric": "completion_percent",
+      "show_legend": true
+    },
+    {
+      "widget_id": "indicator_type_summary",
+      "title": "KPI vs Outcome Summary",
+      "type": "donut",
+      "metrics": [
+        "kpi_count",
+        "outcome_count"
+      ]
+    },
+    {
+      "widget_id": "department_submission_status",
+      "title": "Department-wise Submission Status",
+      "type": "bar",
+      "x_axis": "department_name",
+      "y_axis": "completion_percent",
+      "format": "percent"
+    },
+    {
+      "widget_id": "monthly_trend",
+      "title": "Monthly Performance Trend",
+      "type": "line",
+      "x_axis": "month_year",
+      "y_axis": "average_result",
+      "format": "decimal",
+      "precision": 2
+    },
+    {
+      "widget_id": "indicators_requiring_review",
+      "title": "Indicators Requiring Review",
+      "type": "table",
+      "limit": 10,
+      "columns": [
+        {
+          "key": "indicator_name",
+          "label": "Indicator"
+        },
+        {
+          "key": "department_name",
+          "label": "Department"
+        },
+        {
+          "key": "result_value",
+          "label": "Result"
+        },
+        {
+          "key": "target_value",
+          "label": "Target"
+        },
+        {
+          "key": "variance",
+          "label": "Variance"
+        }
+      ]
+    }
+  ],
+  "status_rules": {
+    "completion": [
+      {
+        "min": 0,
+        "max": 49.99,
+        "status": "LOW",
+        "class": "danger",
+        "label": "Low Completion"
+      },
+      {
+        "min": 50,
+        "max": 79.99,
+        "status": "MEDIUM",
+        "class": "warning",
+        "label": "Partial Completion"
+      },
+      {
+        "min": 80,
+        "max": 100,
+        "status": "HIGH",
+        "class": "success",
+        "label": "Good Completion"
+      }
+    ],
+    "target_comparison": [
+      {
+        "condition": "result_value >= target_value",
+        "status": "ACHIEVED",
+        "class": "success",
+        "label": "Target Achieved"
+      },
+      {
+        "condition": "result_value < target_value",
+        "status": "NOT_ACHIEVED",
+        "class": "danger",
+        "label": "Below Target"
+      }
+    ]
+  },
+  "actions": [
+    {
+      "action_id": "kpi_entry",
+      "label": "KPI Entry",
+      "route": "performance/kpi",
+      "icon": "bi bi-pencil-square"
+    },
+    {
+      "action_id": "outcome_entry",
+      "label": "Outcome Entry",
+      "route": "performance/outcome",
+      "icon": "bi bi-clipboard-data"
+    },
+    {
+      "action_id": "trends",
+      "label": "Monthly Trends",
+      "route": "performance/trend",
+      "icon": "bi bi-graph-up"
+    }
+  ],
+  "api": {
+    "dashboard": "/performance/v1/dashboard.php",
+    "trend": "/performance/v1/trend.php"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "id": "certification-dashboard",
+  "name": "Certification Dashboard",
+  "title": "Certification Dashboard",
+  "layout": "dashboard",
+  "pageHeader": {
+    "title": "Certification Dashboard",
+    "subtitle": "Track State and National certification status."
+  },
+  "authentication": { "required": true },
+  "assets": {
+    "css": ["/ui/pages/certification/dashboard.css?v=20260707-4"],
+    "js": ["/ui/pages/certification/dashboard.js?v=20260707-4"]
+  },
+  "breadcrumb": [
+    { "label": "Dashboard", "url": "/ui/dashboard.html" },
+    { "label": "Certification" },
+    { "label": "Dashboard" }
+  ],
+  "quickActions": [
+    { "title": "Manage", "route": "certification/manage", "icon": "bi-pencil-square", "className": "sq-btn sq-btn-primary" }
+  ],
+  "moduleName": "certificationDashboard"
+}

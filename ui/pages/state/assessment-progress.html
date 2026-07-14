@@ -1,0 +1,21 @@
+<!-- SaQshi Open Source | State Assessment Progress | assessment-progress.html | Version 1.0.0 -->
+<section class="sq-state-page">
+    <div class="sq-state-toolbar">
+        <div>
+            <h3>Assessment Progress</h3>
+            <p>All facility assessments including repeated assessment history.</p>
+        </div>
+        <div class="sq-state-filters">
+            <input type="search" class="sq-form-control" id="stateAssessSearch" placeholder="Search facility or NIN" aria-label="Search Facility Or NIN">
+            <button class="sq-btn sq-btn-primary" id="stateAssessRefresh">Refresh</button>
+        </div>
+    </div>
+    <div class="sq-state-kpis" id="stateAssessSummary"></div>
+    <div class="sq-card">
+        <div class="sq-card-header">
+            <h3>Assessment Records</h3>
+            <div id="stateAssessPager"></div>
+        </div>
+        <div class="sq-card-body" id="stateAssessRows"></div>
+    </div>
+</section>

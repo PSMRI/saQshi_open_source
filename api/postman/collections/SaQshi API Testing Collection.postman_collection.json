@@ -1,0 +1,1329 @@
+{
+  "info": {
+    "_postman_id": "00accb82-7193-4aa2-b520-3006ca238996",
+    "name": "SaQshi API Testing Collection",
+    "description": "Postman collection for SaQshi API testing. Set baseUrl, csrfToken, assessmentId, departmentId and checkpointId variables before running state-changing requests.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Get CSRF Token",
+          "id": "eb0e346e-1cce-40fb-986d-913310fa77b0",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/v1/csrf.php",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "v1",
+                "csrf.php"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Captcha",
+          "id": "f27c4b9c-ca97-4509-a2bb-72e4b6587f80",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/v1/captcha.php",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "v1",
+                "captcha.php"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Login Public Key",
+          "id": "5c01b255-d1c5-4bef-8f9a-4b97baf14973",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/v1/login_key.php",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "v1",
+                "login_key.php"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "id": "3a7aefc4-8dfc-4533-ad4a-4808cacce25e",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-CSRF-TOKEN",
+                "value": "{{csrfToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"test-user\",\n  \"password_enc\": \"BASE64_RSA_OAEP_ENCRYPTED_PASSWORD\",\n  \"captcha\": \"1234\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/v1/login.php",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "v1",
+                "login.php"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Me",
+          "id": "eabf572b-cc24-4935-8c23-d1a59d394a7e",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/v1/me.php",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "v1",
+                "me.php"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Logout",
+          "id": "cd6fac6e-304c-439e-8241-a648d64d1ec2",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-CSRF-TOKEN",
+                "value": "{{csrfToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/v1/logout.php",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "v1",
+                "logout.php"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "id": "366d1b53-fdb4-4663-8c42-ecb940a35d1e"
+    },
+    {
+      "name": "Assessment",
+      "item": [
+        {
+          "name": "Active Assessment",
+          "id": "b6eb0138-1812-469c-9af8-594962316f4a",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/assessment/v1/active_assessment.php",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "assessment",
+                "v1",
+                "active_assessment.php"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Assessment List",
+          "id": "4bb656e2-b99e-4559-a72d-f1031b8d4c55",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/assessment/v1/list.php",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "assessment",
+                "v1",
+                "list.php"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Assessment",
+          "id": "e5a7de4d-19a8-49e3-aae9-6939252dcb06",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-CSRF-TOKEN",
+                "value": "{{csrfToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"assessment_name\": \"NQAS Internal Assessment July 2026\",\n  \"framework_code\": \"saqshi-nqas\",\n  \"start_date\": \"2026-07-01\",\n  \"end_date\": \"2026-07-31\",\n  \"remarks\": \"Monthly quality assessment\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/assessment/v1/create_assessment.php",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "assessment",
+                "v1",
+                "create_assessment.php"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Cancel Assessment",
+          "id": "bdd01f19-e924-4633-9404-583c42bf7498",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-CSRF-TOKEN",
+                "value": "{{csrfToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"assessment_id\": {{assessmentId}},\n  \"remarks\": \"Cancelled for retest\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/assessment/v1/cancel_assessment.php",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "assessment",
+                "v1",
+                "cancel_assessment.php"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Complete Assessment",
+          "id": "fe5a5a45-35a6-4f37-9b92-356f596fb0fd",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-CSRF-TOKEN",
+                "value": "{{csrfToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"assessment_id\": {{assessmentId}}\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/assessment/v1/complete_assessment.php",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "assessment",
+                "v1",
+                "complete_assessment.php"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Department Status List",
+          "id": "18c3a977-cd04-4d1c-a470-46e24e61789c",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/assessment/v1/department-status/list.php?assessment_id={{assessmentId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "assessment",
+                "v1",
+                "department-status",
+                "list.php"
+              ],
+              "query": [
+                {
+                  "key": "assessment_id",
+                  "value": "{{assessmentId}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Department Status Save",
+          "id": "d38e0c38-6c87-4d2b-a567-698eaaebbe17",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-CSRF-TOKEN",
+                "value": "{{csrfToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"assessment_id\": {{assessmentId}},\n  \"dept_id\": {{departmentId}},\n  \"is_active\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/assessment/v1/department-status/save.php",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "assessment",
+                "v1",
+                "department-status",
+                "save.php"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Assessor Info Get",
+          "id": "e3d774bb-27d4-4bf0-96a1-42ed63082e46",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/assessment/v1/assessor_info_get.php?assessment_id={{assessmentId}}&dept_id={{departmentId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "assessment",
+                "v1",
+                "assessor_info_get.php"
+              ],
+              "query": [
+                {
+                  "key": "assessment_id",
+                  "value": "{{assessmentId}}"
+                },
+                {
+                  "key": "dept_id",
+                  "value": "{{departmentId}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Assessor Info Save",
+          "id": "cd891994-b328-4900-9132-cd4bebd86f47",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-CSRF-TOKEN",
+                "value": "{{csrfToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"assessment_id\": {{assessmentId}},\n  \"dept_id\": {{departmentId}},\n  \"assessor_name\": \"Dr. Assessor\",\n  \"assessee_name\": \"Facility Incharge\",\n  \"assessment_date\": \"2026-07-13\",\n  \"assessment_type\": \"INTERNAL\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/assessment/v1/assessor_info_save.php",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "assessment",
+                "v1",
+                "assessor_info_save.php"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Checkpoint",
+          "id": "f5446f07-21e2-4720-a2df-0f17b93016c0",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/assessment/v1/get_checkpoint.php?assessment_id={{assessmentId}}&dept_id={{departmentId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "assessment",
+                "v1",
+                "get_checkpoint.php"
+              ],
+              "query": [
+                {
+                  "key": "assessment_id",
+                  "value": "{{assessmentId}}"
+                },
+                {
+                  "key": "dept_id",
+                  "value": "{{departmentId}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Save Checklist Response",
+          "id": "f60416fc-eeba-4853-aa79-b07bb58a0bc7",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-CSRF-TOKEN",
+                "value": "{{csrfToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"assessment_id\": {{assessmentId}},\n  \"dept_id\": {{departmentId}},\n  \"checkpoint_id\": {{checkpointId}},\n  \"score\": 2,\n  \"response_value\": \"2\",\n  \"remarks\": \"Fully compliant\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/assessment/v1/save-response.php",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "assessment",
+                "v1",
+                "save-response.php"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Assessment Progress",
+          "id": "0045c7f7-8299-4cb1-954c-f1b142a93ec0",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/assessment/v1/progress.php?assessment_id={{assessmentId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "assessment",
+                "v1",
+                "progress.php"
+              ],
+              "query": [
+                {
+                  "key": "assessment_id",
+                  "value": "{{assessmentId}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "id": "c60878d9-aa80-4afa-b93a-edbe2f0f9e79"
+    },
+    {
+      "name": "CQI",
+      "item": [
+        {
+          "name": "Gap Analysis",
+          "id": "b778ef53-fdb3-452b-94f6-df55cd403e3a",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/assessment/v1/gap_analysis.php?assessment_id={{assessmentId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "assessment",
+                "v1",
+                "gap_analysis.php"
+              ],
+              "query": [
+                {
+                  "key": "assessment_id",
+                  "value": "{{assessmentId}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Action Plan List",
+          "id": "e1545223-01a2-4e43-8a55-081d22269697",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/assessment/v1/action_plan.php?assessment_id={{assessmentId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "assessment",
+                "v1",
+                "action_plan.php"
+              ],
+              "query": [
+                {
+                  "key": "assessment_id",
+                  "value": "{{assessmentId}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Action Plan Save",
+          "id": "1cca8abb-620e-461f-bb01-94b158597c35",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-CSRF-TOKEN",
+                "value": "{{csrfToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"assessment_id\": {{assessmentId}},\n  \"dept_id\": {{departmentId}},\n  \"checkpoint_id\": {{checkpointId}},\n  \"action_plan\": \"Ensure availability and update records.\",\n  \"responsible_person\": \"MOIC\",\n  \"target_date\": \"2026-08-15\",\n  \"status\": \"OPEN\",\n  \"remarks\": \"Initial plan\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/assessment/v1/action_plan_save.php",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "assessment",
+                "v1",
+                "action_plan_save.php"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Action Plan Closure",
+          "id": "f8afb4bc-3a7c-410b-be39-0e324e81d459",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-CSRF-TOKEN",
+                "value": "{{csrfToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"assessment_id\": {{assessmentId}},\n  \"dept_id\": {{departmentId}},\n  \"checkpoint_id\": {{checkpointId}},\n  \"status\": \"COMPLETED\",\n  \"revised_score\": 2,\n  \"closure_remarks\": \"Completed and verified\",\n  \"evidence_url\": \"/uploads/assessment/evidence/sample.pdf\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/assessment/v1/action_plan_closure.php",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "assessment",
+                "v1",
+                "action_plan_closure.php"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "id": "3015ecf2-fae1-4663-bba1-22bbf9cd3975"
+    },
+    {
+      "name": "Files",
+      "item": [
+        {
+          "name": "Upload Evidence",
+          "id": "c3885154-726c-4df1-bd53-6d933ec9e54a",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-CSRF-TOKEN",
+                "value": "{{csrfToken}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "category",
+                  "value": "gap_closure",
+                  "type": "text"
+                },
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": [
+                    ""
+                  ]
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/files/v1/upload.php",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "files",
+                "v1",
+                "upload.php"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Evidence",
+          "id": "c1479a19-b352-4107-b9b7-aab0db0ae7b9",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-CSRF-TOKEN",
+                "value": "{{csrfToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"url\": \"/uploads/assessment/gap_closure/2026/07/sample.pdf\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/files/v1/delete.php",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "files",
+                "v1",
+                "delete.php"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "id": "a4f578d8-f173-4591-b8bf-5ce7093144f5"
+    },
+    {
+      "name": "Performance",
+      "item": [
+        {
+          "name": "Performance Dashboard",
+          "id": "f7faf542-56fc-454f-8ec2-ef28e9450ad2",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/performance/v1/dashboard.php",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "performance",
+                "v1",
+                "dashboard.php"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "KPI List",
+          "id": "3a20b081-ae5e-4ac2-95a6-3a591f8b1ecd",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/performance/v1/kpi_list.php?dept_id={{departmentId}}&entry_month={{entryMonth}}&entry_year={{entryYear}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "performance",
+                "v1",
+                "kpi_list.php"
+              ],
+              "query": [
+                {
+                  "key": "dept_id",
+                  "value": "{{departmentId}}"
+                },
+                {
+                  "key": "entry_month",
+                  "value": "{{entryMonth}}"
+                },
+                {
+                  "key": "entry_year",
+                  "value": "{{entryYear}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "KPI Save",
+          "id": "64b61694-f025-4da2-99ff-4906ab84009c",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-CSRF-TOKEN",
+                "value": "{{csrfToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"dept_id\": {{departmentId}},\n  \"indicator_id\": 1,\n  \"entry_month\": {{entryMonth}},\n  \"entry_year\": {{entryYear}},\n  \"numerator_value\": 10,\n  \"denominator_value\": 20,\n  \"result_value\": 50,\n  \"remarks\": \"Monthly KPI entry\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/performance/v1/kpi_save.php",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "performance",
+                "v1",
+                "kpi_save.php"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Outcome List",
+          "id": "f54271c6-0535-46da-83eb-6a2570bed5a3",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/performance/v1/outcome_list.php?dept_id={{departmentId}}&entry_month={{entryMonth}}&entry_year={{entryYear}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "performance",
+                "v1",
+                "outcome_list.php"
+              ],
+              "query": [
+                {
+                  "key": "dept_id",
+                  "value": "{{departmentId}}"
+                },
+                {
+                  "key": "entry_month",
+                  "value": "{{entryMonth}}"
+                },
+                {
+                  "key": "entry_year",
+                  "value": "{{entryYear}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Outcome Save",
+          "id": "e10a7318-8468-44e4-9e8a-15e2d52977be",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-CSRF-TOKEN",
+                "value": "{{csrfToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"dept_id\": {{departmentId}},\n  \"indicator_id\": 1,\n  \"entry_month\": {{entryMonth}},\n  \"entry_year\": {{entryYear}},\n  \"numerator_value\": 100,\n  \"denominator_value\": 0,\n  \"result_value\": 100,\n  \"remarks\": \"Monthly outcome entry\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/performance/v1/outcome_save.php",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "performance",
+                "v1",
+                "outcome_save.php"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Trend",
+          "id": "0b2d708c-96cf-406a-b664-83f47c993648",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/performance/v1/trend.php?indicator_type=OUTCOME",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "performance",
+                "v1",
+                "trend.php"
+              ],
+              "query": [
+                {
+                  "key": "indicator_type",
+                  "value": "OUTCOME"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "id": "ec7ff98c-0871-40ca-a46f-459b92459685"
+    },
+    {
+      "name": "Certification",
+      "item": [
+        {
+          "name": "Certification Dashboard",
+          "id": "f2ce3a0b-2ce0-4bf4-a8ac-f3e9e1fef1b4",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/certification/v1/dashboard.php",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "certification",
+                "v1",
+                "dashboard.php"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Save Certification",
+          "id": "e10f7893-b0b8-4ee1-a13f-35c60fe93b8b",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-CSRF-TOKEN",
+                "value": "{{csrfToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cert_type\": \"STATE\",\n  \"ass_mod\": \"PHYSICAL\",\n  \"date_of_ass\": \"2026-07-13\",\n  \"applied_date\": \"2026-07-01\",\n  \"status\": \"CONDITIONAL\",\n  \"score\": 72,\n  \"remarks\": \"State certification entry\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/certification/v1/save.php",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "certification",
+                "v1",
+                "save.php"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Certification History",
+          "id": "c07956ec-fc8e-4bdf-a3e8-69b643d8c50c",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/certification/v1/history.php",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "certification",
+                "v1",
+                "history.php"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "id": "5e2d99ac-1039-457a-b37e-4a3cb5b824c9"
+    },
+    {
+      "name": "State Regional District Block Monitoring",
+      "item": [
+        {
+          "name": "Monitoring Dashboard",
+          "id": "0c796b82-4f3e-4d31-9bf4-7638792cddb9",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/state/v1/dashboard.php",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "state",
+                "v1",
+                "dashboard.php"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Facility Category",
+          "id": "ba78f9e6-4a2e-4c70-a531-46ff3707ab1f",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/state/v1/facility_category.php?search=",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "state",
+                "v1",
+                "facility_category.php"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Certification Summary",
+          "id": "0513e305-bb16-4dd6-92fd-f3f17c1d74ae",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/state/v1/certification_summary.php?page=1&per_page=25",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "state",
+                "v1",
+                "certification_summary.php"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "per_page",
+                  "value": "25"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Assessment Progress",
+          "id": "342daf9e-4aaf-4262-8ed1-6c4630a80a09",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/state/v1/assessment_progress.php?page=1&per_page=25",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "state",
+                "v1",
+                "assessment_progress.php"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "per_page",
+                  "value": "25"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "CQI Summary",
+          "id": "5478440d-72ae-4623-845e-db6d23de850d",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/state/v1/cqi_summary.php?page=1&per_page=25",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "state",
+                "v1",
+                "cqi_summary.php"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "per_page",
+                  "value": "25"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Performance Summary",
+          "id": "d17a8abb-e11c-40d7-af5c-82b60df11fd2",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/state/v1/performance_summary.php?page=1&per_page=25",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "state",
+                "v1",
+                "performance_summary.php"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "per_page",
+                  "value": "25"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Indicator Analytics",
+          "id": "289f32c3-0846-4e87-8a52-59824b93bf7e",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/state/v1/indicator_analytics.php?page=1&per_page=25&min_facilities=1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "state",
+                "v1",
+                "indicator_analytics.php"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "per_page",
+                  "value": "25"
+                },
+                {
+                  "key": "min_facilities",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "State Reports Catalog",
+          "id": "26d3f73a-dcad-4deb-a43b-c67f07bf89ce",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/state/v1/reports.php",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "state",
+                "v1",
+                "reports.php"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Download Facilities Report",
+          "id": "a99c93f0-7836-42ec-b52c-321db8f55274",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/state/v1/reports.php?download=facilities",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "state",
+                "v1",
+                "reports.php"
+              ],
+              "query": [
+                {
+                  "key": "download",
+                  "value": "facilities"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "id": "7cf195a2-dba8-414f-ab65-93a4f5cfa6ae"
+    },
+    {
+      "name": "Reports",
+      "item": [
+        {
+          "name": "Checkpoint Scorecard",
+          "id": "58fea8c4-3060-4308-9804-1680e67fee32",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/reports/v1/checkpoint_scorecard.php?assessment_id={{assessmentId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reports",
+                "v1",
+                "checkpoint_scorecard.php"
+              ],
+              "query": [
+                {
+                  "key": "assessment_id",
+                  "value": "{{assessmentId}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Checkpoint Progress Report",
+          "id": "ad29f651-4ffb-4283-b62d-8533a33bdd59",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/reports/v1/checkpoint_progress_report.php?assessment_id={{assessmentId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reports",
+                "v1",
+                "checkpoint_progress_report.php"
+              ],
+              "query": [
+                {
+                  "key": "assessment_id",
+                  "value": "{{assessmentId}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "id": "db1a1556-af3d-40d6-918a-90b42aca5f34"
+    }
+  ],
+  "variable": [
+    {
+      "id": "dc76f0eb-bcd5-4032-b688-90d33f2dd79d",
+      "key": "baseUrl",
+      "value": "http://localhost:94/api"
+    },
+    {
+      "id": "2f2f1b89-ca32-4489-ab18-adaf6cf414eb",
+      "key": "csrfToken",
+      "value": ""
+    },
+    {
+      "id": "3040568b-9001-4951-9cd8-ea08ec03ee1f",
+      "key": "assessmentId",
+      "value": "1"
+    },
+    {
+      "id": "079b0e36-6c9a-4fb6-9bf2-7de53918ac45",
+      "key": "departmentId",
+      "value": "1"
+    },
+    {
+      "id": "b0038d30-c1d0-4af8-ac5a-688b12293fb1",
+      "key": "checkpointId",
+      "value": "1"
+    },
+    {
+      "id": "f02b402a-c136-4390-880c-e1928eb8a82d",
+      "key": "entryMonth",
+      "value": "7"
+    },
+    {
+      "id": "b22a8218-7828-4cdf-a08b-87166c9334fd",
+      "key": "entryYear",
+      "value": "2026"
+    }
+  ]
+}

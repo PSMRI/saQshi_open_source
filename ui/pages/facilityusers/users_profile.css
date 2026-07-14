@@ -1,0 +1,311 @@
+/*!
+ * ==========================================================
+ * SaQshi Open Source
+ * Admin Users
+ * users.css
+ * ==========================================================
+ */
+
+.sq-admin-users{
+    display:flex;
+    flex-direction:column;
+    gap:.65rem;
+}
+
+.sq-admin-profile-shell{
+    width:min(980px,100%);
+}
+
+.sq-admin-users .sq-card-header{
+    padding:.5rem .65rem !important;
+}
+
+.sq-admin-users .sq-card-header h3{
+    margin:0;
+    font-size:.95rem;
+    line-height:1.1;
+}
+
+.sq-admin-users .sq-card-header p{
+    margin:.1rem 0 0;
+    color:var(--sq-text-muted);
+    font-size:.7rem;
+}
+
+.sq-admin-user-tools{
+    display:flex;
+    align-items:center;
+    gap:.45rem;
+}
+
+.sq-admin-user-tools .sq-form-control{
+    width:210px;
+    min-height:30px;
+    padding:.3rem .45rem;
+    font-size:.72rem;
+}
+
+.sq-admin-user-layout{
+    display:grid;
+    grid-template-columns:minmax(420px,1.1fr) minmax(340px,.9fr);
+    gap:0;
+    min-height:520px;
+}
+
+.sq-admin-user-list{
+    overflow:auto;
+    border-right:1px solid var(--sq-border);
+}
+
+.sq-admin-user-table th,
+.sq-admin-user-table td{
+    padding:.45rem .55rem !important;
+    font-size:.72rem;
+    vertical-align:middle;
+}
+
+.sq-admin-user-table tr.is-selected td{
+    background:var(--sq-color-primary-50);
+}
+
+.sq-admin-user-name{
+    display:flex;
+    flex-direction:column;
+    gap:.08rem;
+}
+
+.sq-admin-user-name strong{
+    color:var(--sq-text-primary);
+    font-size:.74rem;
+}
+
+.sq-admin-user-name span,
+.sq-admin-user-sub{
+    display:block;
+    color:var(--sq-text-muted);
+    font-size:.64rem;
+}
+
+.sq-admin-status{
+    display:inline-flex;
+    align-items:center;
+    min-height:22px;
+    padding:0 .45rem;
+    border-radius:999px;
+    font-size:.66rem;
+    font-weight:800;
+}
+
+.sq-admin-status.is-active{
+    background:var(--sq-color-success-50);
+    color:var(--sq-color-success-700);
+}
+
+.sq-admin-status.is-inactive{
+    background:var(--sq-color-danger-50);
+    color:var(--sq-color-danger-700);
+}
+
+.sq-admin-user-form{
+    display:flex;
+    flex-direction:column;
+    gap:.65rem;
+    background:var(--sq-bg-surface);
+}
+
+.sq-admin-user-form .sq-card-body{
+    display:flex;
+    flex-direction:column;
+    gap:.65rem;
+}
+
+.sq-admin-form-head{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:.75rem;
+    padding-bottom:.55rem;
+    border-bottom:1px solid var(--sq-border);
+}
+
+.sq-admin-form-head h4{
+    margin:0;
+    color:var(--sq-text-primary);
+    font-size:.92rem;
+}
+
+.sq-admin-form-head p{
+    margin:.1rem 0 0;
+    color:var(--sq-text-muted);
+    font-size:.68rem;
+}
+
+.sq-admin-user-badge{
+    display:inline-flex;
+    align-items:center;
+    min-height:24px;
+    padding:0 .5rem;
+    border-radius:999px;
+    background:var(--sq-bg-muted);
+    color:var(--sq-text-secondary);
+    font-size:.66rem;
+    font-weight:800;
+    white-space:nowrap;
+}
+
+.sq-admin-form-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:.55rem;
+}
+
+.sq-admin-form-grid label{
+    display:flex;
+    flex-direction:column;
+    gap:.2rem;
+    margin:0;
+}
+
+.sq-admin-form-grid label span{
+    color:var(--sq-text-muted);
+    font-size:.66rem;
+    font-weight:700;
+    text-transform:uppercase;
+}
+
+.sq-admin-form-grid .sq-form-control{
+    min-height:32px;
+    padding:.34rem .48rem;
+    font-size:.75rem;
+}
+
+.sq-admin-password-box{
+    display:flex;
+    flex-direction:column;
+    gap:.45rem;
+    padding:.6rem;
+    border:1px solid var(--sq-border);
+    border-radius:8px;
+    background:var(--sq-bg-muted);
+}
+
+.sq-admin-password-title{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:.5rem;
+}
+
+.sq-admin-password-title strong{
+    color:var(--sq-text-primary);
+    font-size:.78rem;
+}
+
+.sq-admin-password-title span{
+    color:var(--sq-text-muted);
+    font-size:.65rem;
+}
+
+.sq-password-meter{
+    height:6px;
+    overflow:hidden;
+    border-radius:999px;
+    background:var(--sq-border);
+}
+
+.sq-password-meter span{
+    display:block;
+    height:100%;
+    width:0;
+    border-radius:inherit;
+    transition:width .18s ease;
+}
+
+.sq-password-meter span.is-weak{
+    background:var(--sq-color-danger);
+}
+
+.sq-password-meter span.is-medium{
+    background:var(--sq-color-warning);
+}
+
+.sq-password-meter span.is-strong{
+    background:var(--sq-color-success);
+}
+
+.sq-password-rules{
+    display:flex;
+    flex-wrap:wrap;
+    gap:.3rem;
+}
+
+.sq-password-rules span{
+    display:inline-flex;
+    align-items:center;
+    min-height:22px;
+    padding:0 .45rem;
+    border-radius:999px;
+    background:var(--sq-bg-surface);
+    color:var(--sq-text-muted);
+    border:1px solid var(--sq-border);
+    font-size:.63rem;
+    font-weight:700;
+}
+
+.sq-password-rules span.is-ok{
+    background:var(--sq-color-success-50);
+    color:var(--sq-color-success-700);
+    border-color:var(--sq-color-success-100);
+}
+
+.sq-password-rules span.is-bad{
+    background:var(--sq-color-danger-50);
+    color:var(--sq-color-danger-700);
+    border-color:var(--sq-color-danger-100);
+}
+
+.sq-admin-form-actions{
+    display:flex;
+    justify-content:flex-end;
+    gap:.45rem;
+    margin-top:auto;
+    padding-top:.55rem;
+    border-top:1px solid var(--sq-border);
+}
+
+.sq-admin-users .sq-btn{
+    min-height:30px !important;
+    padding:.32rem .65rem !important;
+    font-size:.72rem !important;
+}
+
+@media (max-width:1100px){
+    .sq-admin-user-layout{
+        grid-template-columns:1fr;
+    }
+
+    .sq-admin-user-list{
+        border-right:0;
+        border-bottom:1px solid var(--sq-border);
+        max-height:360px;
+    }
+}
+
+@media (max-width:700px){
+    .sq-admin-user-tools,
+    .sq-admin-user-tools .sq-form-control,
+    .sq-admin-user-tools .sq-btn,
+    .sq-admin-form-grid,
+    .sq-admin-form-grid.is-password{
+        width:100%;
+        grid-template-columns:1fr;
+    }
+
+    .sq-admin-user-tools,
+    .sq-admin-password-title,
+    .sq-admin-form-head,
+    .sq-admin-form-actions{
+        align-items:stretch;
+        flex-direction:column;
+    }
+}

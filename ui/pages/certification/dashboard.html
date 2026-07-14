@@ -1,0 +1,39 @@
+<section class="sq-cert-page">
+    <div class="sq-card">
+        <div class="sq-card-header">
+            <div>
+                <h3>Certification Status</h3>
+                <p>Current State and National certificate summary.</p>
+            </div>
+            <button type="button" class="sq-btn sq-btn-light" id="btnCertRefresh">
+                <i class="bi bi-arrow-clockwise"></i> Refresh
+            </button>
+        </div>
+        <div class="sq-card-body">
+            <div class="sq-cert-kpis">
+                <div><span>State</span><strong id="certStateStatus">-</strong></div>
+                <div><span>National</span><strong id="certNationalStatus">-</strong></div>
+                <div><span>Next Expiry</span><strong id="certNextExpiry">-</strong></div>
+                <div><span>Renewal</span><strong id="certRenewalStatus">-</strong></div>
+            </div>
+
+            <div class="sq-cert-actions">
+                <button type="button" class="sq-btn sq-btn-primary" data-sq-route="certification/manage">
+                    <i class="bi bi-plus-circle"></i> Add Certification
+                </button>
+                <button type="button" class="sq-btn sq-btn-light" data-sq-route="certification/history">
+                    <i class="bi bi-clock-history"></i> View History
+                </button>
+                <button type="button" class="sq-btn sq-btn-light" data-sq-route="certification/renewal">
+                    <i class="bi bi-calendar-check"></i> Renewal Status
+                </button>
+            </div>
+
+            <div class="sq-cert-section-title">
+                <h4>Latest Records</h4>
+                <span id="certRecordCount">0 records</span>
+            </div>
+            <div id="certLatestRows" class="sq-cert-records"></div>
+        </div>
+    </div>
+</section>

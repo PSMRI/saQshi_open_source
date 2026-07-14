@@ -1,0 +1,31 @@
+<div class="sq-ai-chat" id="sqAiChat">
+    <button type="button" class="sq-ai-chat-fab" id="sqAiChatToggle" aria-label="Open AI Chat Assistant" aria-expanded="false">
+        <i class="bi bi-chat-dots"></i>
+    </button>
+
+    <section class="sq-ai-chat-panel" id="sqAiChatPanel" aria-label="AI Chat Assistant" hidden>
+        <header class="sq-ai-chat-header">
+            <div>
+                <h2>AI Chat Assistant</h2>
+                <p>SaQshi workflow help</p>
+            </div>
+            <div class="sq-ai-chat-actions">
+                <button type="button" id="sqAiChatClear" aria-label="Clear chat"><i class="bi bi-trash"></i></button>
+                <button type="button" id="sqAiChatClose" aria-label="Close chat"><i class="bi bi-x-lg"></i></button>
+            </div>
+        </header>
+
+        <div class="sq-ai-chat-messages" id="sqAiChatMessages" aria-live="polite"></div>
+
+        <div class="sq-ai-chat-suggestions">
+            <button type="button" data-ai-chat-suggestion="How to add certification?">Certification</button>
+            <button type="button" data-ai-chat-suggestion="Explain gap analysis">Gap</button>
+            <button type="button" data-ai-chat-suggestion="How to download reports?">Reports</button>
+        </div>
+
+        <form class="sq-ai-chat-form" id="sqAiChatForm">
+            <textarea id="sqAiChatInput" rows="2" placeholder="Ask about assessment, certification, gaps, reports..." aria-label="Ask AI Chat Assistant"></textarea>
+            <button type="submit">Send</button>
+        </form>
+    </section>
+</div>

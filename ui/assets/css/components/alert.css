@@ -1,0 +1,381 @@
+/*!
+ * ==========================================================
+ * SQ-UI Alert Component v1.0
+ * ----------------------------------------------------------
+ * Project   : SaQshi Open Source
+ * Component : Alert / Message Box / Validation Message
+ * Standard  : HTML5 + CSS3 + WCAG 2.2 AA
+ * License   : MIT
+ * ==========================================================
+ */
+
+/* ==========================================================
+   Base Alert
+========================================================== */
+
+.sq-alert {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: var(--sq-space-3);
+    width: 100%;
+    padding: var(--sq-space-4);
+    border: 1px solid transparent;
+    border-radius: var(--sq-radius-default);
+    font-size: var(--sq-font-size-sm);
+    line-height: var(--sq-line-height-normal);
+}
+
+.sq-alert-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0.125rem;
+}
+
+.sq-alert-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.sq-alert-title {
+    font-weight: var(--sq-font-weight-semibold);
+    margin-bottom: var(--sq-space-1);
+}
+
+.sq-alert-text {
+    color: inherit;
+}
+
+.sq-alert-actions {
+    margin-top: var(--sq-space-3);
+    display: flex;
+    gap: var(--sq-space-2);
+    flex-wrap: wrap;
+}
+
+.sq-alert-close {
+    margin-inline-start: auto;
+    flex-shrink: 0;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: var(--sq-radius-circle);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: inherit;
+    opacity: 0.75;
+    cursor: pointer;
+}
+
+.sq-alert-close:hover,
+.sq-alert-close:focus-visible {
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.08);
+}
+
+/* ==========================================================
+   Alert Variants
+========================================================== */
+
+.sq-alert-primary {
+    background: var(--sq-color-primary-50);
+    border-color: var(--sq-color-primary-200);
+    color: var(--sq-color-primary-800);
+}
+
+.sq-alert-success {
+    background: var(--sq-color-success-50);
+    border-color: var(--sq-color-success-100);
+    color: var(--sq-color-success-700);
+}
+
+.sq-alert-warning {
+    background: var(--sq-color-warning-50);
+    border-color: var(--sq-color-warning-100);
+    color: var(--sq-color-warning-700);
+}
+
+.sq-alert-danger {
+    background: var(--sq-color-danger-50);
+    border-color: var(--sq-color-danger-100);
+    color: var(--sq-color-danger-700);
+}
+
+.sq-alert-info {
+    background: var(--sq-color-info-50);
+    border-color: var(--sq-color-info-100);
+    color: var(--sq-color-info-700);
+}
+
+.sq-alert-neutral {
+    background: var(--sq-color-gray-50);
+    border-color: var(--sq-border);
+    color: var(--sq-text-secondary);
+}
+
+/* ==========================================================
+   Solid Alerts
+========================================================== */
+
+.sq-alert-solid-primary {
+    background: var(--sq-color-primary);
+    color: var(--sq-color-white);
+}
+
+.sq-alert-solid-success {
+    background: var(--sq-color-success);
+    color: var(--sq-color-white);
+}
+
+.sq-alert-solid-warning {
+    background: var(--sq-color-warning);
+    color: var(--sq-color-white);
+}
+
+.sq-alert-solid-danger {
+    background: var(--sq-color-danger);
+    color: var(--sq-color-white);
+}
+
+.sq-alert-solid-info {
+    background: var(--sq-color-info);
+    color: var(--sq-color-white);
+}
+
+/* ==========================================================
+   Outline Alerts
+========================================================== */
+
+.sq-alert-outline-primary {
+    background: transparent;
+    border-color: var(--sq-color-primary);
+    color: var(--sq-color-primary);
+}
+
+.sq-alert-outline-success {
+    background: transparent;
+    border-color: var(--sq-color-success);
+    color: var(--sq-color-success);
+}
+
+.sq-alert-outline-warning {
+    background: transparent;
+    border-color: var(--sq-color-warning);
+    color: var(--sq-color-warning-700);
+}
+
+.sq-alert-outline-danger {
+    background: transparent;
+    border-color: var(--sq-color-danger);
+    color: var(--sq-color-danger);
+}
+
+.sq-alert-outline-info {
+    background: transparent;
+    border-color: var(--sq-color-info);
+    color: var(--sq-color-info);
+}
+
+/* ==========================================================
+   Validation Alerts
+========================================================== */
+
+.sq-validation-summary {
+    background: var(--sq-color-danger-50);
+    border: 1px solid var(--sq-color-danger-100);
+    border-left: 4px solid var(--sq-color-danger);
+    border-radius: var(--sq-radius-default);
+    padding: var(--sq-space-4);
+    color: var(--sq-color-danger-700);
+}
+
+.sq-validation-summary-title {
+    font-weight: var(--sq-font-weight-semibold);
+    margin-bottom: var(--sq-space-2);
+}
+
+.sq-validation-list {
+    margin: 0;
+    padding-inline-start: var(--sq-space-5);
+    list-style: disc;
+}
+
+.sq-validation-list li {
+    margin-bottom: var(--sq-space-1);
+}
+
+.sq-field-error {
+    margin-top: var(--sq-space-1);
+    font-size: var(--sq-font-size-xs);
+    color: var(--sq-color-danger);
+}
+
+.sq-field-help {
+    margin-top: var(--sq-space-1);
+    font-size: var(--sq-font-size-xs);
+    color: var(--sq-text-muted);
+}
+
+/* ==========================================================
+   API Message Box
+========================================================== */
+
+.sq-api-message {
+    display: none;
+    margin-bottom: var(--sq-space-4);
+}
+
+.sq-api-message.is-visible {
+    display: flex;
+}
+
+.sq-api-message-success {
+    background: var(--sq-color-success-50);
+    border-color: var(--sq-color-success-100);
+    color: var(--sq-color-success-700);
+}
+
+.sq-api-message-error {
+    background: var(--sq-color-danger-50);
+    border-color: var(--sq-color-danger-100);
+    color: var(--sq-color-danger-700);
+}
+
+.sq-api-message-warning {
+    background: var(--sq-color-warning-50);
+    border-color: var(--sq-color-warning-100);
+    color: var(--sq-color-warning-700);
+}
+
+.sq-api-message-info {
+    background: var(--sq-color-info-50);
+    border-color: var(--sq-color-info-100);
+    color: var(--sq-color-info-700);
+}
+
+/* ==========================================================
+   Inline Alert
+========================================================== */
+
+.sq-alert-inline {
+    display: inline-flex;
+    width: auto;
+    padding: var(--sq-space-2) var(--sq-space-3);
+    border-radius: var(--sq-radius-pill);
+    font-size: var(--sq-font-size-xs);
+}
+
+/* ==========================================================
+   Compact Alert
+========================================================== */
+
+.sq-alert-sm {
+    padding: var(--sq-space-3);
+    font-size: var(--sq-font-size-xs);
+}
+
+.sq-alert-lg {
+    padding: var(--sq-space-5);
+    font-size: var(--sq-font-size-md);
+}
+
+/* ==========================================================
+   Alert With Left Accent
+========================================================== */
+
+.sq-alert-accent {
+    border-left-width: 4px;
+}
+
+.sq-alert-accent.sq-alert-success {
+    border-left-color: var(--sq-color-success);
+}
+
+.sq-alert-accent.sq-alert-warning {
+    border-left-color: var(--sq-color-warning);
+}
+
+.sq-alert-accent.sq-alert-danger {
+    border-left-color: var(--sq-color-danger);
+}
+
+.sq-alert-accent.sq-alert-info {
+    border-left-color: var(--sq-color-info);
+}
+
+.sq-alert-accent.sq-alert-primary {
+    border-left-color: var(--sq-color-primary);
+}
+
+/* ==========================================================
+   Empty / No Data Message
+========================================================== */
+
+.sq-empty-message {
+    padding: var(--sq-space-6);
+    border: 1px dashed var(--sq-border-strong);
+    border-radius: var(--sq-radius-default);
+    background: var(--sq-bg-surface);
+    text-align: center;
+    color: var(--sq-text-muted);
+}
+
+.sq-empty-message-title {
+    font-size: var(--sq-font-size-md);
+    font-weight: var(--sq-font-weight-semibold);
+    color: var(--sq-text-primary);
+    margin-bottom: var(--sq-space-2);
+}
+
+.sq-empty-message-text {
+    font-size: var(--sq-font-size-sm);
+}
+
+/* ==========================================================
+   Dark Theme Adjustment
+========================================================== */
+
+[data-theme="dark"] .sq-alert-close:hover,
+[data-theme="dark"] .sq-alert-close:focus-visible {
+    background: rgba(255, 255, 255, 0.10);
+}
+
+/* ==========================================================
+   Responsive
+========================================================== */
+
+@media (max-width: 576px) {
+    .sq-alert {
+        padding: var(--sq-space-3);
+    }
+
+    .sq-alert-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
+/* ==========================================================
+   Print
+========================================================== */
+
+@media print {
+    .sq-alert,
+    .sq-validation-summary,
+    .sq-empty-message {
+        background: #ffffff !important;
+        color: #000000 !important;
+        border: 1px solid #000000 !important;
+        box-shadow: none !important;
+        break-inside: avoid;
+    }
+
+    .sq-alert-close,
+    .sq-alert-actions {
+        display: none !important;
+    }
+}

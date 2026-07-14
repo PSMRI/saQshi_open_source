@@ -1,0 +1,11 @@
+{
+  "module": "Performance Monitoring",
+  "config_type": "Generic Indicator Registry",
+  "version": "1.0.0",
+  "description": "Generic registry for KPI and Outcome indicators. Runtime falls back to kpi.json and outcome.json.",
+  "sources": {
+    "KPI": "kpi.json",
+    "OUTCOME": "outcome.json"
+  },
+  "indicators": []
+}

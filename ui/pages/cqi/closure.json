@@ -1,0 +1,39 @@
+{
+    "id": "cqi-closure",
+    "name": "Gap Closure",
+    "title": "Gap Closure",
+    "layout": "dashboard",
+
+    "pageHeader": {
+        "title": "Gap Closure",
+        "subtitle": "Update closure status for saved action plans checkpoint by checkpoint."
+    },
+
+    "authentication": {
+        "required": true
+    },
+
+    "assets": {
+        "css": [
+            "/ui/pages/cqi/closure.css?v=20260704-3"
+        ],
+        "js": [
+            "/ui/pages/cqi/closure.js?v=20260704-3"
+        ]
+    },
+
+    "breadcrumb": [
+        {
+            "label": "Dashboard",
+            "url": "/ui/dashboard.html"
+        },
+        {
+            "label": "CQI"
+        },
+        {
+            "label": "Gap Closure"
+        }
+    ],
+
+    "moduleName": "cqiClosure"
+}

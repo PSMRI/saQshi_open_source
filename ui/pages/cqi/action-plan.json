@@ -1,0 +1,39 @@
+{
+    "id": "cqi-action-plan",
+    "name": "Action Plan",
+    "title": "Action Plan",
+    "layout": "dashboard",
+
+    "pageHeader": {
+        "title": "Action Plan",
+        "subtitle": "Create and reuse facility action plans for gap checkpoints."
+    },
+
+    "authentication": {
+        "required": true
+    },
+
+    "assets": {
+        "css": [
+            "/ui/pages/cqi/action-plan.css?v=20260704-1"
+        ],
+        "js": [
+            "/ui/pages/cqi/action-plan.js?v=20260704-1"
+        ]
+    },
+
+    "breadcrumb": [
+        {
+            "label": "Dashboard",
+            "url": "/ui/dashboard.html"
+        },
+        {
+            "label": "CQI"
+        },
+        {
+            "label": "Action Plan"
+        }
+    ],
+
+    "moduleName": "actionPlan"
+}

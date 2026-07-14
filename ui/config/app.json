@@ -1,0 +1,10 @@
+{
+    "application": {
+        "name": "SaQshi",
+        "version": "1.0.0",
+        "build": "2026.01.001",
+        "environment": "Production",
+        "license": "MIT",
+        "support_email": "support@saqshi.org"
+    }
+}

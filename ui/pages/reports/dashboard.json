@@ -1,0 +1,39 @@
+{
+    "id": "reports-dashboard",
+    "name": "Report Dashboard",
+    "title": "Report Dashboard",
+    "layout": "dashboard",
+
+    "pageHeader": {
+        "title": "Report Dashboard",
+        "subtitle": "Facility assessment reporting summary."
+    },
+
+    "authentication": {
+        "required": true
+    },
+
+    "assets": {
+        "css": [
+            "/ui/pages/reports/dashboard.css?v=20260707-1"
+        ],
+        "js": [
+            "/ui/pages/reports/dashboard.js?v=20260707-1"
+        ]
+    },
+
+    "breadcrumb": [
+        {
+            "label": "Dashboard",
+            "url": "/ui/dashboard.html"
+        },
+        {
+            "label": "Reports"
+        },
+        {
+            "label": "Report Dashboard"
+        }
+    ],
+
+    "moduleName": "reportDashboard"
+}

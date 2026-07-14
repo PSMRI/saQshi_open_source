@@ -1,0 +1,248 @@
+{
+  "summary": {
+    "checked_at": "2026-07-13T17:37:35.565Z",
+    "files_checked": 47,
+    "passed": 47,
+    "review": 0,
+    "needs_fix": 0,
+    "errors": 0,
+    "warnings": 0
+  },
+  "results": [
+    {
+      "file": "ui\\components\\breadcrumb\\breadcrumb.html",
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "file": "ui\\components\\chat-assistant\\chat-assistant.html",
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "file": "ui\\components\\confirm-dialog\\confirm-dialog.html",
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "file": "ui\\components\\footer\\footer.html",
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "file": "ui\\components\\header\\header.html",
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "file": "ui\\components\\loader\\loader.html",
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "file": "ui\\components\\modal\\modal.html",
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "file": "ui\\components\\notification\\notification.html",
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "file": "ui\\components\\sidebar\\sidebar.html",
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "file": "ui\\help\\documentation.html",
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "file": "ui\\layouts\\auth.html",
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "file": "ui\\layouts\\dashboard.html",
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "file": "ui\\pages\\assessment\\assessor-info.html",
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "file": "ui\\pages\\assessment\\checklist.html",
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "file": "ui\\pages\\assessment\\create.html",
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "file": "ui\\pages\\assessment\\departments.html",
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "file": "ui\\pages\\assessment\\list.html",
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "file": "ui\\pages\\certification\\dashboard.html",
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "file": "ui\\pages\\certification\\history.html",
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "file": "ui\\pages\\certification\\manage.html",
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "file": "ui\\pages\\certification\\renewal.html",
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "file": "ui\\pages\\cqi\\action-plan.html",
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "file": "ui\\pages\\cqi\\closure.html",
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "file": "ui\\pages\\cqi\\gap-analysis.html",
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "file": "ui\\pages\\dashboard\\dashboard.html",
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "file": "ui\\pages\\facilityusers\\facilities.html",
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "file": "ui\\pages\\facilityusers\\users.html",
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "file": "ui\\pages\\login\\login.html",
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "file": "ui\\pages\\performance\\dashboard.html",
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "file": "ui\\pages\\performance\\indicator.html",
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "file": "ui\\pages\\performance\\kpi.html",
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "file": "ui\\pages\\performance\\outcome.html",
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "file": "ui\\pages\\performance\\trend.html",
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "file": "ui\\pages\\reports\\dashboard.html",
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "file": "ui\\pages\\reports\\progress.html",
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "file": "ui\\pages\\reports\\score.html",
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "file": "ui\\pages\\state\\assessment-progress.html",
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "file": "ui\\pages\\state\\certification.html",
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "file": "ui\\pages\\state\\cqi.html",
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "file": "ui\\pages\\state\\dashboard.html",
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "file": "ui\\pages\\state\\facility-category.html",
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "file": "ui\\pages\\state\\facility-detail.html",
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "file": "ui\\pages\\state\\indicator-analytics.html",
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "file": "ui\\pages\\state\\map.html",
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "file": "ui\\pages\\state\\performance.html",
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "file": "ui\\pages\\state\\reports.html",
+      "status": "pass",
+      "issues": []
+    },
+    {
+      "file": "ui\\pages\\state\\users.html",
+      "status": "pass",
+      "issues": []
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+    "id": "assessment-create",
+    "name": "Create Assessment",
+    "title": "Create Assessment",
+    "layout": "dashboard",
+
+    "pageHeader": {
+        "title": "Create Assessment",
+        "subtitle": "Start a new assessment for your assigned facility."
+    },
+
+    "authentication": {
+        "required": true
+    },
+
+    "assets": {
+        "css": [
+            "/ui/pages/assessment/create.css?v=20260702-16"
+        ],
+        "js": [
+            "/ui/pages/assessment/create.js?v=20260702-16"
+        ]
+    },
+
+    "breadcrumb": [
+        {
+            "label": "Dashboard",
+            "url": "/ui/dashboard.html"
+        },
+        {
+            "label": "Assessment"
+        },
+        {
+            "label": "Create Assessment"
+        }
+    ],
+
+    "moduleName": "assessmentCreate"
+}

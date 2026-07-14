@@ -1,0 +1,1 @@
+/* Certification renewal logic is bundled in dashboard.js for SPA reuse. */

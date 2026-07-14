@@ -1,0 +1,15 @@
+Test ID,Area,Severity,Scenario,Steps,Expected Result,Status,Remarks
+VAPT-AUTH-001,Authentication,High,Raw password rejected,"POST login.php with username,password,captcha but no password_enc","422 validation error for password_enc",Not Run,
+VAPT-AUTH-002,Authentication,High,Legacy login disabled,"POST api/auth/v1/login1.php","410 disabled endpoint response",Pass,"Endpoint patched to return 410"
+VAPT-AUTHZ-001,Authorization,High,Facility user blocked from state API,"Login facility user and call api/state/v1/dashboard.php","403 forbidden",Not Run,
+VAPT-AUTHZ-002,Authorization,Critical,District scope enforced,"Login role 4 and search/download state data","Only assigned district data returned",Not Run,
+VAPT-AUTHZ-003,Authorization,Critical,Block scope enforced,"Login role 8 and search outside block","No out-of-scope data returned",Not Run,
+VAPT-AUTHZ-004,Authorization,Critical,Regional scope enforced,"Login role 5 and download reports","Only assigned division data returned",Not Run,
+VAPT-INJ-001,Injection,Critical,SQL injection login,"Submit SQL payload in username","Login fails with no SQL error",Not Run,
+VAPT-INJ-003,Injection,High,XSS in remarks,"Save script tag in remarks/action plan","Text escaped; no script execution",Not Run,
+VAPT-FILE-001,File Upload,Critical,Executable upload blocked,"Upload .php or .exe evidence","Unsupported file type error",Not Run,
+VAPT-FILE-004,File Delete,Critical,Path traversal blocked,"Delete ../../api/assets/conn/db.php through file delete API","Validation error; file untouched",Not Run,
+VAPT-ERR-001,Error Handling,Critical,DB failure hides details,"Use invalid DB in test env and call API","Friendly message with request_id only",Not Run,
+VAPT-RPT-001,Reports,Critical,Scoped report download,"Login roles 4/5/8 and download all reports","Only scoped data in files",Not Run,
+VAPT-RPT-004,Reports,High,Excel formula injection,"Export field beginning with = + - @","Value exported safely as text",Not Run,
+VAPT-HDR-001,Headers,Medium,API security headers,"Inspect API response headers","CSP, DENY frame, nosniff present",Not Run,

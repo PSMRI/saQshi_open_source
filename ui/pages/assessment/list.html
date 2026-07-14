@@ -1,0 +1,87 @@
+<!--
+==========================================================
+SaQshi Assessment List Page
+----------------------------------------------------------
+Project : SaQshi Open Source
+Module  : Assessment
+Page    : Assessment List
+File    : list.html
+License : MIT
+==========================================================
+-->
+
+<div class="sq-page sq-assessment-list-page">
+
+    <div class="sq-list-summary">
+        <div class="sq-list-stat">
+            <label>Total</label>
+            <strong id="totalAssessments">0</strong>
+        </div>
+        <div class="sq-list-stat">
+            <label>In Progress</label>
+            <strong id="activeAssessments">0</strong>
+        </div>
+        <div class="sq-list-stat">
+            <label>Completed</label>
+            <strong id="completedAssessments">0</strong>
+        </div>
+        <div class="sq-list-stat">
+            <label>Cancelled</label>
+            <strong id="cancelledAssessments">0</strong>
+        </div>
+        <div class="sq-list-stat">
+            <label>Avg. Score</label>
+            <strong id="averageScore">0%</strong>
+        </div>
+    </div>
+
+    <div class="sq-card">
+        <div class="sq-card-header">
+            <div>
+                <h3>Facility Assessments</h3>
+                <p>All assessment records for the logged-in facility.</p>
+            </div>
+            <div class="sq-list-tools">
+                <select id="statusFilter" class="sq-form-control" aria-label="Status Filter">
+                    <option value="">All Status</option>
+                    <option value="ACTIVE">In Progress</option>
+                    <option value="COMPLETED">Completed</option>
+                    <option value="CANCELLED">Cancelled</option>
+                </select>
+                <button type="button" class="sq-btn sq-btn-light" id="btnRefreshAssessments">
+                    Refresh
+                </button>
+            </div>
+        </div>
+
+        <div class="sq-card-body sq-p-0">
+            <div class="sq-table-wrapper">
+                <table class="sq-table sq-assessment-list-table">
+                    <thead>
+                        <tr>
+                            <th>Assessment</th>
+                            <th>Framework</th>
+                            <th>Status</th>
+                            <th>Dates</th>
+                            <th>Departments</th>
+                            <th>Checkpoints</th>
+                            <th>
+                                Score
+                                <span class="sq-th-note">done / total</span>
+                            </th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="assessmentListBody">
+                        <tr>
+                            <td colspan="8" class="sq-text-center sq-text-muted">
+                                Loading assessments...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>

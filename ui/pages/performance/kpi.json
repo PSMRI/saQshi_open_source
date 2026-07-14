@@ -1,0 +1,14 @@
+{
+  "id": "performance-kpi",
+  "name": "KPI",
+  "title": "KPI",
+  "layout": "dashboard",
+  "pageHeader": {"title": "KPI", "subtitle": "Performance KPI entry and review."},
+  "authentication": {"required": true},
+  "assets": {
+    "css": ["/ui/pages/performance/kpi.css?v=20260705-1"],
+    "js": ["/ui/pages/performance/kpi.js?v=20260713-1"]
+  },
+  "breadcrumb": [{"label": "Dashboard", "url": "/ui/dashboard.html"}, {"label": "Performance"}, {"label": "KPI"}],
+  "moduleName": "performanceKpi"
+}

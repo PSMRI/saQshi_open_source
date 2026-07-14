@@ -1,0 +1,131 @@
+<!--
+==========================================================
+SaQshi Facility Profile Page
+----------------------------------------------------------
+Project : SaQshi Open Source
+Module  : Administration
+Page    : Facility Profile
+File    : facilities.html
+License : MIT
+==========================================================
+-->
+
+<section class="sq-admin-facility">
+    <form id="adminFacilityForm" class="sq-card sq-admin-facility-card" autocomplete="off">
+        <div class="sq-card-header">
+            <div>
+                <h3>Facility Details</h3>
+                <p>View and update assigned facility profile with geo coordinates.</p>
+            </div>
+            <div class="sq-facility-actions">
+                <button type="button" class="sq-btn sq-btn-light" id="btnRefreshFacility">
+                    Refresh
+                </button>
+                <button type="button" class="sq-btn sq-btn-primary" id="btnEditFacility">
+                    Edit
+                </button>
+            </div>
+        </div>
+
+        <div class="sq-card-body">
+            <div class="sq-facility-context">
+                <div>
+                    <span>Facility ID</span>
+                    <strong id="facilityIdText">-</strong>
+                </div>
+                <div>
+                    <span>Facility Type</span>
+                    <strong id="facilityTypeText">-</strong>
+                </div>
+                <div>
+                    <span>NIN</span>
+                    <strong id="facilityNinText">-</strong>
+                </div>
+                <div>
+                    <span>Status</span>
+                    <strong id="facilityStatusText">-</strong>
+                </div>
+            </div>
+
+            <input type="hidden" id="facilityId">
+
+            <div class="sq-facility-grid">
+                <label>
+                    <span>Facility Name</span>
+                    <input type="text" id="facilityName" class="sq-form-control" required disabled aria-label="Facility Name">
+                </label>
+                <label>
+                    <span>NIN Number</span>
+                    <input type="text" id="facilityNin" class="sq-form-control" disabled aria-label="Facility Nin">
+                </label>
+                <label>
+                    <span>Facility Type</span>
+                    <input type="text" id="facilityTypeName" class="sq-form-control" disabled readonly aria-label="Facility Type Name">
+                </label>
+                <label>
+                    <span>Status</span>
+                    <select id="facilityStatus" class="sq-form-control" disabled aria-label="Facility Status">
+                        <option value="1">Active</option>
+                        <option value="0">Inactive</option>
+                    </select>
+                </label>
+                <label>
+                    <span>State</span>
+                    <input type="text" id="facilityStateName" class="sq-form-control" disabled readonly aria-label="Facility State Name">
+                </label>
+                <label>
+                    <span>Division</span>
+                    <input type="text" id="facilityDivisionName" class="sq-form-control" disabled readonly aria-label="Facility Division Name">
+                </label>
+                <label>
+                    <span>District</span>
+                    <input type="text" id="facilityDistrictName" class="sq-form-control" disabled readonly aria-label="Facility District Name">
+                </label>
+                <label>
+                    <span>Block</span>
+                    <input type="text" id="facilityBlockName" class="sq-form-control" disabled readonly aria-label="Facility Block Name">
+                </label>
+            </div>
+
+            <input type="hidden" id="facilityState">
+            <input type="hidden" id="facilityDivision">
+            <input type="hidden" id="facilityDistrict">
+            <input type="hidden" id="facilityBlock">
+            <input type="hidden" id="facilityType">
+
+            <div class="sq-facility-location">
+                <div class="sq-facility-location-head">
+                    <div>
+                        <h4>Geo Coordinates</h4>
+                        <p>Latitude must be -90 to 90 and longitude must be -180 to 180.</p>
+                    </div>
+                    <button type="button" class="sq-btn sq-btn-light" id="btnUseBrowserLocation" disabled>
+                        Get Current Location
+                    </button>
+                </div>
+                <div class="sq-facility-grid is-location">
+                    <label>
+                        <span>Latitude</span>
+                        <input type="number" step="0.000001" id="facilityLatitude" class="sq-form-control" placeholder="25.482100" disabled readonly required aria-label="25.482100">
+                    </label>
+                    <label>
+                        <span>Longitude</span>
+                        <input type="number" step="0.000001" id="facilityLongitude" class="sq-form-control" placeholder="85.709600" disabled readonly required aria-label="85.709600">
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="sq-card-footer sq-facility-footer">
+            <span id="facilitySaveHint" class="sq-text-muted">Select Edit to update facility details.</span>
+            <div>
+                <button type="button" class="sq-btn sq-btn-light" id="btnCancelFacility" disabled>
+                    Cancel
+                </button>
+                <button type="submit" class="sq-btn sq-btn-primary" id="btnSaveFacility" disabled>
+                    Save Facility
+                </button>
+            </div>
+        </div>
+    </form>
+</section>

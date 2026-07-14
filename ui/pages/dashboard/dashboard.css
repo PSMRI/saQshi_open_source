@@ -1,0 +1,776 @@
+/*!
+ * ==========================================================
+ * SQ Dashboard Page v1.0
+ * ----------------------------------------------------------
+ * Project   : SaQshi Open Source
+ * Module    : Dashboard
+ * File      : dashboard.css
+ * License   : MIT
+ * ==========================================================
+ *
+ * Dashboard Page Styles
+ *
+ * This file contains ONLY dashboard specific styles.
+ *
+ * Do NOT put reusable component styles here.
+ *
+ * Components belong in:
+ *      assets/css/components/
+ *
+ * ==========================================================
+ */
+
+/* ==========================================================
+   Main Content
+========================================================== */
+
+.sq-content{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:.5rem;
+
+}
+
+/* ==========================================================
+   Page Header
+========================================================== */
+
+.sq-page-header{
+
+    display:flex;
+
+    align-items:flex-start;
+
+    justify-content:space-between;
+
+    gap:.45rem;
+
+    margin-bottom:.45rem;
+
+    flex-wrap:wrap;
+
+}
+
+.sq-page-title{
+
+    margin:0;
+
+    font-size:1.2rem;
+
+    font-weight:700;
+
+    color:var(--sq-text-primary);
+
+}
+
+.sq-page-description{
+
+    margin-top:.2rem;
+
+    color:var(--sq-text-secondary);
+
+    font-size:.72rem;
+
+}
+
+.sq-page-actions{
+
+    display:flex;
+
+    gap:.5rem;
+
+    flex-wrap:wrap;
+
+}
+
+/* ==========================================================
+   Metric Cards
+========================================================== */
+
+.sq-metric-card{
+
+    position:relative;
+
+    background:var(--sq-bg-surface);
+
+    border:1px solid var(--sq-border);
+
+    border-radius:8px;
+
+    padding:.55rem .7rem;
+
+    transition:.25s ease;
+
+    overflow:hidden;
+
+}
+
+.sq-metric-card:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:var(--sq-shadow-lg);
+
+}
+
+.sq-metric-card-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:flex-start;
+
+}
+
+.sq-metric-title{
+
+    font-size:.68rem;
+
+    color:var(--sq-text-muted);
+
+    margin-bottom:.25rem;
+
+}
+
+.sq-metric-value{
+
+    font-size:1.25rem;
+
+    font-weight:700;
+
+    color:var(--sq-text-primary);
+
+    line-height:1;
+
+}
+
+.sq-metric-icon{
+
+    width:34px;
+
+    height:34px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:1rem;
+
+    background:rgba(0,0,0,.04);
+
+}
+
+.sq-metric-footer{
+
+    margin-top:.5rem;
+
+    font-size:.72rem;
+
+    color:var(--sq-text-secondary);
+
+}
+
+/* ==========================================================
+   Metric Colors
+========================================================== */
+
+.sq-metric-primary{
+
+    border-top:4px solid var(--sq-color-primary);
+
+}
+
+.sq-metric-primary .sq-metric-icon{
+
+    color:var(--sq-color-primary);
+
+}
+
+.sq-metric-success{
+
+    border-top:4px solid var(--sq-color-success);
+
+}
+
+.sq-metric-success .sq-metric-icon{
+
+    color:var(--sq-color-success);
+
+}
+
+.sq-metric-warning{
+
+    border-top:4px solid var(--sq-color-warning);
+
+}
+
+.sq-metric-warning .sq-metric-icon{
+
+    color:var(--sq-color-warning);
+
+}
+
+.sq-metric-danger{
+
+    border-top:4px solid var(--sq-color-danger);
+
+}
+
+.sq-metric-danger .sq-metric-icon{
+
+    color:var(--sq-color-danger);
+
+}
+
+/* ==========================================================
+   Progress
+========================================================== */
+
+.sq-progress-label{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:.4rem;
+
+}
+
+.sq-progress-title{
+
+    font-weight:600;
+
+    color:var(--sq-text-primary);
+
+}
+
+.sq-progress-value{
+
+    font-weight:700;
+
+    color:var(--sq-color-primary);
+
+}
+
+/* ==========================================================
+   Empty State
+========================================================== */
+
+.sq-empty-message{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    min-height:56px;
+
+    color:var(--sq-text-muted);
+
+    text-align:center;
+
+    font-size:.8rem;
+
+}
+
+/* ==========================================================
+   Table
+========================================================== */
+
+#recent-assessment-list td{
+
+    vertical-align:middle;
+
+}
+
+.sq-status-badge{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    min-width:82px;
+
+}
+
+/* ==========================================================
+   Card Improvements
+========================================================== */
+
+.sq-card{
+
+    transition:.25s;
+
+}
+
+.sq-card:hover{
+
+    box-shadow:var(--sq-shadow-md);
+
+}
+
+/* ==========================================================
+   Animation
+========================================================== */
+
+.sq-metric-card,
+
+.sq-card{
+
+    animation:sqFadeUp .35s ease;
+
+}
+
+@keyframes sqFadeUp{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(12px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:none;
+
+    }
+
+}
+
+/* ==========================================================
+   Responsive
+========================================================== */
+
+@media(max-width:1200px){
+
+    .sq-page-header{
+
+        flex-direction:column;
+
+    }
+
+}
+
+@media(max-width:992px){
+
+    .sq-metric-value{
+
+        font-size:1.35rem;
+
+    }
+
+}
+
+@media(max-width:768px){
+
+    .sq-page-title{
+
+        font-size:1.5rem;
+
+    }
+
+    .sq-page-actions{
+
+        width:100%;
+
+    }
+
+    .sq-page-actions .sq-btn{
+
+        flex:1;
+
+    }
+
+    .sq-metric-card{
+
+        padding:1.2rem;
+
+    }
+
+    .sq-outcome-month-summary,
+    .sq-outcome-month-list,
+    .sq-area-status-list,
+    .sq-score-metrics,
+    .sq-dashboard-chart-row{
+        grid-template-columns:1fr;
+    }
+
+}
+
+@media(max-width:576px){
+
+    .sq-metric-card-header{
+
+        flex-direction:column;
+
+        gap:1rem;
+
+    }
+
+    .sq-metric-icon{
+
+        width:48px;
+
+        height:48px;
+
+    }
+
+}
+
+/* ==========================================================
+   Dark Theme
+========================================================== */
+
+[data-theme="dark"] .sq-metric-card{
+
+    background:var(--sq-bg-surface);
+
+}
+
+[data-theme="dark"] .sq-card{
+
+    background:var(--sq-bg-surface);
+
+}
+
+/* ==========================================================
+   Print
+========================================================== */
+
+@media print{
+
+    .sq-page-actions{
+
+        display:none;
+
+    }
+
+    .sq-metric-card{
+
+        break-inside:avoid;
+
+    }
+
+}
+
+/* ==========================================================
+   Score Analytics
+========================================================== */
+
+.sq-score-metrics{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:.45rem;
+    margin-bottom:.6rem;
+}
+
+.sq-score-metrics div{
+    padding:.5rem .6rem;
+    border:1px solid var(--sq-border);
+    border-radius:8px;
+    background:var(--sq-bg-surface);
+}
+
+.sq-score-metrics span{
+    display:block;
+    color:var(--sq-text-muted);
+    font-size:.66rem;
+}
+
+.sq-score-metrics strong{
+    display:block;
+    margin-top:.1rem;
+    color:var(--sq-text-primary);
+    font-size:1rem;
+}
+
+.sq-dashboard-chart-row{
+    display:grid;
+    grid-template-columns:1.35fr .8fr;
+    gap:.55rem;
+}
+
+.sq-mini-chart-title{
+    margin-bottom:.25rem;
+    color:var(--sq-text-muted);
+    font-size:.68rem;
+}
+
+.sq-dashboard-chart{
+    min-height:112px;
+    padding:.45rem;
+    border:1px solid var(--sq-border);
+    border-radius:8px;
+    background:var(--sq-bg-surface);
+}
+
+.sq-score-svg{
+    width:100%;
+    height:100px;
+}
+
+.sq-score-svg line{
+    stroke:var(--sq-border);
+}
+
+.sq-score-svg polyline{
+    fill:none;
+    stroke:var(--sq-color-primary);
+    stroke-width:4;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+}
+
+.sq-score-svg circle{
+    fill:var(--sq-color-primary);
+    stroke:var(--sq-bg-surface);
+    stroke-width:2;
+}
+
+.sq-score-svg text{
+    fill:var(--sq-text-muted);
+    font-size:10px;
+}
+
+.sq-score-donut{
+    width:76px;
+    height:76px;
+    margin:0 auto .35rem;
+    border-radius:50%;
+    display:grid;
+    place-items:center;
+    background:conic-gradient(var(--sq-color-primary) calc(var(--sq-score) * 1%), var(--sq-bg-muted) 0);
+}
+
+.sq-score-donut span{
+    width:52px;
+    height:52px;
+    display:grid;
+    place-items:center;
+    border-radius:50%;
+    background:var(--sq-bg-surface);
+    color:var(--sq-text-primary);
+    font-weight:700;
+    font-size:.8rem;
+}
+
+.sq-chart-note{
+    text-align:center;
+    color:var(--sq-text-muted);
+    font-size:.66rem;
+}
+
+.sq-final-progress-chart{
+    padding:.55rem;
+    border:1px solid var(--sq-border);
+    border-radius:8px;
+    background:var(--sq-bg-surface);
+}
+
+.sq-final-progress-head{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:.5rem;
+}
+
+.sq-final-progress-head strong{
+    color:var(--sq-text-primary);
+    font-size:1.4rem;
+}
+
+.sq-final-progress-head span,
+.sq-final-progress-meta{
+    color:var(--sq-text-muted);
+    font-size:.68rem;
+}
+
+.sq-final-progress-track{
+    height:10px;
+    margin:.55rem 0 .35rem;
+    border-radius:999px;
+    overflow:hidden;
+    background:var(--sq-bg-muted);
+}
+
+.sq-final-progress-track span{
+    display:block;
+    height:100%;
+    border-radius:999px;
+    background:var(--sq-color-primary);
+}
+
+.sq-final-progress-meta{
+    display:flex;
+    justify-content:space-between;
+    gap:.5rem;
+}
+
+.sq-area-status-list{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:.45rem;
+}
+
+.sq-area-status-row{
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:.35rem .65rem;
+    padding:.55rem .65rem;
+    border:1px solid var(--sq-border);
+    border-radius:8px;
+    background:var(--sq-bg-surface);
+}
+
+.sq-area-status-main strong{
+    display:block;
+    color:var(--sq-text-primary);
+    font-size:.78rem;
+    line-height:1.25;
+}
+
+.sq-area-status-main span{
+    display:block;
+    margin-top:.12rem;
+    color:var(--sq-text-muted);
+    font-size:.64rem;
+}
+
+.sq-area-status-counts{
+    display:flex;
+    align-items:flex-end;
+    flex-direction:column;
+    gap:.18rem;
+    white-space:nowrap;
+    font-size:.64rem;
+}
+
+.sq-area-status-counts .is-complete{
+    color:var(--sq-color-success);
+}
+
+.sq-area-status-counts .is-pending{
+    color:var(--sq-color-warning);
+}
+
+.sq-area-status-bar{
+    grid-column:1/-1;
+    height:7px;
+    border-radius:999px;
+    overflow:hidden;
+    background:var(--sq-bg-muted);
+}
+
+.sq-area-status-bar span{
+    display:block;
+    height:100%;
+    border-radius:999px;
+    background:var(--sq-color-success);
+}
+
+/* ==========================================================
+   Outcome Month Status
+========================================================== */
+
+.sq-outcome-month-summary{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:.45rem;
+    margin-bottom:.55rem;
+}
+
+.sq-outcome-month-summary div{
+    padding:.5rem .6rem;
+    border:1px solid var(--sq-border);
+    border-radius:8px;
+    background:var(--sq-bg-surface);
+}
+
+.sq-outcome-month-summary span{
+    display:block;
+    color:var(--sq-text-muted);
+    font-size:.66rem;
+}
+
+.sq-outcome-month-summary strong{
+    display:block;
+    margin-top:.12rem;
+    color:var(--sq-text-primary);
+    font-size:1rem;
+}
+
+.sq-outcome-month-list{
+    display:grid;
+    grid-template-columns:repeat(6,minmax(110px,1fr));
+    gap:.45rem;
+}
+
+.sq-outcome-month-chip{
+    padding:.45rem .55rem;
+    border:1px solid var(--sq-border);
+    border-radius:8px;
+    background:var(--sq-bg-muted);
+}
+
+.sq-outcome-month-chip strong{
+    display:block;
+    color:var(--sq-text-primary);
+    font-size:.78rem;
+}
+
+.sq-outcome-month-chip span{
+    display:block;
+    margin-top:.12rem;
+    color:var(--sq-text-muted);
+    font-size:.62rem;
+}
+
+/* ==========================================================
+   Dashboard Compact Header Strip
+========================================================== */
+
+.sq-layout-main > .sq-page-header {
+    min-height: 0 !important;
+    padding: 4px 10px !important;
+    align-items: center !important;
+    gap: 5px !important;
+    margin-bottom: 0 !important;
+}
+
+.sq-layout-main > .sq-page-header .sq-page-title {
+    font-size: 14px !important;
+    line-height: 1 !important;
+}
+
+.sq-layout-main > .sq-page-header .sq-page-subtitle,
+.sq-layout-main > .sq-page-header .sq-page-description {
+    margin-top: 1px !important;
+    font-size: 10px !important;
+    line-height: 1.05 !important;
+}
+
+.sq-layout-main > .sq-page-header .sq-page-actions {
+    gap: 6px !important;
+}
+
+.sq-layout-main > .sq-page-header .sq-btn {
+    min-height: 28px !important;
+    padding: 4px 9px !important;
+}

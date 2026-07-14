@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SaQshi API Swagger</title>
+    <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist@5/swagger-ui.css">
+    <style>
+        body {
+            margin: 0;
+            background: #f4f7fb;
+        }
+        .sq-swagger-header {
+            padding: 14px 18px;
+            border-bottom: 1px solid #d7e0ec;
+            background: #ffffff;
+            color: #10233f;
+            font-family: Arial, sans-serif;
+        }
+        .sq-swagger-header h1 {
+            margin: 0 0 4px;
+            font-size: 22px;
+        }
+        .sq-swagger-header p {
+            margin: 0;
+            color: #52677f;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <header class="sq-swagger-header">
+        <h1>SaQshi API Swagger</h1>
+        <p>Loads docs/api/openapi.yaml. If this file is opened directly and the YAML does not load, serve the project through localhost and open this page from the same host.</p>
+    </header>
+    <div id="swagger-ui"></div>
+    <script src="https://unpkg.com/swagger-ui-dist@5/swagger-ui-bundle.js"></script>
+    <script>
+        window.addEventListener("load", function () {
+            window.ui = SwaggerUIBundle({
+                url: "./openapi.yaml",
+                dom_id: "#swagger-ui",
+                deepLinking: true,
+                presets: [
+                    SwaggerUIBundle.presets.apis
+                ],
+                layout: "BaseLayout"
+            });
+        });
+    </script>
+</body>
+</html>

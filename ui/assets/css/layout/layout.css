@@ -1,0 +1,757 @@
+/*!
+ * ==========================================================
+ * SQ-UI Layout CSS v1.0
+ * ----------------------------------------------------------
+ * Project : SaQshi Open Source
+ * Purpose : Application layout, sidebar, topbar, content,
+ *           grid, containers and responsive shell.
+ * Standard: HTML5 + CSS3 + WCAG 2.2 AA
+ * License : MIT
+ * ==========================================================
+ */
+
+/* ==========================================================
+   App Shell
+========================================================== */
+
+html,
+body {
+    min-height: 100%;
+}
+
+body {
+    margin: 0;
+    background: var(--sq-bg-body);
+    color: var(--sq-text-primary);
+}
+
+.sq-app,
+.sq-layout {
+    min-height: 100vh;
+    background: var(--sq-bg-body);
+}
+
+/* ==========================================================
+   Dashboard Layout Shell
+========================================================== */
+
+.sq-layout {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.sq-layout-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: var(--sq-bg-surface);
+}
+
+.sq-layout-body {
+    display: flex;
+    flex: 1;
+    min-height: calc(100vh - 72px);
+}
+
+/* ==========================================================
+   Sidebar Layout Wrapper
+========================================================== */
+
+.sq-layout-sidebar {
+    width: 280px;
+    flex: 0 0 280px;
+    min-width: 280px;
+    background: var(--sq-bg-surface);
+    border-right: 1px solid var(--sq-border);
+    z-index: 900;
+}
+
+/*
+   Important:
+   Sidebar component itself is fixed.
+   This wrapper reserves space so content does not go under sidebar.
+*/
+
+.sq-layout-sidebar .sq-sidebar {
+    top: 72px;
+}
+
+/* ==========================================================
+   Main Content Area
+========================================================== */
+
+.sq-layout-main,
+.sq-main {
+    flex: 1;
+    min-width: 0;
+    width: calc(100% - 280px);
+    margin-left: 0;
+    background: var(--sq-bg-body);
+    display: flex;
+    flex-direction: column;
+}
+
+.sq-layout-breadcrumb {
+    background: var(--sq-bg-surface);
+    border-bottom: 1px solid var(--sq-border);
+}
+
+/* ==========================================================
+   Page Header
+========================================================== */
+
+.sq-page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.5rem;
+    background: var(--sq-bg-body);
+    border-bottom: 1px solid var(--sq-border);
+    flex-wrap: wrap;
+}
+
+.sq-page-title {
+    margin: 0;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--sq-text-primary);
+    line-height: 1.2;
+}
+
+.sq-page-subtitle,
+.sq-page-description {
+    margin-top: .35rem;
+    color: var(--sq-text-secondary);
+    font-size: .95rem;
+}
+
+.sq-page-actions {
+    display: flex;
+    gap: .75rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+/* ==========================================================
+   Page Content
+========================================================== */
+
+.sq-page-content,
+.sq-content {
+    flex: 1;
+    width: 100%;
+    padding: 1.5rem;
+}
+
+.sq-page {
+    width: 100%;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+.sq-layout-footer {
+    margin-top: auto;
+}
+
+/* ==========================================================
+   Containers
+========================================================== */
+
+.sq-container {
+    width: 100%;
+    max-width: 1600px;
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+}
+
+.sq-container-fluid {
+    width: 100%;
+    padding-inline: 1.5rem;
+}
+
+.sq-section {
+    margin-bottom: 1.5rem;
+}
+
+/* ==========================================================
+   Grid System
+========================================================== */
+
+.sq-grid {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.sq-grid-1 {
+    grid-template-columns: 1fr;
+}
+
+.sq-grid-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.sq-grid-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.sq-grid-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.sq-grid-5 {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.sq-grid-6 {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.sq-grid-auto {
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+}
+
+.sq-grid-auto-sm {
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+}
+
+.sq-grid-auto-lg {
+    grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+}
+
+/* ==========================================================
+   Flex Helpers
+========================================================== */
+
+.sq-flex {
+    display: flex;
+}
+
+.sq-inline-flex {
+    display: inline-flex;
+}
+
+.sq-flex-column {
+    flex-direction: column;
+}
+
+.sq-flex-wrap {
+    flex-wrap: wrap;
+}
+
+.sq-items-start {
+    align-items: flex-start;
+}
+
+.sq-items-center {
+    align-items: center;
+}
+
+.sq-items-end {
+    align-items: flex-end;
+}
+
+.sq-justify-start {
+    justify-content: flex-start;
+}
+
+.sq-justify-center {
+    justify-content: center;
+}
+
+.sq-justify-end {
+    justify-content: flex-end;
+}
+
+.sq-justify-between {
+    justify-content: space-between;
+}
+
+.sq-gap-1 {
+    gap: .25rem;
+}
+
+.sq-gap-2 {
+    gap: .5rem;
+}
+
+.sq-gap-3 {
+    gap: .75rem;
+}
+
+.sq-gap-4 {
+    gap: 1rem;
+}
+
+.sq-gap-5 {
+    gap: 1.5rem;
+}
+
+/* ==========================================================
+   Split Layout
+========================================================== */
+
+.sq-split {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 20rem;
+    gap: 1.5rem;
+    align-items: start;
+}
+
+.sq-split-left,
+.sq-split-right {
+    min-width: 0;
+}
+
+/* ==========================================================
+   Auth Layout
+========================================================== */
+
+.sq-auth-layout {
+    min-height: 100vh;
+    background: var(--sq-bg-body);
+}
+
+.sq-auth-content {
+    min-height: 100vh;
+}
+
+/* ==========================================================
+   Collapsed Sidebar
+========================================================== */
+
+body.sq-sidebar-collapsed .sq-layout-sidebar {
+    width: 72px;
+    flex-basis: 72px;
+    min-width: 72px;
+}
+
+body.sq-sidebar-collapsed .sq-layout-main,
+body.sq-sidebar-collapsed .sq-main {
+    width: calc(100% - 72px);
+}
+
+/* ==========================================================
+   Responsive Layout
+========================================================== */
+
+@media (max-width: 1200px) {
+    .sq-grid-5,
+    .sq-grid-6 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .sq-grid-4 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 992px) {
+    .sq-layout-body {
+        display: block;
+    }
+
+    .sq-layout-sidebar {
+        width: 0;
+        min-width: 0;
+        flex-basis: 0;
+        border-right: none;
+    }
+
+    .sq-layout-main,
+    .sq-main {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .sq-layout-sidebar .sq-sidebar {
+        top: 72px;
+    }
+
+    .sq-grid-3,
+    .sq-grid-4,
+    .sq-grid-5,
+    .sq-grid-6 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .sq-split {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .sq-page-header {
+        padding: 1rem;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .sq-page-actions {
+        width: 100%;
+    }
+
+    .sq-page-actions .sq-btn {
+        flex: 1;
+        justify-content: center;
+    }
+
+    .sq-page-content,
+    .sq-content {
+        padding: 1rem;
+    }
+
+    .sq-grid-2,
+    .sq-grid-3,
+    .sq-grid-4,
+    .sq-grid-5,
+    .sq-grid-6 {
+        grid-template-columns: 1fr;
+    }
+
+    .sq-page-title {
+        font-size: 1.4rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .sq-container,
+    .sq-container-fluid {
+        padding-inline: 1rem;
+    }
+}
+
+/* ==========================================================
+   RTL Support
+========================================================== */
+
+[dir="rtl"] .sq-layout-sidebar {
+    border-right: none;
+    border-left: 1px solid var(--sq-border);
+}
+
+[dir="rtl"] .sq-layout-main,
+[dir="rtl"] .sq-main {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+/* ==========================================================
+   Print Layout
+========================================================== */
+
+@media print {
+    .sq-layout-header,
+    .sq-layout-sidebar,
+    .sq-layout-breadcrumb,
+    .sq-page-actions,
+    .sq-layout-footer,
+    .sq-no-print {
+        display: none !important;
+    }
+
+    .sq-layout-body,
+    .sq-layout-main,
+    .sq-main,
+    .sq-page-content,
+    .sq-content {
+        display: block !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .sq-page {
+        max-width: none !important;
+    }
+}
+
+body.sq-sidebar-collapsed .sq-layout-sidebar {
+    width: 72px !important;
+    min-width: 72px !important;
+    flex-basis: 72px !important;
+}
+
+body.sq-sidebar-collapsed .sq-layout-main {
+    width: calc(100% - 72px) !important;
+}
+
+body.sq-sidebar-collapsed .sq-sidebar {
+    width: 72px !important;
+}
+
+body.sq-sidebar-collapsed .sq-sidebar-link span,
+body.sq-sidebar-collapsed .sq-sidebar-section-title {
+    display: none !important;
+}
+
+body.sq-sidebar-collapsed .sq-sidebar-link {
+    justify-content: center !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+/* ==========================================================
+   SQ Compact Enterprise Density
+   Purpose: Better 100% zoom dashboard visibility
+========================================================== */
+
+:root {
+    --sq-header-height: 48px;
+    --sq-sidebar-width: 188px;
+    --sq-content-padding: 10px;
+
+    --sq-font-size-xs: 10px;
+    --sq-font-size-sm: 11px;
+    --sq-font-size-md: 12px;
+    --sq-font-size-lg: 14px;
+    --sq-font-size-xl: 17px;
+    --sq-font-size-2xl: 24px;
+
+    --sq-space-1: 3px;
+    --sq-space-2: 5px;
+    --sq-space-3: 7px;
+    --sq-space-4: 9px;
+    --sq-space-5: 11px;
+    --sq-space-6: 13px;
+
+    --sq-card-padding: .65rem;
+    --sq-input-height: 2rem;
+    --sq-button-height-md: 2rem;
+}
+
+/* Header compact */
+.sq-header {
+    height: 48px !important;
+    padding: 0 10px !important;
+}
+
+.sq-header-toggle {
+    width: 32px !important;
+    height: 32px !important;
+}
+
+.sq-logo {
+    width: 26px !important;
+    height: 26px !important;
+}
+
+.sq-header-title {
+    font-size: .86rem !important;
+}
+
+.sq-header-version {
+    font-size: .58rem !important;
+}
+
+.sq-header-search input {
+    height: 32px !important;
+    font-size: 12px !important;
+}
+
+/* Sidebar compact */
+.sq-layout-sidebar {
+    width: 188px !important;
+    min-width: 188px !important;
+    flex-basis: 188px !important;
+}
+
+.sq-sidebar {
+    width: 188px !important;
+    top: 48px !important;
+    height: calc(100vh - 48px) !important;
+}
+
+.sq-sidebar-link {
+    min-height: 31px !important;
+    padding: 6px 12px !important;
+    font-size: 12px !important;
+}
+
+.sq-sidebar-section-title {
+    padding: 7px 12px 4px !important;
+    font-size: 9px !important;
+}
+
+/* Main compact */
+.sq-layout-body {
+    min-height: calc(100vh - 48px) !important;
+}
+
+.sq-layout-main,
+.sq-main {
+    width: calc(100% - 188px) !important;
+}
+
+.sq-page-header {
+    padding: 10px 16px !important;
+    gap: 8px !important;
+}
+
+.sq-page-title {
+    font-size: 24px !important;
+}
+
+.sq-page-subtitle,
+.sq-page-description {
+    margin-top: 2px !important;
+    font-size: 13px !important;
+}
+
+.sq-page-content,
+.sq-content {
+    padding: 10px 16px !important;
+}
+
+/* Cards compact */
+.sq-card,
+.sq-metric-card {
+    border-radius: 8px !important;
+}
+
+.sq-metric-card {
+    min-height: 82px !important;
+    padding: 12px 14px !important;
+}
+
+.sq-metric-title {
+    font-size: 12px !important;
+}
+
+.sq-metric-value {
+    font-size: 26px !important;
+}
+
+/* Grid compact */
+.sq-grid {
+    gap: 12px !important;
+}
+
+.sq-grid-4 {
+    grid-template-columns: repeat(4, minmax(160px, 1fr)) !important;
+}
+
+/* Button compact */
+.sq-btn {
+    min-height: 32px !important;
+    padding: 6px 11px !important;
+    font-size: 12px !important;
+    border-radius: 7px !important;
+}
+
+/* Collapsed sidebar compact */
+body.sq-sidebar-collapsed .sq-layout-sidebar {
+    width: 48px !important;
+    min-width: 48px !important;
+    flex-basis: 48px !important;
+}
+
+body.sq-sidebar-collapsed .sq-layout-main,
+body.sq-sidebar-collapsed .sq-main {
+    width: calc(100% - 48px) !important;
+}
+
+body.sq-sidebar-collapsed .sq-sidebar {
+    width: 48px !important;
+}
+
+/* Use an in-flow sidebar on desktop so no empty spacer remains beside it. */
+@media (min-width: 993px) {
+    .sq-layout-sidebar {
+        width: 188px !important;
+        min-width: 188px !important;
+        flex: 0 0 188px !important;
+        border-right: 1px solid var(--sq-border) !important;
+    }
+
+    .sq-layout-sidebar .sq-sidebar {
+        position: sticky !important;
+        top: 0 !important;
+        width: 100% !important;
+        height: calc(100vh - 48px) !important;
+    }
+
+    .sq-layout-main,
+    .sq-main {
+        flex: 1 1 auto !important;
+        width: auto !important;
+        margin-left: 0 !important;
+    }
+}
+
+.sq-layout-footer {
+    display: none !important;
+}
+
+.sq-layout-breadcrumb {
+    min-height: 0 !important;
+}
+
+.sq-page-header {
+    align-items: center !important;
+    padding: 8px 14px !important;
+}
+
+.sq-page-title {
+    font-size: 20px !important;
+}
+
+.sq-page-subtitle,
+.sq-page-description {
+    font-size: 12px !important;
+}
+
+.sq-layout-main > .sq-page-header {
+    min-height: 0 !important;
+    padding: 4px 10px !important;
+    gap: 5px !important;
+}
+
+.sq-layout-main > .sq-page-header > div:first-child {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    min-height: 24px !important;
+}
+
+.sq-layout-main > .sq-page-header .sq-page-title {
+    font-size: 14px !important;
+    line-height: 1 !important;
+}
+
+.sq-layout-main > .sq-page-header .sq-page-subtitle {
+    margin-top: 1px !important;
+    font-size: 10px !important;
+    line-height: 1.05 !important;
+}
+
+.sq-layout-main > .sq-page-header .sq-page-actions {
+    gap: 6px !important;
+}
+
+.sq-layout-main > .sq-page-header .sq-btn {
+    min-height: 28px !important;
+    padding: 4px 9px !important;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .sq-grid-4 {
+        grid-template-columns: repeat(4, minmax(140px, 1fr)) !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .sq-page-title {
+        font-size: 16px !important;
+    }
+
+    .sq-page-content,
+    .sq-content {
+        padding: 8px 10px !important;
+    }
+
+    .sq-grid-4 {
+        grid-template-columns: 1fr !important;
+    }
+}

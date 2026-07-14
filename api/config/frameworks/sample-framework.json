@@ -1,0 +1,136 @@
+{
+  "framework": {
+    "id": "sample-framework",
+    "name": "Sample Assessment Framework",
+    "version": "1.0",
+    "description": "Configurable sample framework for SaQshi",
+    "active": true
+  },
+  "settings": {
+    "scoring_method": "weighted",
+    "allow_reassessment": true,
+    "allow_partial_save": true,
+    "auto_complete_assessment": true,
+    "compliance_values": [
+      {
+        "value": 0,
+        "label": "Non Compliant"
+      },
+      {
+        "value": 1,
+        "label": "Compliant"
+      }
+    ]
+  },
+  "facility_types": [
+    {
+      "id": 1,
+      "code": "DH",
+      "name": "District Hospital"
+    },
+    {
+      "id": 2,
+      "code": "CHC",
+      "name": "Community Health Centre"
+    }
+  ],
+  "departments": [
+    {
+      "id": 1,
+      "facility_type": "DH",
+      "name": "OPD"
+    },
+    {
+      "id": 2,
+      "facility_type": "DH",
+      "name": "IPD"
+    }
+  ],
+  "areas_of_concern": [
+    {
+      "id": 1,
+      "name": "Service Provision",
+      "weight": 100,
+      "subtypes": [
+        {
+          "id": 101,
+          "name": "OPD Services",
+          "checkpoints": [
+            {
+              "id": 1001,
+              "code": "OPD-001",
+              "question": "Is OPD functional?",
+              "type": "radio",
+              "mandatory": true,
+              "weight": 5,
+              "options": [
+                {
+                  "label": "Yes",
+                  "value": 1,
+                  "score": 1
+                },
+                {
+                  "label": "No",
+                  "value": 0,
+                  "score": 0
+                }
+              ]
+            },
+            {
+              "id": 1002,
+              "code": "OPD-002",
+              "question": "Average OPD attendance",
+              "type": "number",
+              "mandatory": true,
+              "weight": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Patient Rights",
+      "weight": 100,
+      "subtypes": [
+        {
+          "id": 201,
+          "name": "Information Display",
+          "checkpoints": [
+            {
+              "id": 2001,
+              "code": "PR-001",
+              "question": "Citizen Charter Display Available",
+              "type": "radio",
+              "mandatory": true,
+              "weight": 5,
+              "options": [
+                {
+                  "label": "Yes",
+                  "value": 1,
+                  "score": 1
+                },
+                {
+                  "label": "No",
+                  "value": 0,
+                  "score": 0
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "reports": {
+    "facility_score": true,
+    "department_score": true,
+    "subtype_score": true,
+    "trend_analysis": true
+  },
+  "dashboard": {
+    "show_completion_percentage": true,
+    "show_area_scores": true,
+    "show_pending_checklists": true
+  }
+}

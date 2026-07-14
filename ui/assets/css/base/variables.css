@@ -1,0 +1,434 @@
+/*!
+ * ==========================================================
+ * SQ-UI Variables CSS v1.0
+ * ----------------------------------------------------------
+ * Project : SaQshi Open Source
+ * Purpose : Design tokens for colors, spacing, typography,
+ *           borders, shadows, z-index, layout, animation,
+ *           accessibility and themes.
+ * Standard: CSS Custom Properties + WCAG 2.2 AA
+ * License : MIT
+ * ==========================================================
+ */
+
+
+:root {
+    /* ======================================================
+       Brand Colors
+    ====================================================== */
+
+    --sq-color-primary-50: #eff6ff;
+    --sq-color-primary-100: #dbeafe;
+    --sq-color-primary-200: #bfdbfe;
+    --sq-color-primary-300: #93c5fd;
+    --sq-color-primary-400: #60a5fa;
+    --sq-color-primary-500: #3b82f6;
+    --sq-color-primary-600: #2563eb;
+    --sq-color-primary-700: #1d4ed8;
+    --sq-color-primary-800: #1e40af;
+    --sq-color-primary-900: #1e3a8a;
+
+    --sq-color-primary: var(--sq-color-primary-600);
+    --sq-color-primary-hover: var(--sq-color-primary-700);
+    --sq-color-primary-active: var(--sq-color-primary-800);
+    --sq-color-primary-soft: rgba(37, 99, 235, 0.10);
+
+    /* ======================================================
+       Semantic Colors
+    ====================================================== */
+
+    --sq-color-success-50: #ecfdf5;
+    --sq-color-success-100: #d1fae5;
+    --sq-color-success-500: #22c55e;
+    --sq-color-success-600: #16a34a;
+    --sq-color-success-700: #15803d;
+
+    --sq-color-warning-50: #fffbeb;
+    --sq-color-warning-100: #fef3c7;
+    --sq-color-warning-500: #f59e0b;
+    --sq-color-warning-600: #d97706;
+    --sq-color-warning-700: #b45309;
+
+    --sq-color-danger-50: #fef2f2;
+    --sq-color-danger-100: #fee2e2;
+    --sq-color-danger-500: #ef4444;
+    --sq-color-danger-600: #dc2626;
+    --sq-color-danger-700: #b91c1c;
+
+    --sq-color-info-50: #ecfeff;
+    --sq-color-info-100: #cffafe;
+    --sq-color-info-500: #06b6d4;
+    --sq-color-info-600: #0891b2;
+    --sq-color-info-700: #0e7490;
+
+    --sq-color-success: var(--sq-color-success-600);
+    --sq-color-warning: var(--sq-color-warning-500);
+    --sq-color-danger: var(--sq-color-danger-600);
+    --sq-color-info: var(--sq-color-info-600);
+
+    /* ======================================================
+       Neutral Colors
+    ====================================================== */
+
+    --sq-color-white: #ffffff;
+    --sq-color-black: #000000;
+
+    --sq-color-gray-50: #f8fafc;
+    --sq-color-gray-100: #f1f5f9;
+    --sq-color-gray-200: #e2e8f0;
+    --sq-color-gray-300: #cbd5e1;
+    --sq-color-gray-400: #94a3b8;
+    --sq-color-gray-500: #64748b;
+    --sq-color-gray-600: #475569;
+    --sq-color-gray-700: #334155;
+    --sq-color-gray-800: #1e293b;
+    --sq-color-gray-850: #172033;
+    --sq-color-gray-900: #0f172a;
+    --sq-color-gray-950: #020617;
+
+    /* ======================================================
+       Light Theme Defaults
+    ====================================================== */
+
+    --sq-text-primary: var(--sq-color-gray-900);
+    --sq-text-secondary: var(--sq-color-gray-700);
+    --sq-text-muted: var(--sq-color-gray-500);
+    --sq-text-disabled: var(--sq-color-gray-400);
+    --sq-text-inverse: var(--sq-color-white);
+    --sq-text-link: var(--sq-color-primary);
+
+    --sq-bg-body: #f4f7fb;
+    --sq-bg-surface: #ffffff;
+    --sq-bg-muted: #f8fafc;
+    --sq-bg-soft: #eef4ff;
+    --sq-bg-sidebar: #ffffff;
+    --sq-bg-sidebar-hover: #eef4ff;
+    --sq-bg-overlay: rgba(15, 23, 42, 0.55);
+
+    --sq-border-light: #edf2f7;
+    --sq-border: #dbe3ee;
+    --sq-border-strong: #c7d2e2;
+    --sq-border-focus: var(--sq-color-primary);
+
+    /* ======================================================
+       Typography
+    ====================================================== */
+
+    --sq-font-family-sans:
+        "Inter",
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+
+    --sq-font-family-mono:
+        Consolas,
+        "Liberation Mono",
+        "Courier New",
+        monospace;
+
+    --sq-font-size-xs: 0.6875rem;
+    --sq-font-size-sm: 0.8125rem;
+    --sq-font-size-md: 0.875rem;
+    --sq-font-size-lg: 1rem;
+    --sq-font-size-xl: 1.125rem;
+    --sq-font-size-2xl: 1.5rem;
+    --sq-font-size-3xl: 1.875rem;
+    --sq-font-size-4xl: 2.125rem;
+
+    --sq-line-height-tight: 1.2;
+    --sq-line-height-normal: 1.45;
+    --sq-line-height-relaxed: 1.65;
+
+    --sq-font-weight-regular: 400;
+    --sq-font-weight-medium: 500;
+    --sq-font-weight-semibold: 600;
+    --sq-font-weight-bold: 700;
+    --sq-font-weight-extrabold: 800;
+
+    /* ======================================================
+       Compact 8px Spacing Scale
+    ====================================================== */
+
+    --sq-space-0: 0;
+    --sq-space-1: 0.25rem;
+    --sq-space-2: 0.5rem;
+    --sq-space-3: 0.75rem;
+    --sq-space-4: 1rem;
+    --sq-space-5: 1.25rem;
+    --sq-space-6: 1.5rem;
+    --sq-space-7: 1.75rem;
+    --sq-space-8: 2rem;
+    --sq-space-10: 2.5rem;
+    --sq-space-12: 3rem;
+    --sq-space-16: 4rem;
+
+    /* ======================================================
+       Radius
+    ====================================================== */
+
+    --sq-radius-none: 0;
+    --sq-radius-sm: 0.25rem;
+    --sq-radius-md: 0.5rem;
+    --sq-radius-lg: 0.75rem;
+    --sq-radius-xl: 0.875rem;
+    --sq-radius-2xl: 1rem;
+    --sq-radius-pill: 9999px;
+    --sq-radius-circle: 50%;
+
+    --sq-radius-default: var(--sq-radius-lg);
+
+    /* ======================================================
+       Shadows
+    ====================================================== */
+
+    --sq-shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.04);
+    --sq-shadow-sm: 0 2px 6px rgba(15, 23, 42, 0.06);
+    --sq-shadow-md: 0 6px 16px rgba(15, 23, 42, 0.08);
+    --sq-shadow-lg: 0 14px 28px rgba(15, 23, 42, 0.12);
+    --sq-shadow-xl: 0 22px 48px rgba(15, 23, 42, 0.18);
+    --sq-shadow-focus: 0 0 0 3px rgba(37, 99, 235, 0.28);
+
+    /* ======================================================
+       Layout Density
+    ====================================================== */
+
+    --sq-header-height: 60px;
+    --sq-topbar-height: 60px;
+    --sq-sidebar-width: 220px;
+    --sq-sidebar-collapsed-width: 64px;
+    --sq-container-max-width: 1600px;
+
+    --sq-content-padding: 1rem;
+    --sq-card-padding: 1rem;
+    --sq-section-gap: 1rem;
+    --sq-grid-gap: 1rem;
+
+    /* ======================================================
+       Forms
+    ====================================================== */
+
+    --sq-input-height: 2.375rem;
+    --sq-input-padding-x: 0.75rem;
+    --sq-input-padding-y: 0.5rem;
+    --sq-input-radius: var(--sq-radius-md);
+    --sq-input-border: var(--sq-border);
+    --sq-input-bg: var(--sq-color-white);
+    --sq-input-text: var(--sq-text-primary);
+    --sq-input-placeholder: var(--sq-text-muted);
+
+    /* ======================================================
+       Buttons
+    ====================================================== */
+
+    --sq-button-height-sm: 1.875rem;
+    --sq-button-height-md: 2.375rem;
+    --sq-button-height-lg: 2.75rem;
+
+    --sq-button-padding-x-sm: 0.625rem;
+    --sq-button-padding-x-md: 0.875rem;
+    --sq-button-padding-x-lg: 1.125rem;
+
+    --sq-button-radius: var(--sq-radius-md);
+
+    /* ======================================================
+       Cards
+    ====================================================== */
+
+    --sq-card-radius: var(--sq-radius-xl);
+    --sq-card-min-height: 104px;
+
+    /* ======================================================
+       Tables
+    ====================================================== */
+
+    --sq-table-header-bg: var(--sq-color-gray-50);
+    --sq-table-row-hover: var(--sq-color-gray-50);
+    --sq-table-border: var(--sq-border);
+    --sq-table-cell-padding-y: 0.625rem;
+    --sq-table-cell-padding-x: 0.75rem;
+
+    /* ======================================================
+       Z-Index
+    ====================================================== */
+
+    --sq-z-dropdown: 1000;
+    --sq-z-sticky: 1020;
+    --sq-z-fixed: 1030;
+    --sq-z-modal-backdrop: 1040;
+    --sq-z-modal: 1050;
+    --sq-z-popover: 1060;
+    --sq-z-tooltip: 1070;
+    --sq-z-toast: 1080;
+    --sq-z-loader: 1090;
+
+    /* ======================================================
+       Transitions
+    ====================================================== */
+
+    --sq-transition-fast: 120ms ease-in-out;
+    --sq-transition-normal: 200ms ease-in-out;
+    --sq-transition-slow: 300ms ease-in-out;
+
+    /* ======================================================
+       Breakpoints
+    ====================================================== */
+
+    --sq-breakpoint-xs: 360px;
+    --sq-breakpoint-sm: 576px;
+    --sq-breakpoint-md: 768px;
+    --sq-breakpoint-lg: 992px;
+    --sq-breakpoint-xl: 1200px;
+    --sq-breakpoint-2xl: 1400px;
+
+    /* ======================================================
+       Accessibility
+    ====================================================== */
+
+    --sq-focus-ring-color: rgba(37, 99, 235, 0.45);
+    --sq-focus-ring-width: 3px;
+    --sq-focus-ring-offset: 2px;
+
+    /* ======================================================
+       Chat
+    ====================================================== */
+
+    --sq-chat-width: 340px;
+    --sq-chat-height: 500px;
+    --sq-chat-radius: var(--sq-radius-xl);
+    --sq-chat-bg: var(--sq-bg-surface);
+    --sq-chat-header-bg: var(--sq-color-primary);
+    --sq-chat-header-text: var(--sq-color-white);
+    --sq-chat-user-bg: var(--sq-color-primary);
+    --sq-chat-user-text: var(--sq-color-white);
+    --sq-chat-bot-bg: var(--sq-bg-muted);
+    --sq-chat-bot-text: var(--sq-text-primary);
+}
+
+/* ==========================================================
+   Dark Theme
+========================================================== */
+
+[data-theme="dark"] {
+    --sq-bg-body: #0f172a;
+    --sq-bg-surface: #1e293b;
+    --sq-bg-muted: #273449;
+    --sq-bg-soft: #16213a;
+    --sq-bg-sidebar: #1e293b;
+    --sq-bg-sidebar-hover: #334155;
+    --sq-bg-overlay: rgba(0, 0, 0, 0.68);
+
+    --sq-text-primary: #f8fafc;
+    --sq-text-secondary: #dbe4f0;
+    --sq-text-muted: #a7b3c5;
+    --sq-text-disabled: #64748b;
+    --sq-text-inverse: #ffffff;
+
+    --sq-border-light: #273449;
+    --sq-border: #334155;
+    --sq-border-strong: #475569;
+
+    --sq-input-bg: #0f172a;
+    --sq-input-text: #f8fafc;
+    --sq-input-border: #475569;
+    --sq-input-placeholder: #94a3b8;
+
+    --sq-table-header-bg: #273449;
+    --sq-table-row-hover: #273449;
+
+    --sq-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.18);
+    --sq-shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.22);
+    --sq-shadow-md: 0 6px 16px rgba(0, 0, 0, 0.26);
+    --sq-shadow-lg: 0 14px 28px rgba(0, 0, 0, 0.32);
+    --sq-shadow-xl: 0 22px 48px rgba(0, 0, 0, 0.38);
+
+    --sq-chat-bg: #1e293b;
+    --sq-chat-bot-bg: #334155;
+    --sq-chat-bot-text: #f8fafc;
+}
+
+/* ==========================================================
+   Density Modes
+========================================================== */
+
+[data-density="comfortable"] {
+    --sq-header-height: 68px;
+    --sq-sidebar-width: 260px;
+    --sq-sidebar-collapsed-width: 72px;
+    --sq-content-padding: 1.5rem;
+    --sq-card-padding: 1.25rem;
+    --sq-grid-gap: 1.5rem;
+    --sq-input-height: 2.75rem;
+    --sq-button-height-md: 2.75rem;
+}
+
+[data-density="compact"] {
+    --sq-header-height: 60px;
+    --sq-sidebar-width: 220px;
+    --sq-sidebar-collapsed-width: 64px;
+    --sq-content-padding: 1rem;
+    --sq-card-padding: 1rem;
+    --sq-grid-gap: 1rem;
+    --sq-input-height: 2.375rem;
+    --sq-button-height-md: 2.375rem;
+}
+
+[data-density="ultra-compact"] {
+    --sq-header-height: 54px;
+    --sq-sidebar-width: 204px;
+    --sq-sidebar-collapsed-width: 56px;
+    --sq-content-padding: 0.75rem;
+    --sq-card-padding: 0.875rem;
+    --sq-grid-gap: 0.75rem;
+    --sq-input-height: 2.125rem;
+    --sq-button-height-md: 2.125rem;
+}
+
+/* ==========================================================
+   High Contrast Theme
+========================================================== */
+
+[data-theme="high-contrast"] {
+    --sq-color-primary: #0033cc;
+    --sq-color-primary-hover: #002699;
+    --sq-bg-body: #ffffff;
+    --sq-bg-surface: #ffffff;
+    --sq-bg-muted: #f5f5f5;
+    --sq-text-primary: #000000;
+    --sq-text-secondary: #000000;
+    --sq-text-muted: #222222;
+    --sq-border: #000000;
+    --sq-border-strong: #000000;
+    --sq-focus-ring-color: #ffbf00;
+}
+
+/* ==========================================================
+   Reduced Motion
+========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    :root {
+        --sq-transition-fast: 0ms;
+        --sq-transition-normal: 0ms;
+        --sq-transition-slow: 0ms;
+    }
+}
+
+/* ==========================================================
+   Print Theme
+========================================================== */
+
+@media print {
+    :root {
+        --sq-bg-body: #ffffff;
+        --sq-bg-surface: #ffffff;
+        --sq-text-primary: #000000;
+        --sq-text-secondary: #000000;
+        --sq-border: #000000;
+        --sq-shadow-xs: none;
+        --sq-shadow-sm: none;
+        --sq-shadow-md: none;
+        --sq-shadow-lg: none;
+        --sq-shadow-xl: none;
+    }
+}

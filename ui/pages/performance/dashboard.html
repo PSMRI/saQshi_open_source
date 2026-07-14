@@ -1,0 +1,63 @@
+<!--
+ * ==========================================================
+ * SaQshi Open Source
+ * Performance Dashboard
+ * dashboard.html
+ * Version 1.0.0 | Updated 2026-07-06
+ * ==========================================================
+ -->
+
+<section class="sq-performance-page">
+    <div class="sq-performance-grid">
+        <div class="sq-card">
+            <div class="sq-card-header">
+                <div>
+                    <h3>Performance Dashboard</h3>
+                    <p>KPI and outcome monitoring summary.</p>
+                </div>
+                <div class="sq-performance-toolbar">
+                    <select id="perfChartStyle" class="sq-form-control" aria-label="Perf Chart Style">
+                        <option value="line">Line Trend</option>
+                        <option value="area">Area Trend</option>
+                        <option value="bar">Bar Trend</option>
+                    </select>
+                    <label class="sq-performance-toggle">
+                        <input type="checkbox" id="perfAllIndicators" aria-label="Perf All Indicators">
+                        <span>All indicators</span>
+                    </label>
+                    <button type="button" class="sq-btn sq-btn-light" id="btnPerformanceRefresh">Refresh</button>
+                </div>
+            </div>
+            <div class="sq-card-body">
+                <div class="sq-performance-kpis">
+                    <div><span>Total Months</span><strong id="perfTotalMonths">0</strong></div>
+                    <div><span>Total Entries</span><strong id="perfTotalEntries">0</strong></div>
+                    <div><span id="perfKpiIndicatorLabel">KPI Indicators</span><strong id="perfKpiIndicators">0</strong></div>
+                    <div><span id="perfOutcomeIndicatorLabel">Outcome Indicators</span><strong id="perfOutcomeIndicators">0</strong></div>
+                </div>
+                <div class="sq-performance-section-title">
+                    <h4>Month Wise Entry Status</h4>
+                    <span id="perfLatestPeriod">Latest period: -</span>
+                </div>
+                <div id="perfMonthRows" class="sq-performance-months"></div>
+
+                <div class="sq-performance-chart-grid">
+                    <div>
+                        <div class="sq-performance-section-title">
+                            <h4>Outcome Indicator Trends</h4>
+                            <span>Month wise result</span>
+                        </div>
+                        <div id="perfOutcomeCharts" class="sq-performance-charts"></div>
+                    </div>
+                    <div>
+                        <div class="sq-performance-section-title">
+                            <h4>KPI Indicator Trends</h4>
+                            <span>Month wise result</span>
+                        </div>
+                        <div id="perfKpiCharts" class="sq-performance-charts"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

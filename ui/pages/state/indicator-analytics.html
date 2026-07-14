@@ -1,0 +1,24 @@
+<!-- SaQshi Open Source | State Indicator Analytics | indicator-analytics.html | Version 1.1.0 -->
+<section class="sq-state-page">
+    <div class="sq-state-toolbar">
+        <div>
+            <h3>Indicator Analytics</h3>
+            <p>Find checklist checkpoints where the maximum number of facilities scored 0.</p>
+        </div>
+        <div class="sq-state-filters">
+            <input type="search" class="sq-form-control" id="stateIndicatorSearch" placeholder="Search facility, NIN, district or block" aria-label="Search Facility, NIN, District Or Block">
+            <input type="number" class="sq-form-control" id="stateIndicatorMinFacilities" min="1" value="1" title="Minimum facilities">
+            <button class="sq-btn sq-btn-primary" id="stateIndicatorRefresh">Refresh</button>
+        </div>
+    </div>
+
+    <div class="sq-state-kpis" id="stateIndicatorSummary"></div>
+
+    <div class="sq-card">
+        <div class="sq-card-header">
+            <h3>Checklist Indicators With Highest 0 Score</h3>
+            <div id="stateIndicatorPager"></div>
+        </div>
+        <div class="sq-card-body" id="stateAssessmentIndicators"></div>
+    </div>
+</section>

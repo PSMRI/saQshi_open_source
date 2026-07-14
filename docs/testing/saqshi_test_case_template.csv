@@ -1,0 +1,11 @@
+Test ID,Module,Test Type,Scenario,Precondition,Steps,Expected Result,Priority,Status,Remarks
+AUTH-001,Authentication,Functional,Valid login,Active user exists,"Open login, enter username/password/captcha, submit",Dashboard opens,P0,Not Run,
+ASM-001,Assessment,Functional,Create assessment when no active exists,Facility user has no active assessment,"Open Create Assessment, enter details, save",Active assessment created,P0,Not Run,
+CHK-003,Checklist,Functional,Save non-compliance score,Active assessment and department exist,"Load checkpoint, select score 0, save/next",Response saved with score 0,P0,Not Run,
+CQI-007,CQI,Functional,Close gap with revised score,Action plan exists,"Open closure, enter revised score and status, save",Gap closure saved,P0,Not Run,
+PERF-002,Performance,Functional,Save outcome entry,Activated department and indicators exist,"Select department/month, enter values, save next",Outcome data saved,P1,Not Run,
+CERT-001,Certification,Functional,Add certification,Facility exists,"Open certification manage, enter status/date/score, save",Certification history saved,P0,Not Run,
+RPT-001,Reports,Regression,Download live scorecard,Checklist responses exist,"Open reports, download scorecard",Excel contains live checklist scores,P0,Not Run,
+MON-003,Monitoring,Role Scope,District user data scope,Role 4 user has dist_id,"Login role 4, open monitoring pages",Only assigned district data appears,P0,Not Run,
+MON-004,Monitoring,Role Scope,Block user data scope,Role 8 user has block_id,"Login role 8, open monitoring pages",Only assigned block data appears,P0,Not Run,
+SEC-008,Security,Negative,Friendly error response,Force invalid API condition,"Call API with invalid/missing required data",No raw SQL/PHP error exposed,P0,Not Run,

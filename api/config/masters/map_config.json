@@ -1,0 +1,27 @@
+{
+  "default_state": "UTTAR_PRADESH",
+  "settings": {
+    "tile_url": "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    "attribution": "&copy; OpenStreetMap contributors",
+    "min_zoom": 5,
+    "max_zoom": 18
+  },
+  "states": {
+    "UTTAR_PRADESH": {
+      "label": "Uttar Pradesh",
+      "aliases": ["UTTAR PRADESH", "UP", "10"],
+      "center": [26.8467, 80.9462],
+      "zoom": 7,
+      "source": "/api/config/masters/upmap.json",
+      "source_type": "topology"
+    },
+    "BIHAR": {
+      "label": "Bihar",
+      "aliases": ["BIHAR", "BR"],
+      "center": [25.0961, 85.3131],
+      "zoom": 7,
+      "source": "/api/config/masters/biharmap.json",
+      "source_type": "topology"
+    }
+  }
+}

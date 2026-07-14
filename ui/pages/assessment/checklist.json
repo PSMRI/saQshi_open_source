@@ -1,0 +1,50 @@
+{
+    "id": "assessment-checklist",
+    "name": "Checklist",
+    "title": "Checklist",
+    "layout": "dashboard",
+    "moduleName": "assessmentChecklist",
+
+    "pageHeader": {
+        "title": "Checklist Assessment",
+        "subtitle": "Complete checkpoint responses one by one."
+    },
+
+    "authentication": {
+        "required": true
+    },
+
+    "assets": {
+        "css": [
+            "/ui/pages/assessment/checklist.css?v=20260702-10"
+        ],
+        "js": [
+            "/ui/pages/assessment/checklist.js?v=20260702-10"
+        ]
+    },
+
+    "api": {
+        "assessment": "/assessment/v1/active_assessment.php",
+        "departments": "/framework/v1/my_departments.php",
+        "status": "/assessment/v1/department-status/list.php",
+        "concerns": "/framework/v1/concerns.php",
+        "subtypes": "/framework/v1/subtypes.php",
+        "methods": "/framework/v1/assessment_methods.php",
+        "checkpoints": "/framework/v1/checkpoints.php",
+        "startDepartment": "/assessment/v1/start_department.php",
+        "saveResponse": "/assessment/v1/save-response.php"
+    },
+
+    "breadcrumb": [
+        {
+            "label": "Dashboard",
+            "url": "/ui/dashboard.html"
+        },
+        {
+            "label": "Assessment"
+        },
+        {
+            "label": "Checklist"
+        }
+    ]
+}

@@ -1,0 +1,45 @@
+/*!
+ * ==========================================================
+ * SaQshi Open Source
+ * Performance Indicator Entry
+ * indicator.css
+ * Version 1.0.0 | Updated 2026-07-06
+ * ==========================================================
+ */
+
+.sq-performance-page{display:flex;flex-direction:column;gap:.6rem}
+.sq-performance-tools{display:flex;align-items:center;gap:.4rem;flex-wrap:wrap}
+.sq-performance-tools .sq-form-control{width:200px;min-height:30px;padding:.3rem .45rem;font-size:.72rem}
+.sq-performance-context{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.45rem;margin-bottom:.55rem}
+.sq-performance-context div{padding:.5rem .6rem;border:1px solid var(--sq-border);border-radius:8px;background:var(--sq-bg-surface)}
+.sq-performance-context span{display:block;color:var(--sq-text-muted);font-size:.66rem}
+.sq-performance-context strong{display:block;color:var(--sq-text-primary);font-size:.82rem;overflow-wrap:anywhere}
+.sq-performance-wizard{display:flex;flex-direction:column;gap:.55rem}
+.sq-performance-progress{padding:.55rem .65rem;border:1px solid var(--sq-border);border-radius:8px;background:var(--sq-bg-surface)}
+.sq-performance-progress>div:first-child{display:flex;justify-content:space-between;gap:.75rem;margin-bottom:.35rem}
+.sq-performance-progress span{color:var(--sq-text-muted);font-size:.68rem}
+.sq-performance-progress strong{color:var(--sq-text-primary);font-size:.78rem}
+.sq-performance-bar{height:8px;border-radius:999px;background:var(--sq-bg-muted);overflow:hidden}
+.sq-performance-bar span{display:block;height:100%;width:0;background:var(--sq-color-primary);transition:width .2s ease}
+.sq-performance-form{padding:.65rem;border:1px solid var(--sq-border);border-radius:8px;background:var(--sq-bg-surface)}
+.sq-performance-form h4{margin:0 0 .25rem;font-size:.9rem}
+.sq-performance-muted{margin:.1rem 0 .55rem;color:var(--sq-text-muted);font-size:.68rem}
+.sq-indicator-detail-grid{display:grid;grid-template-columns:1.15fr 1fr 1fr;gap:.4rem;margin:.45rem 0 .5rem}
+.sq-indicator-detail-grid div{min-width:0;padding:.4rem .5rem;border:1px solid var(--sq-border);border-radius:7px;background:var(--sq-bg-muted)}
+.sq-indicator-detail-grid span{display:block;margin-bottom:.12rem;color:var(--sq-text-muted);font-size:.62rem;text-transform:uppercase}
+.sq-indicator-detail-grid strong{display:block;color:var(--sq-text-primary);font-size:.72rem;line-height:1.25;white-space:normal;overflow-wrap:anywhere}
+.sq-performance-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.45rem}
+.sq-performance-form-grid.is-values{grid-template-columns:repeat(4,minmax(0,1fr));align-items:end}
+.sq-performance-form label span{display:block;margin-bottom:.15rem;font-size:.67rem;color:var(--sq-text-muted)}
+.sq-performance-form .sq-form-control{min-height:30px;padding:.32rem .45rem;font-size:.72rem}
+.sq-performance-form .sq-form-control.is-readonly{background:var(--sq-bg-muted);color:var(--sq-text-muted);cursor:not-allowed}
+.sq-performance-wide{display:block;margin-top:.45rem}
+.sq-performance-actions{display:flex;justify-content:flex-end;gap:.4rem;margin-top:.55rem}
+.sq-performance-complete{display:flex;align-items:center;justify-content:space-between;gap:.75rem;padding:.75rem .85rem;margin-bottom:.6rem;border:1px solid var(--sq-color-success-200);border-radius:8px;background:var(--sq-color-success-50);color:var(--sq-color-success-800)}
+.sq-performance-complete strong{display:block;font-size:.85rem}
+.sq-performance-complete span{display:block;font-size:.7rem}
+.sq-performance-list{display:flex;flex-direction:column;gap:.4rem}
+.sq-performance-row{padding:.55rem .65rem;border:1px solid var(--sq-border);border-radius:8px;background:var(--sq-bg-surface)}
+.sq-performance-row strong{display:block;color:var(--sq-text-primary);font-size:.82rem}
+.sq-performance-row span{display:block;color:var(--sq-text-muted);font-size:.68rem}
+@media (max-width:1100px){.sq-performance-context,.sq-performance-form-grid,.sq-performance-form-grid.is-values,.sq-indicator-detail-grid{grid-template-columns:1fr}}

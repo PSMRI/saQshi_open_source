@@ -1,0 +1,312 @@
+/*!
+ * ==========================================================
+ * SQ Footer Component v1.0
+ * ----------------------------------------------------------
+ * Project   : SaQshi Open Source
+ * Component : Application Footer
+ * File      : footer.css
+ * License   : MIT
+ * ==========================================================
+ *
+ * Features
+ * ----------------------------------------------------------
+ * ✔ Responsive
+ * ✔ Sticky Layout Compatible
+ * ✔ Dark Theme
+ * ✔ WCAG 2.2 AA
+ * ✔ Government Style
+ * ✔ Print Friendly
+ * ==========================================================
+*/
+
+/* ==========================================================
+   Footer
+========================================================== */
+
+.sq-footer{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    flex-wrap:wrap;
+
+    gap:1rem;
+
+    min-height:60px;
+
+    padding:.85rem 1.5rem;
+
+    background:var(--sq-bg-surface);
+
+    border-top:1px solid var(--sq-border);
+
+    color:var(--sq-text-secondary);
+
+    font-size:.875rem;
+
+}
+
+/* ==========================================================
+   Sections
+========================================================== */
+
+.sq-footer-left,
+.sq-footer-center,
+.sq-footer-right{
+
+    display:flex;
+
+    align-items:center;
+
+    flex-wrap:wrap;
+
+    gap:.5rem;
+
+}
+
+.sq-footer-center{
+
+    justify-content:center;
+
+    flex:1;
+
+}
+
+.sq-footer-right{
+
+    justify-content:flex-end;
+
+}
+
+/* ==========================================================
+   Brand
+========================================================== */
+
+.sq-footer-brand{
+
+    color:var(--sq-text-primary);
+
+    font-weight:600;
+
+}
+
+.sq-footer-brand strong{
+
+    color:var(--sq-color-primary);
+
+}
+
+/* ==========================================================
+   Divider
+========================================================== */
+
+.sq-footer-divider{
+
+    color:var(--sq-border);
+
+    user-select:none;
+
+}
+
+/* ==========================================================
+   Links
+========================================================== */
+
+.sq-footer a{
+
+    color:var(--sq-text-secondary);
+
+    text-decoration:none;
+
+    transition:.2s ease;
+
+}
+
+.sq-footer a:hover{
+
+    color:var(--sq-color-primary);
+
+    text-decoration:underline;
+
+}
+
+.sq-footer a:focus-visible{
+
+    outline:2px solid var(--sq-color-primary);
+
+    outline-offset:2px;
+
+    border-radius:4px;
+
+}
+
+/* ==========================================================
+   Information Labels
+========================================================== */
+
+.sq-footer strong{
+
+    color:var(--sq-text-primary);
+
+    font-weight:600;
+
+}
+
+/* ==========================================================
+   Responsive
+========================================================== */
+
+@media (max-width:1200px){
+
+    .sq-footer{
+
+        justify-content:center;
+
+        text-align:center;
+
+    }
+
+    .sq-footer-left,
+    .sq-footer-center,
+    .sq-footer-right{
+
+        width:100%;
+
+        justify-content:center;
+
+    }
+
+}
+
+@media (max-width:768px){
+
+    .sq-footer{
+
+        padding:1rem;
+
+        font-size:.80rem;
+
+    }
+
+    .sq-footer-divider{
+
+        display:none;
+
+    }
+
+    .sq-footer-left,
+    .sq-footer-center,
+    .sq-footer-right{
+
+        flex-direction:column;
+
+        gap:.35rem;
+
+    }
+
+}
+
+/* ==========================================================
+   Dark Theme
+========================================================== */
+
+[data-theme="dark"] .sq-footer{
+
+    background:var(--sq-bg-surface);
+
+    border-color:var(--sq-border);
+
+}
+
+[data-theme="dark"] .sq-footer a{
+
+    color:var(--sq-text-secondary);
+
+}
+
+[data-theme="dark"] .sq-footer a:hover{
+
+    color:var(--sq-color-primary);
+
+}
+
+/* ==========================================================
+   Print
+========================================================== */
+
+@media print{
+
+    .sq-footer{
+
+        background:#ffffff !important;
+
+        color:#000000 !important;
+
+        border-top:1px solid #000;
+
+        box-shadow:none;
+
+        page-break-inside:avoid;
+
+    }
+
+}
+
+/* ==========================================================
+   Compact App Footer
+========================================================== */
+
+.sq-footer{
+    flex-wrap:nowrap !important;
+    gap:.45rem !important;
+    min-height:28px !important;
+    padding:.25rem .7rem !important;
+    font-size:.68rem !important;
+    line-height:1.15 !important;
+}
+
+.sq-footer-left,
+.sq-footer-center,
+.sq-footer-right{
+    flex-wrap:nowrap !important;
+    gap:.28rem !important;
+    min-width:0 !important;
+}
+
+.sq-footer-left{
+    flex:1 1 auto !important;
+}
+
+.sq-footer-center{
+    flex:0 0 auto !important;
+}
+
+.sq-footer-right{
+    flex:1 1 auto !important;
+}
+
+.sq-footer-brand,
+.sq-footer span,
+.sq-footer a{
+    white-space:nowrap !important;
+}
+
+.sq-footer-divider{
+    margin:0 .15rem !important;
+}
+
+@media (max-width:1200px){
+    .sq-footer-center{
+        display:none !important;
+    }
+}
+
+@media (max-width:768px){
+    .sq-footer{
+        flex-wrap:wrap !important;
+        padding:.35rem .55rem !important;
+    }
+}

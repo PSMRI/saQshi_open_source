@@ -1,0 +1,227 @@
+[
+  {
+    "assessment_method_id": 1,
+    "assessment_method": "SI/OB",
+    "is_active": 1
+  },
+  {
+    "assessment_method_id": 2,
+    "assessment_method": "SI/RR",
+    "is_active": 1
+  },
+  {
+    "assessment_method_id": 3,
+    "assessment_method": "OB",
+    "is_active": 1
+  },
+  {
+    "assessment_method_id": 4,
+    "assessment_method": "RR/OB",
+    "is_active": 1
+  },
+  {
+    "assessment_method_id": 5,
+    "assessment_method": "OB/RR",
+    "is_active": 1
+  },
+  {
+    "assessment_method_id": 6,
+    "assessment_method": "OB/SI",
+    "is_active": 1
+  },
+  {
+    "assessment_method_id": 7,
+    "assessment_method": "RR/SI",
+    "is_active": 1
+  },
+  {
+    "assessment_method_id": 8,
+    "assessment_method": "OB/PI",
+    "is_active": 1
+  },
+  {
+    "assessment_method_id": 9,
+    "assessment_method": "SI",
+    "is_active": 1
+  },
+  {
+    "assessment_method_id": 10,
+    "assessment_method": "PI",
+    "is_active": 1
+  },
+  {
+    "assessment_method_id": 11,
+    "assessment_method": "PI/SI",
+    "is_active": 1
+  },
+  {
+    "assessment_method_id": 12,
+    "assessment_method": "OB/RR/SI",
+    "is_active": 1
+  },
+  {
+    "assessment_method_id": 13,
+    "assessment_method": "PI/OB",
+    "is_active": 1
+  },
+  {
+    "assessment_method_id": 14,
+    "assessment_method": "RR",
+    "is_active": 1
+  },
+  {
+    "assessment_method_id": 15,
+    "assessment_method": "SI/PI",
+    "is_active": 1
+  },
+  {
+    "assessment_method_id": 16,
+    "assessment_method": "RR/PI",
+    "is_active": 1
+  },
+  {
+    "assessment_method_id": 17,
+    "assessment_method": "SI/OB/RR",
+    "is_active": 1
+  },
+  {
+    "assessment_method_id": 18,
+    "assessment_method": "PIH, Pre-eclampsia, Bad OBstetric history, severe anaemia, IUGR, multiple pregnancy.",
+    "is_active": 1
+  },
+  {
+    "assessment_method_id": 19,
+    "assessment_method": "SI/PI/RR",
+    "is_active": 1
+  },
+  {
+    "assessment_method_id": 20,
+    "assessment_method": "PI/SI/RR",
+    "is_active": 1
+  },
+  {
+    "assessment_method_id": 21,
+    "assessment_method": "RR/SI/PI",
+    "is_active": 1
+  },
+  {
+    "assessment_method_id": 22,
+    "assessment_method": "SI/RR/OB",
+    "is_active": 1
+  },
+  {
+    "assessment_method_id": 23,
+    "assessment_method": "RR/SI/OB",
+    "is_active": 1
+  },
+  {
+    "assessment_method_id": 24,
+    "assessment_method": "SI/RR/PI",
+    "is_active": 1
+  },
+  {
+    "assessment_method_id": 25,
+    "assessment_method": "PI/RR",
+    "is_active": 1
+  },
+  {
+    "assessment_method_id": 26,
+    "assessment_method": "1",
+    "is_active": 1
+  },
+  {
+    "assessment_method_id": 27,
+    "assessment_method": "OB/SI/RR",
+    "is_active": 1
+  },
+  {
+    "assessment_method_id": 28,
+    "assessment_method": "SI/CI",
+    "is_active": 1
+  },
+  {
+    "assessment_method_id": 29,
+    "assessment_method": "CI/SI",
+    "is_active": 1
+  },
+  {
+    "assessment_method_id": 30,
+    "assessment_method": "RR/CI",
+    "is_active": 1
+  },
+  {
+    "assessment_method_id": 31,
+    "assessment_method": "CI/RR",
+    "is_active": 1
+  },
+  {
+    "assessment_method_id": 32,
+    "assessment_method": "OB/CI",
+    "is_active": 1
+  },
+  {
+    "assessment_method_id": 33,
+    "assessment_method": "CI/OB",
+    "is_active": 1
+  },
+  {
+    "assessment_method_id": 34,
+    "assessment_method": "CI",
+    "is_active": 1
+  },
+  {
+    "assessment_method_id": 35,
+    "assessment_method": "CI/SI/RR",
+    "is_active": 1
+  },
+  {
+    "assessment_method_id": 36,
+    "assessment_method": "RR/SI/CI",
+    "is_active": 1
+  },
+  {
+    "assessment_method_id": 37,
+    "assessment_method": "PI/RR/SI",
+    "is_active": 1
+  },
+  {
+    "assessment_method_id": 38,
+    "assessment_method": "SI/BB",
+    "is_active": 1
+  },
+  {
+    "assessment_method_id": 39,
+    "assessment_method": "RR/OB/SI",
+    "is_active": 1
+  },
+  {
+    "assessment_method_id": 40,
+    "assessment_method": "RR/PI/SI",
+    "is_active": 1
+  },
+  {
+    "assessment_method_id": 41,
+    "assessment_method": "S",
+    "is_active": 1
+  },
+  {
+    "assessment_method_id": 42,
+    "assessment_method": "OB/PI/RR",
+    "is_active": 1
+  },
+  {
+    "assessment_method_id": 43,
+    "assessment_method": "OB/SI/PI",
+    "is_active": 1
+  },
+  {
+    "assessment_method_id": 44,
+    "assessment_method": "OB/SI/RR/PI",
+    "is_active": 1
+  },
+  {
+    "assessment_method_id": 45,
+    "assessment_method": "BO/RR",
+    "is_active": 1
+  }
+]

@@ -1,0 +1,24 @@
+{
+  "module": "Performance Monitoring",
+  "config_type": "Facility Type Indicator Rules",
+  "version": "1.0.0",
+  "description": "Controls whether KPI entry is applicable for each facility type. Some facility types use outcome indicators as the KPI/performance measure, so KPI entry is disabled for them.",
+  "default_rule": {
+    "kpi_applicable": true,
+    "outcome_applicable": true,
+    "outcome_treated_as_kpi": false,
+    "block_kpi_entry": false,
+    "message": ""
+  },
+  "facility_type_rules": [
+    {
+      "fac_type_id": 8,
+      "facility_type": "AAM-SC",
+      "kpi_applicable": false,
+      "outcome_applicable": true,
+      "outcome_treated_as_kpi": true,
+      "block_kpi_entry": true,
+      "message": "KPI entry is not applicable for this facility type. Outcome indicators are treated as KPI/performance indicators."
+    }
+  ]
+}

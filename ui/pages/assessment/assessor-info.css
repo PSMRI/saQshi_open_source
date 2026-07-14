@@ -1,0 +1,139 @@
+/*!
+ * ==========================================================
+ * SaQshi Open Source
+ * Assessment Assessor Info
+ * assessor-info.css
+ * ==========================================================
+ */
+
+.sq-assessor-info-page{
+    display:flex;
+    flex-direction:column;
+    gap:.35rem;
+}
+
+body:has(.sq-assessor-info-page) .sq-page-content,
+body:has(.sq-assessor-info-page) .sq-content{
+    padding:6px 10px !important;
+}
+
+.sq-assessor-info-page .sq-card-header{
+    padding:.25rem .45rem !important;
+}
+
+.sq-assessor-info-page .sq-card-header h2,
+.sq-assessor-info-page .sq-card-header h3{
+    margin:0;
+    font-size:.82rem;
+    line-height:1.1;
+}
+
+.sq-assessor-info-page .sq-card-header p{
+    margin:.1rem 0 0;
+    font-size:.64rem;
+    line-height:1.15;
+}
+
+.sq-assessor-info-page .sq-card-body{
+    padding:.35rem .45rem !important;
+}
+
+.sq-assessment-summary{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+    gap:.35rem;
+}
+
+.sq-summary-item{
+    border:1px solid var(--sq-border);
+    border-radius:6px;
+    padding:.28rem .42rem;
+    min-height:34px;
+    background:var(--sq-bg-surface);
+}
+
+.sq-summary-item label,
+.sq-detail-item label,
+.sq-form-group label{
+    display:block;
+    font-size:.62rem;
+    color:var(--sq-text-muted);
+    text-transform:uppercase;
+    margin-bottom:.08rem;
+}
+
+.sq-summary-item span,
+.sq-detail-item span{
+    font-size:.74rem;
+    font-weight:600;
+    color:var(--sq-text);
+}
+
+.sq-form-row{
+    display:grid;
+    grid-template-columns:minmax(180px,420px);
+    gap:.35rem;
+}
+
+.sq-form-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:.35rem;
+}
+
+.sq-form-control{
+    width:100%;
+    min-height:26px;
+    border:1px solid var(--sq-border);
+    border-radius:6px;
+    padding:.25rem .4rem;
+    background:var(--sq-bg-surface);
+    color:var(--sq-text);
+}
+
+.sq-form-control:focus{
+    border-color:var(--sq-color-primary);
+    outline:0;
+    box-shadow:0 0 0 3px rgba(37,99,235,.12);
+}
+
+.sq-detail-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+    gap:.35rem;
+}
+
+.sq-detail-item{
+    border:1px solid var(--sq-border);
+    border-radius:6px;
+    padding:.28rem .42rem;
+    background:var(--sq-bg-soft);
+}
+
+.sq-card-footer{
+    display:flex;
+    justify-content:flex-end;
+    gap:.45rem;
+    padding:.3rem .45rem;
+    border-top:1px solid var(--sq-border);
+}
+
+.sq-empty-state{
+    color:var(--sq-text-muted);
+    padding:.2rem 0;
+}
+
+.sq-hidden{
+    display:none !important;
+}
+
+@media (max-width:640px){
+    .sq-card-footer{
+        flex-direction:column-reverse;
+    }
+
+    .sq-card-footer .sq-btn{
+        width:100%;
+        justify-content:center;
+    }
+}

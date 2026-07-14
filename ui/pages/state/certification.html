@@ -1,0 +1,114 @@
+<!-- SaQshi Open Source | State Certification Status | certification.html | Version 1.1.0 -->
+<section class="sq-state-page">
+    <div class="sq-state-toolbar">
+        <div>
+            <h3>Certification Status</h3>
+            <p>Latest facility certification status from certification history.</p>
+        </div>
+        <div class="sq-state-filters">
+            <input type="search" class="sq-form-control" id="stateCertSearch" placeholder="Search facility, district, NIN" aria-label="Search Facility, District, NIN">
+            <select class="sq-form-control" id="stateCertFilter" aria-label="State Cert Filter">
+                <option value="">All Status</option>
+                <option value="CERTIFIED">Certified</option>
+                <option value="CONDITIONAL">Conditional</option>
+                <option value="EXPIRED">Expired</option>
+                <option value="EXPIRING SOON">Expiring Soon</option>
+                <option value="NOT CERTIFIED">Not Certified</option>
+                <option value="PENDING">Pending</option>
+                <option value="APPLIED">Applied</option>
+            </select>
+            <button class="sq-btn sq-btn-light" id="stateCertDownload"><i class="bi bi-download"></i> Download</button>
+            <button class="sq-btn sq-btn-primary" id="stateCertRefresh"><i class="bi bi-arrow-clockwise"></i> Refresh</button>
+        </div>
+    </div>
+
+    <div class="sq-state-kpis" id="stateCertCards"></div>
+
+    <div id="stateCertWarning"></div>
+
+    <div class="sq-state-grid">
+        <div class="sq-card">
+            <div class="sq-card-header"><h3>Status Comparison</h3></div>
+            <div class="sq-card-body" id="stateCertChart"></div>
+        </div>
+        <div class="sq-card">
+            <div class="sq-card-header"><h3>Summary</h3></div>
+            <div class="sq-card-body" id="stateCertRows"></div>
+        </div>
+    </div>
+
+    <div class="sq-card">
+        <div class="sq-card-header">
+            <h3>Facility Certification History</h3>
+            <div class="sq-state-filters">
+                <span id="stateCertCount" class="sq-state-badge">0 facilities</span>
+                <div id="stateCertPagerTop"></div>
+            </div>
+        </div>
+        <div class="sq-card-body" id="stateCertTable"></div>
+        <div class="sq-card-footer" id="stateCertPager"></div>
+    </div>
+
+    <div class="sq-state-modal" id="stateCertModal" hidden>
+        <div class="sq-state-modal-panel">
+            <div class="sq-card-header">
+                <div>
+                    <h3>Add Certification</h3>
+                    <p>Validity is calculated from status and certification date.</p>
+                </div>
+                <button class="sq-btn sq-btn-light" type="button" id="stateCertModalClose">Close</button>
+            </div>
+            <div class="sq-card-body">
+                <form id="stateCertForm" class="sq-state-cert-form">
+                    <input type="hidden" id="stateCertFacId">
+                    <div>
+                        <label class="sq-form-label">Facility Name</label>
+                        <input class="sq-form-control" type="text" id="stateCertFacilityName" readonly aria-label="State Cert Facility Name">
+                    </div>
+                    <div>
+                        <label class="sq-form-label">NIN Number</label>
+                        <input class="sq-form-control" type="text" id="stateCertFacilityNin" readonly aria-label="State Cert Facility Nin">
+                    </div>
+                    <div>
+                        <label class="sq-form-label">Certification Type</label>
+                        <select class="sq-form-control" id="stateCertType" required aria-label="State Cert Type">
+                            <option value="STATE">STATE</option>
+                            <option value="NATIONAL">NATIONAL</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="sq-form-label">Assessment Mode</label>
+                        <select class="sq-form-control" id="stateCertAssessmentMode" required aria-label="State Cert Assessment Mode">
+                            <option value="PHYSICAL">PHYSICAL</option>
+                            <option value="VIRTUAL">VIRTUAL</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="sq-form-label">Certification Date</label>
+                        <input class="sq-form-control" type="date" id="stateCertDate" required aria-label="State Cert Date">
+                    </div>
+                    <div>
+                        <label class="sq-form-label">Applied Date</label>
+                        <input class="sq-form-control" type="date" id="stateCertAppliedDate" aria-label="State Cert Applied Date">
+                    </div>
+                    <div>
+                        <label class="sq-form-label">Status</label>
+                        <select class="sq-form-control" id="stateCertEditStatus" required aria-label="State Cert Edit Status"></select>
+                    </div>
+                    <div>
+                        <label class="sq-form-label">Score</label>
+                        <input class="sq-form-control" type="number" min="0" max="100" step="0.01" id="stateCertScore" required aria-label="State Cert Score">
+                    </div>
+                    <div class="sq-state-cert-form-wide">
+                        <label class="sq-form-label">Remarks</label>
+                        <textarea class="sq-form-control" id="stateCertRemarks" rows="3" aria-label="State Cert Remarks"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="sq-card-footer sq-state-modal-actions">
+                <button class="sq-btn sq-btn-primary" type="submit" form="stateCertForm"><i class="bi bi-save"></i> Save</button>
+                <button class="sq-btn sq-btn-light" type="button" id="stateCertCancel">Cancel</button>
+            </div>
+        </div>
+    </div>
+</section>

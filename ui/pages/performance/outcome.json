@@ -1,0 +1,14 @@
+{
+  "id": "performance-outcome",
+  "name": "Outcome",
+  "title": "Outcome",
+  "layout": "dashboard",
+  "pageHeader": {"title": "Outcome Indicators", "subtitle": "Performance outcome entry and review."},
+  "authentication": {"required": true},
+  "assets": {
+    "css": ["/ui/pages/performance/outcome.css?v=20260705-1"],
+    "js": ["/ui/pages/performance/outcome.js?v=20260713-1"]
+  },
+  "breadcrumb": [{"label": "Dashboard", "url": "/ui/dashboard.html"}, {"label": "Performance"}, {"label": "Outcome"}],
+  "moduleName": "performanceOutcome"
+}

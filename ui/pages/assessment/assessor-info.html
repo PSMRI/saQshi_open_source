@@ -1,0 +1,130 @@
+<!--
+==========================================================
+SaQshi Assessment Assessor Info Page
+----------------------------------------------------------
+Project : SaQshi Open Source
+Module  : Assessment
+Page    : Assessor Info
+File    : assessor-info.html
+License : MIT
+==========================================================
+-->
+
+<div class="sq-page sq-assessor-info-page">
+
+    <div class="sq-card">
+        <div class="sq-card-header">
+            <div>
+                <h2>Assessor Information</h2>
+                <p>Capture department-wise assessment team details before checklist entry.</p>
+            </div>
+        </div>
+
+        <div class="sq-card-body">
+            <div class="sq-assessment-summary">
+                <div class="sq-summary-item">
+                    <label>Assessment</label>
+                    <span id="assessmentName">-</span>
+                </div>
+
+                <div class="sq-summary-item">
+                    <label>Status</label>
+                    <span id="assessmentStatus">-</span>
+                </div>
+
+                <div class="sq-summary-item">
+                    <label>Framework</label>
+                    <span id="assessmentFramework">-</span>
+                </div>
+
+                <div class="sq-summary-item">
+                    <label>Assessment ID</label>
+                    <span id="assessmentId">-</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="sq-card">
+        <div class="sq-card-header">
+            <div>
+                <h3>Department</h3>
+                <p>Select an activated department to view or fill assessor details.</p>
+            </div>
+        </div>
+
+        <div class="sq-card-body">
+            <div class="sq-form-row">
+                <div class="sq-form-group">
+                    <label for="deptSelect">Activated Department</label>
+                    <select id="deptSelect" class="sq-form-control" aria-label="Dept Select">
+                        <option value="">Loading departments...</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="assessorInfoState" class="sq-card">
+        <div class="sq-card-body">
+            <div class="sq-empty-state">Select an activated department.</div>
+        </div>
+    </div>
+
+    <div id="assessorInfoDetails" class="sq-card sq-hidden">
+        <div class="sq-card-header">
+            <div>
+                <h3>Saved Details</h3>
+                <p>Assessor information has already been submitted for this department.</p>
+            </div>
+        </div>
+
+        <div class="sq-card-body">
+            <div class="sq-detail-grid" id="savedInfoGrid"></div>
+        </div>
+    </div>
+
+    <form id="assessorInfoForm" class="sq-card sq-hidden">
+        <div class="sq-card-header">
+            <div>
+                <h3>Fill Assessor Details</h3>
+                <p>Enter assessor and assessee details for the selected department.</p>
+            </div>
+        </div>
+
+        <div class="sq-card-body">
+            <div class="sq-form-grid">
+                <div class="sq-form-group">
+                    <label for="assessor_name">Assessor Name</label>
+                    <input id="assessor_name" name="assessor_name" class="sq-form-control" type="text" required aria-label="Assessor Name">
+                </div>
+
+                <div class="sq-form-group">
+                    <label for="assessee_name">Assessee Name</label>
+                    <input id="assessee_name" name="assessee_name" class="sq-form-control" type="text" required aria-label="Assessee Name">
+                </div>
+
+                <div class="sq-form-group">
+                    <label for="assessment_date">Date of Assessment</label>
+                    <input id="assessment_date" name="assessment_date" class="sq-form-control" type="date" required aria-label="Assessment Date">
+                </div>
+
+                <div class="sq-form-group">
+                    <label for="assessment_type">Assessment Type</label>
+                    <select id="assessment_type" name="assessment_type" class="sq-form-control" required aria-label="Assessment Type">
+                        <option value="INTERNAL">Internal</option>
+                        <option value="EXTERNAL">External</option>
+                        <option value="MOCK">Mock</option>
+                        <option value="REASSESSMENT">Reassessment</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="sq-card-footer">
+            <button type="button" class="sq-btn sq-btn-light" id="btnBackDepartments">Back</button>
+            <button type="submit" class="sq-btn sq-btn-primary" id="btnSaveAssessorInfo">Save Details</button>
+        </div>
+    </form>
+
+</div>

@@ -1,0 +1,14 @@
+{
+  "id": "certification-renewal",
+  "name": "Renewal Status",
+  "title": "Renewal Status",
+  "layout": "dashboard",
+  "pageHeader": { "title": "Renewal Status", "subtitle": "Monitor active, due, and expired certificates." },
+  "authentication": { "required": true },
+  "assets": {
+    "css": ["/ui/pages/certification/dashboard.css?v=20260707-4"],
+    "js": ["/ui/pages/certification/dashboard.js?v=20260707-4"]
+  },
+  "breadcrumb": [{ "label": "Dashboard", "url": "/ui/dashboard.html" }, { "label": "Certification" }, { "label": "Renewal" }],
+  "moduleName": "certificationRenewal"
+}

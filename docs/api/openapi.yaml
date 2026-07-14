@@ -1,0 +1,806 @@
+openapi: 3.0.3
+info:
+  title: SaQshi API
+  version: 1.0.0
+  description: >
+    OpenAPI specification for SaQshi assessment, CQI, performance, certification,
+    reports and monitoring APIs. Authentication is session-cookie based. State-changing
+    requests require CSRF token header.
+servers:
+  - url: http://localhost:94/api
+    description: Local development API
+security:
+  - SessionCookie: []
+tags:
+  - name: Auth
+  - name: Assessment
+  - name: CQI
+  - name: Files
+  - name: Performance
+  - name: Certification
+  - name: Monitoring
+  - name: Reports
+paths:
+  /auth/v1/csrf.php:
+    get:
+      tags: [Auth]
+      summary: Get CSRF token
+      responses:
+        "200":
+          description: CSRF token response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponse"
+  /auth/v1/captcha.php:
+    get:
+      tags: [Auth]
+      summary: Get login captcha
+      responses:
+        "200":
+          description: Captcha payload
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponse"
+  /auth/v1/login_key.php:
+    get:
+      tags: [Auth]
+      summary: Get public key for browser password encryption
+      responses:
+        "200":
+          description: Public key payload
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponse"
+  /auth/v1/login.php:
+    post:
+      tags: [Auth]
+      summary: Login with encrypted password
+      security: []
+      parameters:
+        - $ref: "#/components/parameters/CsrfToken"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+            examples:
+              login:
+                value:
+                  username: test-user
+                  password_enc: BASE64_RSA_OAEP_ENCRYPTED_PASSWORD
+                  captcha: "1234"
+      responses:
+        "200":
+          description: Login success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponse"
+        "422":
+          description: Validation failure
+  /auth/v1/me.php:
+    get:
+      tags: [Auth]
+      summary: Current logged-in user
+      responses:
+        "200":
+          description: Current user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponse"
+  /auth/v1/logout.php:
+    post:
+      tags: [Auth]
+      summary: Logout current user
+      parameters:
+        - $ref: "#/components/parameters/CsrfToken"
+      responses:
+        "200":
+          description: Logout success
+  /assessment/v1/create_assessment.php:
+    post:
+      tags: [Assessment]
+      summary: Create new assessment when no active assessment exists
+      parameters:
+        - $ref: "#/components/parameters/CsrfToken"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateAssessmentRequest"
+      responses:
+        "200":
+          description: Assessment created
+  /assessment/v1/list.php:
+    get:
+      tags: [Assessment]
+      summary: List facility assessments
+      responses:
+        "200":
+          description: Assessment list
+  /assessment/v1/active_assessment.php:
+    get:
+      tags: [Assessment]
+      summary: Get active assessment for logged-in facility
+      responses:
+        "200":
+          description: Active assessment if available
+  /assessment/v1/cancel_assessment.php:
+    post:
+      tags: [Assessment]
+      summary: Cancel active assessment
+      parameters:
+        - $ref: "#/components/parameters/CsrfToken"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AssessmentIdRequest"
+      responses:
+        "200":
+          description: Assessment cancelled
+  /assessment/v1/complete_assessment.php:
+    post:
+      tags: [Assessment]
+      summary: Complete assessment
+      parameters:
+        - $ref: "#/components/parameters/CsrfToken"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AssessmentIdRequest"
+      responses:
+        "200":
+          description: Assessment completed
+  /assessment/v1/department-status/list.php:
+    get:
+      tags: [Assessment]
+      summary: List department activation status
+      parameters:
+        - name: assessment_id
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Department status list
+  /assessment/v1/department-status/save.php:
+    post:
+      tags: [Assessment]
+      summary: Save department activation status
+      parameters:
+        - $ref: "#/components/parameters/CsrfToken"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DepartmentStatusSaveRequest"
+      responses:
+        "200":
+          description: Department status saved
+  /assessment/v1/assessor_info_get.php:
+    get:
+      tags: [Assessment]
+      summary: Get assessor details for department
+      parameters:
+        - $ref: "#/components/parameters/AssessmentId"
+        - $ref: "#/components/parameters/DepartmentId"
+      responses:
+        "200":
+          description: Assessor info
+  /assessment/v1/assessor_info_save.php:
+    post:
+      tags: [Assessment]
+      summary: Save assessor details
+      parameters:
+        - $ref: "#/components/parameters/CsrfToken"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AssessorInfoSaveRequest"
+      responses:
+        "200":
+          description: Assessor info saved
+  /assessment/v1/get_checkpoint.php:
+    get:
+      tags: [Assessment]
+      summary: Load current checkpoint for checklist entry
+      parameters:
+        - $ref: "#/components/parameters/AssessmentId"
+        - $ref: "#/components/parameters/DepartmentId"
+        - name: area_id
+          in: query
+          schema:
+            type: string
+        - name: subtype_id
+          in: query
+          schema:
+            type: string
+        - name: method_id
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Checkpoint payload
+  /assessment/v1/save-response.php:
+    post:
+      tags: [Assessment]
+      summary: Save checklist checkpoint response
+      parameters:
+        - $ref: "#/components/parameters/CsrfToken"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChecklistResponseSaveRequest"
+      responses:
+        "200":
+          description: Response saved
+  /assessment/v1/progress.php:
+    get:
+      tags: [Assessment]
+      summary: Assessment progress and score
+      parameters:
+        - $ref: "#/components/parameters/AssessmentId"
+      responses:
+        "200":
+          description: Progress data
+  /assessment/v1/gap_analysis.php:
+    get:
+      tags: [CQI]
+      summary: List gaps from non-compliant and partially compliant checkpoints
+      parameters:
+        - $ref: "#/components/parameters/AssessmentId"
+      responses:
+        "200":
+          description: Gap analysis data
+  /assessment/v1/action_plan.php:
+    get:
+      tags: [CQI]
+      summary: Load action plan checkpoints and suggestions
+      parameters:
+        - $ref: "#/components/parameters/AssessmentId"
+      responses:
+        "200":
+          description: Action plan data
+  /assessment/v1/action_plan_save.php:
+    post:
+      tags: [CQI]
+      summary: Save action plan
+      parameters:
+        - $ref: "#/components/parameters/CsrfToken"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ActionPlanSaveRequest"
+      responses:
+        "200":
+          description: Action plan saved
+  /assessment/v1/action_plan_closure.php:
+    post:
+      tags: [CQI]
+      summary: Save gap closure and revised score
+      parameters:
+        - $ref: "#/components/parameters/CsrfToken"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ActionPlanClosureRequest"
+      responses:
+        "200":
+          description: Closure saved
+  /files/v1/upload.php:
+    post:
+      tags: [Files]
+      summary: Upload optional evidence file
+      parameters:
+        - $ref: "#/components/parameters/CsrfToken"
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                category:
+                  type: string
+                  example: gap_closure
+                file:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: File uploaded
+  /files/v1/delete.php:
+    post:
+      tags: [Files]
+      summary: Delete uploaded evidence file
+      parameters:
+        - $ref: "#/components/parameters/CsrfToken"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                url:
+                  type: string
+                  example: /uploads/assessment/gap_closure/2026/07/sample.pdf
+      responses:
+        "200":
+          description: File deleted
+  /performance/v1/dashboard.php:
+    get:
+      tags: [Performance]
+      summary: Performance dashboard
+      responses:
+        "200":
+          description: Performance dashboard data
+  /performance/v1/kpi_list.php:
+    get:
+      tags: [Performance]
+      summary: Load KPI indicators for month and department
+      parameters:
+        - $ref: "#/components/parameters/DepartmentId"
+        - $ref: "#/components/parameters/EntryMonth"
+        - $ref: "#/components/parameters/EntryYear"
+      responses:
+        "200":
+          description: KPI list
+  /performance/v1/kpi_save.php:
+    post:
+      tags: [Performance]
+      summary: Save KPI entry
+      parameters:
+        - $ref: "#/components/parameters/CsrfToken"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PerformanceEntrySaveRequest"
+      responses:
+        "200":
+          description: KPI saved
+  /performance/v1/outcome_list.php:
+    get:
+      tags: [Performance]
+      summary: Load outcome indicators for month and department
+      parameters:
+        - $ref: "#/components/parameters/DepartmentId"
+        - $ref: "#/components/parameters/EntryMonth"
+        - $ref: "#/components/parameters/EntryYear"
+      responses:
+        "200":
+          description: Outcome list
+  /performance/v1/outcome_save.php:
+    post:
+      tags: [Performance]
+      summary: Save outcome entry
+      parameters:
+        - $ref: "#/components/parameters/CsrfToken"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PerformanceEntrySaveRequest"
+      responses:
+        "200":
+          description: Outcome saved
+  /performance/v1/trend.php:
+    get:
+      tags: [Performance]
+      summary: Performance trend data and download
+      parameters:
+        - name: indicator_type
+          in: query
+          schema:
+            type: string
+            enum: [KPI, OUTCOME]
+        - name: download
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Trend data or download
+  /certification/v1/dashboard.php:
+    get:
+      tags: [Certification]
+      summary: Certification dashboard
+      responses:
+        "200":
+          description: Certification dashboard data
+  /certification/v1/save.php:
+    post:
+      tags: [Certification]
+      summary: Save certification entry
+      parameters:
+        - $ref: "#/components/parameters/CsrfToken"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CertificationSaveRequest"
+      responses:
+        "200":
+          description: Certification saved
+  /certification/v1/history.php:
+    get:
+      tags: [Certification]
+      summary: Certification history
+      responses:
+        "200":
+          description: Certification history
+  /state/v1/dashboard.php:
+    get:
+      tags: [Monitoring]
+      summary: State, regional, district or block monitoring dashboard
+      description: Data is automatically scoped by logged-in role id 9, 5, 4 or 8.
+      responses:
+        "200":
+          description: Monitoring dashboard data
+  /state/v1/facility_category.php:
+    get:
+      tags: [Monitoring]
+      summary: Facility categorization for scoped monitoring user
+      parameters:
+        - $ref: "#/components/parameters/Search"
+      responses:
+        "200":
+          description: Facility category data
+  /state/v1/certification_summary.php:
+    get:
+      tags: [Monitoring]
+      summary: Certification summary and facility list
+      parameters:
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/PerPage"
+        - $ref: "#/components/parameters/Search"
+      responses:
+        "200":
+          description: Certification summary
+  /state/v1/assessment_progress.php:
+    get:
+      tags: [Monitoring]
+      summary: Assessment progress by facility
+      parameters:
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/PerPage"
+        - $ref: "#/components/parameters/Search"
+      responses:
+        "200":
+          description: Assessment progress
+  /state/v1/cqi_summary.php:
+    get:
+      tags: [Monitoring]
+      summary: CQI monitoring summary
+      parameters:
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/PerPage"
+        - $ref: "#/components/parameters/Search"
+      responses:
+        "200":
+          description: CQI summary
+  /state/v1/performance_summary.php:
+    get:
+      tags: [Monitoring]
+      summary: Performance monitoring summary
+      parameters:
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/PerPage"
+        - $ref: "#/components/parameters/Search"
+      responses:
+        "200":
+          description: Performance summary
+  /state/v1/indicator_analytics.php:
+    get:
+      tags: [Monitoring]
+      summary: Checklist indicator analytics for zero scores
+      parameters:
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/PerPage"
+        - name: min_facilities
+          in: query
+          schema:
+            type: integer
+            default: 1
+      responses:
+        "200":
+          description: Indicator analytics
+  /state/v1/reports.php:
+    get:
+      tags: [Monitoring, Reports]
+      summary: State/regional/district/block report catalog or download
+      parameters:
+        - name: download
+          in: query
+          schema:
+            type: string
+            enum: [summary, facilities, assessments, cqi, performance, certification]
+      responses:
+        "200":
+          description: Report catalog JSON or CSV download
+  /reports/v1/checkpoint_scorecard.php:
+    get:
+      tags: [Reports]
+      summary: Download checkpoint scorecard Excel
+      parameters:
+        - $ref: "#/components/parameters/AssessmentId"
+      responses:
+        "200":
+          description: XLSX download
+  /reports/v1/checkpoint_progress_report.php:
+    get:
+      tags: [Reports]
+      summary: Download checkpoint progress and action plan Excel
+      parameters:
+        - $ref: "#/components/parameters/AssessmentId"
+      responses:
+        "200":
+          description: XLSX download
+components:
+  securitySchemes:
+    SessionCookie:
+      type: apiKey
+      in: cookie
+      name: SAQSHI_SESSION
+  parameters:
+    CsrfToken:
+      name: X-CSRF-TOKEN
+      in: header
+      required: true
+      schema:
+        type: string
+    AssessmentId:
+      name: assessment_id
+      in: query
+      required: true
+      schema:
+        type: integer
+        example: 1
+    DepartmentId:
+      name: dept_id
+      in: query
+      required: true
+      schema:
+        type: integer
+        example: 1
+    EntryMonth:
+      name: entry_month
+      in: query
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 12
+        example: 7
+    EntryYear:
+      name: entry_year
+      in: query
+      required: true
+      schema:
+        type: integer
+        example: 2026
+    Page:
+      name: page
+      in: query
+      schema:
+        type: integer
+        default: 1
+    PerPage:
+      name: per_page
+      in: query
+      schema:
+        type: integer
+        default: 25
+    Search:
+      name: search
+      in: query
+      schema:
+        type: string
+  schemas:
+    ApiResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [success, error]
+        message:
+          type: string
+        data:
+          nullable: true
+        errors:
+          nullable: true
+        timestamp:
+          type: string
+    LoginRequest:
+      type: object
+      required: [username, password_enc, captcha]
+      properties:
+        username:
+          type: string
+        password_enc:
+          type: string
+          description: RSA-OAEP encrypted password, base64 encoded.
+        captcha:
+          type: string
+    CreateAssessmentRequest:
+      type: object
+      required: [assessment_name, framework_code, start_date, end_date]
+      properties:
+        assessment_name:
+          type: string
+        framework_code:
+          type: string
+          example: saqshi-nqas
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        remarks:
+          type: string
+    AssessmentIdRequest:
+      type: object
+      required: [assessment_id]
+      properties:
+        assessment_id:
+          type: integer
+        remarks:
+          type: string
+    DepartmentStatusSaveRequest:
+      type: object
+      required: [assessment_id, dept_id, is_active]
+      properties:
+        assessment_id:
+          type: integer
+        dept_id:
+          type: integer
+        is_active:
+          type: integer
+          enum: [0, 1]
+    AssessorInfoSaveRequest:
+      type: object
+      required: [assessment_id, dept_id, assessor_name, assessee_name, assessment_date, assessment_type]
+      properties:
+        assessment_id:
+          type: integer
+        dept_id:
+          type: integer
+        assessor_name:
+          type: string
+        assessee_name:
+          type: string
+        assessment_date:
+          type: string
+          format: date
+        assessment_type:
+          type: string
+          example: INTERNAL
+    ChecklistResponseSaveRequest:
+      type: object
+      required: [assessment_id, dept_id, checkpoint_id, score]
+      properties:
+        assessment_id:
+          type: integer
+        dept_id:
+          type: integer
+        checkpoint_id:
+          type: integer
+        response_value:
+          type: string
+        score:
+          type: number
+          enum: [0, 1, 2]
+        remarks:
+          type: string
+        evidence_url:
+          type: string
+    ActionPlanSaveRequest:
+      type: object
+      required: [assessment_id, dept_id, checkpoint_id, action_plan]
+      properties:
+        assessment_id:
+          type: integer
+        dept_id:
+          type: integer
+        checkpoint_id:
+          type: integer
+        action_plan:
+          type: string
+        responsible_person:
+          type: string
+        target_date:
+          type: string
+          format: date
+        status:
+          type: string
+          enum: [OPEN, IN_PROGRESS, COMPLETED]
+        remarks:
+          type: string
+    ActionPlanClosureRequest:
+      type: object
+      required: [assessment_id, dept_id, checkpoint_id, status]
+      properties:
+        assessment_id:
+          type: integer
+        dept_id:
+          type: integer
+        checkpoint_id:
+          type: integer
+        status:
+          type: string
+          enum: [IN_PROGRESS, COMPLETED]
+        revised_score:
+          type: number
+          enum: [0, 1, 2]
+        closure_remarks:
+          type: string
+        evidence_url:
+          type: string
+    PerformanceEntrySaveRequest:
+      type: object
+      required: [dept_id, indicator_id, entry_month, entry_year, numerator_value, result_value]
+      properties:
+        dept_id:
+          type: integer
+        indicator_id:
+          type: integer
+        entry_month:
+          type: integer
+        entry_year:
+          type: integer
+        numerator_value:
+          type: number
+        denominator_value:
+          type: number
+        result_value:
+          type: number
+        remarks:
+          type: string
+    CertificationSaveRequest:
+      type: object
+      required: [cert_type, ass_mod, date_of_ass, status, score]
+      properties:
+        cert_type:
+          type: string
+          enum: [STATE, NATIONAL]
+        ass_mod:
+          type: string
+          example: PHYSICAL
+        date_of_ass:
+          type: string
+          format: date
+        applied_date:
+          type: string
+          format: date
+        status:
+          type: string
+          enum: [CONDITIONAL, CERTIFIED]
+        score:
+          type: number
+        remarks:
+          type: string

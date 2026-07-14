@@ -1,0 +1,330 @@
+/*!
+ * ==========================================================
+ * SQ-UI Badge Component v1.0
+ * ----------------------------------------------------------
+ * Project   : SaQshi Open Source
+ * Component : Badge / Status / Counter
+ * Standard  : HTML5 + CSS3 + WCAG 2.2 AA
+ * License   : MIT
+ * ==========================================================
+ */
+
+/* ==========================================================
+   Base Badge
+========================================================== */
+
+.sq-badge{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:var(--sq-space-1);
+
+    min-height:1.75rem;
+
+    padding:0 var(--sq-space-3);
+
+    border:1px solid transparent;
+
+    border-radius:var(--sq-radius-pill);
+
+    font-size:var(--sq-font-size-xs);
+
+    font-weight:var(--sq-font-weight-semibold);
+
+    line-height:1;
+
+    white-space:nowrap;
+
+    user-select:none;
+}
+
+/* ==========================================================
+   Sizes
+========================================================== */
+
+.sq-badge-xs{
+    min-height:1.25rem;
+    padding:0 var(--sq-space-2);
+    font-size:0.65rem;
+}
+
+.sq-badge-sm{
+    min-height:1.5rem;
+    padding:0 var(--sq-space-2);
+}
+
+.sq-badge-lg{
+    min-height:2rem;
+    padding:0 var(--sq-space-4);
+    font-size:var(--sq-font-size-sm);
+}
+
+/* ==========================================================
+   Solid Colors
+========================================================== */
+
+.sq-badge-primary{
+    background:var(--sq-color-primary);
+    color:#fff;
+}
+
+.sq-badge-success{
+    background:var(--sq-color-success);
+    color:#fff;
+}
+
+.sq-badge-warning{
+    background:var(--sq-color-warning);
+    color:#fff;
+}
+
+.sq-badge-danger{
+    background:var(--sq-color-danger);
+    color:#fff;
+}
+
+.sq-badge-info{
+    background:var(--sq-color-info);
+    color:#fff;
+}
+
+.sq-badge-secondary{
+    background:var(--sq-color-gray-600);
+    color:#fff;
+}
+
+/* ==========================================================
+   Soft Badges
+========================================================== */
+
+.sq-badge-soft-primary{
+    background:var(--sq-color-primary-100);
+    color:var(--sq-color-primary);
+}
+
+.sq-badge-soft-success{
+    background:var(--sq-color-success-100);
+    color:var(--sq-color-success);
+}
+
+.sq-badge-soft-warning{
+    background:var(--sq-color-warning-100);
+    color:var(--sq-color-warning-700);
+}
+
+.sq-badge-soft-danger{
+    background:var(--sq-color-danger-100);
+    color:var(--sq-color-danger);
+}
+
+.sq-badge-soft-info{
+    background:var(--sq-color-info-100);
+    color:var(--sq-color-info);
+}
+
+/* ==========================================================
+   Outline Badges
+========================================================== */
+
+.sq-badge-outline-primary{
+    border-color:var(--sq-color-primary);
+    color:var(--sq-color-primary);
+}
+
+.sq-badge-outline-success{
+    border-color:var(--sq-color-success);
+    color:var(--sq-color-success);
+}
+
+.sq-badge-outline-warning{
+    border-color:var(--sq-color-warning);
+    color:var(--sq-color-warning-700);
+}
+
+.sq-badge-outline-danger{
+    border-color:var(--sq-color-danger);
+    color:var(--sq-color-danger);
+}
+
+.sq-badge-outline-info{
+    border-color:var(--sq-color-info);
+    color:var(--sq-color-info);
+}
+
+/* ==========================================================
+   Counter Badge
+========================================================== */
+
+.sq-badge-counter{
+    min-width:1.4rem;
+    height:1.4rem;
+    padding:0;
+    border-radius:50%;
+}
+
+/* ==========================================================
+   Dot Badge
+========================================================== */
+
+.sq-badge-dot{
+    width:.75rem;
+    height:.75rem;
+    padding:0;
+    border-radius:50%;
+}
+
+.sq-badge-dot-primary{
+    background:var(--sq-color-primary);
+}
+
+.sq-badge-dot-success{
+    background:var(--sq-color-success);
+}
+
+.sq-badge-dot-warning{
+    background:var(--sq-color-warning);
+}
+
+.sq-badge-dot-danger{
+    background:var(--sq-color-danger);
+}
+
+.sq-badge-dot-info{
+    background:var(--sq-color-info);
+}
+
+/* ==========================================================
+   Assessment Status
+========================================================== */
+
+.sq-status-not-started{
+    background:var(--sq-color-gray-200);
+    color:var(--sq-color-gray-700);
+}
+
+.sq-status-in-progress{
+    background:var(--sq-color-warning-100);
+    color:var(--sq-color-warning-700);
+}
+
+.sq-status-completed{
+    background:var(--sq-color-success-100);
+    color:var(--sq-color-success);
+}
+
+.sq-status-cancelled{
+    background:var(--sq-color-danger-100);
+    color:var(--sq-color-danger);
+}
+
+/* ==========================================================
+   Compliance
+========================================================== */
+
+.sq-compliance-full{
+    background:var(--sq-color-success-100);
+    color:var(--sq-color-success);
+}
+
+.sq-compliance-partial{
+    background:var(--sq-color-warning-100);
+    color:var(--sq-color-warning-700);
+}
+
+.sq-compliance-none{
+    background:var(--sq-color-danger-100);
+    color:var(--sq-color-danger);
+}
+
+/* ==========================================================
+   Gap Status
+========================================================== */
+
+.sq-gap-open{
+    background:var(--sq-color-danger-100);
+    color:var(--sq-color-danger);
+}
+
+.sq-gap-closed{
+    background:var(--sq-color-success-100);
+    color:var(--sq-color-success);
+}
+
+/* ==========================================================
+   Priority
+========================================================== */
+
+.sq-priority-low{
+    background:#dbeafe;
+    color:#1d4ed8;
+}
+
+.sq-priority-medium{
+    background:var(--sq-color-warning-100);
+    color:var(--sq-color-warning-700);
+}
+
+.sq-priority-high{
+    background:var(--sq-color-danger-100);
+    color:var(--sq-color-danger);
+}
+
+.sq-priority-critical{
+    background:#7f1d1d;
+    color:#fff;
+}
+
+/* ==========================================================
+   Action Plan
+========================================================== */
+
+.sq-action-achievable{
+    background:var(--sq-color-success-100);
+    color:var(--sq-color-success);
+}
+
+.sq-action-non-achievable{
+    background:var(--sq-color-danger-100);
+    color:var(--sq-color-danger);
+}
+
+/* ==========================================================
+   Icon Badge
+========================================================== */
+
+.sq-badge-icon{
+    display:inline-flex;
+    align-items:center;
+    gap:var(--sq-space-2);
+}
+
+.sq-badge-icon svg,
+.sq-badge-icon i{
+    font-size:.85rem;
+}
+
+/* ==========================================================
+   Responsive
+========================================================== */
+
+@media(max-width:768px){
+
+    .sq-badge-lg{
+        font-size:var(--sq-font-size-xs);
+    }
+
+}
+
+/* ==========================================================
+   Print
+========================================================== */
+
+@media print{
+
+    .sq-badge{
+        border:1px solid #000;
+        color:#000 !important;
+        background:#fff !important;
+    }
+
+}

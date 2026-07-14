@@ -1,0 +1,495 @@
+/*!
+ * ==========================================================
+ * SQ-UI Card Component v1.0
+ * ----------------------------------------------------------
+ * Project   : SaQshi Open Source
+ * Component : Card / Metric Card / Status Card / Action Card
+ * Standard  : HTML5 + CSS3 + WCAG 2.2 AA
+ * License   : MIT
+ * ==========================================================
+ */
+
+/* ==========================================================
+   Base Card
+========================================================== */
+
+.sq-card {
+    background: var(--sq-bg-surface);
+    border: 1px solid var(--sq-border);
+    border-radius: var(--sq-radius-default);
+    box-shadow: var(--sq-shadow-sm);
+    color: var(--sq-text-primary);
+    overflow: hidden;
+}
+
+.sq-card-hover {
+    transition:
+        box-shadow var(--sq-transition-fast),
+        transform var(--sq-transition-fast),
+        border-color var(--sq-transition-fast);
+}
+
+.sq-card-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--sq-shadow-md);
+    border-color: var(--sq-border-strong);
+}
+
+/* ==========================================================
+   Card Sections
+========================================================== */
+
+.sq-card-header {
+    padding: var(--sq-space-4) var(--sq-card-padding);
+    border-bottom: 1px solid var(--sq-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sq-space-3);
+    background: var(--sq-bg-surface);
+}
+
+.sq-card-body {
+    padding: var(--sq-card-padding);
+}
+
+.sq-card-footer {
+    padding: var(--sq-space-4) var(--sq-card-padding);
+    border-top: 1px solid var(--sq-border);
+    background: var(--sq-bg-muted);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--sq-space-2);
+}
+
+.sq-card-title {
+    font-size: var(--sq-font-size-lg);
+    font-weight: var(--sq-font-weight-semibold);
+    color: var(--sq-text-primary);
+    line-height: var(--sq-line-height-tight);
+}
+
+.sq-card-subtitle {
+    margin-top: var(--sq-space-1);
+    font-size: var(--sq-font-size-sm);
+    color: var(--sq-text-muted);
+}
+
+.sq-card-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--sq-space-2);
+    flex-shrink: 0;
+}
+
+/* ==========================================================
+   Card Sizes
+========================================================== */
+
+.sq-card-sm .sq-card-header,
+.sq-card-sm .sq-card-body,
+.sq-card-sm .sq-card-footer {
+    padding: var(--sq-space-3);
+}
+
+.sq-card-lg .sq-card-header,
+.sq-card-lg .sq-card-body,
+.sq-card-lg .sq-card-footer {
+    padding: var(--sq-space-6);
+}
+
+/* ==========================================================
+   Flat / Elevated / Bordered Cards
+========================================================== */
+
+.sq-card-flat {
+    box-shadow: none;
+}
+
+.sq-card-elevated {
+    box-shadow: var(--sq-shadow-md);
+}
+
+.sq-card-borderless {
+    border: none;
+}
+
+/* ==========================================================
+   Colored Accent Cards
+========================================================== */
+
+.sq-card-accent {
+    border-left: 4px solid var(--sq-color-primary);
+}
+
+.sq-card-accent-primary {
+    border-left-color: var(--sq-color-primary);
+}
+
+.sq-card-accent-success {
+    border-left-color: var(--sq-color-success);
+}
+
+.sq-card-accent-warning {
+    border-left-color: var(--sq-color-warning);
+}
+
+.sq-card-accent-danger {
+    border-left-color: var(--sq-color-danger);
+}
+
+.sq-card-accent-info {
+    border-left-color: var(--sq-color-info);
+}
+
+/* ==========================================================
+   Metric Card
+========================================================== */
+
+.sq-metric-card {
+    background: var(--sq-bg-surface);
+    border: 1px solid var(--sq-border);
+    border-radius: var(--sq-radius-default);
+    box-shadow: var(--sq-shadow-sm);
+    padding: var(--sq-card-padding);
+}
+
+.sq-metric-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--sq-space-3);
+    margin-bottom: var(--sq-space-4);
+}
+
+.sq-metric-title {
+    font-size: var(--sq-font-size-sm);
+    color: var(--sq-text-muted);
+    font-weight: var(--sq-font-weight-medium);
+}
+
+.sq-metric-value {
+    margin-top: var(--sq-space-2);
+    font-size: var(--sq-font-size-3xl);
+    font-weight: var(--sq-font-weight-extrabold);
+    color: var(--sq-text-primary);
+    line-height: var(--sq-line-height-tight);
+}
+
+.sq-metric-icon {
+    width: 3rem;
+    height: 3rem;
+    border-radius: var(--sq-radius-lg);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--sq-color-primary-soft);
+    color: var(--sq-color-primary);
+    flex-shrink: 0;
+}
+
+.sq-metric-footer {
+    margin-top: var(--sq-space-4);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sq-space-3);
+    font-size: var(--sq-font-size-sm);
+    color: var(--sq-text-muted);
+}
+
+/* ==========================================================
+   Metric Variants
+========================================================== */
+
+.sq-metric-primary {
+    border-left: 4px solid var(--sq-color-primary);
+}
+
+.sq-metric-success {
+    border-left: 4px solid var(--sq-color-success);
+}
+
+.sq-metric-warning {
+    border-left: 4px solid var(--sq-color-warning);
+}
+
+.sq-metric-danger {
+    border-left: 4px solid var(--sq-color-danger);
+}
+
+.sq-metric-info {
+    border-left: 4px solid var(--sq-color-info);
+}
+
+/* ==========================================================
+   KPI Card
+========================================================== */
+
+.sq-kpi-card {
+    background: var(--sq-bg-surface);
+    border: 1px solid var(--sq-border);
+    border-radius: var(--sq-radius-default);
+    box-shadow: var(--sq-shadow-sm);
+    padding: var(--sq-card-padding);
+}
+
+.sq-kpi-label {
+    font-size: var(--sq-font-size-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--sq-text-muted);
+    font-weight: var(--sq-font-weight-semibold);
+}
+
+.sq-kpi-value {
+    margin-top: var(--sq-space-2);
+    font-size: var(--sq-font-size-4xl);
+    font-weight: var(--sq-font-weight-extrabold);
+    color: var(--sq-text-primary);
+    line-height: var(--sq-line-height-tight);
+}
+
+.sq-kpi-meta {
+    margin-top: var(--sq-space-2);
+    font-size: var(--sq-font-size-sm);
+    color: var(--sq-text-muted);
+}
+
+.sq-kpi-progress {
+    margin-top: var(--sq-space-4);
+}
+
+/* ==========================================================
+   Status Card
+========================================================== */
+
+.sq-status-card {
+    border: 1px solid var(--sq-border);
+    border-radius: var(--sq-radius-default);
+    background: var(--sq-bg-surface);
+    padding: var(--sq-card-padding);
+    display: flex;
+    align-items: flex-start;
+    gap: var(--sq-space-4);
+}
+
+.sq-status-icon {
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: var(--sq-radius-circle);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.sq-status-content {
+    min-width: 0;
+    flex: 1;
+}
+
+.sq-status-title {
+    font-size: var(--sq-font-size-md);
+    font-weight: var(--sq-font-weight-semibold);
+    color: var(--sq-text-primary);
+}
+
+.sq-status-text {
+    margin-top: var(--sq-space-1);
+    font-size: var(--sq-font-size-sm);
+    color: var(--sq-text-muted);
+}
+
+/* ==========================================================
+   Status Variants
+========================================================== */
+
+.sq-status-success .sq-status-icon {
+    background: var(--sq-color-success-100);
+    color: var(--sq-color-success);
+}
+
+.sq-status-warning .sq-status-icon {
+    background: var(--sq-color-warning-100);
+    color: var(--sq-color-warning-700);
+}
+
+.sq-status-danger .sq-status-icon {
+    background: var(--sq-color-danger-100);
+    color: var(--sq-color-danger);
+}
+
+.sq-status-info .sq-status-icon {
+    background: var(--sq-color-info-100);
+    color: var(--sq-color-info);
+}
+
+/* ==========================================================
+   Assessment Card
+========================================================== */
+
+.sq-assessment-card {
+    background: var(--sq-bg-surface);
+    border: 1px solid var(--sq-border);
+    border-radius: var(--sq-radius-default);
+    box-shadow: var(--sq-shadow-sm);
+    padding: var(--sq-card-padding);
+}
+
+.sq-assessment-card-header {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--sq-space-4);
+    margin-bottom: var(--sq-space-4);
+}
+
+.sq-assessment-title {
+    font-size: var(--sq-font-size-lg);
+    font-weight: var(--sq-font-weight-semibold);
+    color: var(--sq-text-primary);
+}
+
+.sq-assessment-meta {
+    margin-top: var(--sq-space-1);
+    font-size: var(--sq-font-size-sm);
+    color: var(--sq-text-muted);
+}
+
+.sq-assessment-footer {
+    margin-top: var(--sq-space-4);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sq-space-3);
+    flex-wrap: wrap;
+}
+
+/* ==========================================================
+   Gap / Action Plan Card
+========================================================== */
+
+.sq-gap-card {
+    background: var(--sq-bg-surface);
+    border: 1px solid var(--sq-border);
+    border-left: 4px solid var(--sq-color-danger);
+    border-radius: var(--sq-radius-default);
+    padding: var(--sq-card-padding);
+    box-shadow: var(--sq-shadow-sm);
+}
+
+.sq-gap-card.is-partial {
+    border-left-color: var(--sq-color-warning);
+}
+
+.sq-gap-card.is-closed {
+    border-left-color: var(--sq-color-success);
+}
+
+.sq-gap-title {
+    font-weight: var(--sq-font-weight-semibold);
+    color: var(--sq-text-primary);
+}
+
+.sq-gap-meta {
+    margin-top: var(--sq-space-2);
+    color: var(--sq-text-muted);
+    font-size: var(--sq-font-size-sm);
+}
+
+.sq-gap-actions {
+    margin-top: var(--sq-space-4);
+    display: flex;
+    gap: var(--sq-space-2);
+    flex-wrap: wrap;
+}
+
+/* ==========================================================
+   Empty Card
+========================================================== */
+
+.sq-empty-card {
+    background: var(--sq-bg-surface);
+    border: 1px dashed var(--sq-border-strong);
+    border-radius: var(--sq-radius-default);
+    padding: var(--sq-space-8);
+    text-align: center;
+    color: var(--sq-text-muted);
+}
+
+.sq-empty-title {
+    font-size: var(--sq-font-size-lg);
+    font-weight: var(--sq-font-weight-semibold);
+    color: var(--sq-text-primary);
+    margin-top: var(--sq-space-3);
+}
+
+.sq-empty-text {
+    margin-top: var(--sq-space-2);
+    font-size: var(--sq-font-size-sm);
+}
+
+/* ==========================================================
+   Card Grid Helpers
+========================================================== */
+
+.sq-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: var(--sq-space-5);
+}
+
+.sq-card-grid-sm {
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+}
+
+.sq-card-grid-lg {
+    grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+}
+
+/* ==========================================================
+   Responsive
+========================================================== */
+
+@media (max-width: 768px) {
+    .sq-card-header,
+    .sq-card-footer,
+    .sq-assessment-card-header,
+    .sq-assessment-footer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .sq-card-actions {
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .sq-metric-value,
+    .sq-kpi-value {
+        font-size: var(--sq-font-size-2xl);
+    }
+}
+
+/* ==========================================================
+   Print
+========================================================== */
+
+@media print {
+    .sq-card,
+    .sq-metric-card,
+    .sq-kpi-card,
+    .sq-status-card,
+    .sq-assessment-card,
+    .sq-gap-card {
+        box-shadow: none !important;
+        border: 1px solid #000 !important;
+        break-inside: avoid;
+    }
+
+    .sq-card-actions,
+    .sq-gap-actions {
+        display: none !important;
+    }
+}

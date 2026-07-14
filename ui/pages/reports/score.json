@@ -1,0 +1,39 @@
+{
+    "id": "reports-score",
+    "name": "Score Report",
+    "title": "Score Report",
+    "layout": "dashboard",
+
+    "pageHeader": {
+        "title": "Score Report",
+        "subtitle": "Original and improved score analysis by assessment."
+    },
+
+    "authentication": {
+        "required": true
+    },
+
+    "assets": {
+        "css": [
+            "/ui/pages/reports/score.css?v=20260704-1"
+        ],
+        "js": [
+            "/ui/pages/reports/score.js?v=20260704-2"
+        ]
+    },
+
+    "breadcrumb": [
+        {
+            "label": "Dashboard",
+            "url": "/ui/dashboard.html"
+        },
+        {
+            "label": "Reports"
+        },
+        {
+            "label": "Score Report"
+        }
+    ],
+
+    "moduleName": "scoreReport"
+}

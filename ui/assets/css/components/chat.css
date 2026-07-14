@@ -1,0 +1,371 @@
+/*!
+ * ==========================================================
+ * SQ-UI Chat Component v1.0
+ * ----------------------------------------------------------
+ * Project   : SaQshi Open Source
+ * Component : AI Chat Assistant
+ * Standard  : HTML5 + CSS3 + WCAG 2.2 AA
+ * License   : MIT
+ * ==========================================================
+ */
+
+/* ==========================================================
+   Floating Chat Button
+========================================================== */
+
+.sq-chat-widget {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 1200;
+}
+
+.sq-chat-fab {
+    width: 64px;
+    height: 64px;
+    border: none;
+    border-radius: 50%;
+    background: var(--sq-color-primary);
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 1.4rem;
+    font-weight: 700;
+    box-shadow: var(--sq-shadow-lg);
+    transition: all .25s ease;
+}
+
+.sq-chat-fab:hover {
+    transform: scale(1.05);
+    box-shadow: var(--sq-shadow-xl);
+}
+
+.sq-chat-fab:focus-visible {
+    outline: 3px solid var(--sq-color-primary-300);
+    outline-offset: 3px;
+}
+
+/* ==========================================================
+   Chat Window
+========================================================== */
+
+.sq-chat-panel {
+    position: absolute;
+    right: 0;
+    bottom: 82px;
+    width: 380px;
+    max-width: calc(100vw - 30px);
+    height: 620px;
+    background: var(--sq-bg-surface);
+    border-radius: 16px;
+    border: 1px solid var(--sq-border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: var(--sq-shadow-xl);
+}
+
+.sq-chat-panel[hidden] {
+    display: none;
+}
+
+.sq-chat-panel.is-open {
+    animation: sqChatOpen .25s ease;
+}
+
+@keyframes sqChatOpen {
+
+    from {
+        opacity: 0;
+        transform: translateY(18px) scale(.96);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+
+}
+
+/* ==========================================================
+   Header
+========================================================== */
+
+.sq-chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 18px;
+    background: var(--sq-color-primary);
+    color: #ffffff;
+}
+
+.sq-chat-title {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.sq-chat-subtitle {
+    margin-top: 4px;
+    font-size: .75rem;
+    opacity: .9;
+}
+
+.sq-chat-header-actions {
+    display: flex;
+    gap: .5rem;
+}
+
+.sq-chat-icon-btn {
+    width: 34px;
+    height: 34px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background: rgba(255,255,255,.15);
+    color: #fff;
+    font-size: 1rem;
+    transition: .2s;
+}
+
+.sq-chat-icon-btn:hover {
+    background: rgba(255,255,255,.28);
+}
+
+/* ==========================================================
+   Chat Body
+========================================================== */
+
+.sq-chat-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    background: var(--sq-bg-muted);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.sq-chat-message {
+    display: flex;
+    flex-direction: column;
+}
+
+.sq-chat-message-user {
+    align-items: flex-end;
+}
+
+.sq-chat-message-assistant {
+    align-items: flex-start;
+}
+
+.sq-chat-bubble {
+    max-width: 85%;
+    padding: 12px 14px;
+    border-radius: 14px;
+    line-height: 1.5;
+    word-break: break-word;
+    font-size: .92rem;
+}
+
+.sq-chat-message-user .sq-chat-bubble {
+    background: var(--sq-color-primary);
+    color: #fff;
+    border-bottom-right-radius: 4px;
+}
+
+.sq-chat-message-assistant .sq-chat-bubble {
+    background: #ffffff;
+    color: var(--sq-text-primary);
+    border: 1px solid var(--sq-border);
+    border-bottom-left-radius: 4px;
+}
+
+.sq-chat-time {
+    margin-top: 4px;
+    font-size: .70rem;
+    color: var(--sq-text-muted);
+}
+
+/* ==========================================================
+   Suggestions
+========================================================== */
+
+.sq-chat-suggestions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+    padding: 12px;
+    border-top: 1px solid var(--sq-border);
+    background: #ffffff;
+}
+
+.sq-chat-suggestions button {
+    border: 1px solid var(--sq-border);
+    background: var(--sq-bg-surface);
+    padding: 6px 12px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: .78rem;
+    transition: .2s;
+}
+
+.sq-chat-suggestions button:hover {
+    background: var(--sq-color-primary);
+    color: #fff;
+    border-color: var(--sq-color-primary);
+}
+
+/* ==========================================================
+   Input Area
+========================================================== */
+
+.sq-chat-form {
+    display: flex;
+    gap: .75rem;
+    align-items: flex-end;
+    padding: 14px;
+    border-top: 1px solid var(--sq-border);
+    background: #ffffff;
+}
+
+.sq-chat-input {
+    flex: 1;
+    resize: none;
+    min-height: 46px;
+    max-height: 140px;
+    padding: 12px;
+    border: 1px solid var(--sq-border);
+    border-radius: 12px;
+    font-size: .9rem;
+    outline: none;
+    transition: border-color .2s;
+}
+
+.sq-chat-input:focus {
+    border-color: var(--sq-color-primary);
+}
+
+.sq-chat-send {
+    border: none;
+    padding: 12px 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    background: var(--sq-color-primary);
+    color: #ffffff;
+    font-weight: 600;
+    transition: .2s;
+}
+
+.sq-chat-send:hover {
+    opacity: .92;
+}
+
+/* ==========================================================
+   Typing Indicator
+========================================================== */
+
+.sq-chat-typing {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+
+.sq-chat-typing span {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--sq-color-primary);
+    animation: sqTyping .8s infinite ease-in-out;
+}
+
+.sq-chat-typing span:nth-child(2) {
+    animation-delay: .15s;
+}
+
+.sq-chat-typing span:nth-child(3) {
+    animation-delay: .3s;
+}
+
+@keyframes sqTyping {
+
+    0%,80%,100% {
+        transform: scale(.6);
+        opacity: .4;
+    }
+
+    40% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+}
+
+/* ==========================================================
+   Scrollbar
+========================================================== */
+
+.sq-chat-body::-webkit-scrollbar {
+    width: 8px;
+}
+
+.sq-chat-body::-webkit-scrollbar-thumb {
+    background: var(--sq-color-gray-300);
+    border-radius: 20px;
+}
+
+.sq-chat-body::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* ==========================================================
+   Dark Theme
+========================================================== */
+
+[data-theme="dark"] .sq-chat-panel,
+[data-theme="dark"] .sq-chat-form,
+[data-theme="dark"] .sq-chat-suggestions {
+    background: var(--sq-bg-surface);
+}
+
+[data-theme="dark"] .sq-chat-message-assistant .sq-chat-bubble {
+    background: var(--sq-color-gray-800);
+    color: var(--sq-text-primary);
+}
+
+/* ==========================================================
+   Responsive
+========================================================== */
+
+@media (max-width:768px) {
+
+    .sq-chat-widget {
+        right: 12px;
+        bottom: 12px;
+    }
+
+    .sq-chat-panel {
+        right: 0;
+        bottom: 72px;
+        width: calc(100vw - 24px);
+        height: calc(100vh - 110px);
+    }
+
+    .sq-chat-fab {
+        width: 58px;
+        height: 58px;
+    }
+
+}
+
+/* ==========================================================
+   Print
+========================================================== */
+
+@media print {
+
+    .sq-chat-widget {
+        display: none !important;
+    }
+
+}

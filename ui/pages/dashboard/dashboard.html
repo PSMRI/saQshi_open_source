@@ -1,0 +1,510 @@
+<!--
+==========================================================
+SaQshi Dashboard Page
+----------------------------------------------------------
+Project   : SaQshi Open Source
+Page      : Dashboard
+File      : dashboard.html
+License   : MIT
+==========================================================
+
+NOTE
+
+This file contains ONLY dashboard page content.
+
+It is loaded inside:
+
+layouts/dashboard.html
+
+Do NOT add:
+
+<html>
+<head>
+<body>
+
+==========================================================
+-->
+
+<section class="sq-dashboard">
+    <h2 class="sq-sr-only">Dashboard Overview</h2>
+
+    <!-- ==========================================
+         KPI Cards
+    =========================================== -->
+
+    <div class="sq-grid sq-grid-4">
+
+        <div class="sq-metric-card sq-metric-primary">
+
+            <div class="sq-metric-title">
+
+                Total Assessments
+
+            </div>
+
+            <div
+                class="sq-metric-value"
+                id="metric-total-assessments">
+
+                0
+
+            </div>
+
+        </div>
+
+        <div class="sq-metric-card sq-metric-success">
+
+            <div class="sq-metric-title">
+
+                Completed
+
+            </div>
+
+            <div
+                class="sq-metric-value"
+                id="metric-completed">
+
+                0
+
+            </div>
+
+        </div>
+
+        <div class="sq-metric-card sq-metric-warning">
+
+            <div class="sq-metric-title">
+
+                In Progress
+
+            </div>
+
+            <div
+                class="sq-metric-value"
+                id="metric-in-progress">
+
+                0
+
+            </div>
+
+        </div>
+
+        <div class="sq-metric-card sq-metric-danger">
+
+            <div class="sq-metric-title">
+
+                Open Gaps
+
+            </div>
+
+            <div
+                class="sq-metric-value"
+                id="metric-open-gaps">
+
+                0
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ==========================================
+         Dashboard Row
+    =========================================== -->
+
+    <div class="sq-grid sq-grid-2 sq-mt-5">
+
+        <!-- Assessment -->
+
+        <div class="sq-card">
+
+            <div class="sq-card-header">
+
+                <div>
+
+                    <div class="sq-card-title">
+
+                        Active Assessment
+
+                    </div>
+
+                    <div class="sq-card-subtitle">
+
+                        Current assessment status
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div
+                class="sq-card-body"
+                id="active-assessment-card">
+
+                <div class="sq-empty-message">
+
+                    No assessment available.
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Progress -->
+
+        <div class="sq-card">
+
+            <div class="sq-card-header">
+
+                <div>
+
+                    <div class="sq-card-title">
+
+                        Assessment Progress
+
+                    </div>
+
+                    <div class="sq-card-subtitle">
+
+                        Overall completion
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="sq-card-body">
+
+                <div class="sq-progress-label">
+
+                    <span>
+
+                        Progress
+
+                    </span>
+
+                    <span
+                        id="overall-progress-text">
+
+                        0%
+
+                    </span>
+
+                </div>
+
+                <div class="sq-progress">
+
+                    <div
+                        class="sq-progress-bar"
+                        id="overall-progress-bar"
+                        style="width:0%">
+
+                    </div>
+
+                </div>
+
+                <div class="sq-grid sq-grid-3 sq-mt-4">
+
+                    <div>
+
+                        <div class="sq-text-muted">
+
+                            Departments
+
+                        </div>
+
+                        <strong id="active-departments">
+
+                            0
+
+                        </strong>
+
+                    </div>
+
+                    <div>
+
+                        <div class="sq-text-muted">
+
+                            Completed
+
+                        </div>
+
+                        <strong id="completed-departments">
+
+                            0
+
+                        </strong>
+
+                    </div>
+
+                    <div>
+
+                        <div class="sq-text-muted">
+
+                            Pending
+
+                        </div>
+
+                        <strong id="pending-departments">
+
+                            0
+
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ==========================================
+         Score & Checkpoint Analytics
+    =========================================== -->
+
+    <div class="sq-grid sq-grid-2 sq-mt-5">
+
+        <div class="sq-card">
+
+            <div class="sq-card-header">
+
+                <div>
+
+                    <div class="sq-card-title">Score Analytics</div>
+
+                    <div class="sq-card-subtitle">Baseline, final score and improvement</div>
+
+                </div>
+
+            </div>
+
+            <div class="sq-card-body">
+
+                <div class="sq-score-metrics">
+                    <div>
+                        <span>Baseline Score</span>
+                        <strong id="baseline-score">0%</strong>
+                    </div>
+                    <div>
+                        <span>Final Score</span>
+                        <strong id="final-score">0%</strong>
+                    </div>
+                    <div>
+                        <span>Improvement</span>
+                        <strong id="score-improvement">0%</strong>
+                    </div>
+                </div>
+
+                <div class="sq-dashboard-chart-row">
+                    <div>
+                        <div class="sq-mini-chart-title">Score Trend</div>
+                        <div id="score-trend-chart" class="sq-dashboard-chart"></div>
+                    </div>
+                    <div>
+                        <div class="sq-mini-chart-title">Score Split</div>
+                        <div id="score-pie-chart" class="sq-dashboard-chart"></div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="sq-card">
+
+            <div class="sq-card-header">
+
+                <div>
+
+                    <div class="sq-card-title">Final Progress</div>
+
+                    <div class="sq-card-subtitle">Progress after revised/final score</div>
+
+                </div>
+
+            </div>
+
+            <div class="sq-card-body">
+
+                <div id="final-progress-chart" class="sq-final-progress-chart"></div>
+
+                <div class="sq-grid sq-grid-3 sq-mt-4">
+                    <div>
+                        <div class="sq-text-muted">Answered</div>
+                        <strong id="answered-checkpoints">0</strong>
+                    </div>
+                    <div>
+                        <div class="sq-text-muted">Updated</div>
+                        <strong id="revised-checkpoints">0</strong>
+                    </div>
+                    <div>
+                        <div class="sq-text-muted">Gain</div>
+                        <strong id="score-gain">0</strong>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="sq-card sq-mt-5">
+
+        <div class="sq-card-header">
+
+            <div>
+
+                <div class="sq-card-title">Outcome Data Entry Status</div>
+
+                <div class="sq-card-subtitle">Months where facility has filled outcome indicators</div>
+
+            </div>
+
+            <a href="#" data-sq-route="performance/trend" class="sq-btn sq-btn-outline-primary sq-btn-sm">
+                View Trend
+            </a>
+
+        </div>
+
+        <div class="sq-card-body">
+
+            <div class="sq-outcome-month-summary">
+                <div>
+                    <span>Outcome Months Filled</span>
+                    <strong id="outcome-month-count">0</strong>
+                </div>
+                <div>
+                    <span>Outcome Entries</span>
+                    <strong id="outcome-entry-count">0</strong>
+                </div>
+                <div>
+                    <span>Latest Outcome Month</span>
+                    <strong id="outcome-latest-month">-</strong>
+                </div>
+            </div>
+
+            <div id="outcome-month-list" class="sq-outcome-month-list">
+                <div class="sq-empty-message">No outcome data filled yet.</div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="sq-card sq-mt-5">
+
+        <div class="sq-card-header">
+
+            <div>
+
+                <div class="sq-card-title">Area of Concern Checkpoints</div>
+
+                <div class="sq-card-subtitle">Completed and pending checkpoint status</div>
+
+            </div>
+
+        </div>
+
+        <div class="sq-card-body">
+
+            <div id="area-concern-status" class="sq-area-status-list">
+                <div class="sq-empty-message">No area of concern status available.</div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ==========================================
+         Recent Assessments
+    =========================================== -->
+
+    <div class="sq-card sq-mt-5">
+
+        <div class="sq-card-header">
+
+            <div>
+
+                <div class="sq-card-title">
+
+                    Recent Assessments
+
+                </div>
+
+                <div class="sq-card-subtitle">
+
+                    Latest assessment activity
+
+                </div>
+
+            </div>
+
+            <button
+                class="sq-btn sq-btn-outline-primary">
+
+                View All
+
+            </button>
+
+        </div>
+
+        <div class="sq-card-body sq-p-0">
+
+            <div class="sq-table-wrapper">
+
+                <table class="sq-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Assessment</th>
+
+                            <th>Framework</th>
+
+                            <th>Status</th>
+
+                            <th>Start Date</th>
+
+                            <th>End Date</th>
+
+                            <th>Score</th>
+
+                            <th>Action</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="recent-assessment-list">
+
+                        <tr>
+
+                            <td
+                                colspan="6"
+                                class="sq-text-center">
+
+                                Loading...
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>

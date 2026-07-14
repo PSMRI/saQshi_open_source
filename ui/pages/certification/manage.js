@@ -1,0 +1,1 @@
+/* Certification manage logic is bundled in dashboard.js for SPA reuse. */

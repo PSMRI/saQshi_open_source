@@ -1,0 +1,14 @@
+{
+  "id": "performance-trend",
+  "name": "Trend",
+  "title": "Performance Trend",
+  "layout": "dashboard",
+  "pageHeader": {"title": "Performance Trend", "subtitle": "KPI and outcome trends over time."},
+  "authentication": {"required": true},
+  "assets": {
+    "css": ["/ui/pages/performance/trend.css?v=20260706-1"],
+    "js": ["/ui/pages/performance/trend.js?v=20260713-1"]
+  },
+  "breadcrumb": [{"label": "Dashboard", "url": "/ui/dashboard.html"}, {"label": "Performance"}, {"label": "Trend"}],
+  "moduleName": "performanceTrend"
+}

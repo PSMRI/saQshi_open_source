@@ -1,0 +1,382 @@
+/*!
+ * ==========================================================
+ * SQ-UI Framework v1.0
+ * ----------------------------------------------------------
+ * Project : SaQshi Open Source
+ * File    : sq-ui.css
+ * Purpose : Main CSS entry file importing all SQ-UI styles
+ * License : MIT
+ * ==========================================================
+ */
+
+/* ==========================================================
+   Base
+========================================================== */
+
+@import url("../css/base/reset.css");
+@import url("../css/base/variables.css");
+@import url("../css/base/typography.css");
+
+/* ==========================================================
+   Layout
+========================================================== */
+
+@import url("../css/layout/layout.css");
+
+/* ==========================================================
+   Components
+========================================================== */
+
+@import url("components/button.css");
+@import url("components/card.css");
+@import url("components/badge.css");
+@import url("components/alert.css");
+@import url("components/progress.css");
+@import url("components/chat.css");
+
+/* ==========================================================
+   Forms & Tables
+========================================================== */
+
+@import url("components/forms.css");
+@import url("components/tables.css");
+
+/* ==========================================================
+   Utilities
+========================================================== */
+
+@import url("../css/utilities/utilities.css");
+
+/* ==========================================================
+   Application-level Defaults
+========================================================== */
+@import url("themes/light.css?v=20260702-17");
+@import url("themes/dark.css?v=20260702-17");
+html {
+    scroll-behavior: smooth;
+}
+
+html[data-font-size="small"] {
+    font-size: 15px;
+}
+
+html[data-font-size="normal"],
+html:not([data-font-size]) {
+    font-size: 16px;
+}
+
+html[data-font-size="large"] {
+    font-size: 18px;
+}
+
+html[data-font-size="xlarge"] {
+    font-size: 20px;
+}
+
+body {
+    background: var(--sq-bg-body);
+    color: var(--sq-text-primary);
+    font-family: var(--sq-font-family-sans);
+    font-size: 12px;
+}
+
+html[data-font-size="small"] body {
+    font-size: 12px;
+}
+
+html[data-font-size="normal"] body,
+html:not([data-font-size]) body {
+    font-size: 12px;
+}
+
+html[data-font-size="large"] body {
+    font-size: 14px;
+}
+
+html[data-font-size="xlarge"] body {
+    font-size: 16px;
+}
+
+/* ==========================================================
+   App Compact Density
+========================================================== */
+
+.sq-card-header {
+    padding: .55rem .7rem !important;
+    gap: .45rem !important;
+}
+
+.sq-card-body {
+    padding: .65rem .7rem !important;
+}
+
+.sq-card-footer {
+    padding: .55rem .7rem !important;
+}
+
+.sq-card-title {
+    font-size: .95rem !important;
+}
+
+.sq-card-subtitle {
+    margin-top: .1rem !important;
+    font-size: .72rem !important;
+}
+
+.sq-btn {
+    min-height: 30px !important;
+    padding: 5px 10px !important;
+    border-radius: 7px !important;
+    font-size: .75rem !important;
+}
+
+.sq-form-group {
+    gap: .3rem !important;
+    margin-bottom: .6rem !important;
+}
+
+.sq-form-control,
+.sq-input,
+.sq-select {
+    min-height: 31px !important;
+    padding: .35rem .55rem !important;
+    border-radius: 7px !important;
+    font-size: .78rem !important;
+}
+
+.sq-textarea,
+textarea.sq-form-control {
+    min-height: 54px !important;
+}
+
+.sq-label,
+.sq-form-label {
+    font-size: .72rem !important;
+}
+
+.sq-help-text {
+    font-size: .68rem !important;
+}
+
+.sq-alert-content {
+    padding: .55rem .65rem !important;
+}
+
+.sq-alert-title {
+    margin-bottom: .15rem !important;
+    font-size: .8rem !important;
+}
+
+.sq-alert-text {
+    font-size: .72rem !important;
+}
+
+.sq-table {
+    font-size: .72rem !important;
+}
+
+.sq-table th,
+.sq-table td {
+    padding: .4rem .55rem !important;
+}
+
+.sq-badge,
+.sq-status-badge {
+    min-height: 22px !important;
+    padding: 0 .45rem !important;
+    font-size: .68rem !important;
+}
+
+.sq-dashboard .sq-metric-card {
+    min-height: 58px !important;
+    padding: .55rem .7rem !important;
+}
+
+.sq-dashboard .sq-grid {
+    gap: .65rem !important;
+}
+
+.sq-dashboard .sq-mt-4,
+.sq-dashboard .sq-mt-5 {
+    margin-top: .65rem !important;
+}
+
+.sq-dashboard .sq-card-header {
+    padding: .5rem .65rem !important;
+}
+
+.sq-dashboard .sq-card-body {
+    padding: .6rem .65rem !important;
+}
+
+.sq-chat-toggle,
+.sq-help-button,
+[data-sq-chat-toggle] {
+    width: 34px !important;
+    height: 34px !important;
+    font-size: .9rem !important;
+}
+
+.sq-footer {
+    min-height: 28px !important;
+    padding: .25rem .7rem !important;
+    font-size: .68rem !important;
+}
+
+/* ==========================================================
+   Dark Theme Final Contrast Guard
+========================================================== */
+
+[data-theme="dark"] .sq-form-control,
+[data-theme="dark"] .sq-input,
+[data-theme="dark"] .sq-select,
+[data-theme="dark"] select,
+[data-theme="dark"] input,
+[data-theme="dark"] textarea {
+    background-color: #0f172a !important;
+    color: #f8fafc !important;
+    border-color: #50627f !important;
+}
+
+[data-theme="dark"] .sq-form-control:focus,
+[data-theme="dark"] .sq-input:focus,
+[data-theme="dark"] .sq-select:focus,
+[data-theme="dark"] select:focus,
+[data-theme="dark"] input:focus,
+[data-theme="dark"] textarea:focus {
+    background-color: #111c31 !important;
+    color: #ffffff !important;
+    border-color: #93c5fd !important;
+}
+
+[data-theme="dark"] .sq-form-control option,
+[data-theme="dark"] .sq-select option,
+[data-theme="dark"] select option {
+    background-color: #0f172a !important;
+    color: #f8fafc !important;
+}
+
+[data-theme="dark"] .sq-form-control::placeholder,
+[data-theme="dark"] .sq-input::placeholder,
+[data-theme="dark"] textarea::placeholder {
+    color: #a9b6c8 !important;
+}
+
+[data-theme="dark"] .sq-btn-light {
+    background-color: #26344f !important;
+    border-color: #50627f !important;
+    color: #f8fafc !important;
+}
+
+[data-theme="dark"] .sq-btn-light:hover,
+[data-theme="dark"] .sq-btn-light:focus {
+    background-color: #33445f !important;
+    border-color: #6b7f9d !important;
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .sq-btn:disabled,
+[data-theme="dark"] .sq-btn[disabled] {
+    background-color: #1e293b !important;
+    border-color: #33445f !important;
+    color: #a9b6c8 !important;
+    opacity: 1 !important;
+}
+
+/* ==========================================================
+   Accessibility Defaults
+========================================================== */
+
+.sq-skip-link {
+    position: fixed;
+    top: 0.5rem;
+    left: 0.5rem;
+    z-index: 10000;
+    transform: translateY(-150%);
+    border: 2px solid var(--sq-color-primary, #2563eb);
+    border-radius: 0.5rem;
+    background: var(--sq-bg-surface, #ffffff);
+    color: var(--sq-color-primary, #2563eb);
+    padding: 0.55rem 0.8rem;
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow: var(--sq-shadow-lg, 0 10px 20px rgba(15, 23, 42, 0.16));
+}
+
+.sq-skip-link:focus,
+.sq-skip-link:focus-visible {
+    transform: translateY(0);
+    outline: var(--sq-focus-ring-width) solid var(--sq-focus-ring-color);
+    outline-offset: var(--sq-focus-ring-offset);
+}
+
+html[data-screen-reader-mode="true"] {
+    --sq-focus-ring-width: 4px;
+    --sq-focus-ring-color: #f59e0b;
+}
+
+html[data-screen-reader-mode="true"] body {
+    line-height: 1.6;
+}
+
+html[data-screen-reader-mode="true"] a {
+    text-decoration: underline;
+    text-underline-offset: 0.16em;
+}
+
+html[data-screen-reader-mode="true"] :focus-visible {
+    outline-color: #f59e0b;
+    outline-width: 4px;
+    outline-offset: 3px;
+}
+
+html[data-screen-reader-mode="true"] .sq-card,
+html[data-screen-reader-mode="true"] .sq-panel,
+html[data-screen-reader-mode="true"] .sq-table,
+html[data-screen-reader-mode="true"] .sq-form-control,
+html[data-screen-reader-mode="true"] .sq-input,
+html[data-screen-reader-mode="true"] .sq-select,
+html[data-screen-reader-mode="true"] textarea,
+html[data-screen-reader-mode="true"] input,
+html[data-screen-reader-mode="true"] select {
+    border-color: var(--sq-color-gray-700, #334155) !important;
+}
+
+:focus-visible {
+    outline: var(--sq-focus-ring-width) solid var(--sq-focus-ring-color);
+    outline-offset: var(--sq-focus-ring-offset);
+}
+
+/* ==========================================================
+   Reduced Motion
+========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ==========================================================
+   Print Defaults
+========================================================== */
+
+@media print {
+    body {
+        background: #ffffff !important;
+        color: #000000 !important;
+    }
+
+    a {
+        color: #000000 !important;
+        text-decoration: underline;
+    }
+}

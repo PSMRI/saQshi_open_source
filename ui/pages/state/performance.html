@@ -1,0 +1,21 @@
+<!-- SaQshi Open Source | State Performance Monitoring | performance.html | Version 1.0.0 -->
+<section class="sq-state-page">
+    <div class="sq-state-toolbar">
+        <div>
+            <h3>Performance Monitoring</h3>
+            <p>Facility-wise KPI and Outcome submission status.</p>
+        </div>
+        <div class="sq-state-filters">
+            <input type="search" class="sq-form-control" id="statePerfSearch" placeholder="Search facility or NIN" aria-label="Search Facility Or NIN">
+            <button class="sq-btn sq-btn-primary" id="statePerfRefresh">Refresh</button>
+        </div>
+    </div>
+    <div class="sq-state-kpis" id="statePerfSummary"></div>
+    <div class="sq-card">
+        <div class="sq-card-header">
+            <h3>Facility Performance Details</h3>
+            <div id="statePerfPager"></div>
+        </div>
+        <div class="sq-card-body" id="statePerfRows"></div>
+    </div>
+</section>

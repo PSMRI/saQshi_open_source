@@ -1,0 +1,401 @@
+/*!
+ * ==========================================================
+ * SQ Loader Component v1.0
+ * ----------------------------------------------------------
+ * Project   : SaQshi Open Source
+ * Component : Global Loader
+ * File      : loader.css
+ * License   : MIT
+ * ==========================================================
+ *
+ * Features
+ * ----------------------------------------------------------
+ * ✔ Full Screen Overlay
+ * ✔ Multiple Loading Modes
+ * ✔ Progress Bar
+ * ✔ Animated Spinner
+ * ✔ AI Ready
+ * ✔ WCAG 2.2 AA
+ * ✔ Responsive
+ * ✔ Dark Theme
+ * ==========================================================
+*/
+
+/* ==========================================================
+   Loader Container
+========================================================== */
+
+.sq-loader{
+
+    position:fixed;
+
+    inset:0;
+
+    display:none;
+
+    align-items:center;
+
+    justify-content:center;
+
+    z-index:99999;
+
+}
+
+.sq-loader.active{
+
+    display:flex;
+
+}
+
+/* ==========================================================
+   Overlay
+========================================================== */
+
+.sq-loader-overlay{
+
+    position:absolute;
+
+    inset:0;
+
+    background:rgba(0,0,0,.45);
+
+    backdrop-filter:blur(4px);
+
+}
+
+/* ==========================================================
+   Window
+========================================================== */
+
+.sq-loader-window{
+
+    position:relative;
+
+    width:420px;
+
+    max-width:90vw;
+
+    background:var(--sq-bg-surface);
+
+    border-radius:18px;
+
+    box-shadow:var(--sq-shadow-xl);
+
+    padding:2rem;
+
+    text-align:center;
+
+    border:1px solid var(--sq-border);
+
+    animation:sqLoaderFade .25s ease;
+
+}
+
+/* ==========================================================
+   Animation
+========================================================== */
+
+@keyframes sqLoaderFade{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(-20px) scale(.95);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:none;
+
+    }
+
+}
+
+/* ==========================================================
+   Spinner
+========================================================== */
+
+.sq-loader-spinner{
+
+    width:72px;
+
+    height:72px;
+
+    margin:0 auto 1.5rem;
+
+    position:relative;
+
+}
+
+.sq-loader-spinner span{
+
+    position:absolute;
+
+    inset:0;
+
+    border-radius:50%;
+
+    border:4px solid transparent;
+
+    border-top-color:var(--sq-color-primary);
+
+    animation:sqSpin 1.2s linear infinite;
+
+}
+
+.sq-loader-spinner span:nth-child(2){
+
+    border-top-color:var(--sq-color-success);
+
+    animation-duration:1.6s;
+
+}
+
+.sq-loader-spinner span:nth-child(3){
+
+    border-top-color:var(--sq-color-warning);
+
+    animation-duration:2s;
+
+}
+
+@keyframes sqSpin{
+
+    from{
+
+        transform:rotate(0deg);
+
+    }
+
+    to{
+
+        transform:rotate(360deg);
+
+    }
+
+}
+
+/* ==========================================================
+   Title
+========================================================== */
+
+.sq-loader-title{
+
+    font-size:1.2rem;
+
+    font-weight:700;
+
+    color:var(--sq-text-primary);
+
+    margin-bottom:.5rem;
+
+}
+
+/* ==========================================================
+   Message
+========================================================== */
+
+.sq-loader-message{
+
+    color:var(--sq-text-secondary);
+
+    font-size:.95rem;
+
+    margin-bottom:1.25rem;
+
+}
+
+/* ==========================================================
+   Progress
+========================================================== */
+
+.sq-loader-progress{
+
+    width:100%;
+
+    height:10px;
+
+    background:var(--sq-bg-muted);
+
+    border-radius:999px;
+
+    overflow:hidden;
+
+    margin-bottom:.75rem;
+
+}
+
+.sq-loader-progress-bar{
+
+    width:0%;
+
+    height:100%;
+
+    background:linear-gradient(
+        90deg,
+        var(--sq-color-primary),
+        var(--sq-color-success)
+    );
+
+    transition:width .3s ease;
+
+}
+
+/* ==========================================================
+   Percentage
+========================================================== */
+
+.sq-loader-percentage{
+
+    font-size:.9rem;
+
+    font-weight:600;
+
+    color:var(--sq-text-primary);
+
+    margin-bottom:.75rem;
+
+}
+
+/* ==========================================================
+   Details
+========================================================== */
+
+.sq-loader-details{
+
+    min-height:20px;
+
+    color:var(--sq-text-muted);
+
+    font-size:.85rem;
+
+}
+
+/* ==========================================================
+   Success
+========================================================== */
+
+.sq-loader.success .sq-loader-spinner{
+
+    display:none;
+
+}
+
+.sq-loader.success .sq-loader-title{
+
+    color:var(--sq-color-success);
+
+}
+
+/* ==========================================================
+   Error
+========================================================== */
+
+.sq-loader.error .sq-loader-spinner{
+
+    display:none;
+
+}
+
+.sq-loader.error .sq-loader-title{
+
+    color:var(--sq-color-danger);
+
+}
+
+/* ==========================================================
+   Dark Theme
+========================================================== */
+
+[data-theme="dark"] .sq-loader-window{
+
+    background:var(--sq-bg-surface);
+
+    border-color:var(--sq-border);
+
+}
+
+[data-theme="dark"] .sq-loader-overlay{
+
+    background:rgba(0,0,0,.65);
+
+}
+
+/* ==========================================================
+   Mobile
+========================================================== */
+
+@media (max-width:768px){
+
+    .sq-loader-window{
+
+        width:95vw;
+
+        padding:1.5rem;
+
+    }
+
+    .sq-loader-spinner{
+
+        width:60px;
+
+        height:60px;
+
+    }
+
+}
+
+/* ==========================================================
+   Accessibility
+========================================================== */
+
+@media (prefers-reduced-motion: reduce){
+
+    .sq-loader-spinner span{
+
+        animation:none;
+
+    }
+
+    .sq-loader-window{
+
+        animation:none;
+
+    }
+
+    .sq-loader-progress-bar{
+
+        transition:none;
+
+    }
+
+}
+
+/* ==========================================================
+   Print
+========================================================== */
+
+@media print{
+
+    .sq-loader{
+
+        display:none !important;
+
+    }
+
+}
+.sq-loader:not(.active) {
+    display: none !important;
+    pointer-events: none !important;
+    visibility: hidden !important;
+}
+
+.sq-loader.active {
+    display: flex !important;
+    pointer-events: auto !important;
+    visibility: visible !important;
+}

@@ -1,0 +1,503 @@
+/*!
+ * ==========================================================
+ * SQ-UI Forms CSS v1.0
+ * ----------------------------------------------------------
+ * Project   : SaQshi Open Source
+ * Component : Forms / Inputs / Select / Radio / Checkbox
+ * Standard  : HTML5 + CSS3 + WCAG 2.2 AA
+ * License   : MIT
+ * ==========================================================
+ */
+
+/* ==========================================================
+   Form Layout
+========================================================== */
+
+.sq-form {
+    width: 100%;
+}
+
+.sq-form-row {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--sq-space-4);
+    margin-bottom: var(--sq-space-4);
+}
+
+.sq-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sq-space-2);
+    margin-bottom: var(--sq-space-4);
+}
+
+.sq-form-col-12 { grid-column: span 12; }
+.sq-form-col-10 { grid-column: span 10; }
+.sq-form-col-9  { grid-column: span 9; }
+.sq-form-col-8  { grid-column: span 8; }
+.sq-form-col-7  { grid-column: span 7; }
+.sq-form-col-6  { grid-column: span 6; }
+.sq-form-col-5  { grid-column: span 5; }
+.sq-form-col-4  { grid-column: span 4; }
+.sq-form-col-3  { grid-column: span 3; }
+.sq-form-col-2  { grid-column: span 2; }
+.sq-form-col-1  { grid-column: span 1; }
+
+/* ==========================================================
+   Label
+========================================================== */
+
+.sq-label {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sq-space-1);
+    font-size: var(--sq-font-size-sm);
+    font-weight: var(--sq-font-weight-semibold);
+    color: var(--sq-text-primary);
+}
+
+.sq-label-required::after {
+    content: "*";
+    color: var(--sq-color-danger);
+    margin-inline-start: var(--sq-space-1);
+}
+
+.sq-label-muted {
+    color: var(--sq-text-muted);
+    font-weight: var(--sq-font-weight-medium);
+}
+
+/* ==========================================================
+   Common Input Base
+========================================================== */
+
+.sq-input,
+.sq-select,
+.sq-textarea {
+    width: 100%;
+    min-height: var(--sq-input-height);
+    padding: var(--sq-input-padding-y) var(--sq-input-padding-x);
+    border: 1px solid var(--sq-input-border);
+    border-radius: var(--sq-input-radius);
+    background: var(--sq-input-bg);
+    color: var(--sq-input-text);
+    font-size: var(--sq-font-size-sm);
+    line-height: var(--sq-line-height-normal);
+    transition:
+        border-color var(--sq-transition-fast),
+        box-shadow var(--sq-transition-fast),
+        background-color var(--sq-transition-fast);
+}
+
+.sq-input::placeholder,
+.sq-textarea::placeholder {
+    color: var(--sq-input-placeholder);
+}
+
+.sq-input:hover,
+.sq-select:hover,
+.sq-textarea:hover {
+    border-color: var(--sq-border-strong);
+}
+
+.sq-input:focus,
+.sq-select:focus,
+.sq-textarea:focus {
+    border-color: var(--sq-border-focus);
+    box-shadow: var(--sq-shadow-focus);
+}
+
+.sq-input:disabled,
+.sq-select:disabled,
+.sq-textarea:disabled {
+    background: var(--sq-color-gray-100);
+    color: var(--sq-text-disabled);
+    cursor: not-allowed;
+}
+
+/* ==========================================================
+   Textarea
+========================================================== */
+
+.sq-textarea {
+    min-height: 6rem;
+    resize: vertical;
+}
+
+/* ==========================================================
+   Select
+========================================================== */
+
+.sq-select {
+    cursor: pointer;
+    padding-inline-end: 2.5rem;
+    background-image:
+        linear-gradient(45deg, transparent 50%, var(--sq-text-muted) 50%),
+        linear-gradient(135deg, var(--sq-text-muted) 50%, transparent 50%);
+    background-position:
+        calc(100% - 1.25rem) 50%,
+        calc(100% - 0.9rem) 50%;
+    background-size:
+        0.35rem 0.35rem,
+        0.35rem 0.35rem;
+    background-repeat: no-repeat;
+}
+
+[dir="rtl"] .sq-select {
+    padding-inline-end: var(--sq-input-padding-x);
+    padding-inline-start: 2.5rem;
+    background-position:
+        1.25rem 50%,
+        0.9rem 50%;
+}
+
+/* ==========================================================
+   Input Sizes
+========================================================== */
+
+.sq-input-sm,
+.sq-select-sm {
+    min-height: 2.25rem;
+    padding: var(--sq-space-2) var(--sq-space-3);
+    font-size: var(--sq-font-size-xs);
+}
+
+.sq-input-lg,
+.sq-select-lg {
+    min-height: 3.25rem;
+    padding: var(--sq-space-4) var(--sq-space-5);
+    font-size: var(--sq-font-size-md);
+}
+
+/* ==========================================================
+   Input States
+========================================================== */
+
+.sq-input-success,
+.sq-select-success,
+.sq-textarea-success {
+    border-color: var(--sq-color-success);
+}
+
+.sq-input-warning,
+.sq-select-warning,
+.sq-textarea-warning {
+    border-color: var(--sq-color-warning);
+}
+
+.sq-input-danger,
+.sq-select-danger,
+.sq-textarea-danger,
+.sq-is-invalid {
+    border-color: var(--sq-color-danger);
+}
+
+.sq-input-danger:focus,
+.sq-select-danger:focus,
+.sq-textarea-danger:focus,
+.sq-is-invalid:focus {
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.25);
+}
+
+/* ==========================================================
+   Input Group
+========================================================== */
+
+.sq-input-group {
+    display: flex;
+    align-items: stretch;
+    width: 100%;
+}
+
+.sq-input-group .sq-input,
+.sq-input-group .sq-select {
+    border-radius: 0;
+}
+
+.sq-input-group .sq-input:first-child,
+.sq-input-group .sq-select:first-child,
+.sq-input-addon:first-child {
+    border-top-left-radius: var(--sq-input-radius);
+    border-bottom-left-radius: var(--sq-input-radius);
+}
+
+.sq-input-group .sq-input:last-child,
+.sq-input-group .sq-select:last-child,
+.sq-input-addon:last-child {
+    border-top-right-radius: var(--sq-input-radius);
+    border-bottom-right-radius: var(--sq-input-radius);
+}
+
+.sq-input-addon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--sq-input-height);
+    padding: 0 var(--sq-space-4);
+    border: 1px solid var(--sq-input-border);
+    background: var(--sq-bg-muted);
+    color: var(--sq-text-muted);
+    font-size: var(--sq-font-size-sm);
+    white-space: nowrap;
+}
+
+/* ==========================================================
+   Checkbox and Radio
+========================================================== */
+
+.sq-check,
+.sq-radio {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sq-space-2);
+    cursor: pointer;
+    font-size: var(--sq-font-size-sm);
+    color: var(--sq-text-primary);
+}
+
+.sq-check input,
+.sq-radio input {
+    width: 1rem;
+    height: 1rem;
+    accent-color: var(--sq-color-primary);
+    cursor: pointer;
+}
+
+.sq-check input:disabled,
+.sq-radio input:disabled {
+    cursor: not-allowed;
+}
+
+.sq-check input:disabled + span,
+.sq-radio input:disabled + span {
+    color: var(--sq-text-disabled);
+    cursor: not-allowed;
+}
+
+.sq-check-group,
+.sq-radio-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sq-space-3);
+}
+
+/* ==========================================================
+   Switch
+========================================================== */
+
+.sq-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sq-space-2);
+    cursor: pointer;
+    font-size: var(--sq-font-size-sm);
+}
+
+.sq-switch input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.sq-switch-track {
+    position: relative;
+    width: 2.75rem;
+    height: 1.5rem;
+    border-radius: var(--sq-radius-pill);
+    background: var(--sq-color-gray-300);
+    transition: background-color var(--sq-transition-fast);
+}
+
+.sq-switch-thumb {
+    position: absolute;
+    top: 0.2rem;
+    left: 0.2rem;
+    width: 1.1rem;
+    height: 1.1rem;
+    border-radius: var(--sq-radius-circle);
+    background: var(--sq-color-white);
+    transition: transform var(--sq-transition-fast);
+    box-shadow: var(--sq-shadow-xs);
+}
+
+.sq-switch input:checked + .sq-switch-track {
+    background: var(--sq-color-primary);
+}
+
+.sq-switch input:checked + .sq-switch-track .sq-switch-thumb {
+    transform: translateX(1.25rem);
+}
+
+.sq-switch input:focus-visible + .sq-switch-track {
+    box-shadow: var(--sq-shadow-focus);
+}
+
+[dir="rtl"] .sq-switch-thumb {
+    left: auto;
+    right: 0.2rem;
+}
+
+[dir="rtl"] .sq-switch input:checked + .sq-switch-track .sq-switch-thumb {
+    transform: translateX(-1.25rem);
+}
+
+/* ==========================================================
+   File Upload
+========================================================== */
+
+.sq-file {
+    display: block;
+    width: 100%;
+}
+
+.sq-file input[type="file"] {
+    display: none;
+}
+
+.sq-file-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--sq-space-3);
+    min-height: 7rem;
+    padding: var(--sq-space-5);
+    border: 2px dashed var(--sq-border-strong);
+    border-radius: var(--sq-radius-default);
+    background: var(--sq-bg-muted);
+    color: var(--sq-text-muted);
+    text-align: center;
+    cursor: pointer;
+    transition:
+        border-color var(--sq-transition-fast),
+        background-color var(--sq-transition-fast);
+}
+
+.sq-file-box:hover,
+.sq-file-box:focus-visible {
+    border-color: var(--sq-color-primary);
+    background: var(--sq-color-primary-50);
+}
+
+/* ==========================================================
+   Search
+========================================================== */
+
+.sq-search {
+    position: relative;
+    width: 100%;
+}
+
+.sq-search .sq-input {
+    padding-inline-start: 2.5rem;
+}
+
+.sq-search-icon {
+    position: absolute;
+    inset-inline-start: var(--sq-space-4);
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--sq-text-muted);
+    pointer-events: none;
+}
+
+/* ==========================================================
+   Form Actions
+========================================================== */
+
+.sq-form-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--sq-space-2);
+    margin-top: var(--sq-space-5);
+    padding-top: var(--sq-space-4);
+    border-top: 1px solid var(--sq-border);
+}
+
+.sq-form-actions-left {
+    justify-content: flex-start;
+}
+
+.sq-form-actions-between {
+    justify-content: space-between;
+}
+
+/* ==========================================================
+   Inline Form
+========================================================== */
+
+.sq-form-inline {
+    display: flex;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: var(--sq-space-3);
+}
+
+/* ==========================================================
+   Dark Theme Adjustments
+========================================================== */
+
+[data-theme="dark"] .sq-input:disabled,
+[data-theme="dark"] .sq-select:disabled,
+[data-theme="dark"] .sq-textarea:disabled {
+    background: var(--sq-color-gray-800);
+}
+
+[data-theme="dark"] .sq-file-box:hover,
+[data-theme="dark"] .sq-file-box:focus-visible {
+    background: rgba(37, 99, 235, 0.15);
+}
+
+/* ==========================================================
+   Responsive
+========================================================== */
+
+@media (max-width: 768px) {
+    .sq-form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .sq-form-col-12,
+    .sq-form-col-10,
+    .sq-form-col-9,
+    .sq-form-col-8,
+    .sq-form-col-7,
+    .sq-form-col-6,
+    .sq-form-col-5,
+    .sq-form-col-4,
+    .sq-form-col-3,
+    .sq-form-col-2,
+    .sq-form-col-1 {
+        grid-column: span 1;
+    }
+
+    .sq-form-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .sq-form-inline {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
+/* ==========================================================
+   Print
+========================================================== */
+
+@media print {
+    .sq-input,
+    .sq-select,
+    .sq-textarea {
+        border: 1px solid #000 !important;
+        background: #fff !important;
+        color: #000 !important;
+        box-shadow: none !important;
+    }
+
+    .sq-form-actions,
+    .sq-file-box {
+        display: none !important;
+    }
+}

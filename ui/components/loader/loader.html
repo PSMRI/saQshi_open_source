@@ -1,0 +1,102 @@
+<!--
+==========================================================
+SQ Loader Component
+----------------------------------------------------------
+Project   : SaQshi Open Source
+Component : Global Loader
+File      : loader.html
+License   : MIT
+==========================================================
+
+Usage
+
+SQ.loader.show();
+
+SQ.loader.hide();
+
+SQ.loader.message("Loading Assessment...");
+
+==========================================================
+-->
+
+<div
+    id="sq-loader"
+    class="sq-loader"
+    role="status"
+    aria-live="polite"
+    aria-hidden="true">
+
+    <!-- Overlay -->
+
+    <div class="sq-loader-overlay"></div>
+
+    <!-- Loader Window -->
+
+    <div class="sq-loader-window">
+
+        <!-- Animated Spinner -->
+
+        <div
+            class="sq-loader-spinner"
+            aria-hidden="true">
+
+            <span></span>
+            <span></span>
+            <span></span>
+
+        </div>
+
+        <!-- Title -->
+
+        <div
+            id="sq-loader-title"
+            class="sq-loader-title">
+
+            Please Wait
+
+        </div>
+
+        <!-- Message -->
+
+        <div
+            class="sq-loader-message"
+            id="sq-loader-message">
+
+            Loading...
+
+        </div>
+
+        <!-- Progress -->
+
+        <div
+            class="sq-loader-progress">
+
+            <div
+                id="sq-loader-progress-bar"
+                class="sq-loader-progress-bar">
+
+            </div>
+
+        </div>
+
+        <!-- Percentage -->
+
+        <div
+            class="sq-loader-percentage"
+            id="sq-loader-percentage">
+
+            0%
+
+        </div>
+
+        <!-- Optional Details -->
+
+        <div
+            class="sq-loader-details"
+            id="sq-loader-details">
+
+        </div>
+
+    </div>
+
+</div>

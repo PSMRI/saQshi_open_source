@@ -1,0 +1,267 @@
+/*!
+ * ==========================================================
+ * SQ Breadcrumb Component v1.0
+ * ----------------------------------------------------------
+ * Project   : SaQshi Open Source
+ * Component : Breadcrumb
+ * File      : breadcrumb.css
+ * License   : MIT
+ * ==========================================================
+ *
+ * Features
+ * ----------------------------------------------------------
+ * ✔ Responsive
+ * ✔ WCAG 2.2 AA
+ * ✔ Dark Theme
+ * ✔ Keyboard Accessible
+ * ✔ Print Friendly
+ * ==========================================================
+*/
+
+/* ==========================================================
+   Container
+========================================================== */
+
+.sq-breadcrumb-container{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    width:100%;
+
+    padding:.45rem 1rem;
+
+    background:var(--sq-bg-surface);
+
+    border-bottom:1px solid var(--sq-border);
+
+}
+
+/* ==========================================================
+   List
+========================================================== */
+
+.sq-breadcrumb{
+
+    display:flex;
+
+    align-items:center;
+
+    flex-wrap:wrap;
+
+    gap:.35rem;
+
+    list-style:none;
+
+    margin:0;
+
+    padding:0;
+
+}
+
+/* ==========================================================
+   Item
+========================================================== */
+
+.sq-breadcrumb-item{
+
+    display:flex;
+
+    align-items:center;
+
+    font-size:.75rem;
+
+    color:var(--sq-text-secondary);
+
+}
+
+/* ==========================================================
+   Separator
+========================================================== */
+
+.sq-breadcrumb-item:not(:last-child)::after{
+
+    content:"/";
+
+    margin-left:.35rem;
+
+    color:var(--sq-text-muted);
+
+}
+
+/* ==========================================================
+   Links
+========================================================== */
+
+.sq-breadcrumb-item a{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:.3rem;
+
+    text-decoration:none;
+
+    color:var(--sq-text-secondary);
+
+    transition:all .20s ease;
+
+}
+
+.sq-breadcrumb-item a:hover{
+
+    color:var(--sq-color-primary);
+
+}
+
+.sq-breadcrumb-item a:focus-visible{
+
+    outline:2px solid var(--sq-color-primary);
+
+    outline-offset:2px;
+
+    border-radius:4px;
+
+}
+
+/* ==========================================================
+   Current Page
+========================================================== */
+
+.sq-breadcrumb-item[aria-current="page"],
+
+.sq-breadcrumb-item.active{
+
+    font-weight:600;
+
+    color:var(--sq-text-primary);
+
+}
+
+.sq-breadcrumb-item.active::after{
+
+    display:none;
+
+}
+
+/* ==========================================================
+   Icon
+========================================================== */
+
+.sq-breadcrumb-item i{
+
+    font-size:.78rem;
+
+}
+
+/* ==========================================================
+   Home
+========================================================== */
+
+.sq-breadcrumb-home{
+
+    color:var(--sq-color-primary);
+
+}
+
+/* ==========================================================
+   Responsive
+========================================================== */
+
+@media (max-width:768px){
+
+    .sq-breadcrumb-container{
+
+        padding:.75rem 1rem;
+
+    }
+
+    .sq-breadcrumb{
+
+        font-size:.80rem;
+
+        gap:.35rem;
+
+    }
+
+    .sq-breadcrumb-item:not(:last-child)::after{
+
+        margin-left:.35rem;
+
+    }
+
+}
+
+@media (max-width:576px){
+
+    .sq-breadcrumb{
+
+        white-space:nowrap;
+
+        overflow-x:auto;
+
+        flex-wrap:nowrap;
+
+        scrollbar-width:thin;
+
+    }
+
+    .sq-breadcrumb::-webkit-scrollbar{
+
+        height:6px;
+
+    }
+
+    .sq-breadcrumb::-webkit-scrollbar-thumb{
+
+        background:var(--sq-border);
+
+        border-radius:20px;
+
+    }
+
+}
+
+/* ==========================================================
+   Dark Theme
+========================================================== */
+
+[data-theme="dark"] .sq-breadcrumb-container{
+
+    background:var(--sq-bg-surface);
+
+    border-color:var(--sq-border);
+
+}
+
+[data-theme="dark"] .sq-breadcrumb-item{
+
+    color:var(--sq-text-secondary);
+
+}
+
+[data-theme="dark"] .sq-breadcrumb-item.active{
+
+    color:var(--sq-text-primary);
+
+}
+
+/* ==========================================================
+   Print
+========================================================== */
+
+@media print{
+
+    .sq-breadcrumb-container{
+
+        background:#ffffff;
+
+        border-bottom:1px solid #000;
+
+    }
+
+}

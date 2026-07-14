@@ -1,0 +1,201 @@
+/*!
+ * ==========================================================
+ * SaQshi Open Source
+ * Progress Report
+ * progress.css
+ * ==========================================================
+ */
+
+.sq-progress-report{
+    display:flex;
+    flex-direction:column;
+    gap:.6rem;
+}
+
+.sq-progress-report .sq-card-header{
+    padding:.45rem .6rem !important;
+}
+
+.sq-progress-report .sq-card-header h3{
+    margin:0;
+    font-size:.95rem;
+    line-height:1.1;
+}
+
+.sq-progress-report .sq-card-header p{
+    margin:.1rem 0 0;
+    color:var(--sq-text-muted);
+    font-size:.68rem;
+}
+
+.sq-progress-tools{
+    display:flex;
+    align-items:center;
+    gap:.4rem;
+    flex-wrap:wrap;
+}
+
+.sq-progress-tools .sq-form-control{
+    width:260px;
+    min-height:30px;
+    padding:.3rem .45rem;
+    font-size:.72rem;
+}
+
+.sq-progress-report .sq-btn{
+    min-height:30px !important;
+    padding:.32rem .6rem !important;
+    font-size:.72rem !important;
+}
+
+.sq-progress-context{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:.45rem;
+}
+
+.sq-progress-context div,
+.sq-progress-kpi{
+    padding:.5rem .6rem;
+    border:1px solid var(--sq-border);
+    border-radius:8px;
+    background:var(--sq-bg-surface);
+}
+
+.sq-progress-context span,
+.sq-progress-kpi span,
+.sq-progress-kpi small{
+    display:block;
+    color:var(--sq-text-muted);
+    font-size:.66rem;
+}
+
+.sq-progress-context strong{
+    display:block;
+    margin-top:.12rem;
+    color:var(--sq-text-primary);
+    font-size:.82rem;
+    overflow-wrap:anywhere;
+}
+
+.sq-progress-kpis{
+    display:grid;
+    grid-template-columns:repeat(5,minmax(120px,1fr));
+    gap:.5rem;
+}
+
+.sq-progress-kpi strong{
+    display:block;
+    margin:.12rem 0;
+    color:var(--sq-text-primary);
+    font-size:1.18rem;
+    line-height:1;
+}
+
+.sq-progress-filter{
+    width:150px;
+    min-height:30px;
+    padding:.3rem .45rem;
+    font-size:.72rem;
+}
+
+.sq-progress-table td,
+.sq-progress-table th{
+    padding:.45rem .55rem !important;
+    font-size:.72rem;
+}
+
+.sq-progress-dept strong{
+    display:block;
+    color:var(--sq-text-primary);
+    font-size:.74rem;
+}
+
+.sq-progress-subtext{
+    display:block;
+    margin-top:.08rem;
+    color:var(--sq-text-muted);
+    font-size:.63rem;
+}
+
+.sq-progress-status,
+.sq-progress-pill{
+    display:inline-flex;
+    align-items:center;
+    min-height:22px;
+    padding:0 .45rem;
+    border-radius:999px;
+    font-size:.66rem;
+    font-weight:800;
+}
+
+.sq-progress-status{
+    background:var(--sq-bg-muted);
+    color:var(--sq-text-secondary);
+}
+
+.sq-progress-status.is-completed{
+    background:var(--sq-color-success-50);
+    color:var(--sq-color-success-700);
+}
+
+.sq-progress-status.is-progress{
+    background:var(--sq-color-warning-50);
+    color:var(--sq-color-warning-700);
+}
+
+.sq-progress-status.is-not-started{
+    background:var(--sq-bg-muted);
+    color:var(--sq-text-muted);
+}
+
+.sq-progress-pill{
+    background:var(--sq-color-info-50);
+    color:var(--sq-color-info-700);
+}
+
+.sq-progress-pill.is-gap{
+    background:var(--sq-color-danger-50);
+    color:var(--sq-color-danger-700);
+}
+
+.sq-progress-bar-mini{
+    height:6px;
+    width:110px;
+    max-width:100%;
+    margin-top:.25rem;
+    overflow:hidden;
+    border-radius:999px;
+    background:var(--sq-border);
+}
+
+.sq-progress-bar-mini span{
+    display:block;
+    height:100%;
+    border-radius:inherit;
+    background:var(--sq-color-primary);
+}
+
+@media (max-width:1050px){
+    .sq-progress-kpis{
+        grid-template-columns:repeat(3,minmax(120px,1fr));
+    }
+
+    .sq-progress-context{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+    }
+}
+
+@media (max-width:700px){
+    .sq-progress-context,
+    .sq-progress-kpis{
+        grid-template-columns:1fr;
+    }
+
+    .sq-progress-tools,
+    .sq-progress-tools .sq-form-control,
+    .sq-progress-tools .sq-btn,
+    .sq-progress-filter{
+        width:100%;
+    }
+}

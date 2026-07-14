@@ -1,0 +1,110 @@
+<!--
+==========================================================
+SaQshi Action Plan Page
+----------------------------------------------------------
+Project : SaQshi Open Source
+Module  : CQI
+Page    : Action Plan
+File    : action-plan.html
+License : MIT
+==========================================================
+-->
+
+<div class="sq-page sq-action-plan-page">
+
+    <div class="sq-ap-summary">
+        <div class="sq-ap-stat">
+            <label>Total Plans</label>
+            <strong id="totalPlans">0</strong>
+        </div>
+        <div class="sq-ap-stat">
+            <label>Non Compliance</label>
+            <strong id="nonCompliantPlans">0</strong>
+        </div>
+        <div class="sq-ap-stat">
+            <label>Partial</label>
+            <strong id="partialPlans">0</strong>
+        </div>
+        <div class="sq-ap-stat">
+            <label>Achievable</label>
+            <strong id="achievablePlans">0</strong>
+        </div>
+        <div class="sq-ap-stat">
+            <label>Non Achievable</label>
+            <strong id="nonAchievablePlans">0</strong>
+        </div>
+    </div>
+
+    <div class="sq-card sq-ap-context-card">
+        <div class="sq-card-body">
+            <div class="sq-ap-context">
+                <div>
+                    <label>Assessment</label>
+                    <strong id="assessmentName">-</strong>
+                </div>
+                <div>
+                    <label>Status</label>
+                    <strong id="assessmentStatus">-</strong>
+                </div>
+                <div>
+                    <label>Framework</label>
+                    <strong id="assessmentFramework">-</strong>
+                </div>
+                <div>
+                    <label>Facility</label>
+                    <strong id="facilityName">-</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="sq-card">
+        <div class="sq-card-header">
+            <div>
+                <h3>Checkpoint Action Plans</h3>
+                <p>Use suggested plans or save facility-specific action plans.</p>
+            </div>
+
+            <div class="sq-ap-tools">
+                <select id="departmentFilter" class="sq-form-control" aria-label="Department Filter">
+                    <option value="">All Departments</option>
+                </select>
+
+                <select id="concernFilter" class="sq-form-control" aria-label="Concern Filter">
+                    <option value="">All Areas</option>
+                </select>
+
+                <select id="subtypeFilter" class="sq-form-control" aria-label="Subtype Filter">
+                    <option value="">All Subtypes</option>
+                </select>
+
+                <select id="typeFilter" class="sq-form-control" aria-label="Type Filter">
+                    <option value="">All Types</option>
+                    <option value="NON_COMPLIANT">Non Compliance</option>
+                    <option value="PARTIALLY_COMPLIANT">Partial Compliance</option>
+                </select>
+
+                <button type="button" class="sq-btn sq-btn-light" id="btnRefreshActionPlans">
+                    Refresh
+                </button>
+            </div>
+        </div>
+
+        <div class="sq-card-body">
+            <div class="sq-ap-progress">
+                <div>
+                    <strong id="currentPosition">0 / 0</strong>
+                    <span id="currentScopeText">Select scope to start action planning.</span>
+                </div>
+                <div class="sq-ap-progress-track">
+                    <span id="actionPlanProgressBar"></span>
+                </div>
+            </div>
+
+            <div id="actionPlanList" class="sq-ap-list">
+                <div class="sq-ap-empty">Loading action plans...</div>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,165 @@
+<!--
+==========================================================
+SaQshi Assessment Checklist Page
+----------------------------------------------------------
+Project : SaQshi Open Source
+Module  : Assessment
+Page    : Checklist
+File    : checklist.html
+License : MIT
+==========================================================
+-->
+
+<div class="sq-page sq-checklist-page">
+
+    <div class="sq-card">
+        <div class="sq-card-header">
+            <div>
+                <h2>Checklist Assessment</h2>
+                <p>Select scope and complete checkpoints one by one.</p>
+            </div>
+        </div>
+
+        <div class="sq-card-body">
+            <div class="sq-assessment-summary">
+                <div class="sq-summary-item">
+                    <label>Assessment</label>
+                    <span id="assessmentName">-</span>
+                </div>
+                <div class="sq-summary-item">
+                    <label>Status</label>
+                    <span id="assessmentStatus">-</span>
+                </div>
+                <div class="sq-summary-item">
+                    <label>Framework</label>
+                    <span id="assessmentFramework">-</span>
+                </div>
+                <div class="sq-summary-item">
+                    <label>Assessment ID</label>
+                    <span id="assessmentId">-</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="sq-card">
+        <div class="sq-card-header">
+            <div>
+                <h3>Checklist Scope</h3>
+                <p>Choose department, area of concern, subtype and optional assessment method.</p>
+            </div>
+        </div>
+
+        <div class="sq-card-body">
+            <div class="sq-filter-grid">
+                <div class="sq-form-group">
+                    <label for="deptSelect">Department</label>
+                    <select id="deptSelect" class="sq-form-control" aria-label="Dept Select">
+                        <option value="">Loading departments...</option>
+                    </select>
+                </div>
+
+                <div class="sq-form-group">
+                    <label for="concernSelect">Area of Concern</label>
+                    <select id="concernSelect" class="sq-form-control" disabled aria-label="Concern Select">
+                        <option value="">Select department first</option>
+                    </select>
+                </div>
+
+                <div class="sq-form-group">
+                    <label for="subtypeSelect">Subtype</label>
+                    <select id="subtypeSelect" class="sq-form-control" disabled aria-label="Subtype Select">
+                        <option value="">Select concern first</option>
+                    </select>
+                </div>
+
+                <div class="sq-form-group">
+                    <label for="methodSelect">Assessment Method</label>
+                    <select id="methodSelect" class="sq-form-control" disabled aria-label="Method Select">
+                        <option value="">All methods</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="sq-card-footer">
+            <button type="button" class="sq-btn sq-btn-primary" id="btnLoadCheckpoint">
+                Load Checkpoint
+            </button>
+        </div>
+    </div>
+
+    <div id="checklistState" class="sq-card">
+        <div class="sq-card-body">
+            <div class="sq-empty-state">Select scope to begin checklist.</div>
+        </div>
+    </div>
+
+    <div id="checkpointPanel" class="sq-card sq-hidden">
+        <div class="sq-card-header">
+            <div>
+                <h3 id="checkpointTitle">Checkpoint</h3>
+                <p id="checkpointMeta">-</p>
+            </div>
+        </div>
+
+        <div class="sq-card-body">
+            <div class="sq-progress-block">
+                <div class="sq-progress-label">
+                    <span id="progressText">Checkpoint 0 of 0</span>
+                    <span id="remainingText">Remaining 0</span>
+                </div>
+                <div class="sq-progress">
+                    <div class="sq-progress-bar" id="progressBar"></div>
+                </div>
+            </div>
+
+            <div class="sq-checkpoint-box">
+                <div class="sq-checkpoint-reference" id="checkpointReference">-</div>
+                <div class="sq-checkpoint-text" id="checkpointText">-</div>
+                <div class="sq-checkpoint-verification" id="checkpointVerification"></div>
+            </div>
+
+            <fieldset class="sq-score-options">
+                <legend>Compliance Score</legend>
+
+                <label class="sq-score-option sq-score-zero">
+                    <input type="radio" name="response_value" value="0" aria-label="Response Value 0">
+                    <span>
+                        <strong>0</strong>
+                        Non Compliance
+                    </span>
+                </label>
+
+                <label class="sq-score-option sq-score-one">
+                    <input type="radio" name="response_value" value="1" aria-label="Response Value 1">
+                    <span>
+                        <strong>1</strong>
+                        Partial Compliance
+                    </span>
+                </label>
+
+                <label class="sq-score-option sq-score-two">
+                    <input type="radio" name="response_value" value="2" aria-label="Response Value 2">
+                    <span>
+                        <strong>2</strong>
+                        Fully Compliance
+                    </span>
+                </label>
+            </fieldset>
+        </div>
+
+        <div class="sq-card-footer sq-checkpoint-actions">
+            <button type="button" class="sq-btn sq-btn-light" id="btnPreviousCheckpoint">
+                Back
+            </button>
+            <button type="button" class="sq-btn sq-btn-secondary" id="btnSaveCheckpoint">
+                Save / Update
+            </button>
+            <button type="button" class="sq-btn sq-btn-primary" id="btnNextCheckpoint">
+                Next
+            </button>
+        </div>
+    </div>
+
+</div>

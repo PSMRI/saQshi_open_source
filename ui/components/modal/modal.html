@@ -1,0 +1,122 @@
+<!--
+==========================================================
+SQ Modal Component
+----------------------------------------------------------
+Project   : SaQshi Open Source
+Component : Modal Dialog
+File      : modal.html
+License   : MIT
+==========================================================
+
+Usage
+
+SQ.modal.open({
+
+title:"Create Assessment",
+
+content:"...",
+
+size:"lg"
+
+});
+
+==========================================================
+-->
+
+<div
+    id="sq-modal"
+    class="sq-modal"
+    aria-hidden="true"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="sq-modal-title">
+
+    <!-- Overlay -->
+
+    <div
+        class="sq-modal-overlay"
+        data-sq-modal-close>
+
+    </div>
+
+    <!-- Window -->
+
+    <div
+        class="sq-modal-window">
+
+        <!-- Header -->
+
+        <header
+            class="sq-modal-header">
+
+            <div
+                class="sq-modal-title-group">
+
+                <h2
+                    id="sq-modal-title"
+                    class="sq-modal-title">
+
+                    Modal Title
+
+                </h2>
+
+                <div
+                    id="sq-modal-subtitle"
+                    class="sq-modal-subtitle">
+
+                </div>
+
+            </div>
+
+            <button
+                type="button"
+                class="sq-modal-close"
+                data-sq-modal-close
+                aria-label="Close">
+
+                <i class="bi bi-x-lg"></i>
+
+            </button>
+
+        </header>
+
+        <!-- Body -->
+
+        <section
+            id="sq-modal-body"
+            class="sq-modal-body">
+
+            Modal Content
+
+        </section>
+
+        <!-- Footer -->
+
+        <footer
+            id="sq-modal-footer"
+            class="sq-modal-footer">
+
+            <button
+                type="button"
+                class="sq-btn sq-btn-secondary"
+                data-sq-modal-close>
+
+                Cancel
+
+            </button>
+
+            <button
+                type="button"
+                id="sq-modal-primary"
+
+                class="sq-btn sq-btn-primary">
+
+                Save
+
+            </button>
+
+        </footer>
+
+    </div>
+
+</div>

@@ -1,0 +1,63 @@
+{
+    "id": "login",
+    "name": "Login",
+    "title": "Login",
+    "description": "Login to SaQshi Digital Healthcare Quality Assessment Platform",
+    "version": "1.0.0",
+    "layout": "auth",
+    "route": "/login",
+    "homepage": false,
+
+    "authentication": {
+        "required": false,
+        "redirect": "/ui/dashboard.html"
+    },
+
+    "authorization": {
+        "enabled": false,
+        "permissions": []
+    },
+
+    "theme": {
+        "name": "light",
+        "allowSwitch": true
+    },
+
+    "breadcrumb": [],
+
+    "pageHeader": {
+        "title": "",
+        "subtitle": "",
+        "icon": ""
+    },
+
+    "components": [
+        "loader",
+        "notification",
+        "modal",
+        "confirm-dialog"
+    ],
+
+    "assets": {
+        "css": [
+            "/ui/pages/login/login.css?v=20260702-2"
+        ],
+        "js": [
+            "/ui/pages/login/login.js?v=20260710-4"
+        ]
+    },
+
+    "api": {
+        "csrf": "/api/auth/v1/csrf.php",
+        "captcha": "/api/auth/v1/captcha.php",
+        "login": "/api/auth/v1/login.php",
+        "me": "/api/auth/v1/me.php"
+    },
+
+    "features": {
+        "rememberMe": true,
+        "forgotPassword": true,
+        "themeSwitch": true,
+        "languageSwitch": true
+    }
+}

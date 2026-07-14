@@ -1,0 +1,219 @@
+/*!
+ * ==========================================================
+ * SQ Modal Component v1.0
+ * ----------------------------------------------------------
+ * Project   : SaQshi Open Source
+ * Component : Modal Dialog
+ * File      : modal.css
+ * License   : MIT
+ * ==========================================================
+ */
+
+/* Modal Root */
+
+.sq-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.sq-modal.is-open {
+    display: flex;
+}
+
+/* Overlay */
+
+.sq-modal-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.55);
+    backdrop-filter: blur(4px);
+}
+
+/* Window */
+
+.sq-modal-window {
+    position: relative;
+    width: 640px;
+    max-width: calc(100vw - 32px);
+    max-height: calc(100vh - 32px);
+    background: var(--sq-bg-surface);
+    border: 1px solid var(--sq-border);
+    border-radius: var(--sq-radius-xl);
+    box-shadow: var(--sq-shadow-xl);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: sqModalIn 0.22s ease;
+}
+
+@keyframes sqModalIn {
+    from {
+        opacity: 0;
+        transform: translateY(16px) scale(0.96);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* Sizes */
+
+.sq-modal-sm .sq-modal-window {
+    width: 420px;
+}
+
+.sq-modal-md .sq-modal-window {
+    width: 640px;
+}
+
+.sq-modal-lg .sq-modal-window {
+    width: 860px;
+}
+
+.sq-modal-xl .sq-modal-window {
+    width: 1120px;
+}
+
+.sq-modal-fullscreen .sq-modal-window {
+    width: calc(100vw - 24px);
+    height: calc(100vh - 24px);
+    max-width: none;
+    max-height: none;
+}
+
+/* Header */
+
+.sq-modal-header {
+    padding: var(--sq-space-4) var(--sq-space-5);
+    border-bottom: 1px solid var(--sq-border);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--sq-space-4);
+    background: var(--sq-bg-surface);
+}
+
+.sq-modal-title {
+    font-size: var(--sq-font-size-lg);
+    font-weight: var(--sq-font-weight-bold);
+    color: var(--sq-text-primary);
+    margin: 0;
+}
+
+.sq-modal-subtitle {
+    margin-top: var(--sq-space-1);
+    font-size: var(--sq-font-size-sm);
+    color: var(--sq-text-muted);
+}
+
+.sq-modal-close {
+    width: 2.25rem;
+    height: 2.25rem;
+    border: none;
+    border-radius: var(--sq-radius-md);
+    background: transparent;
+    color: var(--sq-text-muted);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sq-modal-close:hover,
+.sq-modal-close:focus-visible {
+    background: var(--sq-bg-muted);
+    color: var(--sq-color-danger);
+}
+
+/* Body */
+
+.sq-modal-body {
+    padding: var(--sq-space-5);
+    overflow-y: auto;
+    color: var(--sq-text-primary);
+}
+
+/* Footer */
+
+.sq-modal-footer {
+    padding: var(--sq-space-4) var(--sq-space-5);
+    border-top: 1px solid var(--sq-border);
+    background: var(--sq-bg-muted);
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--sq-space-2);
+}
+
+/* States */
+
+.sq-modal-danger .sq-modal-header {
+    border-top: 4px solid var(--sq-color-danger);
+}
+
+.sq-modal-success .sq-modal-header {
+    border-top: 4px solid var(--sq-color-success);
+}
+
+.sq-modal-warning .sq-modal-header {
+    border-top: 4px solid var(--sq-color-warning);
+}
+
+.sq-modal-info .sq-modal-header {
+    border-top: 4px solid var(--sq-color-info);
+}
+
+/* Mobile */
+
+@media (max-width: 768px) {
+    .sq-modal {
+        align-items: flex-end;
+    }
+
+    .sq-modal-window {
+        width: 100%;
+        max-width: 100%;
+        max-height: 92vh;
+        border-radius: var(--sq-radius-xl) var(--sq-radius-xl) 0 0;
+    }
+
+    .sq-modal-footer {
+        flex-direction: column-reverse;
+    }
+
+    .sq-modal-footer .sq-btn {
+        width: 100%;
+    }
+}
+
+/* Dark Theme */
+
+[data-theme="dark"] .sq-modal-window,
+[data-theme="dark"] .sq-modal-header {
+    background: var(--sq-bg-surface);
+}
+
+[data-theme="dark"] .sq-modal-overlay {
+    background: rgba(0, 0, 0, 0.70);
+}
+
+/* Reduced Motion */
+
+@media (prefers-reduced-motion: reduce) {
+    .sq-modal-window {
+        animation: none;
+    }
+}
+
+/* Print */
+
+@media print {
+    .sq-modal {
+        display: none !important;
+    }
+}

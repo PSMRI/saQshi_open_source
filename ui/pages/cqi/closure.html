@@ -1,0 +1,107 @@
+<!--
+==========================================================
+SaQshi Gap Closure Page
+----------------------------------------------------------
+Project : SaQshi Open Source
+Module  : CQI
+Page    : Gap Closure
+File    : closure.html
+License : MIT
+==========================================================
+-->
+
+<div class="sq-page sq-closure-page">
+
+    <div class="sq-closure-summary">
+        <div class="sq-closure-stat">
+            <label>Total Plans</label>
+            <strong id="closureTotalPlans">0</strong>
+        </div>
+        <div class="sq-closure-stat">
+            <label>Open</label>
+            <strong id="closureOpenPlans">0</strong>
+        </div>
+        <div class="sq-closure-stat">
+            <label>In Progress</label>
+            <strong id="closureInProgressPlans">0</strong>
+        </div>
+        <div class="sq-closure-stat">
+            <label>Completed</label>
+            <strong id="closureCompletedPlans">0</strong>
+        </div>
+    </div>
+
+    <div class="sq-card sq-closure-context-card">
+        <div class="sq-card-body">
+            <div class="sq-closure-context">
+                <div>
+                    <label>Assessment</label>
+                    <strong id="closureAssessmentName">-</strong>
+                </div>
+                <div>
+                    <label>Status</label>
+                    <strong id="closureAssessmentStatus">-</strong>
+                </div>
+                <div>
+                    <label>Framework</label>
+                    <strong id="closureAssessmentFramework">-</strong>
+                </div>
+                <div>
+                    <label>Facility</label>
+                    <strong id="closureFacilityName">-</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="sq-card">
+        <div class="sq-card-header">
+            <div>
+                <h3>Gap Closure</h3>
+                <p>Review saved action plans and mark gap closure checkpoint by checkpoint.</p>
+            </div>
+
+            <div class="sq-closure-tools">
+                <select id="closureDepartmentFilter" class="sq-form-control" aria-label="Closure Department Filter">
+                    <option value="">All Departments</option>
+                </select>
+
+                <select id="closureConcernFilter" class="sq-form-control" aria-label="Closure Concern Filter">
+                    <option value="">All Areas</option>
+                </select>
+
+                <select id="closureSubtypeFilter" class="sq-form-control" aria-label="Closure Subtype Filter">
+                    <option value="">All Subtypes</option>
+                </select>
+
+                <select id="closureStatusFilter" class="sq-form-control" aria-label="Closure Status Filter">
+                    <option value="">All Status</option>
+                    <option value="OPEN">Open</option>
+                    <option value="IN_PROGRESS">In Progress</option>
+                    <option value="COMPLETED">Completed</option>
+                </select>
+
+                <button type="button" class="sq-btn sq-btn-light" id="btnRefreshClosure">
+                    Refresh
+                </button>
+            </div>
+        </div>
+
+        <div class="sq-card-body">
+            <div class="sq-closure-progress">
+                <div>
+                    <strong id="closureCurrentPosition">0 / 0</strong>
+                    <span id="closureCurrentScopeText">Select scope to start gap closure.</span>
+                </div>
+                <div class="sq-closure-progress-track">
+                    <span id="closureProgressBar"></span>
+                </div>
+            </div>
+
+            <div id="closureContainer" class="sq-closure-container">
+                <div class="sq-closure-empty">Loading closure records...</div>
+            </div>
+        </div>
+    </div>
+
+</div>

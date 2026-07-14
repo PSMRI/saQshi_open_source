@@ -1,0 +1,469 @@
+/*!
+ * ==========================================================
+ * SQ Sidebar Component v1.0
+ * ----------------------------------------------------------
+ * Project   : SaQshi Open Source
+ * Component : Sidebar Navigation
+ * File      : sidebar.css
+ * License   : MIT
+ * ==========================================================
+ *
+ * Features
+ * ----------------------------------------------------------
+ * ✔ Responsive
+ * ✔ Collapsible
+ * ✔ Multi-level Ready
+ * ✔ WCAG 2.2 AA
+ * ✔ Dark Theme
+ * ✔ Mobile Drawer
+ * ✔ Keyboard Accessible
+ * ==========================================================
+*/
+
+/* ==========================================================
+   Sidebar
+========================================================== */
+
+.sq-sidebar{
+
+    position:fixed;
+
+    top:72px;
+
+    left:0;
+
+    width:280px;
+
+    height:calc(100vh - 72px);
+
+    background:var(--sq-bg-surface);
+
+    border-right:1px solid var(--sq-border);
+
+    overflow-y:auto;
+
+    overflow-x:hidden;
+
+    transition:all .30s ease;
+
+    z-index:900;
+
+}
+
+/* ==========================================================
+   Scrollbar
+========================================================== */
+
+.sq-sidebar::-webkit-scrollbar{
+
+    width:8px;
+
+}
+
+.sq-sidebar::-webkit-scrollbar-thumb{
+
+    background:var(--sq-border);
+
+    border-radius:20px;
+
+}
+
+.sq-sidebar::-webkit-scrollbar-track{
+
+    background:transparent;
+
+}
+
+/* ==========================================================
+   Brand
+========================================================== */
+
+.sq-sidebar-brand{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    height:72px;
+
+    border-bottom:1px solid var(--sq-border);
+
+}
+
+.sq-sidebar-logo-link{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:.85rem;
+
+    text-decoration:none;
+
+}
+
+.sq-sidebar-logo{
+
+    width:48px;
+
+    height:48px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:var(--sq-color-primary);
+
+    color:#fff;
+
+    font-size:1.3rem;
+
+    font-weight:700;
+
+}
+
+.sq-sidebar-brand-text{
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+.sq-sidebar-brand-text strong{
+
+    color:var(--sq-text-primary);
+
+    font-size:1rem;
+
+}
+
+.sq-sidebar-brand-text small{
+
+    color:var(--sq-text-muted);
+
+    font-size:.72rem;
+
+}
+
+/* ==========================================================
+   Navigation
+========================================================== */
+
+.sq-sidebar-nav{
+
+    padding:1rem 0;
+
+}
+
+/* ==========================================================
+   Section
+========================================================== */
+
+.sq-sidebar-section-title{
+
+    padding:.9rem 1.5rem .45rem;
+
+    font-size:.72rem;
+
+    text-transform:uppercase;
+
+    letter-spacing:.08em;
+
+    color:var(--sq-text-muted);
+
+    font-weight:700;
+
+}
+
+/* ==========================================================
+   Menu Link
+========================================================== */
+
+.sq-sidebar-link{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:.85rem;
+
+    padding:.85rem 1.5rem;
+
+    color:var(--sq-text-secondary);
+
+    text-decoration:none;
+
+    transition:.2s;
+
+    position:relative;
+
+}
+
+.sq-sidebar-link i{
+
+    width:22px;
+
+    text-align:center;
+
+    font-size:1rem;
+
+}
+
+.sq-sidebar-link span{
+
+    flex:1;
+
+}
+
+.sq-sidebar-link:hover{
+
+    background:var(--sq-bg-muted);
+
+    color:var(--sq-color-primary);
+
+}
+
+.sq-sidebar-link.is-active,
+
+.sq-sidebar-link[aria-current="page"]{
+
+    background:rgba(0,91,172,.08);
+
+    color:var(--sq-color-primary);
+
+    font-weight:600;
+
+}
+
+.sq-sidebar-link.is-active::before,
+
+.sq-sidebar-link[aria-current="page"]::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+
+    top:0;
+
+    bottom:0;
+
+    width:4px;
+
+    background:var(--sq-color-primary);
+
+}
+
+/* ==========================================================
+   Badge
+========================================================== */
+
+.sq-sidebar-link .sq-badge{
+
+    margin-left:auto;
+
+}
+
+/* ==========================================================
+   Collapsed Sidebar
+========================================================== */
+
+body.sq-sidebar-collapsed .sq-sidebar{
+
+    width:72px;
+
+}
+
+body.sq-sidebar-collapsed .sq-sidebar-brand-text,
+
+body.sq-sidebar-collapsed .sq-sidebar-section-title,
+
+body.sq-sidebar-collapsed .sq-sidebar-link span,
+
+body.sq-sidebar-collapsed .sq-sidebar-link .sq-badge{
+
+    display:none;
+
+}
+
+body.sq-sidebar-collapsed .sq-sidebar-link{
+
+    justify-content:center;
+
+    padding:.95rem;
+
+}
+
+body.sq-sidebar-collapsed .sq-sidebar-link i{
+
+    margin:0;
+
+    font-size:1.15rem;
+
+}
+
+body.sq-sidebar-collapsed .sq-main{
+
+    margin-left:72px;
+
+}
+
+/* ==========================================================
+   Overlay
+========================================================== */
+
+.sq-sidebar-overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.45);
+
+    display:none;
+
+    z-index:850;
+
+}
+
+/* ==========================================================
+   Mobile
+========================================================== */
+
+@media (max-width:992px){
+
+    .sq-sidebar{
+
+        transform:translateX(-100%);
+
+        width:280px;
+
+    }
+
+    body.sq-sidebar-open .sq-sidebar{
+
+        transform:translateX(0);
+
+    }
+
+    body.sq-sidebar-open .sq-sidebar-overlay{
+
+        display:block;
+
+    }
+
+    body.sq-sidebar-collapsed .sq-sidebar{
+
+        width:280px;
+
+    }
+
+}
+
+/* ==========================================================
+   Dark Theme
+========================================================== */
+
+[data-theme="dark"] .sq-sidebar{
+
+    background:var(--sq-bg-surface);
+
+    border-color:var(--sq-border);
+
+}
+
+[data-theme="dark"] .sq-sidebar-link:hover{
+
+    background:rgba(255,255,255,.05);
+
+}
+
+[data-theme="dark"] .sq-sidebar-link.is-active{
+
+    background:rgba(255,255,255,.08);
+
+}
+
+/* ==========================================================
+   Print
+========================================================== */
+
+@media print{
+
+    .sq-sidebar,
+
+    .sq-sidebar-overlay{
+
+        display:none !important;
+
+    }
+
+}
+
+/* ==========================================================
+   Compact App Density
+========================================================== */
+
+.sq-sidebar {
+    top: 48px !important;
+    width: 188px !important;
+    height: calc(100vh - 48px) !important;
+}
+
+.sq-sidebar-nav {
+    padding: .4rem 0 !important;
+}
+
+.sq-sidebar-section-title {
+    padding: .42rem .85rem .2rem !important;
+    font-size: .58rem !important;
+    letter-spacing: .06em !important;
+}
+
+.sq-sidebar-link {
+    min-height: 31px !important;
+    gap: .55rem !important;
+    padding: .35rem .85rem !important;
+    font-size: .75rem !important;
+}
+
+.sq-sidebar-link i {
+    width: 17px !important;
+    font-size: .82rem !important;
+}
+
+body.sq-sidebar-collapsed .sq-sidebar {
+    width: 48px !important;
+}
+
+body.sq-sidebar-collapsed .sq-sidebar-link {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+@media (min-width: 993px) {
+    .sq-layout-sidebar .sq-sidebar {
+        position: sticky !important;
+        top: 0 !important;
+        width: 100% !important;
+        height: calc(100vh - 48px) !important;
+    }
+
+    body.sq-sidebar-collapsed .sq-layout-sidebar {
+        width: 48px !important;
+        min-width: 48px !important;
+        flex-basis: 48px !important;
+    }
+
+    body.sq-sidebar-collapsed .sq-layout-sidebar .sq-sidebar {
+        width: 100% !important;
+    }
+}

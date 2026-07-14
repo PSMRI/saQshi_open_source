@@ -1,0 +1,39 @@
+{
+    "id": "cqi-gap-analysis",
+    "name": "Gap Analysis",
+    "title": "Gap Analysis",
+    "layout": "dashboard",
+
+    "pageHeader": {
+        "title": "Gap Analysis",
+        "subtitle": "Review non-compliant and partially compliant checkpoints."
+    },
+
+    "authentication": {
+        "required": true
+    },
+
+    "assets": {
+        "css": [
+            "/ui/pages/cqi/gap-analysis.css?v=20260704-1"
+        ],
+        "js": [
+            "/ui/pages/cqi/gap-analysis.js?v=20260704-1"
+        ]
+    },
+
+    "breadcrumb": [
+        {
+            "label": "Dashboard",
+            "url": "/ui/dashboard.html"
+        },
+        {
+            "label": "CQI"
+        },
+        {
+            "label": "Gap Analysis"
+        }
+    ],
+
+    "moduleName": "gapAnalysis"
+}

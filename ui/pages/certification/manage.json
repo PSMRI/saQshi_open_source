@@ -1,0 +1,14 @@
+{
+  "id": "certification-manage",
+  "name": "Manage Certification",
+  "title": "Manage Certification",
+  "layout": "dashboard",
+  "pageHeader": { "title": "Manage Certification", "subtitle": "Add State or National certification details." },
+  "authentication": { "required": true },
+  "assets": {
+    "css": ["/ui/pages/certification/dashboard.css?v=20260707-4"],
+    "js": ["/ui/pages/certification/dashboard.js?v=20260707-4"]
+  },
+  "breadcrumb": [{ "label": "Dashboard", "url": "/ui/dashboard.html" }, { "label": "Certification" }, { "label": "Manage" }],
+  "moduleName": "certificationManage"
+}

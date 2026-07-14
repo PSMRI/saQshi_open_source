@@ -1,0 +1,16 @@
+.env
+.env.*
+!.env.example
+
+api/storage/events/*.log
+api/storage/logs/*.log
+api/storage/keys/
+uploads/
+
+*.rar
+*.zip
+*.7z
+
+.codex_tmp/
+node_modules/
+vendor/

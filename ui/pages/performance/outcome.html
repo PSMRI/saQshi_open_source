@@ -1,0 +1,77 @@
+<!--
+ * ==========================================================
+ * SaQshi Open Source
+ * Performance Outcome Entry
+ * outcome.html
+ * Version 1.0.0 | Updated 2026-07-06
+ * ==========================================================
+ -->
+
+<section class="sq-performance-page">
+    <div class="sq-card">
+        <div class="sq-card-header">
+            <div>
+                <h3>Outcome Indicators</h3>
+                <p>Capture monthly outcome values one indicator at a time.</p>
+            </div>
+            <div class="sq-performance-tools">
+                <select id="outcomeDepartmentFilter" class="sq-form-control" aria-label="Outcome Department Filter">
+                    <option value="">Select department</option>
+                </select>
+                <select id="outcomePeriodFilter" class="sq-form-control" aria-label="Outcome Period Filter"></select>
+                <button type="button" class="sq-btn sq-btn-light" id="btnOutcomeRefresh">Refresh</button>
+            </div>
+        </div>
+        <div class="sq-card-body">
+            <div class="sq-performance-context" id="outcomeFacilityContext"></div>
+
+            <div id="outcomeCompleteMessage" class="sq-performance-complete" hidden>
+                <strong>All outcome indicators are already entered for this month.</strong>
+                <span>You can edit and update the saved values if required.</span>
+                <button type="button" class="sq-btn sq-btn-primary" id="btnOutcomeEditCompleted">Edit / Update</button>
+            </div>
+
+            <div class="sq-performance-wizard" id="outcomeWizard">
+                <div class="sq-performance-progress">
+                    <div>
+                        <span id="outcomeProgressText">Select department and month</span>
+                        <strong id="outcomeCurrentCounter">0 / 0</strong>
+                    </div>
+                    <div class="sq-performance-bar"><span id="outcomeProgressBar"></span></div>
+                </div>
+
+                <form id="outcomeEntryForm" class="sq-performance-form">
+                    <h4 id="outcomeSelectedTitle">Select Outcome</h4>
+                    <p id="outcomeSelectedMeta" class="sq-performance-muted">Select department and month to load indicators.</p>
+                    <input type="hidden" id="outcomeIndicatorId">
+                    <input type="hidden" id="outcomeIndicatorCode">
+                    <input type="hidden" id="outcomeIndicatorName">
+                    <input type="hidden" id="outcomeDepartmentId">
+                    <input type="hidden" id="outcomeFormulaId">
+                    <div class="sq-performance-form-grid">
+                        <label><span>Month</span><select id="outcomeMonth" class="sq-form-control" required aria-label="Outcome Month"></select></label>
+                        <label><span>Year</span><input id="outcomeYear" class="sq-form-control" type="number" min="2000" max="2100" required aria-label="Outcome Year"></label>
+                        <label><span id="outcomeNumeratorLabel">Numerator</span><input id="outcomeNumerator" class="sq-form-control" type="number" step="0.0001" min="0" required aria-label="Outcome Numerator"></label>
+                        <label><span id="outcomeDenominatorLabel">Denominator</span><input id="outcomeDenominator" class="sq-form-control" type="number" step="0.0001" min="0" required aria-label="Outcome Denominator"></label>
+                        <label><span>Result</span><input id="outcomeResult" class="sq-form-control" type="text" readonly aria-label="Outcome Result"></label>
+                    </div>
+                    <label class="sq-performance-wide"><span>Remarks</span><textarea id="outcomeRemarks" class="sq-form-control" rows="2" aria-label="Outcome Remarks"></textarea></label>
+                    <div class="sq-performance-actions">
+                        <button type="button" class="sq-btn sq-btn-light" id="btnOutcomeBack" disabled>Back</button>
+                        <button type="submit" class="sq-btn sq-btn-primary" id="btnOutcomeSave" disabled>Save & Next</button>
+                        <button type="button" class="sq-btn sq-btn-light" id="btnOutcomeNext" disabled>Next</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="sq-card">
+        <div class="sq-card-header">
+            <div><h3>Outcome History</h3><p>Saved monthly outcome entries.</p></div>
+        </div>
+        <div class="sq-card-body">
+            <div id="outcomeHistoryRows" class="sq-performance-list">No history loaded.</div>
+        </div>
+    </div>
+</section>

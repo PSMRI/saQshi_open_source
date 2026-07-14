@@ -1,0 +1,310 @@
+/*!
+ * ==========================================================
+ * SQ Confirm Dialog Component v1.0
+ * ----------------------------------------------------------
+ * Project   : SaQshi Open Source
+ * Component : Confirm Dialog
+ * File      : confirm-dialog.css
+ * License   : MIT
+ * ==========================================================
+ *
+ * Features
+ * ----------------------------------------------------------
+ * ✔ Lightweight
+ * ✔ WCAG 2.2 AA
+ * ✔ Keyboard Accessible
+ * ✔ Dark Theme
+ * ✔ Responsive
+ * ✔ Multiple Types
+ * ==========================================================
+*/
+
+/* ==========================================================
+   Root
+========================================================== */
+
+.sq-confirm-dialog{
+
+    position:fixed;
+
+    inset:0;
+
+    display:none;
+
+    align-items:center;
+
+    justify-content:center;
+
+    z-index:11000;
+
+}
+
+.sq-confirm-dialog.is-open{
+
+    display:flex;
+
+}
+
+/* ==========================================================
+   Overlay
+========================================================== */
+
+.sq-confirm-overlay{
+
+    position:absolute;
+
+    inset:0;
+
+    background:rgba(0,0,0,.55);
+
+    backdrop-filter:blur(3px);
+
+}
+
+/* ==========================================================
+   Window
+========================================================== */
+
+.sq-confirm-window{
+
+    position:relative;
+
+    width:460px;
+
+    max-width:95vw;
+
+    background:var(--sq-bg-surface);
+
+    border:1px solid var(--sq-border);
+
+    border-radius:18px;
+
+    box-shadow:var(--sq-shadow-xl);
+
+    padding:2rem;
+
+    text-align:center;
+
+    animation:sqConfirmIn .20s ease;
+
+}
+
+/* ==========================================================
+   Animation
+========================================================== */
+
+@keyframes sqConfirmIn{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(-15px) scale(.95);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:none;
+
+    }
+
+}
+
+/* ==========================================================
+   Icon
+========================================================== */
+
+.sq-confirm-icon{
+
+    width:72px;
+
+    height:72px;
+
+    margin:0 auto 1rem;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:2rem;
+
+}
+
+.sq-confirm-icon-warning{
+
+    background:rgba(255,193,7,.15);
+
+    color:var(--sq-color-warning);
+
+}
+
+.sq-confirm-icon-danger{
+
+    background:rgba(220,53,69,.15);
+
+    color:var(--sq-color-danger);
+
+}
+
+.sq-confirm-icon-success{
+
+    background:rgba(40,167,69,.15);
+
+    color:var(--sq-color-success);
+
+}
+
+.sq-confirm-icon-info{
+
+    background:rgba(13,110,253,.15);
+
+    color:var(--sq-color-info);
+
+}
+
+/* ==========================================================
+   Title
+========================================================== */
+
+.sq-confirm-title{
+
+    margin:0 0 .75rem;
+
+    font-size:1.35rem;
+
+    font-weight:700;
+
+    color:var(--sq-text-primary);
+
+}
+
+/* ==========================================================
+   Message
+========================================================== */
+
+.sq-confirm-message{
+
+    margin:0;
+
+    color:var(--sq-text-secondary);
+
+    line-height:1.7;
+
+    font-size:.95rem;
+
+}
+
+/* ==========================================================
+   Actions
+========================================================== */
+
+.sq-confirm-actions{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:1rem;
+
+    margin-top:2rem;
+
+}
+
+.sq-confirm-actions .sq-btn{
+
+    min-width:130px;
+
+}
+
+/* ==========================================================
+   Focus
+========================================================== */
+
+.sq-confirm-window :focus-visible{
+
+    outline:3px solid var(--sq-color-primary);
+
+    outline-offset:2px;
+
+}
+
+/* ==========================================================
+   Mobile
+========================================================== */
+
+@media (max-width:768px){
+
+    .sq-confirm-window{
+
+        width:calc(100vw - 24px);
+
+        padding:1.5rem;
+
+    }
+
+    .sq-confirm-actions{
+
+        flex-direction:column-reverse;
+
+    }
+
+    .sq-confirm-actions .sq-btn{
+
+        width:100%;
+
+    }
+
+}
+
+/* ==========================================================
+   Dark Theme
+========================================================== */
+
+[data-theme="dark"] .sq-confirm-window{
+
+    background:var(--sq-bg-surface);
+
+    border-color:var(--sq-border);
+
+}
+
+[data-theme="dark"] .sq-confirm-overlay{
+
+    background:rgba(0,0,0,.70);
+
+}
+
+/* ==========================================================
+   Reduced Motion
+========================================================== */
+
+@media (prefers-reduced-motion:reduce){
+
+    .sq-confirm-window{
+
+        animation:none;
+
+    }
+
+}
+
+/* ==========================================================
+   Print
+========================================================== */
+
+@media print{
+
+    .sq-confirm-dialog{
+
+        display:none !important;
+
+    }
+
+}

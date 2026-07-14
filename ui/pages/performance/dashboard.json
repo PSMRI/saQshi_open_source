@@ -1,0 +1,23 @@
+{
+  "id": "performance-dashboard",
+  "name": "Performance Dashboard",
+  "title": "Performance Dashboard",
+  "layout": "dashboard",
+  "pageHeader": {
+    "title": "Performance Dashboard",
+    "subtitle": "Monitor facility KPI and outcome indicators."
+  },
+  "authentication": {
+    "required": true
+  },
+  "assets": {
+    "css": ["/ui/pages/performance/dashboard.css?v=20260706-2"],
+    "js": ["/ui/pages/performance/dashboard.js?v=20260713-1"]
+  },
+  "breadcrumb": [
+    {"label": "Dashboard", "url": "/ui/dashboard.html"},
+    {"label": "Performance"},
+    {"label": "Dashboard"}
+  ],
+  "moduleName": "performanceDashboard"
+}

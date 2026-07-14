@@ -1,0 +1,260 @@
+<!--
+==========================================================
+SaQshi Create Assessment Page
+----------------------------------------------------------
+Project : SaQshi Open Source
+Module  : Assessment
+Page    : Create Assessment
+File    : create.html
+License : MIT
+==========================================================
+-->
+
+<section class="sq-assessment-create-page">
+
+    <div class="sq-grid sq-grid-2">
+
+        <!-- Create Assessment Form -->
+
+        <div class="sq-card">
+
+            <div class="sq-card-header">
+
+                <div>
+                    <h2 class="sq-card-title">
+                        Create New Assessment
+                    </h2>
+
+                    <p class="sq-card-subtitle">
+                        Start a new assessment for your assigned facility.
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="sq-card-body">
+
+               <form
+    id="assessmentCreateForm"
+    method="post"
+    action="javascript:void(0);"
+    autocomplete="off">
+
+                    <div class="sq-form-group">
+
+                        <label
+                            for="assessment_name"
+                            class="sq-form-label">
+
+                            Assessment Name
+                            <span class="sq-text-danger">*</span>
+
+                        </label>
+
+                        <input
+                            type="text"
+                            id="assessment_name"
+                            name="assessment_name"
+                            class="sq-form-control"
+                            placeholder="Example: NQAS Internal Assessment June 2026"
+                            required aria-label="Example: NQAS Internal Assessment June 2026">
+
+                        <div class="sq-help-text">
+                            Use a clear name to identify this assessment later.
+                        </div>
+
+                    </div>
+
+                    <div class="sq-form-group">
+
+                        <label
+                            for="framework_code"
+                            class="sq-form-label">
+
+                            Framework
+                            <span class="sq-text-danger">*</span>
+
+                        </label>
+
+                        <select
+                            id="framework_code"
+                            name="framework_code"
+                            class="sq-form-control"
+                            required aria-label="Framework Code">
+
+                            <option value="saqshi-nqas" selected>
+                                NQAS
+                            </option>
+
+                            <option value="saqshi-musqan">
+                                MusQan
+                            </option>
+
+                            <option value="saqshi-laqshya">
+                                LaQshya
+                            </option>
+
+                        </select>
+
+                        <div class="sq-help-text">
+                            Select the quality framework for this assessment.
+                        </div>
+
+                    </div>
+
+                    <div class="sq-grid sq-grid-2">
+
+                        <div class="sq-form-group">
+
+                            <label
+                                for="start_date"
+                                class="sq-form-label">
+
+                                Start Date
+                                <span class="sq-text-danger">*</span>
+
+                            </label>
+
+                            <input
+                                type="date"
+                                id="start_date"
+                                name="start_date"
+                                class="sq-form-control"
+                                required aria-label="Start Date">
+
+                        </div>
+
+                        <div class="sq-form-group">
+
+                            <label
+                                for="end_date"
+                                class="sq-form-label">
+
+                                End Date
+                                <span class="sq-text-danger">*</span>
+
+                            </label>
+
+                            <input
+                                type="date"
+                                id="end_date"
+                                name="end_date"
+                                class="sq-form-control"
+                                required aria-label="End Date">
+
+                        </div>
+
+                    </div>
+
+                    <div class="sq-form-group">
+
+                        <label
+                            for="assessment_notes"
+                            class="sq-form-label">
+
+                            Remarks / Notes
+
+                        </label>
+
+                        <textarea
+                            id="assessment_notes"
+                            name="remarks"
+                            class="sq-form-control"
+                            rows="4"
+                            placeholder="Optional remarks for this assessment" aria-label="Optional Remarks For This Assessment"></textarea>
+
+                    </div>
+
+                    <div class="sq-alert sq-alert-info">
+
+                        <div class="sq-alert-content">
+
+                            <div class="sq-alert-title">
+                                Important Rule
+                            </div>
+
+                            <div class="sq-alert-text">
+                                A new assessment can be created only when no ACTIVE assessment exists for this facility.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="sq-form-actions">
+
+                        <button
+                            type="button"
+                            class="sq-btn sq-btn-light"
+                            id="btnCancelCreateAssessment">
+
+                            Cancel
+
+                        </button>
+
+                        <button
+                            type="submit"
+                            class="sq-btn sq-btn-primary"
+                            id="btnCreateAssessment">
+
+                            <i class="bi bi-plus-circle"></i>
+                            Create Assessment
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+        <!-- Facility / Active Assessment Status -->
+
+        <div class="sq-card">
+
+            <div class="sq-card-header">
+
+                <div>
+                    <h2 class="sq-card-title">
+                        Facility & Assessment Status
+                    </h2>
+
+                    <p class="sq-card-subtitle">
+                        Current logged-in facility and assessment availability.
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="sq-card-body">
+
+                <div
+                    id="facilityInfoCard"
+                    class="sq-info-list">
+
+                    <div class="sq-empty-message">
+                        Loading facility information...
+                    </div>
+
+                </div>
+
+                <hr class="sq-mt-4 sq-mb-4">
+
+                <div
+                    id="activeAssessmentStatus">
+
+                    <div class="sq-empty-message">
+                        Checking active assessment...
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>

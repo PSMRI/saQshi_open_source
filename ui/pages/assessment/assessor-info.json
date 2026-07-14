@@ -1,0 +1,46 @@
+{
+    "id": "assessment-assessor-info",
+    "name": "Assessor Information",
+    "title": "Assessor Information",
+    "layout": "dashboard",
+    "moduleName": "assessorInfo",
+
+    "pageHeader": {
+        "title": "Assessor Information",
+        "subtitle": "Save department-wise assessor and assessee details."
+    },
+
+    "authentication": {
+        "required": true
+    },
+
+    "assets": {
+        "css": [
+            "/ui/pages/assessment/assessor-info.css?v=20260702-3"
+        ],
+        "js": [
+            "/ui/pages/assessment/assessor-info.js?v=20260702-3"
+        ]
+    },
+
+    "api": {
+        "assessment": "/assessment/v1/active_assessment.php",
+        "departments": "/framework/v1/my_departments.php",
+        "status": "/assessment/v1/department-status/list.php",
+        "getInfo": "/assessment/v1/assessor_info_get.php",
+        "saveInfo": "/assessment/v1/assessor_info_save.php"
+    },
+
+    "breadcrumb": [
+        {
+            "label": "Dashboard",
+            "url": "/ui/dashboard.html"
+        },
+        {
+            "label": "Assessment"
+        },
+        {
+            "label": "Assessor Information"
+        }
+    ]
+}

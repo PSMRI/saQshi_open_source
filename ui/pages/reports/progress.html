@@ -1,0 +1,119 @@
+<!--
+==========================================================
+SaQshi Progress Report Page
+----------------------------------------------------------
+Project : SaQshi Open Source
+Module  : Reports
+Page    : Progress Report
+File    : progress.html
+License : MIT
+==========================================================
+-->
+
+<section class="sq-progress-report">
+    <div class="sq-card">
+        <div class="sq-card-header">
+            <div>
+                <h3>Progress Report</h3>
+                <p>Department, response, score and gap closure progress.</p>
+            </div>
+            <div class="sq-progress-tools">
+                <select id="progressAssessmentSelect" class="sq-form-control" aria-label="Progress Assessment Select">
+                    <option value="">Select assessment</option>
+                </select>
+                <button type="button" class="sq-btn sq-btn-light" id="btnRefreshProgressReport">
+                    Refresh
+                </button>
+                <button type="button" class="sq-btn sq-btn-primary" id="btnDownloadProgressChecklist">
+                    Download Checklist
+                </button>
+            </div>
+        </div>
+
+        <div class="sq-card-body">
+            <div id="progressAssessmentContext" class="sq-progress-context">
+                <div>
+                    <span>Assessment</span>
+                    <strong>-</strong>
+                </div>
+                <div>
+                    <span>Framework</span>
+                    <strong>-</strong>
+                </div>
+                <div>
+                    <span>Status</span>
+                    <strong>-</strong>
+                </div>
+                <div>
+                    <span>Period</span>
+                    <strong>-</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="sq-progress-kpis">
+        <div class="sq-progress-kpi">
+            <span>Department Completion</span>
+            <strong id="progressDepartmentPercent">0%</strong>
+            <small id="progressDepartmentRaw">0 / 0 departments</small>
+        </div>
+        <div class="sq-progress-kpi">
+            <span>Responses Saved</span>
+            <strong id="progressSavedResponses">0</strong>
+            <small>checkpoint responses</small>
+        </div>
+        <div class="sq-progress-kpi">
+            <span>Improved Score</span>
+            <strong id="progressImprovedScore">0%</strong>
+            <small id="progressOriginalScore">Original 0%</small>
+        </div>
+        <div class="sq-progress-kpi">
+            <span>Gap Closure</span>
+            <strong id="progressGapClosure">0%</strong>
+            <small id="progressGapRaw">0 open / 0 total</small>
+        </div>
+        <div class="sq-progress-kpi">
+            <span>Revised</span>
+            <strong id="progressRevisedCheckpoints">0</strong>
+            <small>checkpoints</small>
+        </div>
+    </div>
+
+    <div class="sq-card">
+        <div class="sq-card-header">
+            <div>
+                <h3>Department Progress</h3>
+                <p>Assessment progress and gap closure by department.</p>
+            </div>
+            <select id="progressStatusFilter" class="sq-form-control sq-progress-filter" aria-label="Progress Status Filter">
+                <option value="">All Status</option>
+                <option value="NOT_STARTED">Not Started</option>
+                <option value="IN_PROGRESS">In Progress</option>
+                <option value="COMPLETED">Completed</option>
+            </select>
+        </div>
+        <div class="sq-card-body sq-p-0">
+            <div class="sq-table-wrapper">
+                <table class="sq-table sq-progress-table">
+                    <thead>
+                        <tr>
+                            <th>Department</th>
+                            <th>Status</th>
+                            <th>Assessor</th>
+                            <th>Responses</th>
+                            <th>Score</th>
+                            <th>Gaps</th>
+                            <th>Timeline</th>
+                        </tr>
+                    </thead>
+                    <tbody id="progressDepartmentRows">
+                        <tr>
+                            <td colspan="7" class="sq-text-center sq-text-muted">Loading progress report...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>

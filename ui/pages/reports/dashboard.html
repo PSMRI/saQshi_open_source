@@ -1,0 +1,136 @@
+<!--
+==========================================================
+SaQshi Report Dashboard Page
+----------------------------------------------------------
+Project : SaQshi Open Source
+Module  : Reports
+Page    : Report Dashboard
+File    : dashboard.html
+License : MIT
+==========================================================
+-->
+
+<section class="sq-report-dashboard">
+    <div class="sq-report-kpis">
+        <div class="sq-report-kpi">
+            <span>Total Assessments</span>
+            <strong id="reportTotalAssessments">0</strong>
+        </div>
+        <div class="sq-report-kpi">
+            <span>Completed</span>
+            <strong id="reportCompletedAssessments">0</strong>
+        </div>
+        <div class="sq-report-kpi">
+            <span>In Progress</span>
+            <strong id="reportActiveAssessments">0</strong>
+        </div>
+        <div class="sq-report-kpi">
+            <span>Average Score</span>
+            <strong id="reportAverageScore">0%</strong>
+        </div>
+        <div class="sq-report-kpi">
+            <span>Open Gaps</span>
+            <strong id="reportOpenGaps">0</strong>
+        </div>
+        <div class="sq-report-kpi">
+            <span>KPI Months</span>
+            <strong id="reportKpiMonths">0</strong>
+        </div>
+        <div class="sq-report-kpi">
+            <span>Outcome Months</span>
+            <strong id="reportOutcomeMonths">0</strong>
+        </div>
+    </div>
+
+    <div class="sq-report-grid">
+        <div class="sq-card">
+            <div class="sq-card-header">
+                <div>
+                    <h3>Current Assessment</h3>
+                    <p>Score, progress and gap status for the active assessment.</p>
+                </div>
+                <button type="button" class="sq-btn sq-btn-light" id="btnRefreshReport">
+                    Refresh
+                </button>
+            </div>
+            <div class="sq-card-body" id="reportCurrentAssessment">
+                <div class="sq-report-empty">Loading report summary...</div>
+            </div>
+        </div>
+
+        <div class="sq-card">
+            <div class="sq-card-header">
+                <div>
+                    <h3>Report Shortcuts</h3>
+                    <p>Open focused report views for deeper review.</p>
+                </div>
+            </div>
+            <div class="sq-card-body">
+                <div class="sq-report-shortcuts">
+                    <button type="button" class="sq-report-shortcut" data-sq-route="reports/score">
+                        <i class="bi bi-graph-up-arrow"></i>
+                        <span>Score Report</span>
+                    </button>
+                    <button type="button" class="sq-report-shortcut" data-sq-route="reports/progress">
+                        <i class="bi bi-activity"></i>
+                        <span>Progress Report</span>
+                    </button>
+                    <button type="button" class="sq-report-shortcut" data-sq-route="cqi/gap-analysis">
+                        <i class="bi bi-exclamation-triangle"></i>
+                        <span>Gap Analysis</span>
+                    </button>
+                    <button type="button" class="sq-report-shortcut" data-performance-report="KPI">
+                        <i class="bi bi-clipboard-pulse"></i>
+                        <span>KPI Report</span>
+                    </button>
+                    <button type="button" class="sq-report-shortcut" data-performance-report="OUTCOME">
+                        <i class="bi bi-bar-chart-line"></i>
+                        <span>Outcome Report</span>
+                    </button>
+                    <button type="button" class="sq-report-shortcut" data-sq-route="certification/dashboard">
+                        <i class="bi bi-award"></i>
+                        <span>Certification Report</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="sq-card">
+        <div class="sq-card-header">
+            <div>
+                <h3>Assessment Reports</h3>
+                <p>Facility assessment status, score and completion history.</p>
+            </div>
+            <select id="reportStatusFilter" class="sq-form-control sq-report-filter" aria-label="Report Status Filter">
+                <option value="">All Status</option>
+                <option value="ACTIVE">In Progress</option>
+                <option value="COMPLETED">Completed</option>
+                <option value="CANCELLED">Cancelled</option>
+            </select>
+        </div>
+
+        <div class="sq-card-body sq-p-0">
+            <div class="sq-table-wrapper">
+                <table class="sq-table sq-report-table">
+                    <thead>
+                        <tr>
+                            <th>Assessment</th>
+                            <th>Status</th>
+                            <th>Departments</th>
+                            <th>Checkpoints</th>
+                            <th>Score</th>
+                            <th>Period</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reportAssessmentRows">
+                        <tr>
+                            <td colspan="7" class="sq-text-center sq-text-muted">Loading reports...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,39 @@
+{
+    "id": "adfacility-users",
+    "name": "My Profile",
+    "title": "My Profile",
+    "layout": "dashboard",
+
+    "pageHeader": {
+        "title": "My Profile",
+        "subtitle": "Update your facility user details and password."
+    },
+
+    "authentication": {
+        "required": true
+    },
+
+    "assets": {
+        "css": [
+            "/ui/pages/facilityusers/users_profile.css?v=20260705-1"
+        ],
+        "js": [
+            "/ui/pages/facilityusers/users_profile.js?v=20260705-1"
+        ]
+    },
+
+    "breadcrumb": [
+        {
+            "label": "Dashboard",
+            "url": "/ui/dashboard.html"
+        },
+        {
+            "label": "Administration"
+        },
+        {
+            "label": "My Profile"
+        }
+    ],
+
+    "moduleName": "adminUsers"
+}

@@ -1,0 +1,109 @@
+<!--
+==========================================================
+SaQshi Score Report Page
+----------------------------------------------------------
+Project : SaQshi Open Source
+Module  : Reports
+Page    : Score Report
+File    : score.html
+License : MIT
+==========================================================
+-->
+
+<section class="sq-score-report">
+    <div class="sq-card">
+        <div class="sq-card-header">
+            <div>
+                <h3>Score Report</h3>
+                <p>Original and improved scores for selected assessment.</p>
+            </div>
+            <div class="sq-score-tools">
+                <select id="scoreAssessmentSelect" class="sq-form-control" aria-label="Score Assessment Select">
+                    <option value="">Select assessment</option>
+                </select>
+                <button type="button" class="sq-btn sq-btn-primary" id="btnDownloadScoreCard">
+                    Download Score Card
+                </button>
+                <button type="button" class="sq-btn sq-btn-light" id="btnRefreshScoreReport">
+                    Refresh
+                </button>
+            </div>
+        </div>
+
+        <div class="sq-card-body">
+            <div id="scoreAssessmentContext" class="sq-score-context">
+                <div>
+                    <span>Assessment</span>
+                    <strong>-</strong>
+                </div>
+                <div>
+                    <span>Framework</span>
+                    <strong>-</strong>
+                </div>
+                <div>
+                    <span>Status</span>
+                    <strong>-</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="sq-score-kpis">
+        <div class="sq-score-kpi">
+            <span>Original Score</span>
+            <strong id="scoreOriginalPercent">0%</strong>
+            <small id="scoreOriginalRaw">0 / 0</small>
+        </div>
+        <div class="sq-score-kpi">
+            <span>Improved Score</span>
+            <strong id="scoreImprovedPercent">0%</strong>
+            <small id="scoreImprovedRaw">0 / 0</small>
+        </div>
+        <div class="sq-score-kpi">
+            <span>Score Gain</span>
+            <strong id="scoreGainPercent">0%</strong>
+            <small id="scoreGainRaw">0 points</small>
+        </div>
+        <div class="sq-score-kpi">
+            <span>Answered</span>
+            <strong id="scoreAnsweredCheckpoints">0</strong>
+            <small>checkpoints</small>
+        </div>
+        <div class="sq-score-kpi">
+            <span>Revised</span>
+            <strong id="scoreRevisedCheckpoints">0</strong>
+            <small>checkpoints</small>
+        </div>
+    </div>
+
+    <div class="sq-card">
+        <div class="sq-card-header">
+            <div>
+                <h3>Department Scores</h3>
+                <p>Score contribution and improvement by department.</p>
+            </div>
+        </div>
+        <div class="sq-card-body sq-p-0">
+            <div class="sq-table-wrapper">
+                <table class="sq-table sq-score-table">
+                    <thead>
+                        <tr>
+                            <th>Department</th>
+                            <th>Status</th>
+                            <th>Answered</th>
+                            <th>Original</th>
+                            <th>Improved</th>
+                            <th>Gain</th>
+                            <th>Revised</th>
+                        </tr>
+                    </thead>
+                    <tbody id="scoreDepartmentRows">
+                        <tr>
+                            <td colspan="7" class="sq-text-center sq-text-muted">Loading score report...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>

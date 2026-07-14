@@ -1,0 +1,263 @@
+/*!
+ * ==========================================================
+ * SaQshi Open Source
+ * Assessment Checklist
+ * checklist.css
+ * ==========================================================
+ */
+
+.sq-checklist-page{
+    display:flex;
+    flex-direction:column;
+    gap:.35rem;
+}
+
+body:has(.sq-checklist-page) .sq-page-content,
+body:has(.sq-checklist-page) .sq-content{
+    padding:6px 10px !important;
+}
+
+.sq-assessment-summary,
+.sq-filter-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+    gap:.35rem;
+}
+
+.sq-checklist-page .sq-card-header{
+    padding:.25rem .45rem !important;
+}
+
+.sq-checklist-page .sq-card-header h2,
+.sq-checklist-page .sq-card-header h3{
+    margin:0;
+    font-size:.82rem;
+    line-height:1.1;
+}
+
+.sq-checklist-page .sq-card-header p{
+    margin:.1rem 0 0;
+    font-size:.64rem;
+    line-height:1.15;
+}
+
+.sq-checklist-page .sq-card-body{
+    padding:.35rem .45rem !important;
+}
+
+.sq-summary-item{
+    border:1px solid var(--sq-border);
+    border-radius:6px;
+    padding:.28rem .42rem;
+    min-height:34px;
+    background:var(--sq-bg-surface);
+}
+
+.sq-summary-item label,
+.sq-form-group label{
+    display:block;
+    font-size:.62rem;
+    color:var(--sq-text-muted);
+    text-transform:uppercase;
+    margin-bottom:.08rem;
+}
+
+.sq-summary-item span{
+    font-size:.74rem;
+    font-weight:600;
+    color:var(--sq-text);
+}
+
+.sq-form-control{
+    width:100%;
+    min-height:26px;
+    border:1px solid var(--sq-border);
+    border-radius:6px;
+    padding:.25rem .4rem;
+    background:var(--sq-bg-surface);
+    color:var(--sq-text);
+}
+
+.sq-form-control:focus{
+    border-color:var(--sq-color-primary);
+    outline:0;
+    box-shadow:0 0 0 3px rgba(37,99,235,.12);
+}
+
+.sq-card-footer{
+    display:flex;
+    justify-content:flex-end;
+    gap:.45rem;
+    padding:.3rem .45rem;
+    border-top:1px solid var(--sq-border);
+}
+
+.sq-progress-block{
+    margin-bottom:.5rem;
+}
+
+.sq-progress-label{
+    display:flex;
+    justify-content:space-between;
+    gap:.5rem;
+    margin-bottom:.25rem;
+    color:var(--sq-text-muted);
+    font-size:.72rem;
+}
+
+.sq-progress{
+    width:100%;
+    height:6px;
+    border-radius:999px;
+    overflow:hidden;
+    background:var(--sq-bg-soft);
+}
+
+.sq-progress-bar{
+    width:0;
+    height:100%;
+    background:var(--sq-color-primary);
+    transition:width .2s ease;
+}
+
+.sq-checkpoint-box{
+    border:1px solid var(--sq-border);
+    border-radius:8px;
+    padding:.55rem;
+    margin-bottom:.55rem;
+    background:var(--sq-bg-soft);
+}
+
+.sq-checkpoint-reference{
+    display:inline-flex;
+    margin-bottom:.35rem;
+    padding:.15rem .4rem;
+    border-radius:999px;
+    background:#e0ecff;
+    color:#1d4ed8;
+    font-size:.68rem;
+    font-weight:700;
+}
+
+.sq-checkpoint-text{
+    font-size:.86rem;
+    font-weight:650;
+    line-height:1.3;
+    color:var(--sq-text);
+}
+
+.sq-checkpoint-verification{
+    margin-top:.35rem;
+    color:var(--sq-text-muted);
+    line-height:1.3;
+}
+
+.sq-score-options{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+    gap:.45rem;
+    border:0;
+    padding:0;
+    margin:0;
+}
+
+.sq-score-options legend{
+    grid-column:1/-1;
+    font-size:.7rem;
+    color:var(--sq-text-muted);
+    text-transform:uppercase;
+    margin-bottom:.25rem;
+}
+
+.sq-score-option{
+    display:flex;
+    align-items:center;
+    gap:.45rem;
+    border:1px solid var(--sq-border);
+    border-radius:8px;
+    padding:.45rem;
+    cursor:pointer;
+    background:var(--sq-bg-surface);
+}
+
+.sq-score-option input{
+    width:14px;
+    height:14px;
+}
+
+.sq-score-option span{
+    display:flex;
+    flex-direction:column;
+    gap:.15rem;
+}
+
+.sq-score-option strong{
+    font-size:.9rem;
+}
+
+.sq-score-option:has(input:checked){
+    border-color:var(--sq-color-primary);
+    box-shadow:0 0 0 3px rgba(37,99,235,.12);
+}
+
+.sq-empty-state{
+    color:var(--sq-text-muted);
+    padding:.2rem 0;
+}
+
+.sq-completed-state{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:.5rem;
+    border:1px solid #bbf7d0;
+    border-radius:8px;
+    padding:.55rem;
+    background:#f0fdf4;
+}
+
+.sq-completed-title{
+    margin-bottom:.15rem;
+    color:#166534;
+    font-size:.86rem;
+    font-weight:700;
+}
+
+.sq-completed-state p{
+    margin:0;
+    color:var(--sq-text-muted);
+}
+
+.sq-completed-actions{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:flex-end;
+    gap:.45rem;
+}
+
+.sq-hidden{
+    display:none !important;
+}
+
+@media (max-width:640px){
+    .sq-card-footer,
+    .sq-checkpoint-actions{
+        flex-direction:column-reverse;
+    }
+
+    .sq-card-footer .sq-btn{
+        width:100%;
+        justify-content:center;
+    }
+
+    .sq-completed-state{
+        align-items:stretch;
+        flex-direction:column;
+    }
+
+    .sq-completed-actions,
+    .sq-completed-actions .sq-btn{
+        width:100%;
+        justify-content:center;
+    }
+}

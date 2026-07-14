@@ -1,0 +1,122 @@
+<!--
+==========================================================
+SaQshi Facility User Profile
+----------------------------------------------------------
+Project : SaQshi Open Source
+Module  : Administration
+Page    : My Profile
+File    : users.html
+License : MIT
+==========================================================
+-->
+
+<section class="sq-admin-users">
+    <div class="sq-admin-profile-shell">
+        <form id="adminUserForm" class="sq-card sq-admin-user-form" autocomplete="off">
+            <div class="sq-card-header">
+                <div>
+                    <h3>My Profile</h3>
+                    <p>Update your facility user details and password.</p>
+                </div>
+                <button type="button" class="sq-btn sq-btn-light" id="btnRefreshUsers">
+                    Refresh
+                </button>
+            </div>
+
+            <div class="sq-card-body">
+                <div class="sq-admin-form-head">
+                    <div>
+                        <h4 id="adminUserFormTitle">Loading profile</h4>
+                        <p id="adminUserFormHint">Please wait while your profile is loaded.</p>
+                    </div>
+                    <span id="adminUserIdBadge" class="sq-admin-user-badge">User</span>
+                </div>
+
+                <input type="hidden" id="adminUserId">
+
+                <div class="sq-admin-readonly-strip">
+                    <div>
+                        <span>Username</span>
+                        <strong id="adminUsernameText">-</strong>
+                    </div>
+                    <div>
+                        <span>Role</span>
+                        <strong id="adminRoleText">-</strong>
+                    </div>
+                    <div>
+                        <span>Facility ID</span>
+                        <strong id="adminFacilityText">-</strong>
+                    </div>
+                    <div>
+                        <span>Status</span>
+                        <strong id="adminStatusText">-</strong>
+                    </div>
+                </div>
+
+                <div class="sq-admin-form-grid">
+                    <label>
+                        <span>First Name</span>
+                        <input type="text" id="adminFirstName" class="sq-form-control" required disabled aria-label="Admin First Name">
+                    </label>
+                    <label>
+                        <span>Middle Name</span>
+                        <input type="text" id="adminMiddleName" class="sq-form-control" disabled aria-label="Admin Middle Name">
+                    </label>
+                    <label>
+                        <span>Last Name</span>
+                        <input type="text" id="adminLastName" class="sq-form-control" disabled aria-label="Admin Last Name">
+                    </label>
+                    <label>
+                        <span>Email</span>
+                        <input type="email" id="adminEmail" class="sq-form-control" disabled aria-label="Admin Email">
+                    </label>
+                    <label>
+                        <span>Mobile</span>
+                        <input type="text" id="adminMobile" class="sq-form-control" disabled aria-label="Admin Mobile">
+                    </label>
+                    <label>
+                        <span>User Type</span>
+                        <input type="text" id="adminUserType" class="sq-form-control" disabled readonly aria-label="Admin User Type">
+                    </label>
+                </div>
+
+                <div class="sq-admin-password-box">
+                    <div class="sq-admin-password-title">
+                        <strong>Password Update</strong>
+                        <span>Leave blank to keep current password.</span>
+                    </div>
+                    <div class="sq-admin-form-grid is-password">
+                        <label>
+                            <span>New Password</span>
+                            <input type="password" id="adminPassword" class="sq-form-control" disabled autocomplete="new-password" aria-label="Admin Password">
+                        </label>
+                        <label>
+                            <span>Confirm Password</span>
+                            <input type="password" id="adminConfirmPassword" class="sq-form-control" disabled autocomplete="new-password" aria-label="Admin Confirm Password">
+                        </label>
+                    </div>
+                    <div class="sq-password-meter" aria-hidden="true">
+                        <span id="adminPasswordMeter"></span>
+                    </div>
+                    <div id="adminPasswordRules" class="sq-password-rules">
+                        <span data-rule="length">8 characters</span>
+                        <span data-rule="upper">Capital letter</span>
+                        <span data-rule="lower">Lower-case letter</span>
+                        <span data-rule="digit">Digit</span>
+                        <span data-rule="special">Special character</span>
+                        <span data-rule="match">Passwords match</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sq-card-footer sq-admin-form-actions">
+                <button type="button" class="sq-btn sq-btn-light" id="btnClearUserForm" disabled>
+                    Clear Password
+                </button>
+                <button type="submit" class="sq-btn sq-btn-primary" id="btnSaveUser" disabled>
+                    Save Profile
+                </button>
+            </div>
+        </form>
+    </div>
+</section>

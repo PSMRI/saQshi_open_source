@@ -1,0 +1,96 @@
+<!--
+ * ==========================================================
+ * SaQshi Open Source
+ * Performance Indicator Entry
+ * indicator.html
+ * Version 1.0.0 | Updated 2026-07-06
+ * ==========================================================
+ -->
+
+<section class="sq-performance-page">
+    <div class="sq-card">
+        <div class="sq-card-header">
+            <div>
+                <h3>Indicator Entry</h3>
+                <p>Capture KPI and Outcome indicators one by one.</p>
+            </div>
+            <div class="sq-performance-tools">
+                <select id="indicatorTypeFilter" class="sq-form-control" aria-label="Indicator Type Filter">
+                    <option value="OUTCOME">Outcome</option>
+                    <option value="KPI">KPI</option>
+                </select>
+                <select id="indicatorDepartmentFilter" class="sq-form-control" aria-label="Indicator Department Filter">
+                    <option value="">Select department</option>
+                </select>
+                <input id="indicatorPeriodFilter" class="sq-form-control" type="month" aria-label="Indicator Period Filter">
+                <button type="button" class="sq-btn sq-btn-light" id="btnIndicatorRefresh">Refresh</button>
+            </div>
+        </div>
+
+        <div class="sq-card-body">
+            <div class="sq-performance-context" id="indicatorFacilityContext"></div>
+
+            <div id="indicatorCompleteMessage" class="sq-performance-complete" hidden>
+                <strong>All indicators are already entered for this month.</strong>
+                <span>You can edit and update the saved values if required.</span>
+                <button type="button" class="sq-btn sq-btn-primary" id="btnIndicatorEditCompleted">Edit / Update</button>
+            </div>
+
+            <div class="sq-performance-wizard" id="indicatorWizard">
+                <div class="sq-performance-progress">
+                    <div>
+                        <span id="indicatorProgressText">Select department and month</span>
+                        <strong id="indicatorCurrentCounter">0 / 0</strong>
+                    </div>
+                    <div class="sq-performance-bar"><span id="indicatorProgressBar"></span></div>
+                </div>
+
+                <form id="indicatorEntryForm" class="sq-performance-form">
+                    <h4 id="indicatorSelectedTitle">Select Indicator</h4>
+                    <p id="indicatorSelectedMeta" class="sq-performance-muted">Select type, department and month to load indicators.</p>
+                    <div class="sq-indicator-detail-grid">
+                        <div>
+                            <span>Indicator</span>
+                            <strong id="indicatorDetailName">-</strong>
+                        </div>
+                        <div>
+                            <span>Numerator</span>
+                            <strong id="indicatorDetailNumerator">-</strong>
+                        </div>
+                        <div>
+                            <span>Denominator</span>
+                            <strong id="indicatorDetailDenominator">-</strong>
+                        </div>
+                    </div>
+                    <input type="hidden" id="indicatorId">
+                    <input type="hidden" id="indicatorCode">
+                    <input type="hidden" id="indicatorName">
+                    <input type="hidden" id="indicatorDepartmentId">
+                    <input type="hidden" id="indicatorFormulaId">
+                    <input type="hidden" id="indicatorMonth">
+                    <input type="hidden" id="indicatorYear">
+                    <div class="sq-performance-form-grid is-values">
+                        <label><span id="indicatorNumeratorLabel">Numerator</span><input id="indicatorNumerator" class="sq-form-control" type="number" step="0.0001" min="0" required aria-label="Indicator Numerator"></label>
+                        <label><span id="indicatorDenominatorLabel">Denominator</span><input id="indicatorDenominator" class="sq-form-control" type="number" step="0.0001" min="0" required aria-label="Indicator Denominator"></label>
+                        <label><span>Result</span><input id="indicatorResult" class="sq-form-control" type="text" readonly aria-label="Indicator Result"></label>
+                        <label><span>Remarks</span><input id="indicatorRemarks" class="sq-form-control" type="text" aria-label="Indicator Remarks"></label>
+                    </div>
+                    <div class="sq-performance-actions">
+                        <button type="button" class="sq-btn sq-btn-light" id="btnIndicatorBack" disabled>Back</button>
+                        <button type="submit" class="sq-btn sq-btn-primary" id="btnIndicatorSave" disabled>Save & Next</button>
+                        <button type="button" class="sq-btn sq-btn-light" id="btnIndicatorNext" disabled>Next</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="sq-card">
+        <div class="sq-card-header">
+            <div><h3>Indicator History</h3><p>Saved monthly entries for the selected type and department.</p></div>
+        </div>
+        <div class="sq-card-body">
+            <div id="indicatorHistoryRows" class="sq-performance-list">No history loaded.</div>
+        </div>
+    </div>
+</section>

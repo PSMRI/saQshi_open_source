@@ -1,0 +1,173 @@
+/*!
+ * ==========================================================
+ * SaQshi Open Source
+ * Score Report
+ * score.css
+ * ==========================================================
+ */
+
+.sq-score-report{
+    display:flex;
+    flex-direction:column;
+    gap:.6rem;
+}
+
+.sq-score-report .sq-card-header{
+    padding:.45rem .6rem !important;
+}
+
+.sq-score-report .sq-card-header h3{
+    margin:0;
+    font-size:.95rem;
+    line-height:1.1;
+}
+
+.sq-score-report .sq-card-header p{
+    margin:.1rem 0 0;
+    color:var(--sq-text-muted);
+    font-size:.68rem;
+}
+
+.sq-score-tools{
+    display:flex;
+    align-items:center;
+    gap:.4rem;
+    flex-wrap:wrap;
+}
+
+.sq-score-tools .sq-form-control{
+    width:260px;
+    min-height:30px;
+    padding:.3rem .45rem;
+    font-size:.72rem;
+}
+
+.sq-score-report .sq-btn{
+    min-height:30px !important;
+    padding:.32rem .6rem !important;
+    font-size:.72rem !important;
+}
+
+.sq-score-context{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:.45rem;
+}
+
+.sq-score-context div,
+.sq-score-kpi{
+    padding:.5rem .6rem;
+    border:1px solid var(--sq-border);
+    border-radius:8px;
+    background:var(--sq-bg-surface);
+}
+
+.sq-score-context span,
+.sq-score-kpi span,
+.sq-score-kpi small{
+    display:block;
+    color:var(--sq-text-muted);
+    font-size:.66rem;
+}
+
+.sq-score-context strong{
+    display:block;
+    margin-top:.12rem;
+    color:var(--sq-text-primary);
+    font-size:.82rem;
+    overflow-wrap:anywhere;
+}
+
+.sq-score-kpis{
+    display:grid;
+    grid-template-columns:repeat(5,minmax(120px,1fr));
+    gap:.5rem;
+}
+
+.sq-score-kpi strong{
+    display:block;
+    margin:.12rem 0;
+    color:var(--sq-text-primary);
+    font-size:1.18rem;
+    line-height:1;
+}
+
+.sq-score-table td,
+.sq-score-table th{
+    padding:.45rem .55rem !important;
+    font-size:.72rem;
+}
+
+.sq-score-dept strong{
+    display:block;
+    color:var(--sq-text-primary);
+    font-size:.74rem;
+}
+
+.sq-score-subtext{
+    display:block;
+    margin-top:.08rem;
+    color:var(--sq-text-muted);
+    font-size:.63rem;
+}
+
+.sq-score-pill,
+.sq-score-status{
+    display:inline-flex;
+    align-items:center;
+    min-height:22px;
+    padding:0 .45rem;
+    border-radius:999px;
+    font-size:.66rem;
+    font-weight:800;
+}
+
+.sq-score-pill{
+    background:var(--sq-color-info-50);
+    color:var(--sq-color-info-700);
+}
+
+.sq-score-pill.is-gain{
+    background:var(--sq-color-success-50);
+    color:var(--sq-color-success-700);
+}
+
+.sq-score-status{
+    background:var(--sq-bg-muted);
+    color:var(--sq-text-secondary);
+}
+
+.sq-score-status.is-completed{
+    background:var(--sq-color-success-50);
+    color:var(--sq-color-success-700);
+}
+
+.sq-score-status.is-progress{
+    background:var(--sq-color-warning-50);
+    color:var(--sq-color-warning-700);
+}
+
+.sq-score-empty{
+    padding:.85rem;
+    color:var(--sq-text-muted);
+    text-align:center;
+}
+
+@media (max-width:960px){
+    .sq-score-kpis{
+        grid-template-columns:repeat(3,minmax(120px,1fr));
+    }
+}
+
+@media (max-width:700px){
+    .sq-score-context,
+    .sq-score-kpis{
+        grid-template-columns:1fr;
+    }
+
+    .sq-score-tools,
+    .sq-score-tools .sq-form-control,
+    .sq-score-tools .sq-btn{
+        width:100%;
+    }
+}

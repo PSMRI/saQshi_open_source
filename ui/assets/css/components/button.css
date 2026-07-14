@@ -1,0 +1,565 @@
+/*!
+ * ==========================================================
+ * SQ-UI Button Component v1.0
+ * ----------------------------------------------------------
+ * Project : SaQshi Open Source
+ * Component : Buttons
+ * Standard : HTML5 + CSS3 + WCAG 2.2 AA
+ * License  : MIT
+ * ==========================================================
+ */
+
+/* ==========================================================
+   Base Button
+========================================================== */
+
+.sq-btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:var(--sq-space-2);
+
+    min-height:var(--sq-button-height-md);
+
+    padding:0 var(--sq-button-padding-x-md);
+
+    border:1px solid transparent;
+
+    border-radius:var(--sq-button-radius);
+
+    background:transparent;
+
+    color:inherit;
+
+    font-family:inherit;
+
+    font-size:var(--sq-font-size-sm);
+
+    font-weight:var(--sq-font-weight-semibold);
+
+    line-height:1;
+
+    white-space:nowrap;
+
+    cursor:pointer;
+
+    user-select:none;
+
+    transition:
+        background-color var(--sq-transition-fast),
+        border-color var(--sq-transition-fast),
+        color var(--sq-transition-fast),
+        box-shadow var(--sq-transition-fast),
+        transform var(--sq-transition-fast);
+
+    text-decoration:none;
+}
+
+.sq-btn:hover{
+    text-decoration:none;
+}
+
+.sq-btn:focus-visible{
+    outline:none;
+    box-shadow:var(--sq-shadow-focus);
+}
+
+.sq-btn:active{
+    transform:translateY(1px);
+}
+
+.sq-btn:disabled,
+.sq-btn[disabled]{
+
+    opacity:.55;
+
+    cursor:not-allowed;
+
+    pointer-events:none;
+
+}
+
+/* ==========================================================
+   Sizes
+========================================================== */
+
+.sq-btn-xs{
+
+    min-height:1.75rem;
+
+    padding:0 var(--sq-space-2);
+
+    font-size:var(--sq-font-size-xs);
+
+}
+
+.sq-btn-sm{
+
+    min-height:var(--sq-button-height-sm);
+
+    padding:0 var(--sq-button-padding-x-sm);
+
+}
+
+.sq-btn-md{
+
+    min-height:var(--sq-button-height-md);
+
+    padding:0 var(--sq-button-padding-x-md);
+
+}
+
+.sq-btn-lg{
+
+    min-height:var(--sq-button-height-lg);
+
+    padding:0 var(--sq-button-padding-x-lg);
+
+    font-size:var(--sq-font-size-md);
+
+}
+
+.sq-btn-block{
+
+    width:100%;
+
+}
+
+/* ==========================================================
+   Primary
+========================================================== */
+
+.sq-btn-primary{
+
+    background:var(--sq-color-primary);
+
+    color:var(--sq-color-white);
+
+}
+
+.sq-btn-primary:hover{
+
+    background:var(--sq-color-primary-hover);
+
+}
+
+.sq-btn-primary:active{
+
+    background:var(--sq-color-primary-active);
+
+}
+
+/* ==========================================================
+   Secondary
+========================================================== */
+
+.sq-btn-secondary{
+
+    background:var(--sq-color-gray-600);
+
+    color:var(--sq-color-white);
+
+}
+
+.sq-btn-secondary:hover{
+
+    background:var(--sq-color-gray-700);
+
+}
+
+/* ==========================================================
+   Success
+========================================================== */
+
+.sq-btn-success{
+
+    background:var(--sq-color-success);
+
+    color:#fff;
+
+}
+
+.sq-btn-success:hover{
+
+    background:var(--sq-color-success-700);
+
+}
+
+/* ==========================================================
+   Warning
+========================================================== */
+
+.sq-btn-warning{
+
+    background:var(--sq-color-warning);
+
+    color:#fff;
+
+}
+
+.sq-btn-warning:hover{
+
+    background:var(--sq-color-warning-700);
+
+}
+
+/* ==========================================================
+   Danger
+========================================================== */
+
+.sq-btn-danger{
+
+    background:var(--sq-color-danger);
+
+    color:#fff;
+
+}
+
+.sq-btn-danger:hover{
+
+    background:var(--sq-color-danger-700);
+
+}
+
+/* ==========================================================
+   Info
+========================================================== */
+
+.sq-btn-info{
+
+    background:var(--sq-color-info);
+
+    color:#fff;
+
+}
+
+.sq-btn-info:hover{
+
+    background:var(--sq-color-info-700);
+
+}
+
+/* ==========================================================
+   Outline Buttons
+========================================================== */
+
+.sq-btn-outline-primary{
+
+    border-color:var(--sq-color-primary);
+
+    color:var(--sq-color-primary);
+
+}
+
+.sq-btn-outline-primary:hover{
+
+    background:var(--sq-color-primary);
+
+    color:#fff;
+
+}
+
+.sq-btn-outline-success{
+
+    border-color:var(--sq-color-success);
+
+    color:var(--sq-color-success);
+
+}
+
+.sq-btn-outline-success:hover{
+
+    background:var(--sq-color-success);
+
+    color:#fff;
+
+}
+
+.sq-btn-outline-danger{
+
+    border-color:var(--sq-color-danger);
+
+    color:var(--sq-color-danger);
+
+}
+
+.sq-btn-outline-danger:hover{
+
+    background:var(--sq-color-danger);
+
+    color:#fff;
+
+}
+
+.sq-btn-outline-warning{
+
+    border-color:var(--sq-color-warning);
+
+    color:var(--sq-color-warning);
+
+}
+
+.sq-btn-outline-warning:hover{
+
+    background:var(--sq-color-warning);
+
+    color:#fff;
+
+}
+
+/* ==========================================================
+   Ghost Button
+========================================================== */
+
+.sq-btn-ghost{
+
+    background:transparent;
+
+    color:var(--sq-text-primary);
+
+}
+
+.sq-btn-ghost:hover{
+
+    background:var(--sq-color-gray-100);
+
+}
+
+/* ==========================================================
+   Light Button
+========================================================== */
+
+.sq-btn-light{
+
+    background:var(--sq-color-gray-100);
+
+    color:var(--sq-text-primary);
+
+}
+
+.sq-btn-light:hover{
+
+    background:var(--sq-color-gray-200);
+
+}
+
+/* ==========================================================
+   Link Button
+========================================================== */
+
+.sq-btn-link{
+
+    background:none;
+
+    padding:0;
+
+    min-height:auto;
+
+    color:var(--sq-color-primary);
+
+}
+
+.sq-btn-link:hover{
+
+    text-decoration:underline;
+
+}
+
+/* ==========================================================
+   Icon Buttons
+========================================================== */
+
+.sq-btn-icon{
+
+    width:2.5rem;
+
+    height:2.5rem;
+
+    padding:0;
+
+}
+
+.sq-btn-icon-sm{
+
+    width:2rem;
+
+    height:2rem;
+
+}
+
+.sq-btn-icon-lg{
+
+    width:3rem;
+
+    height:3rem;
+
+}
+
+.sq-btn-icon svg,
+.sq-btn-icon i{
+
+    font-size:1rem;
+
+}
+
+/* ==========================================================
+   Rounded
+========================================================== */
+
+.sq-btn-pill{
+
+    border-radius:var(--sq-radius-pill);
+
+}
+
+.sq-btn-circle{
+
+    width:2.75rem;
+
+    height:2.75rem;
+
+    padding:0;
+
+    border-radius:50%;
+
+}
+
+/* ==========================================================
+   Loading State
+========================================================== */
+
+.sq-btn-loading{
+
+    pointer-events:none;
+
+    opacity:.85;
+
+}
+
+.sq-btn-spinner{
+
+    width:1rem;
+
+    height:1rem;
+
+    border:2px solid rgba(255,255,255,.35);
+
+    border-top-color:#fff;
+
+    border-radius:50%;
+
+    animation:sq-btn-spin .8s linear infinite;
+
+}
+
+@keyframes sq-btn-spin{
+
+    to{
+
+        transform:rotate(360deg);
+
+    }
+
+}
+
+/* ==========================================================
+   Button Group
+========================================================== */
+
+.sq-btn-group{
+
+    display:inline-flex;
+
+    gap:0;
+
+}
+
+.sq-btn-group .sq-btn{
+
+    border-radius:0;
+
+}
+
+.sq-btn-group .sq-btn:first-child{
+
+    border-top-left-radius:var(--sq-button-radius);
+
+    border-bottom-left-radius:var(--sq-button-radius);
+
+}
+
+.sq-btn-group .sq-btn:last-child{
+
+    border-top-right-radius:var(--sq-button-radius);
+
+    border-bottom-right-radius:var(--sq-button-radius);
+
+}
+
+/* ==========================================================
+   Floating Action Button
+========================================================== */
+
+.sq-btn-fab{
+
+    position:fixed;
+
+    right:2rem;
+
+    bottom:2rem;
+
+    width:3.75rem;
+
+    height:3.75rem;
+
+    border-radius:50%;
+
+    background:var(--sq-color-primary);
+
+    color:#fff;
+
+    box-shadow:var(--sq-shadow-lg);
+
+    z-index:var(--sq-z-fixed);
+
+}
+
+.sq-btn-fab:hover{
+
+    background:var(--sq-color-primary-hover);
+
+}
+
+/* ==========================================================
+   Responsive
+========================================================== */
+
+@media(max-width:768px){
+
+    .sq-btn{
+
+        font-size:var(--sq-font-size-xs);
+
+    }
+
+    .sq-btn-lg{
+
+        min-height:2.75rem;
+
+    }
+
+}
+
+/* ==========================================================
+   Print
+========================================================== */
+
+@media print{
+
+    .sq-btn{
+
+        display:none !important;
+
+    }
+
+}

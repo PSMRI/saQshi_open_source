@@ -1,0 +1,23 @@
+{
+  "id": "performance-indicator",
+  "name": "Indicator Entry",
+  "title": "Indicator Entry",
+  "layout": "dashboard",
+  "pageHeader": {
+    "title": "Indicator Entry",
+    "subtitle": "Capture KPI and Outcome indicators from the generic indicator engine."
+  },
+  "authentication": {
+    "required": true
+  },
+  "assets": {
+    "css": ["/ui/pages/performance/indicator.css?v=20260706-1"],
+    "js": ["/ui/pages/performance/indicator.js?v=20260713-1"]
+  },
+  "breadcrumb": [
+    {"label": "Dashboard", "url": "/ui/dashboard.html"},
+    {"label": "Performance"},
+    {"label": "Indicator Entry"}
+  ],
+  "moduleName": "performanceIndicator"
+}

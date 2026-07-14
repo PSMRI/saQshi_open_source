@@ -1,0 +1,127 @@
+<!--
+==========================================================
+SaQshi Gap Analysis Page
+----------------------------------------------------------
+Project : SaQshi Open Source
+Module  : CQI
+Page    : Gap Analysis
+File    : gap-analysis.html
+License : MIT
+==========================================================
+-->
+
+<div class="sq-page sq-gap-analysis-page">
+
+    <div class="sq-gap-summary">
+        <div class="sq-gap-stat">
+            <label>Total Gaps</label>
+            <strong id="gapTotal">0</strong>
+        </div>
+
+        <div class="sq-gap-stat">
+            <label>Open</label>
+            <strong id="gapOpen">0</strong>
+        </div>
+
+        <div class="sq-gap-stat">
+            <label>Closed</label>
+            <strong id="gapClosed">0</strong>
+        </div>
+
+        <div class="sq-gap-stat">
+            <label>Non Compliance</label>
+            <strong id="gapNonCompliance">0</strong>
+        </div>
+
+        <div class="sq-gap-stat">
+            <label>Partial</label>
+            <strong id="gapPartial">0</strong>
+        </div>
+
+        <div class="sq-gap-stat">
+            <label>Closure</label>
+            <strong id="gapClosure">0%</strong>
+        </div>
+    </div>
+
+    <div class="sq-card sq-gap-context-card">
+        <div class="sq-card-body">
+            <div class="sq-gap-context">
+                <div>
+                    <label>Assessment</label>
+                    <strong id="assessmentName">-</strong>
+                </div>
+                <div>
+                    <label>Status</label>
+                    <strong id="assessmentStatus">-</strong>
+                </div>
+                <div>
+                    <label>Framework</label>
+                    <strong id="assessmentFramework">-</strong>
+                </div>
+                <div>
+                    <label>Facility</label>
+                    <strong id="facilityName">-</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="sq-card">
+        <div class="sq-card-header">
+            <div>
+                <h3>Gap Register</h3>
+                <p>Non-compliant and partially compliant checkpoints.</p>
+            </div>
+
+            <div class="sq-gap-tools">
+                <select id="departmentFilter" class="sq-form-control" aria-label="Department Filter">
+                    <option value="">All Departments</option>
+                </select>
+
+                <select id="statusFilter" class="sq-form-control" aria-label="Status Filter">
+                    <option value="">All Gaps</option>
+                    <option value="OPEN">Open</option>
+                    <option value="CLOSED">Closed</option>
+                </select>
+
+                <select id="typeFilter" class="sq-form-control" aria-label="Type Filter">
+                    <option value="">All Types</option>
+                    <option value="NON_COMPLIANT">Non Compliance</option>
+                    <option value="PARTIALLY_COMPLIANT">Partial Compliance</option>
+                </select>
+
+                <button type="button" class="sq-btn sq-btn-light" id="btnRefreshGapAnalysis">
+                    Refresh
+                </button>
+            </div>
+        </div>
+
+        <div class="sq-card-body sq-p-0">
+            <div class="sq-table-wrapper">
+                <table class="sq-table sq-gap-table">
+                    <thead>
+                        <tr>
+                            <th>Department</th>
+                            <th>Area / Subtype</th>
+                            <th>Checkpoint</th>
+                            <th>Method</th>
+                            <th>Score</th>
+                            <th>Status</th>
+                            <th>Remarks</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="gapTableBody">
+                        <tr>
+                            <td colspan="7" class="sq-text-center sq-text-muted">
+                                Loading gap analysis...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>

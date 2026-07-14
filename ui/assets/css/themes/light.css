@@ -1,0 +1,20 @@
+:root,
+[data-theme="light"] {
+
+    --sq-bg-body:#f5f7fb;
+
+    --sq-bg-surface:#ffffff;
+
+    --sq-bg-muted:#f8fafc;
+
+    --sq-text-primary:#1f2937;
+
+    --sq-text-secondary:#475569;
+
+    --sq-text-muted:#64748b;
+
+    --sq-border:#dbe2ea;
+
+    --sq-shadow-color:rgba(0,0,0,.08);
+
+}

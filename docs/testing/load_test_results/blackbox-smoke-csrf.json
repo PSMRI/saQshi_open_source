@@ -1,0 +1,206 @@
+{
+  "summary": {
+    "started_at": "2026-07-13T16:27:25.982Z",
+    "finished_at": "2026-07-13T16:27:31.223Z",
+    "duration_seconds": 5.227,
+    "urls": [
+      "http://localhost:94/api/auth/v1/csrf.php"
+    ],
+    "method": "GET",
+    "concurrency": 2,
+    "total_requests": 360,
+    "requests_per_second": 68.88,
+    "failures": 0,
+    "failure_rate_percent": 0,
+    "latency_ms": {
+      "min": 5.93,
+      "avg": 27.85,
+      "p50": 21.32,
+      "p90": 46.66,
+      "p95": 57.47,
+      "p99": 89.22,
+      "max": 508.19
+    },
+    "status_counts": {
+      "200": 360
+    },
+    "error_counts": {}
+  },
+  "sample_results": [
+    {
+      "ok": true,
+      "statusCode": 200,
+      "latencyMs": 338.8277,
+      "bytes": 219,
+      "url": "http://localhost:94/api/auth/v1/csrf.php"
+    },
+    {
+      "ok": true,
+      "statusCode": 200,
+      "latencyMs": 224.25719999999995,
+      "bytes": 219,
+      "url": "http://localhost:94/api/auth/v1/csrf.php"
+    },
+    {
+      "ok": true,
+      "statusCode": 200,
+      "latencyMs": 18.13029999999992,
+      "bytes": 219,
+      "url": "http://localhost:94/api/auth/v1/csrf.php"
+    },
+    {
+      "ok": true,
+      "statusCode": 200,
+      "latencyMs": 54.4851000000001,
+      "bytes": 219,
+      "url": "http://localhost:94/api/auth/v1/csrf.php"
+    },
+    {
+      "ok": true,
+      "statusCode": 200,
+      "latencyMs": 27.572599999999966,
+      "bytes": 219,
+      "url": "http://localhost:94/api/auth/v1/csrf.php"
+    },
+    {
+      "ok": true,
+      "statusCode": 200,
+      "latencyMs": 37.49490000000003,
+      "bytes": 219,
+      "url": "http://localhost:94/api/auth/v1/csrf.php"
+    },
+    {
+      "ok": true,
+      "statusCode": 200,
+      "latencyMs": 32.40090000000009,
+      "bytes": 219,
+      "url": "http://localhost:94/api/auth/v1/csrf.php"
+    },
+    {
+      "ok": true,
+      "statusCode": 200,
+      "latencyMs": 17.372999999999934,
+      "bytes": 219,
+      "url": "http://localhost:94/api/auth/v1/csrf.php"
+    },
+    {
+      "ok": true,
+      "statusCode": 200,
+      "latencyMs": 32.730500000000006,
+      "bytes": 219,
+      "url": "http://localhost:94/api/auth/v1/csrf.php"
+    },
+    {
+      "ok": true,
+      "statusCode": 200,
+      "latencyMs": 22.005499999999984,
+      "bytes": 219,
+      "url": "http://localhost:94/api/auth/v1/csrf.php"
+    },
+    {
+      "ok": true,
+      "statusCode": 200,
+      "latencyMs": 22.826299999999947,
+      "bytes": 219,
+      "url": "http://localhost:94/api/auth/v1/csrf.php"
+    },
+    {
+      "ok": true,
+      "statusCode": 200,
+      "latencyMs": 19.333499999999958,
+      "bytes": 219,
+      "url": "http://localhost:94/api/auth/v1/csrf.php"
+    },
+    {
+      "ok": true,
+      "statusCode": 200,
+      "latencyMs": 17.278099999999995,
+      "bytes": 219,
+      "url": "http://localhost:94/api/auth/v1/csrf.php"
+    },
+    {
+      "ok": true,
+      "statusCode": 200,
+      "latencyMs": 18.60749999999996,
+      "bytes": 219,
+      "url": "http://localhost:94/api/auth/v1/csrf.php"
+    },
+    {
+      "ok": true,
+      "statusCode": 200,
+      "latencyMs": 31.32899999999995,
+      "bytes": 219,
+      "url": "http://localhost:94/api/auth/v1/csrf.php"
+    },
+    {
+      "ok": true,
+      "statusCode": 200,
+      "latencyMs": 14.17089999999996,
+      "bytes": 219,
+      "url": "http://localhost:94/api/auth/v1/csrf.php"
+    },
+    {
+      "ok": true,
+      "statusCode": 200,
+      "latencyMs": 21.810799999999972,
+      "bytes": 219,
+      "url": "http://localhost:94/api/auth/v1/csrf.php"
+    },
+    {
+      "ok": true,
+      "statusCode": 200,
+      "latencyMs": 23.58439999999996,
+      "bytes": 219,
+      "url": "http://localhost:94/api/auth/v1/csrf.php"
+    },
+    {
+      "ok": true,
+      "statusCode": 200,
+      "latencyMs": 21.781100000000038,
+      "bytes": 219,
+      "url": "http://localhost:94/api/auth/v1/csrf.php"
+    },
+    {
+      "ok": true,
+      "statusCode": 200,
+      "latencyMs": 19.008399999999938,
+      "bytes": 219,
+      "url": "http://localhost:94/api/auth/v1/csrf.php"
+    },
+    {
+      "ok": true,
+      "statusCode": 200,
+      "latencyMs": 17.784999999999968,
+      "bytes": 219,
+      "url": "http://localhost:94/api/auth/v1/csrf.php"
+    },
+    {
+      "ok": true,
+      "statusCode": 200,
+      "latencyMs": 7.388699999999972,
+      "bytes": 219,
+      "url": "http://localhost:94/api/auth/v1/csrf.php"
+    },
+    {
+      "ok": true,
+      "statusCode": 200,
+      "latencyMs": 30.648400000000038,
+      "bytes": 219,
+      "url": "http://localhost:94/api/auth/v1/csrf.php"
+    },
+    {
+      "ok": true,
+      "statusCode": 200,
+      "latencyMs": 24.825900000000047,
+      "bytes": 219,
+      "url": "http://localhost:94/api/auth/v1/csrf.php"
+    },
+    {
+      "ok": true,
+      "statusCode": 200,
+      "latencyMs": 17.262399999999957,
+      "bytes": 219,
+      "url": "http://localhost:94/api/auth/v1/csrf.php"
+    }
+  ]
+}

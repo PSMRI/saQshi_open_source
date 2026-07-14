@@ -1,0 +1,137 @@
+{
+  "module": "Performance Monitoring",
+  "config_type": "Validation Rules",
+  "version": "1.0.0",
+  "description": "Validation configuration for SaQshi Performance Monitoring KPI and Outcome Indicator entries.",
+  "scope": {
+    "applies_to": [
+      "KPI",
+      "OUTCOME"
+    ],
+    "frequency": "MONTHLY",
+    "input_fields": [
+      "N",
+      "D",
+      "R"
+    ]
+  },
+  "global_validation": {
+    "required_facility": true,
+    "required_facility_type": true,
+    "required_department": true,
+    "required_month": true,
+    "required_year": true,
+    "allow_decimal": true,
+    "max_decimal_places": 2,
+    "allow_negative": false,
+    "trim_input": true,
+    "blank_as_null": false
+  },
+  "field_validation": {
+    "N": {
+      "field_name": "numerator",
+      "type": "decimal",
+      "required": true,
+      "readonly": false,
+      "min": 0,
+      "max": 999999999,
+      "zero_allowed": true,
+      "decimal_allowed": true,
+      "max_decimal_places": 2,
+      "message_required": "Numerator is required.",
+      "message_invalid": "Numerator must be a valid number."
+    },
+    "D": {
+      "field_name": "denominator",
+      "type": "decimal",
+      "required": true,
+      "readonly": false,
+      "min": 0,
+      "max": 999999999,
+      "zero_allowed": false,
+      "decimal_allowed": true,
+      "max_decimal_places": 2,
+      "message_required": "Denominator is required.",
+      "message_zero": "Denominator cannot be zero.",
+      "message_invalid": "Denominator must be a valid number."
+    },
+    "R": {
+      "field_name": "result",
+      "type": "decimal",
+      "required": false,
+      "readonly": true,
+      "calculated": true,
+      "save": true,
+      "decimal_allowed": true,
+      "max_decimal_places": 2
+    }
+  },
+  "month_year_validation": {
+    "month_required": true,
+    "month_min": 1,
+    "month_max": 12,
+    "year_required": true,
+    "year_min": 2020,
+    "year_max": 2100,
+    "allow_future_month": false,
+    "allow_back_month_entry": 6
+  },
+  "formula_validation": {
+    "division_by_zero_allowed": false,
+    "calculate_on_input": true,
+    "calculate_before_save": true,
+    "round_result": true,
+    "default_precision": 2,
+    "default_rounding": "HALF_UP",
+    "on_formula_error": "BLOCK_SAVE"
+  },
+  "save_validation": {
+    "prevent_duplicate_month": true,
+    "duplicate_key": [
+      "facility_id",
+      "facility_type_id",
+      "department_id",
+      "indicator_type",
+      "indicator_id",
+      "month",
+      "year"
+    ],
+    "allow_edit_after_submit": true,
+    "allow_submit_without_result": false,
+    "require_all_active_indicators": false,
+    "audit_required": true
+  },
+  "indicator_validation": [
+    {
+      "validation_id": "PERCENTAGE_DEFAULT",
+      "description": "Default validation for percentage-based indicators.",
+      "min_result": 0,
+      "max_result": 100,
+      "warning_enabled": true,
+      "warning_message": "Result is outside expected percentage range of 0 to 100."
+    },
+    {
+      "validation_id": "RATE_PER_1000",
+      "description": "Validation for rate per thousand indicators.",
+      "min_result": 0,
+      "max_result": 1000,
+      "warning_enabled": true,
+      "warning_message": "Result is outside expected rate range."
+    },
+    {
+      "validation_id": "RATE_PER_100000",
+      "description": "Validation for rate per lakh indicators.",
+      "min_result": 0,
+      "max_result": 100000,
+      "warning_enabled": true,
+      "warning_message": "Result is unusually high. Please verify entered values."
+    }
+  ],
+  "messages": {
+    "save_success": "Performance data saved successfully.",
+    "save_failed": "Unable to save performance data.",
+    "duplicate_entry": "Data for this indicator and month already exists.",
+    "invalid_month_year": "Invalid month or year selected.",
+    "required_field_missing": "Please fill all required fields."
+  }
+}

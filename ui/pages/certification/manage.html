@@ -1,0 +1,70 @@
+<section class="sq-cert-page">
+    <div class="sq-card">
+        <div class="sq-card-header">
+            <div>
+                <h3>Add Certification</h3>
+                <p>Validity is calculated from status and certification date.</p>
+            </div>
+        </div>
+        <div class="sq-card-body">
+            <form id="certManageForm" class="sq-cert-form-grid">
+                <input type="hidden" name="fac_id" id="certFacilityId">
+                <input type="hidden" name="fac_type" id="certFacilityType">
+                <input type="hidden" name="dist" id="certDistrictName">
+                <input type="hidden" name="block" id="certBlockName">
+                <input type="hidden" name="dist_id" id="certDistrictId">
+                <input type="hidden" name="block_id" id="certBlockId">
+                <input type="hidden" name="state_id" id="certStateId">
+                <div>
+                    <label class="sq-form-label">Facility Name</label>
+                    <input class="sq-form-control" name="fac_name" id="certFacilityName" type="text" readonly aria-label="Fac Name">
+                </div>
+                <div>
+                    <label class="sq-form-label">NIN Number</label>
+                    <input class="sq-form-control" name="fac_nin" id="certFacilityNin" type="text" readonly aria-label="Fac Nin">
+                </div>
+                <div>
+                    <label class="sq-form-label">Certification Type</label>
+                    <select class="sq-form-control" name="certification_type" required aria-label="Certification Type">
+                        <option value="STATE">STATE</option>
+                        <option value="NATIONAL">NATIONAL</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="sq-form-label">Assessment Mode</label>
+                    <select class="sq-form-control" name="assessment_mode" required aria-label="Assessment Mode">
+                        <option value="PHYSICAL">PHYSICAL</option>
+                        <option value="VIRTUAL">VIRTUAL</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="sq-form-label">Certification Date</label>
+                    <input class="sq-form-control" name="certification_date" id="certificationDate" type="date" required aria-label="Certification Date">
+                </div>
+                <div>
+                    <label class="sq-form-label">Applied Date</label>
+                    <input class="sq-form-control" name="applied_date" id="certAppliedDate" type="date" aria-label="Applied Date">
+                </div>
+                <div>
+                    <label class="sq-form-label">Status</label>
+                    <select class="sq-form-control" name="status" required aria-label="Status">
+                        <option value="CONDITIONAL">CONDITIONAL</option>
+                        <option value="CERTIFIED">CERTIFIED</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="sq-form-label">Score</label>
+                    <input class="sq-form-control" name="score" type="number" min="0" max="100" step="0.01" required aria-label="Score">
+                </div>
+                <div class="is-wide">
+                    <label class="sq-form-label">Remarks</label>
+                    <textarea class="sq-form-control" name="remarks" rows="3" aria-label="Remarks"></textarea>
+                </div>
+                <div class="is-wide sq-cert-actions">
+                    <button type="submit" class="sq-btn sq-btn-primary"><i class="bi bi-save"></i> Save</button>
+                    <button type="button" class="sq-btn sq-btn-light" data-sq-route="certification/dashboard">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>

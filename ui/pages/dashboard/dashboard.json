@@ -1,0 +1,201 @@
+{
+    "id": "dashboard",
+
+    "name": "Dashboard",
+
+    "title": "Dashboard",
+
+    "description": "SaQshi Digital Healthcare Quality Assessment Dashboard",
+
+    "version": "1.0.0",
+
+    "author": "SaQshi Open Source",
+
+    "layout": "dashboard",
+
+    "route": "/dashboard",
+
+    "homepage": true,
+
+    "authentication": {
+        "required": true,
+        "redirect": "/login.html"
+    },
+
+    "authorization": {
+        "enabled": true,
+        "permissions": [
+            "dashboard.view"
+        ]
+    },
+
+    "theme": {
+        "name": "light",
+        "allowSwitch": true
+    },
+
+    "breadcrumb": [
+        {
+            "title": "Dashboard",
+            "icon": "bi-speedometer2",
+            "url": "/dashboard"
+        }
+    ],
+
+    "pageHeader": {
+        "title": "Dashboard",
+        "subtitle": "Healthcare Quality Assessment Overview",
+        "icon": "bi-speedometer2"
+    },
+
+    "components": [
+        "loader",
+        "notification",
+        "modal",
+        "confirm-dialog",
+        "header",
+        "sidebar",
+        "breadcrumb",
+        "footer"
+    ],
+
+    "assets": {
+
+        "css": [
+            "/ui/pages/dashboard/dashboard.css?v=20260706-3"
+        ],
+
+        "js": [
+            "/ui/pages/dashboard/dashboard.js?v=20260706-3"
+        ]
+
+    },
+
+    "api": {
+
+        "summary": "/api/dashboard/v1/summary.php",
+
+        "assessment": "/api/dashboard/v1/assessment.php",
+
+        "progress": "/api/dashboard/v1/progress.php",
+
+        "gapAnalysis": "/api/dashboard/v1/gap-analysis.php",
+
+        "notifications": "/api/dashboard/v1/notifications.php",
+
+        "activity": "/api/dashboard/v1/activity.php"
+
+    },
+
+    "widgets": [
+
+        {
+            "id": "summaryCards",
+            "title": "Summary Cards",
+            "enabled": true,
+            "order": 1
+        },
+
+        {
+            "id": "activeAssessment",
+            "title": "Active Assessment",
+            "enabled": true,
+            "order": 2
+        },
+
+        {
+            "id": "progress",
+            "title": "Progress",
+            "enabled": true,
+            "order": 3
+        },
+
+        {
+            "id": "recentAssessments",
+            "title": "Recent Assessments",
+            "enabled": true,
+            "order": 4
+        },
+
+        {
+            "id": "notifications",
+            "title": "Notifications",
+            "enabled": true,
+            "order": 5
+        }
+
+    ],
+
+    "quickActions": [
+
+        {
+            "id": "newAssessment",
+            "title": "New Assessment",
+            "icon": "bi-plus-circle",
+            "permission": "assessment.create",
+            "url": "#",
+            "route": "assessment/create"
+        },
+
+        {
+            "id": "assessmentList",
+            "title": "Assessment List",
+            "icon": "bi-list-check",
+            "permission": "assessment.view",
+            "url": "#",
+            "route": "assessment/list"
+        },
+
+        {
+            "id": "reports",
+            "title": "Reports",
+            "icon": "bi-file-earmark-bar-graph",
+            "permission": "reports.view",
+            "url": "#",
+            "route": "reports/dashboard"
+        }
+
+    ],
+
+    "cache": {
+        "enabled": true,
+        "duration": 300
+    },
+
+    "refresh": {
+        "enabled": true,
+        "interval": 300000
+    },
+
+    "features": {
+
+        "charts": true,
+
+        "chat": true,
+
+        "notifications": true,
+
+        "search": true,
+
+        "export": true,
+
+        "print": true,
+
+        "fullscreen": true
+
+    },
+
+    "seo": {
+
+        "robots": "noindex,nofollow",
+
+        "keywords": [
+            "SaQshi",
+            "Dashboard",
+            "Healthcare",
+            "NQAS",
+            "Quality Assessment"
+        ]
+
+    }
+}

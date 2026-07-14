@@ -1,0 +1,14 @@
+{
+  "id": "certification-history",
+  "name": "Certification History",
+  "title": "Certification History",
+  "layout": "dashboard",
+  "pageHeader": { "title": "Certification History", "subtitle": "Review previous certification records." },
+  "authentication": { "required": true },
+  "assets": {
+    "css": ["/ui/pages/certification/dashboard.css?v=20260707-4"],
+    "js": ["/ui/pages/certification/dashboard.js?v=20260707-4"]
+  },
+  "breadcrumb": [{ "label": "Dashboard", "url": "/ui/dashboard.html" }, { "label": "Certification" }, { "label": "History" }],
+  "moduleName": "certificationHistory"
+}

@@ -1,0 +1,39 @@
+{
+    "id": "facility-facilities",
+    "name": "Facility Profile",
+    "title": "Facility Profile",
+    "layout": "dashboard",
+
+    "pageHeader": {
+        "title": "Facility Profile",
+        "subtitle": "Update assigned facility profile and geo coordinates."
+    },
+
+    "authentication": {
+        "required": true
+    },
+
+    "assets": {
+        "css": [
+            "/ui/pages/facilityusers/users_facilities.css?v=20260705-1"
+        ],
+        "js": [
+            "/ui/pages/facilityusers/users_facilities.js?v=20260705-1"
+        ]
+    },
+
+    "breadcrumb": [
+        {
+            "label": "Dashboard",
+            "url": "/ui/dashboard.html"
+        },
+        {
+            "label": "Administration"
+        },
+        {
+            "label": "Facility Profile"
+        }
+    ],
+
+    "moduleName": "adminFacilities"
+}

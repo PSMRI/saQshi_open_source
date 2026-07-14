@@ -1,0 +1,496 @@
+/*!
+ * ==========================================================
+ * SQ-UI Progress Component v1.0
+ * ----------------------------------------------------------
+ * Project   : SaQshi Open Source
+ * Component : Progress Bar / Circular Progress / Step Progress
+ * Standard  : HTML5 + CSS3 + WCAG 2.2 AA
+ * License   : MIT
+ * ==========================================================
+ */
+
+/* ==========================================================
+   Base Progress
+========================================================== */
+
+.sq-progress{
+    position:relative;
+    width:100%;
+    height:.75rem;
+    background:var(--sq-color-gray-200);
+    border-radius:var(--sq-radius-pill);
+    overflow:hidden;
+}
+
+.sq-progress-bar{
+    height:100%;
+    width:0;
+    border-radius:inherit;
+    background:var(--sq-color-primary);
+    transition:width .35s ease;
+}
+
+/* ==========================================================
+   Sizes
+========================================================== */
+
+.sq-progress-xs{
+    height:.35rem;
+}
+
+.sq-progress-sm{
+    height:.5rem;
+}
+
+.sq-progress-md{
+    height:.75rem;
+}
+
+.sq-progress-lg{
+    height:1rem;
+}
+
+.sq-progress-xl{
+    height:1.5rem;
+}
+
+/* ==========================================================
+   Colors
+========================================================== */
+
+.sq-progress-primary .sq-progress-bar{
+    background:var(--sq-color-primary);
+}
+
+.sq-progress-success .sq-progress-bar{
+    background:var(--sq-color-success);
+}
+
+.sq-progress-warning .sq-progress-bar{
+    background:var(--sq-color-warning);
+}
+
+.sq-progress-danger .sq-progress-bar{
+    background:var(--sq-color-danger);
+}
+
+.sq-progress-info .sq-progress-bar{
+    background:var(--sq-color-info);
+}
+
+/* ==========================================================
+   Animated
+========================================================== */
+
+.sq-progress-striped .sq-progress-bar{
+
+    background-image:
+    linear-gradient(
+        45deg,
+        rgba(255,255,255,.25) 25%,
+        transparent 25%,
+        transparent 50%,
+        rgba(255,255,255,.25) 50%,
+        rgba(255,255,255,.25) 75%,
+        transparent 75%,
+        transparent
+    );
+
+    background-size:1rem 1rem;
+
+}
+
+.sq-progress-animated .sq-progress-bar{
+
+    animation:sq-progress-stripes 1s linear infinite;
+
+}
+
+@keyframes sq-progress-stripes{
+
+    from{
+
+        background-position:1rem 0;
+
+    }
+
+    to{
+
+        background-position:0 0;
+
+    }
+
+}
+
+/* ==========================================================
+   Progress Label
+========================================================== */
+
+.sq-progress-label{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:var(--sq-space-2);
+
+    font-size:var(--sq-font-size-sm);
+
+    color:var(--sq-text-secondary);
+
+}
+
+.sq-progress-title{
+
+    font-weight:var(--sq-font-weight-medium);
+
+}
+
+.sq-progress-value{
+
+    font-weight:var(--sq-font-weight-bold);
+
+}
+
+/* ==========================================================
+   Progress With Percentage Inside
+========================================================== */
+
+.sq-progress-text{
+
+    position:absolute;
+
+    inset:0;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:var(--sq-font-size-xs);
+
+    font-weight:var(--sq-font-weight-semibold);
+
+    color:#fff;
+
+    z-index:2;
+
+}
+
+/* ==========================================================
+   Circular Progress
+========================================================== */
+
+.sq-progress-circle{
+
+    position:relative;
+
+    width:120px;
+
+    height:120px;
+
+    border-radius:50%;
+
+    background:conic-gradient(
+        var(--sq-color-primary) 0deg,
+        var(--sq-color-primary) var(--progress),
+        var(--sq-color-gray-200) var(--progress),
+        var(--sq-color-gray-200) 360deg
+    );
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+}
+
+.sq-progress-circle::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:90px;
+
+    height:90px;
+
+    border-radius:50%;
+
+    background:var(--sq-bg-surface);
+
+}
+
+.sq-progress-circle-value{
+
+    position:relative;
+
+    z-index:2;
+
+    font-size:var(--sq-font-size-xl);
+
+    font-weight:var(--sq-font-weight-bold);
+
+}
+
+/* ==========================================================
+   KPI Progress Card
+========================================================== */
+
+.sq-kpi-progress{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:var(--sq-space-2);
+
+}
+
+.sq-kpi-progress-footer{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    font-size:var(--sq-font-size-xs);
+
+    color:var(--sq-text-muted);
+
+}
+
+/* ==========================================================
+   Assessment Progress
+========================================================== */
+
+.sq-assessment-progress{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:var(--sq-space-3);
+
+}
+
+.sq-assessment-progress-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+}
+
+.sq-assessment-progress-title{
+
+    font-weight:var(--sq-font-weight-semibold);
+
+}
+
+.sq-assessment-progress-status{
+
+    color:var(--sq-text-muted);
+
+    font-size:var(--sq-font-size-sm);
+
+}
+
+/* ==========================================================
+   Department Progress
+========================================================== */
+
+.sq-department-progress{
+
+    margin-top:var(--sq-space-3);
+
+}
+
+/* ==========================================================
+   Gap Closure Progress
+========================================================== */
+
+.sq-gap-progress{
+
+    margin-top:var(--sq-space-2);
+
+}
+
+/* ==========================================================
+   Multi Segment Progress
+========================================================== */
+
+.sq-progress-stack{
+
+    display:flex;
+
+    width:100%;
+
+    height:.85rem;
+
+    border-radius:var(--sq-radius-pill);
+
+    overflow:hidden;
+
+    background:var(--sq-color-gray-200);
+
+}
+
+.sq-progress-segment{
+
+    height:100%;
+
+}
+
+.sq-progress-segment.success{
+
+    background:var(--sq-color-success);
+
+}
+
+.sq-progress-segment.warning{
+
+    background:var(--sq-color-warning);
+
+}
+
+.sq-progress-segment.danger{
+
+    background:var(--sq-color-danger);
+
+}
+
+.sq-progress-segment.info{
+
+    background:var(--sq-color-info);
+
+}
+
+/* ==========================================================
+   Milestone Progress
+========================================================== */
+
+.sq-milestone-progress{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    position:relative;
+
+}
+
+.sq-milestone-progress::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+
+    right:0;
+
+    top:50%;
+
+    height:2px;
+
+    background:var(--sq-color-gray-300);
+
+    z-index:0;
+
+}
+
+.sq-milestone{
+
+    position:relative;
+
+    z-index:2;
+
+    width:24px;
+
+    height:24px;
+
+    border-radius:50%;
+
+    background:var(--sq-color-gray-300);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+}
+
+.sq-milestone.completed{
+
+    background:var(--sq-color-success);
+
+    color:#fff;
+
+}
+
+.sq-milestone.active{
+
+    background:var(--sq-color-primary);
+
+    color:#fff;
+
+}
+
+/* ==========================================================
+   Responsive
+========================================================== */
+
+@media(max-width:768px){
+
+    .sq-progress-circle{
+
+        width:90px;
+
+        height:90px;
+
+    }
+
+    .sq-progress-circle::before{
+
+        width:65px;
+
+        height:65px;
+
+    }
+
+    .sq-progress-circle-value{
+
+        font-size:var(--sq-font-size-lg);
+
+    }
+
+}
+
+/* ==========================================================
+   Print
+========================================================== */
+
+@media print{
+
+    .sq-progress{
+
+        border:1px solid #000;
+
+    }
+
+    .sq-progress-bar{
+
+        background:#000 !important;
+
+    }
+
+}

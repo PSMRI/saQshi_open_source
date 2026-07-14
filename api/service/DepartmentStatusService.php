@@ -1,0 +1,236 @@
+<?php
+
+/**
+ * DepartmentStatusService.php
+ * -------------------------------------------------------
+ * Runtime department activation/deactivation service
+ * for facility + assessment period.
+ */
+
+class DepartmentStatusService
+{
+    private mysqli $db;
+
+    public function __construct(mysqli $db)
+    {
+        $this->db = $db;
+    }
+
+    /**
+     * Save or update department active status
+     */
+    public function saveStatus(array $data): array
+    {
+        try {
+            $sql = "
+                INSERT INTO assessment_department_status
+                    (fac_id_fk, ass_period_id, dept_id, is_active, activated_by)
+                VALUES (?, ?, ?, ?, ?)
+                ON DUPLICATE KEY UPDATE
+                    is_active = VALUES(is_active),
+                    activated_by = VALUES(activated_by),
+                    updated_on = CURRENT_TIMESTAMP
+            ";
+
+            $stmt = $this->db->prepare($sql);
+
+            if (!$stmt) {
+                return $this->error("Prepare failed: " . $this->db->error);
+            }
+
+            $stmt->bind_param(
+                "iiiii",
+                $data['fac_id'],
+                $data['ass_period'],
+                $data['dept_id'],
+                $data['is_active'],
+                $data['user_id']
+            );
+
+            $stmt->execute();
+
+            return $this->success("Department status saved", [
+                "fac_id"     => (int)$data['fac_id'],
+                "ass_period" => (int)$data['ass_period'],
+                "dept_id"    => (int)$data['dept_id'],
+                "is_active"  => (int)$data['is_active']
+            ]);
+
+        } catch (Throwable $e) {
+            return $this->error("Save failed: " . $e->getMessage());
+        }
+    }
+
+    /**
+     * Save multiple department statuses
+     */
+    public function saveBulkStatus(array $data): array
+    {
+        if (!isset($data['departments']) || !is_array($data['departments'])) {
+            return $this->error("departments array is required");
+        }
+
+        $this->db->begin_transaction();
+
+        try {
+            $saved = [];
+
+            foreach ($data['departments'] as $department) {
+                if (!isset($department['dept_id'], $department['is_active'])) {
+                    throw new Exception("Each department must have dept_id and is_active");
+                }
+
+                $payload = [
+                    "fac_id"     => (int)$data['fac_id'],
+                    "ass_period" => (int)$data['ass_period'],
+                    "dept_id"    => (int)$department['dept_id'],
+                    "is_active"  => (int)$department['is_active'],
+                    "user_id"    => (int)$data['user_id']
+                ];
+
+                $sql = "
+                    INSERT INTO assessment_department_status
+                        (fac_id_fk, ass_period_id, dept_id, is_active, activated_by)
+                    VALUES (?, ?, ?, ?, ?)
+                    ON DUPLICATE KEY UPDATE
+                        is_active = VALUES(is_active),
+                        activated_by = VALUES(activated_by),
+                        updated_on = CURRENT_TIMESTAMP
+                ";
+
+                $stmt = $this->db->prepare($sql);
+
+                if (!$stmt) {
+                    throw new Exception("Prepare failed: " . $this->db->error);
+                }
+
+                $stmt->bind_param(
+                    "iiiii",
+                    $payload['fac_id'],
+                    $payload['ass_period'],
+                    $payload['dept_id'],
+                    $payload['is_active'],
+                    $payload['user_id']
+                );
+
+                $stmt->execute();
+
+                $saved[] = [
+                    "dept_id"   => $payload['dept_id'],
+                    "is_active" => $payload['is_active']
+                ];
+            }
+
+            $this->db->commit();
+
+            return $this->success("Department statuses saved", [
+                "fac_id"      => (int)$data['fac_id'],
+                "ass_period"  => (int)$data['ass_period'],
+                "departments" => $saved
+            ]);
+
+        } catch (Throwable $e) {
+            $this->db->rollback();
+            return $this->error("Bulk save failed: " . $e->getMessage());
+        }
+    }
+
+    /**
+     * Get department status list for facility + assessment period
+     */
+    public function getStatusList(int $facId, int $assPeriod): array
+    {
+        try {
+            $sql = "
+                SELECT
+                    dept_id,
+                    is_active,
+                    activated_by,
+                    activated_on,
+                    updated_on
+                FROM assessment_department_status
+                WHERE fac_id_fk = ?
+                  AND ass_period_id = ?
+                ORDER BY dept_id
+            ";
+
+            $stmt = $this->db->prepare($sql);
+
+            if (!$stmt) {
+                return $this->error("Prepare failed: " . $this->db->error);
+            }
+
+            $stmt->bind_param("ii", $facId, $assPeriod);
+            $stmt->execute();
+
+            $res = $stmt->get_result();
+
+            $data = [];
+
+            while ($row = $res->fetch_assoc()) {
+                $data[] = [
+                    "dept_id"      => (int)$row['dept_id'],
+                    "is_active"    => (int)$row['is_active'],
+                    "activated_by" => $row['activated_by'] !== null ? (int)$row['activated_by'] : null,
+                    "activated_on" => $row['activated_on'],
+                    "updated_on"   => $row['updated_on']
+                ];
+            }
+
+            return $this->success("Department status fetched", $data);
+
+        } catch (Throwable $e) {
+            return $this->error("Fetch failed: " . $e->getMessage());
+        }
+    }
+
+    /**
+     * Check if department is active
+     */
+    public function isDepartmentActive(int $facId, int $assPeriod, int $deptId): bool
+    {
+        $sql = "
+            SELECT is_active
+            FROM assessment_department_status
+            WHERE fac_id_fk = ?
+              AND ass_period_id = ?
+              AND dept_id = ?
+            LIMIT 1
+        ";
+
+        $stmt = $this->db->prepare($sql);
+
+        if (!$stmt) {
+            return false;
+        }
+
+        $stmt->bind_param("iii", $facId, $assPeriod, $deptId);
+        $stmt->execute();
+
+        $row = $stmt->get_result()->fetch_assoc();
+
+        if (!$row) {
+            return false;
+        }
+
+        return (int)$row['is_active'] === 1;
+    }
+
+    private function success(string $message, mixed $data = null): array
+    {
+        return [
+            "status"  => "success",
+            "message" => $message,
+            "data"    => $data
+        ];
+    }
+
+    private function error(string $message): array
+    {
+        return [
+            "status"  => "error",
+            "message" => $message,
+            "data"    => null
+        ];
+    }
+}

@@ -1,0 +1,218 @@
+<!--
+==========================================================
+SQ Sidebar Component
+----------------------------------------------------------
+Project   : SaQshi Open Source
+Component : Application Sidebar
+File      : sidebar.html
+License   : MIT
+==========================================================
+-->
+
+<aside class="sq-sidebar" role="navigation" aria-label="Main Navigation">
+
+    <!---div class="sq-sidebar-brand">
+        <a href="/ui/dashboard.html" class="sq-sidebar-logo-link">
+            <span class="sq-sidebar-logo">S</span>
+
+            <span class="sq-sidebar-brand-text">
+                <strong>SaQshi</strong>
+                <small>Quality Assessment</small>
+            </span>
+        </a>
+<div--->
+
+    <nav class="sq-sidebar-nav">
+
+        <a href="/ui/dashboard.html" class="sq-sidebar-link" data-sq-nav data-facility-only>
+            <i class="bi bi-speedometer2"></i>
+            <span>Dashboard</span>
+        </a>
+
+        <div class="sq-sidebar-section-title" data-facility-only>Assessment</div>
+
+        <a href="#" class="sq-sidebar-link" data-sq-route="assessment/list" data-sq-nav data-facility-only>
+            <i class="bi bi-clipboard-check"></i>
+            <span>Assessment List</span>
+        </a>
+
+        <a href="#" class="sq-sidebar-link" data-sq-route="assessment/create" data-sq-nav data-facility-only>
+            <i class="bi bi-plus-circle"></i>
+            <span>Create Assessment</span>
+        </a>
+
+        <a href="#" class="sq-sidebar-link" data-sq-route="assessment/departments" data-sq-nav data-facility-only>
+            <i class="bi bi-building-check"></i>
+            <span>Departments</span>
+        </a>
+
+        <a href="#" class="sq-sidebar-link" data-sq-route="assessment/assessor-info" data-sq-nav data-facility-only>
+            <i class="bi bi-person-lines-fill"></i>
+            <span>Assessor Info</span>
+        </a>
+      
+
+        <a href="#" class="sq-sidebar-link" data-sq-route="assessment/checklist" data-sq-nav data-facility-only>
+            <i class="bi bi-list-check"></i>
+            <span>Checklist</span>
+        </a>
+
+        <div class="sq-sidebar-section-title" data-facility-only>CQI</div>
+
+        <a href="#" class="sq-sidebar-link" data-sq-route="cqi/gap-analysis" data-sq-nav data-facility-only>
+            <i class="bi bi-exclamation-triangle"></i>
+            <span>Gap Analysis</span>
+        </a>
+
+        <a href="#" class="sq-sidebar-link" data-sq-route="cqi/action-plan" data-sq-nav data-facility-only>
+            <i class="bi bi-journal-medical"></i>
+            <span>Action Plan</span>
+        </a>
+
+        <a href="#" class="sq-sidebar-link" data-sq-route="cqi/closure" data-sq-nav data-facility-only>
+            <i class="bi bi-check2-circle"></i>
+            <span>Gap Closure</span>
+        </a>
+
+        <div class="sq-sidebar-section-title" data-facility-only>Performance</div>
+
+        <a href="#" class="sq-sidebar-link" data-sq-route="performance/dashboard" data-sq-nav data-facility-only>
+            <i class="bi bi-speedometer"></i>
+            <span>Performance Dashboard</span>
+        </a>
+
+        <a href="#" class="sq-sidebar-link" data-sq-route="performance/indicator" data-sq-nav data-facility-only>
+            <i class="bi bi-clipboard-data"></i>
+            <span>Indicator Entry</span>
+        </a>
+
+        <a href="#" class="sq-sidebar-link" data-sq-route="performance/trend" data-sq-nav data-facility-only>
+            <i class="bi bi-graph-up"></i>
+            <span>Trend</span>
+        </a>
+
+        <div class="sq-sidebar-section-title" data-facility-only>Certification</div>
+
+        <a href="#" class="sq-sidebar-link" data-sq-route="certification/dashboard" data-sq-nav data-facility-only>
+            <i class="bi bi-award"></i>
+            <span>Dashboard</span>
+        </a>
+
+        <a href="#" class="sq-sidebar-link" data-sq-route="certification/manage" data-sq-nav data-facility-only>
+            <i class="bi bi-pencil-square"></i>
+            <span>Manage Certification</span>
+        </a>
+
+        <a href="#" class="sq-sidebar-link" data-sq-route="certification/history" data-sq-nav data-facility-only>
+            <i class="bi bi-clock-history"></i>
+            <span>Certification History</span>
+        </a>
+
+        <a href="#" class="sq-sidebar-link" data-sq-route="certification/renewal" data-sq-nav data-facility-only>
+            <i class="bi bi-calendar-check"></i>
+            <span>Renewal Status</span>
+        </a>
+
+        <div class="sq-sidebar-section-title" data-state-only data-monitoring-title>State Monitoring</div>
+
+        <a href="#" class="sq-sidebar-link" data-sq-route="state/dashboard" data-sq-nav data-state-only>
+            <i class="bi bi-grid-1x2"></i>
+            <span data-monitoring-dashboard-label>State Dashboard</span>
+        </a>
+
+        <a href="#" class="sq-sidebar-link" data-sq-route="state/map" data-sq-nav data-state-only>
+            <i class="bi bi-geo-alt"></i>
+            <span>Certification Map</span>
+        </a>
+
+        <a href="#" class="sq-sidebar-link" data-sq-route="state/facility-category" data-sq-nav data-state-only>
+            <i class="bi bi-diagram-3"></i>
+            <span>Facility Categorization</span>
+        </a>
+
+        <a href="#" class="sq-sidebar-link" data-sq-route="state/certification" data-sq-nav data-state-only>
+            <i class="bi bi-award"></i>
+            <span>Certification Status</span>
+        </a>
+
+        <a href="#" class="sq-sidebar-link" data-sq-route="state/assessment-progress" data-sq-nav data-state-only>
+            <i class="bi bi-clipboard-data"></i>
+            <span>Assessment Progress</span>
+        </a>
+
+        <a href="#" class="sq-sidebar-link" data-sq-route="state/cqi" data-sq-nav data-state-only>
+            <i class="bi bi-activity"></i>
+            <span>CQI Monitoring</span>
+        </a>
+
+        <a href="#" class="sq-sidebar-link" data-sq-route="state/performance" data-sq-nav data-state-only>
+            <i class="bi bi-graph-up-arrow"></i>
+            <span>Performance Monitoring</span>
+        </a>
+
+        <a href="#" class="sq-sidebar-link" data-sq-route="state/indicator-analytics" data-sq-nav data-state-only>
+            <i class="bi bi-lightbulb"></i>
+            <span>Indicator Analytics</span>
+        </a>
+
+        <a href="#" class="sq-sidebar-link" data-sq-route="state/facility-detail" data-sq-nav data-state-only>
+            <i class="bi bi-hospital"></i>
+            <span>Facility Drill-down</span>
+        </a>
+
+        <a href="#" class="sq-sidebar-link" data-sq-route="state/users" data-sq-nav data-state-only>
+            <i class="bi bi-person-gear"></i>
+            <span>User Administration</span>
+        </a>
+
+        <a href="#" class="sq-sidebar-link" data-sq-route="state/reports" data-sq-nav data-state-only>
+            <i class="bi bi-file-earmark-bar-graph"></i>
+            <span>State Reports</span>
+        </a>
+
+        <div class="sq-sidebar-section-title" data-facility-only>Reports</div>
+
+        <a href="#" class="sq-sidebar-link" data-sq-route="reports/dashboard" data-sq-nav data-facility-only>
+            <i class="bi bi-bar-chart"></i>
+            <span>Report Dashboard</span>
+        </a>
+
+        <a href="#" class="sq-sidebar-link" data-sq-route="reports/score" data-sq-nav data-facility-only>
+            <i class="bi bi-graph-up-arrow"></i>
+            <span>Score</span>
+        </a>
+
+        <a href="#" class="sq-sidebar-link" data-sq-route="reports/progress" data-sq-nav data-facility-only>
+            <i class="bi bi-activity"></i>
+            <span>Progress</span>
+        </a>
+
+        <div class="sq-sidebar-section-title">Administration</div>
+
+        <a href="#" class="sq-sidebar-link" data-sq-route="facilityusers/users" data-sq-nav>
+            <i class="bi bi-people"></i>
+            <span>My Profile</span>
+        </a>
+
+        <a href="#" class="sq-sidebar-link" data-sq-route="facilityusers/facilities" data-sq-nav data-facility-only>
+            <i class="bi bi-hospital"></i>
+            <span>Facility Profile</span>
+        </a>
+
+        <div class="sq-sidebar-section-title">Help</div>
+
+        <a href="/ui/help/documentation.html" class="sq-sidebar-link" data-sq-nav>
+            <i class="bi bi-question-circle"></i>
+            <span>Documentation</span>
+        </a>
+
+        <a href="/ui/help/about.html" class="sq-sidebar-link" data-sq-nav>
+            <i class="bi bi-info-circle"></i>
+            <span>About</span>
+        </a>
+
+    </nav>
+
+</aside>
+
+<div class="sq-sidebar-overlay"></div>

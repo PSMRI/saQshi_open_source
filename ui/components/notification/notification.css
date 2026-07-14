@@ -1,0 +1,468 @@
+/*!
+ * ==========================================================
+ * SQ Notification Component v1.0
+ * ----------------------------------------------------------
+ * Project   : SaQshi Open Source
+ * Component : Notification
+ * File      : notification.css
+ * License   : MIT
+ * ==========================================================
+ *
+ * Features
+ * ----------------------------------------------------------
+ * ✔ Toast Notifications
+ * ✔ Notification Drawer
+ * ✔ Success
+ * ✔ Error
+ * ✔ Warning
+ * ✔ Info
+ * ✔ Dark Theme
+ * ✔ WCAG 2.2
+ * ✔ Responsive
+ * ==========================================================
+*/
+
+
+/* ==========================================================
+   Toast Root
+========================================================== */
+
+.sq-notification-root{
+
+    position:fixed;
+
+    top:90px;
+
+    right:20px;
+
+    z-index:9998;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:12px;
+
+    width:380px;
+
+    max-width:calc(100vw - 30px);
+
+    pointer-events:none;
+
+}
+
+/* ==========================================================
+   Toast
+========================================================== */
+
+.sq-toast{
+
+    display:flex;
+
+    align-items:flex-start;
+
+    gap:12px;
+
+    background:var(--sq-bg-surface);
+
+    border-radius:12px;
+
+    padding:14px 16px;
+
+    border-left:5px solid var(--sq-color-primary);
+
+    box-shadow:var(--sq-shadow-lg);
+
+    animation:sqToastIn .25s ease;
+
+    pointer-events:auto;
+
+    position:relative;
+
+}
+
+/* ==========================================================
+   Animation
+========================================================== */
+
+@keyframes sqToastIn{
+
+    from{
+
+        opacity:0;
+
+        transform:translateX(50px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:none;
+
+    }
+
+}
+
+@keyframes sqToastOut{
+
+    from{
+
+        opacity:1;
+
+        transform:none;
+
+    }
+
+    to{
+
+        opacity:0;
+
+        transform:translateX(50px);
+
+    }
+
+}
+
+/* ==========================================================
+   Icons
+========================================================== */
+
+.sq-toast-icon{
+
+    font-size:1.25rem;
+
+    line-height:1;
+
+    margin-top:2px;
+
+}
+
+/* ==========================================================
+   Content
+========================================================== */
+
+.sq-toast-content{
+
+    flex:1;
+
+}
+
+.sq-toast-title{
+
+    font-weight:700;
+
+    color:var(--sq-text-primary);
+
+    margin-bottom:4px;
+
+}
+
+.sq-toast-message{
+
+    color:var(--sq-text-secondary);
+
+    font-size:.90rem;
+
+    line-height:1.5;
+
+}
+
+/* ==========================================================
+   Close Button
+========================================================== */
+
+.sq-toast-close{
+
+    border:none;
+
+    background:none;
+
+    cursor:pointer;
+
+    color:var(--sq-text-muted);
+
+    font-size:1rem;
+
+    padding:0;
+
+}
+
+.sq-toast-close:hover{
+
+    color:var(--sq-color-danger);
+
+}
+
+/* ==========================================================
+   Types
+========================================================== */
+
+.sq-toast-success{
+
+    border-left-color:var(--sq-color-success);
+
+}
+
+.sq-toast-success .sq-toast-icon{
+
+    color:var(--sq-color-success);
+
+}
+
+.sq-toast-error{
+
+    border-left-color:var(--sq-color-danger);
+
+}
+
+.sq-toast-error .sq-toast-icon{
+
+    color:var(--sq-color-danger);
+
+}
+
+.sq-toast-warning{
+
+    border-left-color:var(--sq-color-warning);
+
+}
+
+.sq-toast-warning .sq-toast-icon{
+
+    color:var(--sq-color-warning);
+
+}
+
+.sq-toast-info{
+
+    border-left-color:var(--sq-color-info);
+
+}
+
+.sq-toast-info .sq-toast-icon{
+
+    color:var(--sq-color-info);
+
+}
+
+/* ==========================================================
+   Notification Drawer
+========================================================== */
+
+.sq-notification-panel{
+
+    position:fixed;
+
+    top:72px;
+
+    right:0;
+
+    width:420px;
+
+    height:calc(100vh - 72px);
+
+    background:var(--sq-bg-surface);
+
+    border-left:1px solid var(--sq-border);
+
+    box-shadow:var(--sq-shadow-xl);
+
+    display:flex;
+
+    flex-direction:column;
+
+    z-index:9997;
+
+}
+
+/* ==========================================================
+   Header
+========================================================== */
+
+.sq-notification-panel-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:flex-start;
+
+    padding:20px;
+
+    border-bottom:1px solid var(--sq-border);
+
+}
+
+.sq-notification-panel-title{
+
+    font-size:1.2rem;
+
+    font-weight:700;
+
+    color:var(--sq-text-primary);
+
+}
+
+.sq-notification-panel-subtitle{
+
+    color:var(--sq-text-muted);
+
+    font-size:.85rem;
+
+    margin-top:4px;
+
+}
+
+.sq-notification-close{
+
+    border:none;
+
+    background:none;
+
+    cursor:pointer;
+
+    font-size:1.5rem;
+
+    color:var(--sq-text-muted);
+
+}
+
+/* ==========================================================
+   List
+========================================================== */
+
+.sq-notification-list{
+
+    flex:1;
+
+    overflow:auto;
+
+}
+
+.sq-notification-item{
+
+    padding:18px;
+
+    border-bottom:1px solid var(--sq-border);
+
+    cursor:pointer;
+
+    transition:.2s;
+
+}
+
+.sq-notification-item:hover{
+
+    background:var(--sq-bg-muted);
+
+}
+
+.sq-notification-item-title{
+
+    font-weight:600;
+
+    color:var(--sq-text-primary);
+
+    margin-bottom:6px;
+
+}
+
+.sq-notification-item-message{
+
+    color:var(--sq-text-secondary);
+
+    line-height:1.5;
+
+    font-size:.90rem;
+
+}
+
+.sq-notification-item-time{
+
+    margin-top:8px;
+
+    color:var(--sq-text-muted);
+
+    font-size:.75rem;
+
+}
+
+.sq-notification-empty{
+
+    text-align:center;
+
+    color:var(--sq-text-muted);
+
+    padding:60px 20px;
+
+}
+
+/* ==========================================================
+   Dark Theme
+========================================================== */
+
+[data-theme="dark"] .sq-toast{
+
+    background:var(--sq-bg-surface);
+
+}
+
+[data-theme="dark"] .sq-notification-panel{
+
+    background:var(--sq-bg-surface);
+
+}
+
+/* ==========================================================
+   Responsive
+========================================================== */
+
+@media(max-width:768px){
+
+    .sq-notification-root{
+
+        width:calc(100vw - 20px);
+
+        right:10px;
+
+    }
+
+    .sq-notification-panel{
+
+        width:100%;
+
+    }
+
+}
+
+/* ==========================================================
+   Reduced Motion
+========================================================== */
+
+@media(prefers-reduced-motion:reduce){
+
+    .sq-toast{
+
+        animation:none;
+
+    }
+
+}
+
+/* ==========================================================
+   Print
+========================================================== */
+
+@media print{
+
+    .sq-notification-root,
+
+    .sq-notification-panel{
+
+        display:none !important;
+
+    }
+
+}

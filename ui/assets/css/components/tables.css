@@ -1,0 +1,538 @@
+/*!
+ * ==========================================================
+ * SQ-UI Tables CSS v1.0
+ * ----------------------------------------------------------
+ * Project   : SaQshi Open Source
+ * Component : Table / Data Grid / Reports Table
+ * Standard  : HTML5 + CSS3 + WCAG 2.2 AA
+ * License   : MIT
+ * ==========================================================
+ */
+
+/* ==========================================================
+   Table Wrapper
+========================================================== */
+
+.sq-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    background: var(--sq-bg-surface);
+    border: 1px solid var(--sq-border);
+    border-radius: var(--sq-radius-default);
+    box-shadow: var(--sq-shadow-sm);
+}
+
+.sq-table-responsive {
+    width: 100%;
+    overflow-x: auto;
+}
+
+/* ==========================================================
+   Base Table
+========================================================== */
+
+.sq-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    background: var(--sq-bg-surface);
+    color: var(--sq-text-primary);
+    font-size: var(--sq-font-size-sm);
+}
+
+.sq-table caption {
+    padding: var(--sq-space-4);
+    text-align: left;
+    font-weight: var(--sq-font-weight-semibold);
+    color: var(--sq-text-primary);
+}
+
+.sq-table th,
+.sq-table td {
+    padding: var(--sq-space-3) var(--sq-space-4);
+    border-bottom: 1px solid var(--sq-table-border);
+    text-align: left;
+    vertical-align: middle;
+}
+
+.sq-table th {
+    background: var(--sq-table-header-bg);
+    color: var(--sq-text-secondary);
+    font-weight: var(--sq-font-weight-semibold);
+    white-space: nowrap;
+}
+
+.sq-table tbody tr {
+    transition: background-color var(--sq-transition-fast);
+}
+
+.sq-table tbody tr:hover {
+    background: var(--sq-table-row-hover);
+}
+
+/* ==========================================================
+   Table Variants
+========================================================== */
+
+.sq-table-bordered th,
+.sq-table-bordered td {
+    border: 1px solid var(--sq-table-border);
+}
+
+.sq-table-striped tbody tr:nth-child(even) {
+    background: var(--sq-color-gray-50);
+}
+
+.sq-table-compact th,
+.sq-table-compact td {
+    padding: var(--sq-space-2) var(--sq-space-3);
+    font-size: var(--sq-font-size-xs);
+}
+
+.sq-table-lg th,
+.sq-table-lg td {
+    padding: var(--sq-space-4) var(--sq-space-5);
+}
+
+/* ==========================================================
+   Sticky Header / Column
+========================================================== */
+
+.sq-table-sticky thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+.sq-table-sticky-col th:first-child,
+.sq-table-sticky-col td:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background: var(--sq-bg-surface);
+}
+
+.sq-table-sticky-col thead th:first-child {
+    z-index: 3;
+    background: var(--sq-table-header-bg);
+}
+
+/* ==========================================================
+   Alignment
+========================================================== */
+
+.sq-table .sq-th-center,
+.sq-table .sq-td-center {
+    text-align: center;
+}
+
+.sq-table .sq-th-right,
+.sq-table .sq-td-right {
+    text-align: right;
+}
+
+.sq-table .sq-th-nowrap,
+.sq-table .sq-td-nowrap {
+    white-space: nowrap;
+}
+
+/* ==========================================================
+   Sortable Header
+========================================================== */
+
+.sq-table-sortable {
+    cursor: pointer;
+    user-select: none;
+}
+
+.sq-table-sortable::after {
+    content: "↕";
+    margin-inline-start: var(--sq-space-2);
+    color: var(--sq-text-muted);
+    font-size: var(--sq-font-size-xs);
+}
+
+.sq-table-sortable.is-asc::after {
+    content: "↑";
+    color: var(--sq-color-primary);
+}
+
+.sq-table-sortable.is-desc::after {
+    content: "↓";
+    color: var(--sq-color-primary);
+}
+
+/* ==========================================================
+   Table Toolbar
+========================================================== */
+
+.sq-table-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sq-space-3);
+    padding: var(--sq-space-4);
+    border-bottom: 1px solid var(--sq-border);
+    background: var(--sq-bg-surface);
+}
+
+.sq-table-toolbar-left,
+.sq-table-toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: var(--sq-space-2);
+    flex-wrap: wrap;
+}
+
+.sq-table-title {
+    font-size: var(--sq-font-size-md);
+    font-weight: var(--sq-font-weight-semibold);
+    color: var(--sq-text-primary);
+}
+
+.sq-table-subtitle {
+    margin-top: var(--sq-space-1);
+    font-size: var(--sq-font-size-xs);
+    color: var(--sq-text-muted);
+}
+
+/* ==========================================================
+   Table Footer / Pagination
+========================================================== */
+
+.sq-table-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sq-space-3);
+    padding: var(--sq-space-4);
+    border-top: 1px solid var(--sq-border);
+    background: var(--sq-bg-surface);
+}
+
+.sq-table-info {
+    font-size: var(--sq-font-size-sm);
+    color: var(--sq-text-muted);
+}
+
+.sq-pagination {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sq-space-1);
+}
+
+.sq-page-btn {
+    min-width: 2rem;
+    height: 2rem;
+    padding: 0 var(--sq-space-2);
+    border: 1px solid var(--sq-border);
+    border-radius: var(--sq-radius-md);
+    background: var(--sq-bg-surface);
+    color: var(--sq-text-primary);
+    font-size: var(--sq-font-size-sm);
+    cursor: pointer;
+}
+
+.sq-page-btn:hover,
+.sq-page-btn:focus-visible {
+    border-color: var(--sq-color-primary);
+    color: var(--sq-color-primary);
+}
+
+.sq-page-btn.is-active {
+    background: var(--sq-color-primary);
+    border-color: var(--sq-color-primary);
+    color: var(--sq-color-white);
+}
+
+.sq-page-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ==========================================================
+   Row States
+========================================================== */
+
+.sq-table-row-selected {
+    background: var(--sq-color-primary-50) !important;
+}
+
+.sq-table-row-success {
+    background: var(--sq-color-success-50);
+}
+
+.sq-table-row-warning {
+    background: var(--sq-color-warning-50);
+}
+
+.sq-table-row-danger {
+    background: var(--sq-color-danger-50);
+}
+
+.sq-table-row-muted {
+    color: var(--sq-text-muted);
+}
+
+/* ==========================================================
+   Action Column
+========================================================== */
+
+.sq-table-actions {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--sq-space-2);
+    white-space: nowrap;
+}
+
+/* ==========================================================
+   Checkbox Column
+========================================================== */
+
+.sq-table-check {
+    width: 1%;
+    white-space: nowrap;
+}
+
+.sq-table-check input {
+    width: 1rem;
+    height: 1rem;
+    accent-color: var(--sq-color-primary);
+}
+
+/* ==========================================================
+   Expand Row
+========================================================== */
+
+.sq-table-expand-row {
+    background: var(--sq-bg-muted);
+}
+
+.sq-table-expand-content {
+    padding: var(--sq-space-4);
+    color: var(--sq-text-secondary);
+}
+
+/* ==========================================================
+   Empty / Loading Table
+========================================================== */
+
+.sq-table-empty {
+    padding: var(--sq-space-8);
+    text-align: center;
+    color: var(--sq-text-muted);
+}
+
+.sq-table-empty-title {
+    font-size: var(--sq-font-size-md);
+    font-weight: var(--sq-font-weight-semibold);
+    color: var(--sq-text-primary);
+    margin-bottom: var(--sq-space-2);
+}
+
+.sq-table-loading td {
+    padding: var(--sq-space-4);
+}
+
+.sq-table-skeleton {
+    height: 0.85rem;
+    width: 100%;
+    border-radius: var(--sq-radius-pill);
+    background:
+        linear-gradient(
+            90deg,
+            var(--sq-color-gray-100),
+            var(--sq-color-gray-200),
+            var(--sq-color-gray-100)
+        );
+    background-size: 200% 100%;
+    animation: sq-table-skeleton 1.2s linear infinite;
+}
+
+@keyframes sq-table-skeleton {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* ==========================================================
+   Report Table
+========================================================== */
+
+.sq-report-table th {
+    background: var(--sq-color-gray-100);
+    color: var(--sq-text-primary);
+    font-weight: var(--sq-font-weight-bold);
+}
+
+.sq-report-table .sq-report-section-row td {
+    background: var(--sq-color-primary-50);
+    color: var(--sq-color-primary-800);
+    font-weight: var(--sq-font-weight-bold);
+}
+
+/* ==========================================================
+   Score Table
+========================================================== */
+
+.sq-score-cell {
+    font-weight: var(--sq-font-weight-bold);
+}
+
+.sq-score-good {
+    color: var(--sq-color-success);
+}
+
+.sq-score-average {
+    color: var(--sq-color-warning-700);
+}
+
+.sq-score-poor {
+    color: var(--sq-color-danger);
+}
+
+/* ==========================================================
+   Mobile Card Table
+========================================================== */
+
+@media (max-width: 768px) {
+    .sq-table-mobile-card table,
+    .sq-table-mobile-card thead,
+    .sq-table-mobile-card tbody,
+    .sq-table-mobile-card th,
+    .sq-table-mobile-card td,
+    .sq-table-mobile-card tr {
+        display: block;
+    }
+
+    .sq-table-mobile-card thead {
+        display: none;
+    }
+
+    .sq-table-mobile-card tbody tr {
+        margin-bottom: var(--sq-space-4);
+        border: 1px solid var(--sq-border);
+        border-radius: var(--sq-radius-default);
+        background: var(--sq-bg-surface);
+        padding: var(--sq-space-3);
+        box-shadow: var(--sq-shadow-xs);
+    }
+
+    .sq-table-mobile-card td {
+        border-bottom: none;
+        padding: var(--sq-space-2) 0;
+        display: flex;
+        justify-content: space-between;
+        gap: var(--sq-space-3);
+        text-align: right;
+    }
+
+    .sq-table-mobile-card td::before {
+        content: attr(data-label);
+        font-weight: var(--sq-font-weight-semibold);
+        color: var(--sq-text-secondary);
+        text-align: left;
+    }
+
+    .sq-table-toolbar,
+    .sq-table-footer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .sq-table-toolbar-left,
+    .sq-table-toolbar-right {
+        justify-content: flex-start;
+    }
+
+    .sq-pagination {
+        flex-wrap: wrap;
+    }
+}
+
+/* ==========================================================
+   RTL Support
+========================================================== */
+
+[dir="rtl"] .sq-table th,
+[dir="rtl"] .sq-table td {
+    text-align: right;
+}
+
+[dir="rtl"] .sq-table-sticky-col th:first-child,
+[dir="rtl"] .sq-table-sticky-col td:first-child {
+    left: auto;
+    right: 0;
+}
+
+[dir="rtl"] .sq-table-sortable::after {
+    margin-inline-start: var(--sq-space-2);
+}
+
+/* ==========================================================
+   Dark Theme
+========================================================== */
+
+[data-theme="dark"] .sq-table-striped tbody tr:nth-child(even) {
+    background: var(--sq-color-gray-800);
+}
+
+[data-theme="dark"] .sq-table-skeleton {
+    background:
+        linear-gradient(
+            90deg,
+            var(--sq-color-gray-800),
+            var(--sq-color-gray-700),
+            var(--sq-color-gray-800)
+        );
+    background-size: 200% 100%;
+}
+
+/* ==========================================================
+   Print
+========================================================== */
+
+@media print {
+    .sq-table-wrapper,
+    .sq-table-responsive {
+        overflow: visible !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+
+    .sq-table {
+        font-size: 11px;
+        color: #000000 !important;
+        background: #ffffff !important;
+    }
+
+    .sq-table th,
+    .sq-table td {
+        border: 1px solid #000000 !important;
+        color: #000000 !important;
+        background: #ffffff !important;
+        padding: 6px;
+    }
+
+    .sq-table th {
+        font-weight: bold;
+    }
+
+    .sq-table-toolbar,
+    .sq-table-footer,
+    .sq-table-actions,
+    .sq-pagination {
+        display: none !important;
+    }
+
+    .sq-table-sticky thead th,
+    .sq-table-sticky-col th:first-child,
+    .sq-table-sticky-col td:first-child {
+        position: static !important;
+    }
+}

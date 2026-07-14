@@ -1,0 +1,64 @@
+<!--
+ * ==========================================================
+ * SaQshi Open Source
+ * Performance Trend
+ * trend.html
+ * Version 1.0.0 | Updated 2026-07-06
+ * ==========================================================
+ -->
+
+<section class="sq-performance-page">
+    <div class="sq-card">
+        <div class="sq-card-header">
+            <div>
+                <h3>Performance Trend</h3>
+                <p>Month-wise KPI and outcome trend view.</p>
+            </div>
+            <div class="sq-trend-toolbar">
+                <select id="trendChartStyle" class="sq-form-control" aria-label="Trend Chart Style">
+                    <option value="line">Line Trend</option>
+                    <option value="area">Area Trend</option>
+                    <option value="bar">Bar Trend</option>
+                </select>
+                <label class="sq-trend-toggle">
+                    <input type="checkbox" id="trendAllIndicators" aria-label="Trend All Indicators">
+                    <span>All indicators</span>
+                </label>
+                <button type="button" class="sq-btn sq-btn-light" id="btnTrendRefresh">Refresh</button>
+                <button type="button" class="sq-btn sq-btn-primary" id="btnDownloadOutcomeTrend">Outcome Excel</button>
+                <button type="button" class="sq-btn sq-btn-primary" id="btnDownloadKpiTrend">KPI Excel</button>
+            </div>
+        </div>
+        <div class="sq-card-body">
+            <div class="sq-trend-summary">
+                <div><span>Facility</span><strong id="trendFacility">-</strong></div>
+                <div><span>Total Months</span><strong id="trendTotalMonths">0</strong></div>
+                <div><span>Total Entries</span><strong id="trendTotalEntries">0</strong></div>
+                <div><span>Latest Period</span><strong id="trendLatestPeriod">-</strong></div>
+            </div>
+
+            <div class="sq-trend-section-title">
+                <h4>Month Wise Entry Status</h4>
+                <span>KPI and Outcome entries by month</span>
+            </div>
+            <div id="trendMonthRows" class="sq-trend-months"></div>
+
+            <div class="sq-trend-chart-grid">
+                <div>
+                    <div class="sq-trend-section-title">
+                <h4 id="trendEffectiveTitle">Outcome Trends</h4>
+                        <span>Month-wise result with edit links</span>
+                    </div>
+                    <div id="trendOutcomeCharts" class="sq-trend-charts"></div>
+                </div>
+                <div>
+                    <div class="sq-trend-section-title">
+                        <h4>KPI Trends</h4>
+                        <span>Month-wise result with edit links</span>
+                    </div>
+                    <div id="trendKpiCharts" class="sq-trend-charts"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

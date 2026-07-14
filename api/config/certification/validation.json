@@ -1,0 +1,13 @@
+{
+  "required_fields": [
+    "certification_type",
+    "certification_date",
+    "assessment_mode",
+    "score",
+    "status"
+  ],
+  "score": {
+    "min": 0,
+    "max": 100
+  }
+}

@@ -1,0 +1,39 @@
+{
+    "id": "reports-progress",
+    "name": "Progress Report",
+    "title": "Progress Report",
+    "layout": "dashboard",
+
+    "pageHeader": {
+        "title": "Progress Report",
+        "subtitle": "Department and gap closure progress by assessment."
+    },
+
+    "authentication": {
+        "required": true
+    },
+
+    "assets": {
+        "css": [
+            "/ui/pages/reports/progress.css?v=20260704-2"
+        ],
+        "js": [
+            "/ui/pages/reports/progress.js?v=20260704-2"
+        ]
+    },
+
+    "breadcrumb": [
+        {
+            "label": "Dashboard",
+            "url": "/ui/dashboard.html"
+        },
+        {
+            "label": "Reports"
+        },
+        {
+            "label": "Progress Report"
+        }
+    ],
+
+    "moduleName": "progressReport"
+}

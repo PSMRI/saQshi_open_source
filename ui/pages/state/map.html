@@ -1,0 +1,31 @@
+<!-- SaQshi Open Source | State Certification Map | map.html | Version 1.1.0 -->
+<section class="sq-state-page sq-state-map-page">
+    <div class="sq-state-toolbar">
+        <div>
+            <h3>Certification Map</h3>
+            <p>Certified facilities with geo coordinates.</p>
+        </div>
+        <div class="sq-state-filters">
+            <input type="search" class="sq-form-control" id="stateMapSearch" placeholder="Search facility or NIN" aria-label="Search Facility Or NIN">
+            <button class="sq-btn sq-btn-primary" id="stateMapRefresh"><i class="bi bi-arrow-clockwise"></i> Refresh</button>
+        </div>
+    </div>
+
+    <div class="sq-card">
+        <div class="sq-card-header"><h3>Map View</h3></div>
+        <div class="sq-card-body"><div id="stateMapCanvas" class="sq-state-map"></div></div>
+    </div>
+
+    <div class="sq-card">
+        <div class="sq-card-header"><h3>Certification Categorisation</h3></div>
+        <div class="sq-card-body">
+            <div class="sq-state-map-categories" id="stateMapCategories"></div>
+            <div class="sq-state-map-status" id="stateMapStatus"></div>
+        </div>
+    </div>
+
+    <div class="sq-card">
+        <div class="sq-card-header"><h3>Mapped Facilities</h3></div>
+        <div class="sq-card-body" id="stateMapList"></div>
+    </div>
+</section>
