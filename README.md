@@ -163,6 +163,14 @@ Release and compliance documents:
 - `NOTICE`
 - `CHANGELOG.md`
 
+## GitBook Documentation
+
+This project root is GitBook-ready:
+
+- `README.md` is the landing page.
+- `SUMMARY.md` defines the GitBook sidebar.
+- `docs/gitbook.md` explains how to import and maintain the book.
+
 ## Contributing
 
 Please read:
