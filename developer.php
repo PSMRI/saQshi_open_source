@@ -15,7 +15,7 @@
             <a href="#platform">Platform</a>
             <a href="#developers">Developers</a>
             <a href="#documentation">Documentation</a>
-            <a href="SUMMARY.md">GitBook</a>
+            <a href="gitbook.html">GitBook</a>
         </div>
         <a class="button primary" href="login.php">Open application</a>
     </nav>
@@ -30,7 +30,7 @@
                 <p class="lead">SaQshi is an open-source platform for healthcare quality assessment, continuous quality improvement, performance monitoring, certification tracking, and actionable reporting.</p>
                 <div class="actions">
                     <a class="button primary" href="#documentation">Explore developer docs</a>
-                    <a class="button secondary" href="SUMMARY.md">Open GitBook</a>
+                    <a class="button secondary" href="gitbook.html">Open GitBook</a>
                     <a class="button secondary" href="README.md">Read project overview</a>
                 </div>
             </div>
@@ -87,7 +87,7 @@ start a quality-improvement cycle</pre>
                 <p>SaQshi uses a straightforward PHP and MySQL architecture with versioned APIs, shared service classes and JSON-driven configuration.</p>
             </div>
             <div class="resources">
-                <a class="resource" href="SUMMARY.md"><div><h3>GitBook documentation</h3><p>Open the complete documentation sidebar for user, developer, API, testing and compliance guides.</p></div><span class="arrow">-&gt;</span></a>
+                <a class="resource" href="gitbook.html"><div><h3>GitBook documentation</h3><p>Open the complete documentation sidebar for user, developer, API, testing and compliance guides.</p></div><span class="arrow">-&gt;</span></a>
                 <a class="resource" href="#architecture"><div><h3>Architecture guide</h3><p>Understand the frontend, API, core services, data configuration and database layers.</p></div><span class="arrow">-&gt;</span></a>
                 <a class="resource" href="#api"><div><h3>API reference</h3><p>Browse assessment, authentication, framework, performance, certification and state APIs.</p></div><span class="arrow">-&gt;</span></a>
                 <a class="resource" href="#setup"><div><h3>Local setup</h3><p>Set up PHP, MySQL, environment values and migrations for a development instance.</p></div><span class="arrow">-&gt;</span></a>
@@ -101,7 +101,7 @@ start a quality-improvement cycle</pre>
             <div class="section-heading">
                 <div class="eyebrow">Developer documentation</div>
                 <h2>Everything needed to work with SaQshi.</h2>
-                <p>Use the <a href="SUMMARY.md">GitBook sidebar</a> for the complete documentation map.</p>
+                <p>Use the <a href="gitbook.html">GitBook page</a> for the complete documentation map.</p>
             </div>
             <div id="architecture" class="doc-block">
                 <h3>Architecture</h3>
@@ -141,7 +141,7 @@ start a quality-improvement cycle</pre>
 <footer class="footer">
     <div class="container footer-row">
         <span>SaQshi - Open-source healthcare quality assessment and monitoring</span>
-        <span><a href="SUMMARY.md">GitBook</a> - <a href="LICENSE">GPL-3.0</a> - <a href="SECURITY.md">Security</a> - <a href="CODE_OF_CONDUCT.md">Code of conduct</a></span>
+        <span><a href="gitbook.html">GitBook</a> - <a href="LICENSE">GPL-3.0</a> - <a href="SECURITY.md">Security</a> - <a href="CODE_OF_CONDUCT.md">Code of conduct</a></span>
     </div>
 </footer>
 </body>
