@@ -5,7 +5,7 @@
  * Project : SaQshi Open Source
  * Module  : Login
  * File    : login.js
- * License : MIT
+ * License : GPL-3.0
  * ==========================================================
  */
 

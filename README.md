@@ -2,7 +2,7 @@
 
 SaQshi is an open-source digital quality assessment and monitoring application for healthcare facilities. It supports facility-level assessment, department activation, checklist scoring, CQI workflows, performance monitoring, certification monitoring, state/district/block dashboards, reports, and documentation.
 
-License: MIT. See [LICENSE.txt](LICENSE.txt).
+License: GPL-3.0. See [LICENSE](LICENSE).
 
 ## Main Modules
 
@@ -173,4 +173,4 @@ Please read:
 
 ## License
 
-SaQshi is released under the MIT License. See [LICENSE.txt](LICENSE.txt).
+SaQshi is released under GPL-3.0. See [LICENSE](LICENSE).

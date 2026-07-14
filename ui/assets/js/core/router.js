@@ -5,7 +5,7 @@
  * Project  : SaQshi Open Source
  * Module   : Frontend Navigation / Routing Service
  * File     : router.js
- * License  : MIT
+ * License  : GPL-3.0
  * ==========================================================
  */
 

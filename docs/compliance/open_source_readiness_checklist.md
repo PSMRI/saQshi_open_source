@@ -2,13 +2,13 @@
 
 Version: 1.0  
 Reviewed: 2026-07-13  
-Repository path: `D:\sAQshi_new_27112025\up\SaQSHI_Main`
+Repository path: `open_source/`
 
 ## Executive Summary
 
 SaQshi is **open-source capable**, but the repository is **not yet fully release-ready as a clean public open-source distribution**.
 
-The project includes an OSI-style permissive license at the repository root, contribution guidance, a code of conduct, API documentation, testing documents, VAPT notes, WCAG notes, and a sample environment file. These are strong open-source foundations.
+The project includes a GPL-3.0 open-source license at the repository root, contribution guidance, a code of conduct, API documentation, testing documents, VAPT notes, WCAG notes, and a sample environment file. These are strong open-source foundations.
 
 The main gaps before public release are:
 
@@ -16,14 +16,14 @@ The main gaps before public release are:
 - Third-party dependency/license inventory exists, but exact versions/licenses under `ui/` and `api/` still need final owner verification before a public release.
 - Database setup/migration documentation exists, but a full sanitized base schema file still needs to be added if it is not already managed elsewhere.
 
-License inconsistency was fixed on 2026-07-13 by aligning SaQshi-owned UI/config headers and visible license metadata to the root **MIT** license. See `docs/compliance/license_consistency_before_after.md`.
+License inconsistency was updated on 2026-07-14 by aligning SaQshi-owned UI/config headers and visible license metadata to **GPL-3.0**. See `docs/compliance/license_consistency_before_after.md`.
 
 ## Source Criteria Used
 
 This checklist is based on generally accepted open-source release expectations and the OSI Open Source Definition:
 
 - OSI Open Source Definition: `https://opensource.org/osd`
-- MIT License text currently present in this repository: `LICENSE.txt`
+- GPL-3.0 license notice currently present in this repository: `LICENSE`
 - License consistency fix record: `docs/compliance/license_consistency_before_after.md`
 
 ## Current Verdict
@@ -40,23 +40,23 @@ This checklist is based on generally accepted open-source release expectations a
 
 | # | Criterion | Status | Evidence / Notes |
 |---:|---|---|---|
-| 1 | Free redistribution allowed | Done | `LICENSE.txt` uses MIT text, which permits use, copy, modification, merge, publication, distribution, sublicense, and sale. |
+| 1 | Free redistribution allowed | Done | `LICENSE` applies GPL-3.0 terms, which permit redistribution subject to its conditions. |
 | 2 | Source code available | Done | Repository contains PHP API source, UI HTML/CSS/JS, config JSON and docs. |
-| 3 | Derived works allowed | Done | MIT license permits modification and sublicensing. |
-| 4 | Integrity of author's source code | Done | MIT has no restrictive patch-only requirement. |
-| 5 | No discrimination against persons or groups | Done | MIT does not discriminate. |
-| 6 | No discrimination against fields of endeavor | Done | MIT does not restrict medical, government, commercial, or research use. |
-| 7 | License distribution | Done | Root `LICENSE.txt` applies to recipients if kept with the software. |
-| 8 | License not specific to a product | Done | MIT is project-independent. |
-| 9 | License does not restrict other software | Done | MIT does not impose restrictions on bundled/adjacent software. |
-| 10 | License technology-neutral | Done | MIT is technology-neutral. |
+| 3 | Derived works allowed | Done | GPL-3.0 permits modification and distribution of modified versions subject to its conditions. |
+| 4 | Integrity of author's source code | Done | GPL-3.0 permits modified versions under its stated conditions. |
+| 5 | No discrimination against persons or groups | Done | GPL-3.0 does not discriminate. |
+| 6 | No discrimination against fields of endeavor | Done | GPL-3.0 does not restrict medical, government, commercial, or research use. |
+| 7 | License distribution | Done | Root `LICENSE` applies to recipients when distributed with the software. |
+| 8 | License not specific to a product | Done | GPL-3.0 is project-independent. |
+| 9 | License does not restrict other software | Done | GPL-3.0 governs this program and its derivative distributions. |
+| 10 | License technology-neutral | Done | GPL-3.0 is technology-neutral. |
 
 ## Repository Readiness Checklist
 
 | Item | Status | Evidence | Required Action |
 |---|---|---|---|
-| Root license file | Done | `LICENSE.txt` exists. | Confirm final license choice. |
-| License consistency | Done | Root license is MIT; SaQshi-owned UI/config headers and visible footer/login metadata now use MIT. | Continue to avoid changing third-party/vendor license notices. |
+| Root license file | Done | `LICENSE` exists. `LICENSE.txt` is kept as a compatibility copy. | Confirm final license choice before release tagging. |
+| License consistency | Done | Root license is GPL-3.0; SaQshi-owned UI/config headers and visible footer/login metadata now use GPL-3.0. | Continue to avoid changing third-party/vendor license notices. |
 | README | Done | `README.md` now includes overview, modules, setup, environment, database, API, testing, release docs and license details. | Keep synchronized with major architecture changes. |
 | Contribution guide | Partial | `CONTRIBUTING.md` exists but is very short. | Add branch workflow, coding standards, test expectations, issue/PR process. |
 | Code of conduct | Done | `CODE_OF_CONDUCT.md` exists. | Keep updated with contact/escalation details. |
@@ -96,7 +96,7 @@ This checklist is based on generally accepted open-source release expectations a
 
 ### 1. Keep License Consistent
 
-Final selected license: **MIT**, matching `LICENSE.txt`.
+Final selected license: **GPL-3.0**, matching `LICENSE`.
 
 Already aligned:
 
@@ -109,7 +109,7 @@ Already aligned:
 Remaining release rules:
 
 - Do not rewrite third-party/vendor license notices.
-- Keep README, footer metadata and source headers aligned to MIT.
+- Keep README, footer metadata and source headers aligned to GPL-3.0.
 
 ### 2. Finalize Security Contact
 

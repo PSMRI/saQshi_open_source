@@ -5,7 +5,7 @@
  * Project   : SaQshi Open Source
  * Component : Breadcrumb
  * File      : breadcrumb.js
- * License   : MIT
+ * License   : GPL-3.0
  * ==========================================================
  *
  * Responsibilities

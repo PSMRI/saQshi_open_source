@@ -2,7 +2,7 @@
 
 Version: 1.0  
 Updated: 2026-07-13  
-Project license: MIT
+Project license: GPL-3.0
 
 ## Purpose
 

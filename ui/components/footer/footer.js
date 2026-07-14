@@ -5,7 +5,7 @@
  * Project   : SaQshi Open Source
  * Component : Footer
  * File      : footer.js
- * License   : MIT
+ * License   : GPL-3.0
  * ==========================================================
  *
  * Responsibilities
@@ -42,7 +42,7 @@
 
         environment: "Development",
 
-        license: "MIT",
+        license: "GPL-3.0",
 
         supportEmail: "support@saqshi.org"
 

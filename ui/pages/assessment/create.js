@@ -6,7 +6,7 @@
  * Module   : Assessment
  * Page     : Create Assessment
  * File     : create.js
- * License  : MIT
+ * License  : GPL-3.0
  * ==========================================================
  */
 

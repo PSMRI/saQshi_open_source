@@ -5,7 +5,7 @@
  * Project : SaQshi Open Source
  * Module  : Dashboard
  * File    : dashboard.js
- * License : MIT
+ * License : GPL-3.0
  * ==========================================================
  */
 

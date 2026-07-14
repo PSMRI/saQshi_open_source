@@ -5,7 +5,7 @@
  * Project   : SaQshi Open Source
  * Component : Confirm Dialog
  * File      : confirm-dialog.js
- * License   : MIT
+ * License   : GPL-3.0
  * ==========================================================
  *
  * Features

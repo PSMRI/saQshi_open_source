@@ -5,7 +5,7 @@
  * Project   : SaQshi Open Source
  * Component : Global Loader
  * File      : loader.js
- * License   : MIT
+ * License   : GPL-3.0
  * ==========================================================
  */
 

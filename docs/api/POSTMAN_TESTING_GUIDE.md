@@ -16,7 +16,7 @@ docs/api/saqshi_postman_collection.json
 3. Select:
 
 ```text
-D:\sAQshi_new_27112025\up\SaQSHI_Main\docs\api\saqshi_postman_collection.json
+open_source\docs\api\saqshi_postman_collection.json
 ```
 
 4. After import, open the collection named **SaQshi API Testing Collection**.
@@ -346,4 +346,3 @@ Before release, test at least:
 | `docs/api/swagger-ui.html` | Local Swagger UI viewer |
 | `docs/testing/saqshi_test_plan.md` | Full test plan |
 | `docs/testing/saqshi_vapt_report.md` | Security/VAPT notes |
-

@@ -1,92 +1,85 @@
-# SaQshi License Consistency Fix - Before and After
+# SaQshi License Change - Before and After
 
-Version: 1.0  
-Fixed: 2026-07-13  
-Final selected project license: **MIT**  
-Root license file: `LICENSE.txt`
+Version: 2.0  
+Updated: 2026-07-14  
+Final selected project license: **GPL-3.0**  
+Root license file: `LICENSE`
 
 ## Purpose
 
-This document records the license inconsistency that existed in SaQshi and what was changed to make the application internally consistent for open-source release preparation.
+This document records the project license cleanup and the latest change from MIT-style project metadata to GPL-3.0.
 
 ## Before Fix
 
 | Area | Before |
 |---|---|
 | Root license file | `LICENSE.txt` contained the MIT License. |
-| UI source headers | Many SaQshi-owned UI files said `License : Apache-2.0`. |
-| Layout/component headers | Shared layout and component files said `Apache-2.0`. |
-| Runtime app metadata | `ui/config/app.json` had `"license": "Apache-2.0"`. |
-| Footer default metadata | `ui/components/footer/footer.js` had `license: "Apache-2.0"`. |
-| Visible footer text | `ui/components/footer/footer.html` displayed `Apache-2.0`. |
-| Login page badge | `ui/pages/login/login.html` displayed `Apache-2.0`. |
-| Open-source readiness verdict | License consistency was marked `Partial`. |
+| UI source headers | SaQshi-owned UI files previously said `MIT`. Older files had also used `Apache-2.0`. |
+| Runtime app metadata | `ui/config/app.json` previously had `"license": "MIT"`. |
+| Footer default metadata | `ui/components/footer/footer.js` previously had `license: "MIT"`. |
+| Visible footer text | `ui/components/footer/footer.html` displayed `MIT`. |
+| Login page badge | `ui/pages/login/login.html` displayed `MIT`. |
+| README / NOTICE | Project license text pointed to MIT or temporary GPL wording. |
 
 Problem:
 
-The project had two different license signals. A public user could see MIT in the root license file but Apache-2.0 in source headers and UI text. That creates confusion for reuse, distribution, legal review, and contributor expectations.
+The project owner requested the project license be changed from MIT to GPL-3.0. Keeping old MIT text in headers, metadata, visible UI and release docs would make the public license signal inconsistent.
 
 ## Decision
 
-SaQshi is aligned to **MIT** because:
+SaQshi is now aligned to **GPL-3.0**.
 
-- `LICENSE.txt` already contains the MIT License.
-- MIT is OSI-recognized and permissive.
-- Most bundled front-end vendor files appear permissive or have their own license text, but release references should stay under `ui/` and `api/`.
-- This change avoids replacing the root legal license without project-owner approval.
+The root license file uses:
+
+```text
+SPDX-License-Identifier: GPL-3.0-only
+```
+
+Third-party/vendor license notices were not changed. Third-party libraries keep their original licenses, such as MIT, BSD, Apache-2.0 or other licenses where applicable.
 
 ## After Fix
 
 | Area | After |
 |---|---|
-| Root license file | Still MIT in `LICENSE.txt`. |
-| UI source headers | SaQshi-owned UI headers now say `MIT`. |
-| Layout/component headers | Shared layout and component headers now say `MIT`. |
-| Runtime app metadata | `ui/config/app.json` now has `"license": "MIT"`. |
-| Footer default metadata | `ui/components/footer/footer.js` now has `license: "MIT"`. |
-| Visible footer text | `ui/components/footer/footer.html` now displays `MIT`. |
-| Login page badge | `ui/pages/login/login.html` now displays `MIT`. |
-| Open-source readiness verdict | License consistency is now marked `Done` for SaQshi-owned UI/config files. |
+| Root license file | `LICENSE` now contains GPL-3.0 project license notice and SPDX `GPL-3.0-only`. `LICENSE.txt` is kept as a compatibility copy. |
+| UI source headers | SaQshi-owned UI headers now say `GPL-3.0`. |
+| Runtime app metadata | `ui/config/app.json` now has `"license": "GPL-3.0"`. |
+| Footer default metadata | `ui/components/footer/footer.js` now has `license: "GPL-3.0"`. |
+| Visible footer text | `ui/components/footer/footer.html` now displays `GPL-3.0`. |
+| Login page badge | `ui/pages/login/login.html` now displays `GPL-3.0`. |
+| README / NOTICE | Project license text now points to `LICENSE` and GPL-3.0. |
+| Open-source readiness verdict | License consistency is marked done for SaQshi-owned UI/config files. |
 
 ## Files Updated
 
-The following SaQshi-owned areas were mechanically aligned from `Apache-2.0` to `MIT`:
+The following SaQshi-owned areas were aligned from `MIT` to `GPL-3.0`:
 
-- `ui/assets/css/**`
-- `ui/assets/js/**`
+- `LICENSE`
+- `LICENSE.txt`
+- `README.md`
+- `NOTICE`
+- `CHANGELOG.md`
+- `ui/assets/**`
 - `ui/components/**`
 - `ui/config/app.json`
-- `ui/layouts/dashboard.html`
-- `ui/pages/assessment/**`
-- `ui/pages/cqi/**`
-- `ui/pages/dashboard/**`
-- `ui/pages/facilityusers/**`
-- `ui/pages/login/**`
-- `ui/pages/reports/**`
+- `ui/layouts/**`
+- `ui/pages/**`
+- `docs/compliance/**`
 
-Third-party/vendor license notices were not changed.
+## Important Boundary
+
+Do not rewrite third-party/vendor license statements. For example, Bootstrap, jQuery, Leaflet, Font Awesome, Chart.js or Swagger UI may retain their own upstream licenses in the third-party attribution inventory.
 
 ## Current Check Result
 
-Command used for SaQshi-owned UI/API files:
+Command used for SaQshi-owned project license references:
 
 ```text
-rg -n "Apache-2\.0" ui api README.md CONTRIBUTING.md CODE_OF_CONDUCT.md LICENSE.txt -g "!api/config/frameworks/**" -g "!api/templates/**"
+rg -n "License.*MIT|license.*MIT|MIT License|SaQshi.*MIT" LICENSE LICENSE.txt README.md NOTICE CHANGELOG.md ui docs/compliance
 ```
 
-Result:
+Expected result:
 
 ```text
-No remaining Apache-2.0 references were found in the scanned SaQshi-owned UI/API files.
+No SaQshi-owned project license references to MIT.
 ```
-
-## Remaining Open Source Release Items
-
-License consistency is fixed, but the project still needs:
-
-- `SECURITY.md`
-- Third-party attribution / `NOTICE` or `docs/compliance/third_party_licenses.md`
-- Expanded `README.md`
-- `CHANGELOG.md`
-- Release checklist
-- Database setup/migration documentation

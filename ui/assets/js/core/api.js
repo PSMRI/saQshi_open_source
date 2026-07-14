@@ -5,7 +5,7 @@
  * Project   : SaQshi Open Source
  * Component : Central API Client
  * Standard  : ES6 + Fetch API
- * License   : MIT
+ * License   : GPL-3.0
  * ==========================================================
  */
 

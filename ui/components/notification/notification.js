@@ -5,7 +5,7 @@
  * Project   : SaQshi Open Source
  * Component : Notification / Toast
  * File      : notification.js
- * License   : MIT
+ * License   : GPL-3.0
  * ==========================================================
  */
 

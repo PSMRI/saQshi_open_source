@@ -13,7 +13,7 @@ Use this checklist before publishing SaQshi to GitHub, sharing a release archive
 | Release date selected. | Pending |
 | Release branch/tag created. | Pending |
 | `CHANGELOG.md` updated. | Done for current development baseline |
-| License verified as MIT. | Done |
+| License verified as GPL-3.0. | Done |
 
 ## 2. Source Hygiene
 
@@ -32,8 +32,8 @@ Use this checklist before publishing SaQshi to GitHub, sharing a release archive
 
 | Check | Status |
 |---|---|
-| Root `LICENSE.txt` exists. | Done |
-| SaQshi-owned UI/config license text aligned to MIT. | Done |
+| Root `LICENSE` exists. | Done |
+| SaQshi-owned UI/config license text aligned to GPL-3.0. | Done |
 | `NOTICE` exists. | Done |
 | `docs/compliance/third_party_licenses.md` exists. | Done |
 | Third-party bundled UI/API files reviewed for exact version/license. | Pending |

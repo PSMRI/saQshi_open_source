@@ -5,7 +5,7 @@
  * Project   : SaQshi Open Source
  * Component : Core UI Helpers
  * Standard  : ES6 + Accessibility Ready
- * License   : MIT
+ * License   : GPL-3.0
  * ==========================================================
  */
 

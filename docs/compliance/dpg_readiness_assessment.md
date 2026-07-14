@@ -2,7 +2,7 @@
 
 Version: 1.0  
 Assessed: 2026-07-14  
-Project license: MIT  
+Project license: GPL-3.0  
 
 ## Verdict
 
@@ -15,8 +15,8 @@ It has a strong foundation: open-source license, source code, API/UI documentati
 | DPGA Indicator | Current Status | Evidence | Gap / Action |
 |---|---|---|---|
 | 1. SDG Relevance | Partial | SaQshi supports healthcare quality assessment and monitoring, strongly aligned with health system improvement. | Explicitly document SDG mapping, likely SDG 3: Good Health and Well-being, and describe public-sector use cases. |
-| 2. Open Licensing | Mostly Ready | `LICENSE.txt` uses MIT; SaQshi-owned UI/config license text aligned to MIT. | Confirm third-party licenses and add final dependency/version review. |
-| 3. Clear Ownership | Partial | `LICENSE.txt`, `NOTICE`, README and copyright line exist. | Add maintainer/governance file and confirm ownership of framework JSON, facility master data and map boundary data. |
+| 2. Open Licensing | Mostly Ready | `LICENSE` uses GPL-3.0; SaQshi-owned UI/config license text aligned to GPL-3.0. | Confirm third-party licenses and add final dependency/version review. |
+| 3. Clear Ownership | Partial | `LICENSE`, `NOTICE`, README and copyright line exist. | Add maintainer/governance file and confirm ownership of framework JSON, facility master data and map boundary data. |
 | 4. Platform Independence | Partial | PHP/MySQL/HTML/CSS/JS stack can run on common web servers. | Document open alternatives and avoid hard dependency on proprietary services; provide clean install guide and container/server examples. |
 | 5. Documentation | Good but not complete | README, API docs, Postman guide, database guide, release checklist, security docs, WCAG docs exist. | Add full functional requirements/use cases, administrator guide and deployment guide. |
 | 6. Non-PII Data Extraction | Not Ready | Reports/downloads exist, but DPG-specific non-PII import/export is not documented. | Add documented non-PII export/import mechanism using CSV/JSON, with fields and privacy rules. |

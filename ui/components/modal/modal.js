@@ -5,7 +5,7 @@
  * Project   : SaQshi Open Source
  * Component : Modal
  * File      : modal.js
- * License   : MIT
+ * License   : GPL-3.0
  * ==========================================================
  *
  * Features
