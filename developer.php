@@ -2,7 +2,7 @@
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="SaQshi is an open-source healthcare quality assessment and monitoring platform.">
-<title>SaQshi | Open-source healthcare quality</title><link rel="stylesheet" href="ui/assets/css/saqshi-developer.css">
+<title>SaQshi | Open-source healthcare quality</title><link rel="stylesheet" href="/ui/assets/css/saqshi-developer.css">
 </head><body>
 <header class="site-header"><nav class="container nav"><a class="brand" href="developer.php"><span class="mark">S</span>SaQshi <span class="badge">Open source</span></a><div class="links"><a href="#platform">Platform</a><a href="#developers">Developers</a><a href="#documentation">Documentation</a></div><a class="button primary" href="login.php">Open application</a></nav></header>
 <main>

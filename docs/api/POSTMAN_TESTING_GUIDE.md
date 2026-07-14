@@ -16,7 +16,7 @@ docs/api/saqshi_postman_collection.json
 3. Select:
 
 ```text
-open_source\docs\api\saqshi_postman_collection.json
+docs\api\saqshi_postman_collection.json
 ```
 
 4. After import, open the collection named **SaQshi API Testing Collection**.
