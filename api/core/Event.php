@@ -117,6 +117,9 @@ class Event
         });
     }
 
+    /**
+     * Handles default meta processing for this API workflow.
+     */
     private static function defaultMeta(): array
     {
         return [
@@ -128,6 +131,9 @@ class Event
         ];
     }
 
+    /**
+     * Handles safe session value processing for this API workflow.
+     */
     private static function safeSessionValue(string $method): ?int
     {
         if (!class_exists('SessionManager') || !method_exists('SessionManager', $method)) {
@@ -142,6 +148,9 @@ class Event
         }
     }
 
+    /**
+     * Handles write log processing for this API workflow.
+     */
     private static function writeLog(array $event): void
     {
         $dir = dirname(__DIR__) . '/storage/events';

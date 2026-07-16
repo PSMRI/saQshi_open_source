@@ -227,6 +227,9 @@ class SessionManager
         ];
     }
 
+    /**
+     * Handles update profile processing for this API workflow.
+     */
     public static function updateProfile(array $user): void
     {
         self::start();

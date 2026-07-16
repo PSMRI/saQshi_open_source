@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * SaQshi API
+ * routes.php
+ * Purpose: routes endpoint/support workflow.
+ */
+
+
 require_once "core/AuthMiddleware.php";
 
 $route = $_GET['route'] ?? '';

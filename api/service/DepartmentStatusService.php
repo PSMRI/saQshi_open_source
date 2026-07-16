@@ -11,6 +11,9 @@ class DepartmentStatusService
 {
     private mysqli $db;
 
+    /**
+     * Handles construct processing for this API workflow.
+     */
     public function __construct(mysqli $db)
     {
         $this->db = $db;
@@ -216,6 +219,9 @@ class DepartmentStatusService
         return (int)$row['is_active'] === 1;
     }
 
+    /**
+     * Handles success processing for this API workflow.
+     */
     private function success(string $message, mixed $data = null): array
     {
         return [
@@ -225,12 +231,36 @@ class DepartmentStatusService
         ];
     }
 
+    /**
+     * Handles error processing for this API workflow.
+     */
     private function error(string $message): array
     {
+        if ($this->isSensitiveError($message)) {
+            if (class_exists('ErrorHandler')) {
+                ErrorHandler::log($message, ['service' => self::class]);
+                $message = ErrorHandler::friendlyMessage();
+            } else {
+                error_log('[SaQshi API Error] ' . $message);
+                $message = 'Something went wrong while processing your request. Please try again.';
+            }
+        }
+
         return [
             "status"  => "error",
             "message" => $message,
             "data"    => null
         ];
+    }
+
+    /**
+     * Detects low-level system/database messages that must not be returned to users.
+     */
+    private function isSensitiveError(string $message): bool
+    {
+        return (bool) preg_match(
+            '/prepare failed|SQLSTATE|mysqli|syntax error|duplicate entry|unknown column|table .* doesn.?t exist|cannot add or update|foreign key|data too long|you have an error in your sql|access denied/i',
+            $message
+        );
     }
 }

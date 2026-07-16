@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * SaQshi API
+ * framework/v1/assessment_methods.php
+ * Purpose: assessment methods endpoint/support workflow.
+ */
+
+
 require_once __DIR__ . '/../../auth_api.php';
 require_once __DIR__ . '/../../core/FrameworkEngine.php';
 

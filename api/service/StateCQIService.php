@@ -4,6 +4,9 @@
 
 require_once __DIR__ . '/StateDashboardService.php';
 
+/**
+ * Provides state cqiservice behavior for SaQshi API workflows.
+ */
 class StateCQIService extends StateDashboardService
 {
 }

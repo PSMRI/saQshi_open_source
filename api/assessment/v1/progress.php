@@ -35,6 +35,9 @@ require_once __DIR__ . '/../../assets/conn/db.php';
 
 Security::requireMethod('GET');
 
+/**
+ * Handles progress facility type id processing for this API workflow.
+ */
 function progressFacilityTypeId(int $facId): int
 {
     $facilityJsonPath = __DIR__ . '/../../config/masters/facilities.json';
@@ -66,6 +69,9 @@ function progressFacilityTypeId(int $facId): int
     return 0;
 }
 
+/**
+ * Handles progress checkpoint max score processing for this API workflow.
+ */
 function progressCheckpointMaxScore(array $checkpoint): float
 {
     $options = $checkpoint['response']['options'] ?? [];
@@ -84,6 +90,9 @@ function progressCheckpointMaxScore(array $checkpoint): float
     return $max > 0 ? $max : 2;
 }
 
+/**
+ * Handles progress department base processing for this API workflow.
+ */
 function progressDepartmentBase(FrameworkEngine $engine, int $facTypeId, int $deptId): array
 {
     if ($facTypeId <= 0 || $deptId <= 0) {

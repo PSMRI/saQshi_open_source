@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * SaQshi API
+ * certification/v1/renewal_status.php
+ * Purpose: renewal status endpoint/support workflow.
+ */
+
+
 require_once __DIR__ . '/_common.php';
 
 certificationHandle(function () use ($con) {

@@ -18,6 +18,9 @@
 
 class ValidationService
 {
+    /**
+     * Handles validate entry processing for this API workflow.
+     */
     public static function validateEntry(array $payload): array
     {
         $errors = [];

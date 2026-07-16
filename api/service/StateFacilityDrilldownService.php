@@ -4,6 +4,9 @@
 
 require_once __DIR__ . '/StateDashboardService.php';
 
+/**
+ * Provides state facility drilldown service behavior for SaQshi API workflows.
+ */
 class StateFacilityDrilldownService extends StateDashboardService
 {
 }

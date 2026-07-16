@@ -1,7 +1,7 @@
 # SaQshi SQL Injection and Security Review
 
-Version: 1.0  
-Updated: 2026-07-13
+Version: 1.1  
+Updated: 2026-07-16
 
 ## Purpose
 
@@ -22,6 +22,7 @@ Reviewed API PHP files for:
 | ID | Area | Risk | Status |
 |---|---|---|---|
 | SQLI-001 | `api/assessment/v1/action_plan.php` | Dynamic `IN ($ids)` query for action-plan suggestions | Rectified |
+| SQLI-002 | `api/service/CertificationService.php` | Dynamic schema identifier use in maintenance DDL | Hardened |
 
 ## Rectification Update
 
@@ -36,6 +37,8 @@ The confirmed SQL injection hardening item has been updated in code after docume
 ### Current Status
 
 SQLI-001 is closed. The action-plan suggestion query no longer places checkpoint IDs directly into the SQL string. The query now binds all checkpoint IDs and the framework code through a prepared statement.
+
+SQLI-002 is closed for the current implementation. `CertificationService::ensureColumn()` is private and called with static identifiers, and it now validates table/column names using an alphanumeric/underscore allow-list before building schema-maintenance SQL.
 
 ## SQLI-001: Dynamic IN Clause in Action Plan Suggestions
 

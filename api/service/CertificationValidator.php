@@ -2,8 +2,14 @@
 
 require_once __DIR__ . '/CertificationExpiryService.php';
 
+/**
+ * Provides certification validator behavior for SaQshi API workflows.
+ */
 class CertificationValidator
 {
+    /**
+     * Handles validate payload processing for this API workflow.
+     */
     public static function validatePayload(array $payload, array $config): array
     {
         $errors = [];
@@ -48,6 +54,9 @@ class CertificationValidator
         return $errors;
     }
 
+    /**
+     * Handles is date processing for this API workflow.
+     */
     private static function isDate(string $value): bool
     {
         $dt = DateTime::createFromFormat('Y-m-d', $value);

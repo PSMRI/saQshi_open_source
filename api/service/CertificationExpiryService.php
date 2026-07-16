@@ -1,7 +1,13 @@
 <?php
 
+/**
+ * Provides certification expiry service behavior for SaQshi API workflows.
+ */
 class CertificationExpiryService
 {
+    /**
+     * Handles calculate valid to processing for this API workflow.
+     */
     public static function calculateValidTo(string $status, string $certificationDate, array $config): array
     {
         $normalized = self::normalizeStatus($status);
@@ -17,6 +23,9 @@ class CertificationExpiryService
         ];
     }
 
+    /**
+     * Handles renewal status processing for this API workflow.
+     */
     public static function renewalStatus(?string $validTo, int $dueDays = 90): string
     {
         if (!$validTo) {
@@ -35,6 +44,9 @@ class CertificationExpiryService
         return $diff <= $dueDays ? 'RENEWAL_DUE' : 'ACTIVE';
     }
 
+    /**
+     * Handles normalize status processing for this API workflow.
+     */
     public static function normalizeStatus(string $status): string
     {
         $value = strtoupper(trim($status));
@@ -46,6 +58,9 @@ class CertificationExpiryService
         return $value;
     }
 
+    /**
+     * Handles validity years processing for this API workflow.
+     */
     private static function validityYears(string $status, array $config): int
     {
         foreach (($config['statuses'] ?? []) as $row) {

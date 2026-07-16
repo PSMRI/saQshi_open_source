@@ -9,6 +9,7 @@
 - [Security Policy](SECURITY.md)
 - [Changelog](CHANGELOG.md)
 - [Code of Conduct](CODE_OF_CONDUCT.md)
+- [Maintainers and Release Contacts](MAINTAINERS.md)
 - [License](LICENSE)
 - [Notice](NOTICE)
 
@@ -29,6 +30,7 @@
 - [Technology Overview](README.md#technology-overview)
 - [Repository Structure](README.md#repository-structure)
 - [Project Overview and NQAS Alignment](docs/architecture/project_overview.md)
+- [Use Cases](docs/architecture/use_cases.md)
 - [Version Matrix](docs/architecture/version_matrix.md)
 - [Technical Architecture Overview](docs/architecture/technical_architecture.md)
 - [Service Architecture and Map](docs/architecture/service_map.md)
@@ -59,6 +61,9 @@
 ## Security
 
 - [SQL Injection Security Review](docs/security/sql_injection_security_review.md)
+- [Release Security Scan 2026-07-16](docs/security/release_security_scan_2026_07_16.md)
+- [Production Hardening Guide](docs/security/production_hardening.md)
+- [Role Access Matrix](docs/security/role_access_matrix.md)
 - [VAPT Report](docs/testing/saqshi_vapt_report.md)
 
 ## Testing and Accessibility
@@ -74,10 +79,19 @@
 
 ## Open Source and Release
 
+- [Open Source and DPG Release Status](docs/compliance/open_source_dpg_release_status.md)
 - [Open Source Readiness Checklist](docs/compliance/open_source_readiness_checklist.md)
 - [License Before and After](docs/compliance/license_consistency_before_after.md)
 - [Third-party Licenses](docs/compliance/third_party_licenses.md)
 - [Privacy and Data Protection](docs/compliance/privacy_data_protection.md)
+- [Data Privacy Policy](docs/compliance/data_privacy_policy.md)
+- [Legal and Privacy Confirmation](docs/compliance/legal_privacy_confirmation.md)
+- [Public Data Audit](docs/compliance/public_data_audit.md)
+- [Data Redistribution Approval](docs/compliance/data_redistribution_approval.md)
+- [SDG Mapping](docs/compliance/sdg_mapping.md)
+- [Non-PII Export and Import](docs/compliance/non_pii_data_export_import.md)
+- [Governance and Ownership](docs/compliance/governance_and_ownership.md)
+- [Open Standards Mapping](docs/compliance/open_standards_mapping.md)
 - [Release Checklist](docs/compliance/release_checklist.md)
 - [DPG Readiness Assessment](docs/compliance/dpg_readiness_assessment.md)
 

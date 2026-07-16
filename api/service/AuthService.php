@@ -2,8 +2,14 @@
 
 require_once __DIR__ . '/../core/Crypto.php';
 
+/**
+ * Provides auth service behavior for SaQshi API workflows.
+ */
 class AuthService {
 
+    /**
+     * Handles login processing for this API workflow.
+     */
     public static function login($conn, $username, $password) {
 
         $sql = "SELECT u.*, r.role_name 
@@ -62,10 +68,16 @@ class AuthService {
         ];
     }
 
+    /**
+     * Handles validate processing for this API workflow.
+     */
     public static function validate() {
         return $_SESSION['user'] ?? null;
     }
 
+    /**
+     * Handles logout processing for this API workflow.
+     */
     public static function logout() {
         session_destroy();
         return true;

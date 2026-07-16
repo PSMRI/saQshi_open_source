@@ -66,19 +66,6 @@ try {
         ]);
     }
 
-    $allowedMimePrefixes = ['image/'];
-    $allowedMimeTypes = [
-        'application/pdf',
-        'application/msword',
-        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-        'application/vnd.ms-excel',
-        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        'text/csv',
-        'application/csv',
-        'application/octet-stream',
-        'application/zip'
-    ];
-
     $mimeType = '';
 
     if (function_exists('finfo_open')) {
@@ -92,18 +79,30 @@ try {
         $mimeType = (string)($file['type'] ?? '');
     }
 
-    $mimeAllowed = in_array($mimeType, $allowedMimeTypes, true);
+    $mimeMap = [
+        'jpg' => ['image/jpeg'],
+        'jpeg' => ['image/jpeg'],
+        'png' => ['image/png'],
+        'webp' => ['image/webp'],
+        'pdf' => ['application/pdf'],
+        'doc' => ['application/msword', 'application/octet-stream'],
+        'docx' => ['application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/zip'],
+        'xls' => ['application/vnd.ms-excel', 'application/octet-stream'],
+        'xlsx' => ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/zip'],
+        'csv' => ['text/csv', 'text/plain', 'application/csv', 'application/vnd.ms-excel']
+    ];
 
-    foreach ($allowedMimePrefixes as $prefix) {
-        if (strpos($mimeType, $prefix) === 0) {
-            $mimeAllowed = true;
-            break;
-        }
-    }
+    $mimeAllowed = in_array($mimeType, $mimeMap[$extension] ?? [], true);
 
     if (!$mimeAllowed) {
         Response::validation([
             'file' => 'Unsupported file content type'
+        ]);
+    }
+
+    if (in_array($extension, ['jpg', 'jpeg', 'png', 'webp'], true) && @getimagesize($file['tmp_name']) === false) {
+        Response::validation([
+            'file' => 'Uploaded image content is invalid'
         ]);
     }
 

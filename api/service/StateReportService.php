@@ -11,8 +11,14 @@
 
 require_once __DIR__ . '/StateDashboardService.php';
 
+/**
+ * Provides state report service behavior for SaQshi API workflows.
+ */
 class StateReportService extends StateDashboardService
 {
+    /**
+     * Handles stream csv processing for this API workflow.
+     */
     public static function streamCsv(mysqli $con, string $report, array $filters = []): void
     {
         $report = strtolower(trim($report));
@@ -43,6 +49,9 @@ class StateReportService extends StateDashboardService
         exit;
     }
 
+    /**
+     * Handles export catalog processing for this API workflow.
+     */
     public static function exportCatalog(): array
     {
         return [
@@ -55,6 +64,9 @@ class StateReportService extends StateDashboardService
         ];
     }
 
+    /**
+     * Handles write summary processing for this API workflow.
+     */
     private static function writeSummary(mysqli $con, $out, array $filters): void
     {
         $facility = self::facilityCategory($con, $filters);
@@ -85,6 +97,9 @@ class StateReportService extends StateDashboardService
         }
     }
 
+    /**
+     * Handles write facilities processing for this API workflow.
+     */
     private static function writeFacilities(mysqli $con, $out, array $filters): void
     {
         if (!self::tableExistsLocal($con, 'facilities')) {
@@ -116,6 +131,9 @@ class StateReportService extends StateDashboardService
         });
     }
 
+    /**
+     * Handles write assessments processing for this API workflow.
+     */
     private static function writeAssessments(mysqli $con, $out, array $filters): void
     {
         if (!self::tableExistsLocal($con, 'assessment_master')) {
@@ -196,6 +214,9 @@ class StateReportService extends StateDashboardService
         });
     }
 
+    /**
+     * Handles write cqi processing for this API workflow.
+     */
     private static function writeCqi(mysqli $con, $out, array $filters): void
     {
         if (!self::tableExistsLocal($con, 'assessment_action_plan')) {
@@ -264,6 +285,9 @@ class StateReportService extends StateDashboardService
         });
     }
 
+    /**
+     * Handles write performance processing for this API workflow.
+     */
     private static function writePerformance(mysqli $con, $out, array $filters): void
     {
         if (!self::tableExistsLocal($con, 'performance_entries')) {
@@ -341,6 +365,9 @@ class StateReportService extends StateDashboardService
         });
     }
 
+    /**
+     * Handles write certification processing for this API workflow.
+     */
     private static function writeCertification(mysqli $con, $out, array $filters): void
     {
         if (!self::tableExistsLocal($con, 'certification_history')) {
@@ -385,6 +412,9 @@ class StateReportService extends StateDashboardService
         });
     }
 
+    /**
+     * Handles response table processing for this API workflow.
+     */
     private static function responseTable(mysqli $con): string
     {
         if (self::tableExistsLocal($con, 'assessment_response')) {
@@ -396,6 +426,9 @@ class StateReportService extends StateDashboardService
         return '';
     }
 
+    /**
+     * Handles select column processing for this API workflow.
+     */
     private static function selectColumn(mysqli $con, string $table, string $column, string $alias): string
     {
         return self::columnExistsLocal($con, $table, $column)
@@ -403,6 +436,9 @@ class StateReportService extends StateDashboardService
             : "''";
     }
 
+    /**
+     * Handles month name processing for this API workflow.
+     */
     private static function monthName(int $month): string
     {
         if ($month < 1 || $month > 12) {
@@ -412,6 +448,9 @@ class StateReportService extends StateDashboardService
         return date('F', mktime(0, 0, 0, $month, 1));
     }
 
+    /**
+     * Handles facility type name processing for this API workflow.
+     */
     private static function facilityTypeName(mixed $typeId): string
     {
         $id = (int)$typeId;
@@ -429,6 +468,9 @@ class StateReportService extends StateDashboardService
         return $map[$id] ?? (string)$typeId;
     }
 
+    /**
+     * Handles department map processing for this API workflow.
+     */
     private static function departmentMap(): array
     {
         static $map = null;
@@ -460,6 +502,9 @@ class StateReportService extends StateDashboardService
         return $map;
     }
 
+    /**
+     * Handles checkpoint map processing for this API workflow.
+     */
     private static function checkpointMap(): array
     {
         static $map = null;
@@ -504,6 +549,9 @@ class StateReportService extends StateDashboardService
         return $map;
     }
 
+    /**
+     * Handles performance indicator map processing for this API workflow.
+     */
     private static function performanceIndicatorMap(): array
     {
         static $map = null;
@@ -529,6 +577,9 @@ class StateReportService extends StateDashboardService
         return $map;
     }
 
+    /**
+     * Handles collect performance indicators processing for this API workflow.
+     */
     private static function collectPerformanceIndicators(array $node, array &$map): void
     {
         if (isset($node['indicator_id']) || isset($node['kpi_id']) || isset($node['outcome_id'])) {
@@ -554,6 +605,9 @@ class StateReportService extends StateDashboardService
         }
     }
 
+    /**
+     * Handles indicator field labels processing for this API workflow.
+     */
     private static function indicatorFieldLabels(array $indicator): array
     {
         $labels = ['numerator' => '', 'denominator' => ''];
@@ -569,6 +623,9 @@ class StateReportService extends StateDashboardService
         return $labels;
     }
 
+    /**
+     * Handles facility where local processing for this API workflow.
+     */
     private static function facilityWhereLocal(array $filters, string $alias): array
     {
         $where = ['1=1'];
@@ -601,6 +658,9 @@ class StateReportService extends StateDashboardService
         return ['sql' => 'WHERE ' . implode(' AND ', $where), 'types' => $types, 'params' => $params];
     }
 
+    /**
+     * Handles stream query processing for this API workflow.
+     */
     private static function streamQuery(mysqli $con, string $sql, string $types, array $params, $out, callable $mapRow): void
     {
         $stmt = self::prepareAndBind($con, $sql, $types, $params);
@@ -612,11 +672,17 @@ class StateReportService extends StateDashboardService
         $stmt->close();
     }
 
+    /**
+     * Handles csv row processing for this API workflow.
+     */
     private static function csvRow($out, array $fields): void
     {
         fputcsv($out, $fields, ',', '"', '', "\r\n");
     }
 
+    /**
+     * Handles prepare and bind processing for this API workflow.
+     */
     private static function prepareAndBind(mysqli $con, string $sql, string $types = '', array $params = []): mysqli_stmt
     {
         $stmt = $con->prepare($sql);
@@ -635,6 +701,9 @@ class StateReportService extends StateDashboardService
         return $stmt;
     }
 
+    /**
+     * Handles table exists local processing for this API workflow.
+     */
     private static function tableExistsLocal(mysqli $con, string $table): bool
     {
         $stmt = $con->prepare("
@@ -655,6 +724,9 @@ class StateReportService extends StateDashboardService
         return (int)($row['table_count'] ?? 0) > 0;
     }
 
+    /**
+     * Handles column exists local processing for this API workflow.
+     */
     private static function columnExistsLocal(mysqli $con, string $table, string $column): bool
     {
         $stmt = $con->prepare("

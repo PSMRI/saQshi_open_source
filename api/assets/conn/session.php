@@ -1,4 +1,11 @@
 <?php
+
+/**
+ * SaQshi API
+ * assets/conn/session.php
+ * Purpose: session endpoint/support workflow.
+ */
+
    include('db.php');
    session_start();
    // Check if the user is logged in by verifying the session

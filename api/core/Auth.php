@@ -19,6 +19,9 @@
 require_once __DIR__ . '/SessionManager.php';
 require_once __DIR__ . '/Crypto.php';
 
+/**
+ * Provides auth behavior for SaQshi API workflows.
+ */
 class Auth
 {
     private mysqli $db;
@@ -26,11 +29,17 @@ class Auth
     private const MAX_FAILED_ATTEMPTS = 5;
     private const LOCK_MINUTES = 15;
 
+    /**
+     * Handles construct processing for this API workflow.
+     */
     public function __construct(mysqli $db)
     {
         $this->db = $db;
     }
 
+    /**
+     * Handles login processing for this API workflow.
+     */
     public function login(string $username, string $password): array
     {
         $username = trim($username);
@@ -81,6 +90,9 @@ class Auth
         ]);
     }
 
+    /**
+     * Handles logout processing for this API workflow.
+     */
     public function logout(): array
     {
         SessionManager::logout();
@@ -88,6 +100,9 @@ class Auth
         return $this->success('Logout successful');
     }
 
+    /**
+     * Handles me processing for this API workflow.
+     */
     public function me(): array
     {
         if (!SessionManager::isLoggedIn()) {
@@ -99,6 +114,9 @@ class Auth
         ]);
     }
 
+    /**
+     * Handles find user processing for this API workflow.
+     */
     private function findUser(string $username): ?array
     {
         $sql = "
@@ -155,6 +173,9 @@ class Auth
         return $result->fetch_assoc();
     }
 
+    /**
+     * Handles find user by id processing for this API workflow.
+     */
     private function findUserById(int $userId): ?array
     {
         if ($userId <= 0) {
@@ -206,6 +227,9 @@ class Auth
         return $result->fetch_assoc();
     }
 
+    /**
+     * Handles decrypt user profile fields processing for this API workflow.
+     */
     private function decryptUserProfileFields(array $user): array
     {
         return Crypto::decryptFields($user, [
@@ -217,6 +241,9 @@ class Auth
         ]);
     }
 
+    /**
+     * Handles password status processing for this API workflow.
+     */
     private function passwordStatus(string $plainPassword, string $storedPassword): array
     {
         $plainPassword = trim((string)$plainPassword);
@@ -251,6 +278,9 @@ class Auth
         ];
     }
 
+    /**
+     * Handles upgrade password hash processing for this API workflow.
+     */
     private function upgradePasswordHash(int $userId, string $plainPassword): void
     {
         if ($userId <= 0) {
@@ -274,6 +304,9 @@ class Auth
         $stmt->execute();
     }
 
+    /**
+     * Handles is locked processing for this API workflow.
+     */
     private function isLocked(string $username): bool
     {
         if (!$this->loginAttemptTableExists()) {
@@ -309,6 +342,9 @@ class Auth
         return ((int)($row['failed_count'] ?? 0)) >= self::MAX_FAILED_ATTEMPTS;
     }
 
+    /**
+     * Handles record attempt processing for this API workflow.
+     */
     private function recordAttempt(string $username, string $status): void
     {
         if (!$this->loginAttemptTableExists()) {
@@ -352,6 +388,9 @@ class Auth
         $stmt->execute();
     }
 
+    /**
+     * Handles clear old failed attempts processing for this API workflow.
+     */
     private function clearOldFailedAttempts(string $username): void
     {
         if (!$this->loginAttemptTableExists()) {
@@ -374,6 +413,9 @@ class Auth
         $stmt->execute();
     }
 
+    /**
+     * Handles login attempt table exists processing for this API workflow.
+     */
     private function loginAttemptTableExists(): bool
     {
         static $exists = null;
@@ -391,6 +433,9 @@ class Auth
         return $exists;
     }
 
+    /**
+     * Handles hash password processing for this API workflow.
+     */
     public static function hashPassword(string $password): string
     {
         return password_hash(
@@ -402,6 +447,9 @@ class Auth
         );
     }
 
+    /**
+     * Handles success processing for this API workflow.
+     */
     private function success(string $message, array $data = []): array
     {
         return [
@@ -411,6 +459,9 @@ class Auth
         ];
     }
 
+    /**
+     * Handles error processing for this API workflow.
+     */
     private function error(string $message): array
     {
         return [

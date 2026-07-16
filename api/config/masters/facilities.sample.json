@@ -1,0 +1,33 @@
+[
+  {
+    "state_id": 0,
+    "state_name": "Sample State",
+    "divisions": [
+      {
+        "division_id": 0,
+        "division_name": "Sample Division",
+        "districts": [
+          {
+            "dist_id": 0,
+            "dist_name": "Sample District",
+            "blocks": [
+              {
+                "block_id": 0,
+                "block_name": "Sample Block",
+                "facilities": [
+                  {
+                    "nin_no": 1000000000,
+                    "fac_id": 1,
+                    "fac_name": "Sample Health Facility",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

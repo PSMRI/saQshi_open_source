@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * SaQshi API
+ * certification/v1/dashboard.php
+ * Purpose: dashboard endpoint/support workflow.
+ */
+
+
 require_once __DIR__ . '/_common.php';
 
 certificationHandle(function () use ($con) {

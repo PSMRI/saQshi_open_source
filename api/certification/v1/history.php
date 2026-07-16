@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * SaQshi API
+ * certification/v1/history.php
+ * Purpose: history endpoint/support workflow.
+ */
+
+
 require_once __DIR__ . '/_common.php';
 
 certificationHandle(function () use ($con) {

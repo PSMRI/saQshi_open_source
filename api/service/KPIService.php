@@ -18,29 +18,47 @@
 
 require_once __DIR__ . '/PerformanceService.php';
 
+/**
+ * Provides kpiservice behavior for SaQshi API workflows.
+ */
 class KPIService
 {
+    /**
+     * Handles config path processing for this API workflow.
+     */
     public static function configPath(): string
     {
         return __DIR__ . '/../config/performance/kpi.json';
     }
 
+    /**
+     * Handles list processing for this API workflow.
+     */
     public static function list(int $facilityTypeId = 0, int $departmentId = 0): array
     {
         $config = PerformanceService::readJson(self::configPath(), ['kpis' => []]);
         return PerformanceService::flattenIndicators($config, 'KPI', $facilityTypeId, $departmentId);
     }
 
+    /**
+     * Handles save processing for this API workflow.
+     */
     public static function save(mysqli $con, array $payload, int $userId, int $facilityId): array
     {
         return self::saveEntry($con, $payload, $userId, $facilityId, 'KPI');
     }
 
+    /**
+     * Handles history processing for this API workflow.
+     */
     public static function history(mysqli $con, int $facilityId, array $filters = []): array
     {
         return self::entryHistory($con, $facilityId, 'KPI', $filters);
     }
 
+    /**
+     * Handles save entry processing for this API workflow.
+     */
     public static function saveEntry(mysqli $con, array $payload, int $userId, int $facilityId, string $type): array
     {
         PerformanceService::ensureTable($con);
@@ -155,6 +173,9 @@ class KPIService
         ];
     }
 
+    /**
+     * Handles entry history processing for this API workflow.
+     */
     public static function entryHistory(mysqli $con, int $facilityId, string $type, array $filters): array
     {
         PerformanceService::ensureTable($con);

@@ -11,6 +11,9 @@
 
 class LoginCrypto
 {
+    /**
+     * Handles openssl config path processing for this API workflow.
+     */
     private static function opensslConfigPath(): ?string
     {
         if (class_exists('Env')) {
@@ -37,6 +40,9 @@ class LoginCrypto
         return null;
     }
 
+    /**
+     * Handles openssl errors processing for this API workflow.
+     */
     private static function opensslErrors(): string
     {
         $errors = [];
@@ -48,27 +54,42 @@ class LoginCrypto
         return implode(' | ', $errors);
     }
 
+    /**
+     * Handles key dir processing for this API workflow.
+     */
     private static function keyDir(): string
     {
         return dirname(__DIR__) . '/storage/keys';
     }
 
+    /**
+     * Handles private key path processing for this API workflow.
+     */
     private static function privateKeyPath(): string
     {
         return self::keyDir() . '/login_private.pem';
     }
 
+    /**
+     * Handles public key path processing for this API workflow.
+     */
     private static function publicKeyPath(): string
     {
         return self::keyDir() . '/login_public.pem';
     }
 
+    /**
+     * Handles public key processing for this API workflow.
+     */
     public static function publicKey(): string
     {
         self::ensureKeys();
         return (string)file_get_contents(self::publicKeyPath());
     }
 
+    /**
+     * Handles decrypt password processing for this API workflow.
+     */
     public static function decryptPassword(string $encryptedBase64): string
     {
         self::ensureKeys();
@@ -95,6 +116,9 @@ class LoginCrypto
         return $plainText;
     }
 
+    /**
+     * Handles ensure keys processing for this API workflow.
+     */
     private static function ensureKeys(): void
     {
         $dir = self::keyDir();

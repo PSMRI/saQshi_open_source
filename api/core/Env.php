@@ -13,6 +13,9 @@ class Env
 {
     private static bool $loaded = false;
 
+    /**
+     * Handles load processing for this API workflow.
+     */
     public static function load(?string $path = null): void
     {
         if (self::$loaded) {
@@ -58,6 +61,9 @@ class Env
         }
     }
 
+    /**
+     * Handles get processing for this API workflow.
+     */
     public static function get(string $key, ?string $default = null): ?string
     {
         self::load();

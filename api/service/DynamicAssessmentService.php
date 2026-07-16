@@ -14,15 +14,24 @@
 
 require_once __DIR__ . '/../core/FrameworkEngine.php';
 
+/**
+ * Provides dynamic assessment service behavior for SaQshi API workflows.
+ */
 class DynamicAssessmentService
 {
     private mysqli $db;
 
+    /**
+     * Handles construct processing for this API workflow.
+     */
     public function __construct(mysqli $db)
     {
         $this->db = $db;
     }
 
+    /**
+     * Handles create cycle processing for this API workflow.
+     */
     public function createCycle(array $data): array
     {
         try {
@@ -75,6 +84,9 @@ class DynamicAssessmentService
         }
     }
 
+    /**
+     * Handles add departments processing for this API workflow.
+     */
     public function addDepartments(int $cycleId, array $departments): array
     {
         if (empty($departments)) {
@@ -131,6 +143,9 @@ class DynamicAssessmentService
         }
     }
 
+    /**
+     * Handles save response processing for this API workflow.
+     */
     public function saveResponse(array $data): array
     {
         $this->db->begin_transaction();
@@ -215,6 +230,9 @@ class DynamicAssessmentService
         }
     }
 
+    /**
+     * Handles get cycle processing for this API workflow.
+     */
     public function getCycle(int $cycleId): array
     {
         try {
@@ -284,6 +302,9 @@ class DynamicAssessmentService
         }
     }
 
+    /**
+     * Handles get responses processing for this API workflow.
+     */
     public function getResponses(int $cycleId, ?int $deptId = null): array
     {
         try {
@@ -341,6 +362,9 @@ class DynamicAssessmentService
         }
     }
 
+    /**
+     * Handles complete department processing for this API workflow.
+     */
     public function completeDepartment(int $cycleId, int $deptId): array
     {
         try {
@@ -372,6 +396,9 @@ class DynamicAssessmentService
         }
     }
 
+    /**
+     * Handles complete cycle processing for this API workflow.
+     */
     public function completeCycle(int $cycleId): array
     {
         try {
@@ -412,6 +439,9 @@ class DynamicAssessmentService
         }
     }
 
+    /**
+     * Handles calculate cycle score processing for this API workflow.
+     */
     public function calculateCycleScore(int $cycleId): array
     {
         try {
@@ -440,6 +470,9 @@ class DynamicAssessmentService
         }
     }
 
+    /**
+     * Handles calculate checkpoint score processing for this API workflow.
+     */
     private function calculateCheckpointScore(
         string $frameworkCode,
         int $checkpointId,
@@ -466,6 +499,9 @@ class DynamicAssessmentService
         return 0;
     }
 
+    /**
+     * Handles is department active processing for this API workflow.
+     */
     private function isDepartmentActive(int $cycleId, int $deptId): bool
     {
         $sql = "
@@ -490,6 +526,9 @@ class DynamicAssessmentService
         return $row && (int)$row['is_active'] === 1;
     }
 
+    /**
+     * Handles mark department in progress processing for this API workflow.
+     */
     private function markDepartmentInProgress(int $cycleId, int $deptId): void
     {
         $sql = "
@@ -509,6 +548,9 @@ class DynamicAssessmentService
         }
     }
 
+    /**
+     * Handles mark cycle in progress processing for this API workflow.
+     */
     private function markCycleInProgress(int $cycleId): void
     {
         $sql = "
@@ -526,6 +568,9 @@ class DynamicAssessmentService
         }
     }
 
+    /**
+     * Handles get cycle id processing for this API workflow.
+     */
     private function getCycleId(
         int $facId,
         int $assPeriod,
@@ -551,6 +596,9 @@ class DynamicAssessmentService
         return $row ? (int)$row['cycle_id'] : 0;
     }
 
+    /**
+     * Handles success processing for this API workflow.
+     */
     private function success(string $message, mixed $data = null): array
     {
         return [
@@ -560,12 +608,36 @@ class DynamicAssessmentService
         ];
     }
 
+    /**
+     * Handles error processing for this API workflow.
+     */
     private function error(string $message): array
     {
+        if ($this->isSensitiveError($message)) {
+            if (class_exists('ErrorHandler')) {
+                ErrorHandler::log($message, ['service' => self::class]);
+                $message = ErrorHandler::friendlyMessage();
+            } else {
+                error_log('[SaQshi API Error] ' . $message);
+                $message = 'Something went wrong while processing your request. Please try again.';
+            }
+        }
+
         return [
             "status"  => "error",
             "message" => $message,
             "data"    => null
         ];
+    }
+
+    /**
+     * Detects low-level system/database messages that must not be returned to users.
+     */
+    private function isSensitiveError(string $message): bool
+    {
+        return (bool) preg_match(
+            '/prepare failed|SQLSTATE|mysqli|syntax error|duplicate entry|unknown column|table .* doesn.?t exist|cannot add or update|foreign key|data too long|you have an error in your sql|access denied/i',
+            $message
+        );
     }
 }

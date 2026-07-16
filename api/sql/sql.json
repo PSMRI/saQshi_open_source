@@ -54,7 +54,7 @@ ORDER BY
     aocs.Reference_No,
     csc.csqa_id;
 
-
+========================================================
     SELECT DISTINCT
     f.state_id,
     f.state_name,

@@ -1,7 +1,13 @@
 <?php
 
+/**
+ * Provides chat assistant service behavior for SaQshi API workflows.
+ */
 class ChatAssistantService
 {
+    /**
+     * Handles ensure table processing for this API workflow.
+     */
     public static function ensureTable(mysqli $con): void
     {
         $sql = "
@@ -24,6 +30,9 @@ class ChatAssistantService
         }
     }
 
+    /**
+     * Handles send processing for this API workflow.
+     */
     public static function send(mysqli $con, int $userId, int $facId, string $message, string $contextPage = ''): array
     {
         self::ensureTable($con);
@@ -47,6 +56,9 @@ class ChatAssistantService
         ];
     }
 
+    /**
+     * Handles history processing for this API workflow.
+     */
     public static function history(mysqli $con, int $userId, int $facId, int $limit = 50): array
     {
         self::ensureTable($con);
@@ -81,6 +93,9 @@ class ChatAssistantService
         return array_reverse($rows);
     }
 
+    /**
+     * Handles clear processing for this API workflow.
+     */
     public static function clear(mysqli $con, int $userId, int $facId): void
     {
         self::ensureTable($con);
@@ -94,6 +109,9 @@ class ChatAssistantService
         $stmt->execute();
     }
 
+    /**
+     * Handles save message processing for this API workflow.
+     */
     private static function saveMessage(mysqli $con, int $userId, int $facId, string $role, string $message, string $contextPage): void
     {
         $stmt = $con->prepare("
@@ -112,6 +130,9 @@ class ChatAssistantService
         }
     }
 
+    /**
+     * Handles build reply processing for this API workflow.
+     */
     private static function buildReply(string $message, string $contextPage): string
     {
         $text = strtolower($message . ' ' . $contextPage);

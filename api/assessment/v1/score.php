@@ -27,6 +27,9 @@ require_once __DIR__ . '/../../assets/conn/db.php';
 
 Security::requireMethod('GET');
 
+/**
+ * Handles score facility type id processing for this API workflow.
+ */
 function scoreFacilityTypeId(int $facId): int
 {
     $facilityJsonPath = __DIR__ . '/../../config/masters/facilities.json';
@@ -58,6 +61,9 @@ function scoreFacilityTypeId(int $facId): int
     return 0;
 }
 
+/**
+ * Handles score checkpoint max score processing for this API workflow.
+ */
 function scoreCheckpointMaxScore(array $checkpoint): float
 {
     $options = $checkpoint['response']['options'] ?? [];
@@ -76,6 +82,9 @@ function scoreCheckpointMaxScore(array $checkpoint): float
     return $max > 0 ? $max : 2;
 }
 
+/**
+ * Handles score department base processing for this API workflow.
+ */
 function scoreDepartmentBase(FrameworkEngine $engine, int $facTypeId, int $deptId): array
 {
     if ($facTypeId <= 0 || $deptId <= 0) {

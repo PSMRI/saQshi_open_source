@@ -26,7 +26,7 @@ try {
     $request = Security::jsonInput();
     Event::dispatch('auth.login.started', [
         'has_username' => isset($request['username']) && trim((string)$request['username']) !== '',
-        'has_password' => isset($request['password']) && (string)$request['password'] !== '',
+        'has_password_enc' => isset($request['password_enc']) && (string)$request['password_enc'] !== '',
         'has_captcha' => isset($request['captcha']) && trim((string)$request['captcha']) !== ''
     ]);
 

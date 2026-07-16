@@ -7,6 +7,9 @@
 
 class Response
 {
+    /**
+     * Handles send processing for this API workflow.
+     */
     private static function send(
         string $status,
         string $message,
@@ -30,6 +33,9 @@ class Response
         exit;
     }
 
+    /**
+     * Handles success processing for this API workflow.
+     */
     public static function success(
         string $message = 'Success',
         mixed $data = null,
@@ -38,6 +44,9 @@ class Response
         self::send('success', $message, $data, null, $httpCode);
     }
 
+    /**
+     * Handles created processing for this API workflow.
+     */
     public static function created(
         string $message = 'Created successfully',
         mixed $data = null
@@ -45,6 +54,9 @@ class Response
         self::send('success', $message, $data, null, 201);
     }
 
+    /**
+     * Handles error processing for this API workflow.
+     */
     public static function error(
         string $message = 'Request failed',
         mixed $errors = null,
@@ -53,6 +65,9 @@ class Response
         self::send('error', $message, null, $errors, $httpCode);
     }
 
+    /**
+     * Handles validation processing for this API workflow.
+     */
     public static function validation(
         array $errors,
         string $message = 'Validation failed'
@@ -60,24 +75,36 @@ class Response
         self::send('error', $message, null, $errors, 422);
     }
 
+    /**
+     * Handles unauthorized processing for this API workflow.
+     */
     public static function unauthorized(
         string $message = 'Unauthorized'
     ): void {
         self::send('error', $message, null, null, 401);
     }
 
+    /**
+     * Handles forbidden processing for this API workflow.
+     */
     public static function forbidden(
         string $message = 'Forbidden'
     ): void {
         self::send('error', $message, null, null, 403);
     }
 
+    /**
+     * Handles not found processing for this API workflow.
+     */
     public static function notFound(
         string $message = 'Resource not found'
     ): void {
         self::send('error', $message, null, null, 404);
     }
 
+    /**
+     * Handles server error processing for this API workflow.
+     */
     public static function serverError(
         string $message = 'Internal server error'
     ): void {

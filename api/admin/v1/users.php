@@ -15,6 +15,9 @@ require_once __DIR__ . '/../../assets/conn/db.php';
 require_once __DIR__ . '/../../core/Auth.php';
 require_once __DIR__ . '/../../core/Crypto.php';
 
+/**
+ * Handles admin users request processing for this API workflow.
+ */
 function adminUsersRequest(): array
 {
     $raw = file_get_contents('php://input');
@@ -22,6 +25,9 @@ function adminUsersRequest(): array
     return is_array($data) ? $data : [];
 }
 
+/**
+ * Handles admin users password errors processing for this API workflow.
+ */
 function adminUsersPasswordErrors(string $password): array
 {
     $errors = [];
@@ -49,6 +55,9 @@ function adminUsersPasswordErrors(string $password): array
     return $errors;
 }
 
+/**
+ * Handles admin users row processing for this API workflow.
+ */
 function adminUsersRow(array $row): array
 {
     $row = Crypto::decryptFields($row, [
@@ -76,6 +85,9 @@ function adminUsersRow(array $row): array
     ];
 }
 
+/**
+ * Handles admin users find processing for this API workflow.
+ */
 function adminUsersFind(mysqli $con, int $userId): ?array
 {
     $sql = "

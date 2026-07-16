@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * SaQshi API
+ * framework/v1/load.php
+ * Purpose: load endpoint/support workflow.
+ */
+
+
 require_once __DIR__ . '/../../core/Response.php';
 require_once __DIR__ . '/../../core/FrameworkEngine.php';
 

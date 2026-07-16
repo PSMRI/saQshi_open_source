@@ -19,6 +19,9 @@ class Crypto
     private const FALLBACK_NONCE_LENGTH = 16;
     private const FALLBACK_TAG_LENGTH = 32;
 
+    /**
+     * Handles encrypt processing for this API workflow.
+     */
     public static function encrypt(?string $plainText): string
     {
         $plainText = (string)($plainText ?? '');
@@ -51,6 +54,9 @@ class Crypto
         return self::PREFIX . base64_encode('G1' . $iv . $tag . $cipherText);
     }
 
+    /**
+     * Handles decrypt processing for this API workflow.
+     */
     public static function decrypt(?string $encryptedText): string
     {
         $encryptedText = (string)($encryptedText ?? '');
@@ -98,6 +104,9 @@ class Crypto
         return $plainText === false ? $encryptedText : $plainText;
     }
 
+    /**
+     * Handles decrypt fields processing for this API workflow.
+     */
     public static function decryptFields(array $row, array $fields): array
     {
         foreach ($fields as $field) {
@@ -109,17 +118,26 @@ class Crypto
         return $row;
     }
 
+    /**
+     * Handles is encrypted processing for this API workflow.
+     */
     public static function isEncrypted(?string $value): bool
     {
         return str_starts_with((string)$value, self::PREFIX);
     }
 
+    /**
+     * Handles needs encryption processing for this API workflow.
+     */
     public static function needsEncryption(?string $value): bool
     {
         $value = (string)($value ?? '');
         return $value !== '' && !self::isEncrypted($value);
     }
 
+    /**
+     * Handles key processing for this API workflow.
+     */
     private static function key(): string
     {
         $key = getenv('SAQSHI_FIELD_ENCRYPTION_KEY') ?: '';
@@ -131,6 +149,9 @@ class Crypto
         return hash('sha256', $key, true);
     }
 
+    /**
+     * Handles encrypt fallback processing for this API workflow.
+     */
     private static function encryptFallback(string $plainText): string
     {
         $nonce = random_bytes(self::FALLBACK_NONCE_LENGTH);
@@ -142,6 +163,9 @@ class Crypto
         return self::PREFIX . base64_encode('H1' . $nonce . $tag . $cipherText);
     }
 
+    /**
+     * Handles decrypt fallback payload processing for this API workflow.
+     */
     private static function decryptFallbackPayload(string $payload, string $fallback): string
     {
         $payload = substr($payload, 2);
@@ -164,6 +188,9 @@ class Crypto
         return self::xorWithKeystream($cipherText, $nonce, $encKey);
     }
 
+    /**
+     * Handles xor with keystream processing for this API workflow.
+     */
     private static function xorWithKeystream(string $input, string $nonce, string $encKey): string
     {
         $output = '';

@@ -20,13 +20,22 @@ require_once __DIR__ . '/KPIService.php';
 require_once __DIR__ . '/OutcomeService.php';
 require_once __DIR__ . '/ValidationService.php';
 
+/**
+ * Provides indicator service behavior for SaQshi API workflows.
+ */
 class IndicatorService
 {
+    /**
+     * Handles config path processing for this API workflow.
+     */
     public static function configPath(): string
     {
         return __DIR__ . '/../config/performance/indicator.json';
     }
 
+    /**
+     * Handles list processing for this API workflow.
+     */
     public static function list(int $facilityTypeId = 0, int $departmentId = 0, string $indicatorType = ''): array
     {
         $type = strtoupper(trim($indicatorType));
@@ -45,6 +54,9 @@ class IndicatorService
         );
     }
 
+    /**
+     * Handles save processing for this API workflow.
+     */
     public static function save(mysqli $con, array $payload, int $userId, int $facilityId): array
     {
         $errors = ValidationService::validateEntry($payload);
@@ -62,6 +74,9 @@ class IndicatorService
         return OutcomeService::save($con, $payload, $userId, $facilityId);
     }
 
+    /**
+     * Handles history processing for this API workflow.
+     */
     public static function history(mysqli $con, int $facilityId, array $filters = []): array
     {
         $type = strtoupper((string)($filters['indicator_type'] ?? ''));

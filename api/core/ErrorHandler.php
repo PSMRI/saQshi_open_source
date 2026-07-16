@@ -11,6 +11,9 @@
 
 class ErrorHandler
 {
+    /**
+     * Handles register processing for this API workflow.
+     */
     public static function register(): void
     {
         set_exception_handler([self::class, 'handleException']);
@@ -18,6 +21,9 @@ class ErrorHandler
         register_shutdown_function([self::class, 'handleShutdown']);
     }
 
+    /**
+     * Handles request id processing for this API workflow.
+     */
     public static function requestId(): string
     {
         static $requestId = null;
@@ -29,11 +35,17 @@ class ErrorHandler
         return $requestId;
     }
 
+    /**
+     * Handles friendly message processing for this API workflow.
+     */
     public static function friendlyMessage(): string
     {
         return 'Something went wrong while processing your request. Please try again. If the issue continues, contact support with Request ID: ' . self::requestId();
     }
 
+    /**
+     * Handles log processing for this API workflow.
+     */
     public static function log(Throwable|string $error, array $context = []): void
     {
         $message = $error instanceof Throwable
@@ -43,12 +55,18 @@ class ErrorHandler
         error_log('[SaQshi API Error][' . self::requestId() . '] ' . $message . ' ' . json_encode($context, JSON_UNESCAPED_SLASHES));
     }
 
+    /**
+     * Handles handle exception processing for this API workflow.
+     */
     public static function handleException(Throwable $e): void
     {
         self::log($e);
         self::sendFriendly(500);
     }
 
+    /**
+     * Handles handle error processing for this API workflow.
+     */
     public static function handleError(int $severity, string $message, string $file = '', int $line = 0): bool
     {
         if (!(error_reporting() & $severity)) {
@@ -65,6 +83,9 @@ class ErrorHandler
         return true;
     }
 
+    /**
+     * Handles handle shutdown processing for this API workflow.
+     */
     public static function handleShutdown(): void
     {
         $error = error_get_last();
@@ -82,6 +103,9 @@ class ErrorHandler
         self::sendFriendly(500);
     }
 
+    /**
+     * Handles send friendly processing for this API workflow.
+     */
     public static function sendFriendly(int $httpCode = 500): void
     {
         if (headers_sent()) {

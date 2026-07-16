@@ -19,6 +19,9 @@ require_once __DIR__ . '/../../assets/conn/db.php';
 
 Security::requireMethod('GET');
 
+/**
+ * Handles list facility type id processing for this API workflow.
+ */
 function listFacilityTypeId(int $facId): int
 {
     $facilityJsonPath = __DIR__ . '/../../config/masters/facilities.json';
@@ -50,6 +53,9 @@ function listFacilityTypeId(int $facId): int
     return 0;
 }
 
+/**
+ * Handles list checkpoint max score processing for this API workflow.
+ */
 function listCheckpointMaxScore(array $checkpoint): float
 {
     $options = $checkpoint['response']['options'] ?? [];
@@ -68,6 +74,9 @@ function listCheckpointMaxScore(array $checkpoint): float
     return $max > 0 ? $max : 2;
 }
 
+/**
+ * Handles list framework total score processing for this API workflow.
+ */
 function listFrameworkTotalScore(
     string $frameworkCode,
     int $facTypeId,

@@ -20,11 +20,17 @@ class FormulaEngine
 {
     private static ?array $formulaCache = null;
 
+    /**
+     * Handles config path processing for this API workflow.
+     */
     public static function configPath(): string
     {
         return __DIR__ . '/../config/performance/formula.json';
     }
 
+    /**
+     * Handles formulas processing for this API workflow.
+     */
     public static function formulas(): array
     {
         if (self::$formulaCache !== null) {
@@ -44,6 +50,9 @@ class FormulaEngine
         return self::$formulaCache;
     }
 
+    /**
+     * Handles find formula processing for this API workflow.
+     */
     public static function findFormula(int|string|null $formulaId): ?array
     {
         $formulaId = (int)$formulaId;
@@ -61,6 +70,9 @@ class FormulaEngine
         return null;
     }
 
+    /**
+     * Handles calculate processing for this API workflow.
+     */
     public static function calculate(
         float $numerator,
         float $denominator,

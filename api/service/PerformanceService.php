@@ -18,15 +18,24 @@
 
 require_once __DIR__ . '/FormulaEngine.php';
 
+/**
+ * Provides performance service behavior for SaQshi API workflows.
+ */
 class PerformanceService
 {
     private static ?array $departmentNameCache = null;
 
+    /**
+     * Handles table name processing for this API workflow.
+     */
     public static function tableName(): string
     {
         return 'performance_entries';
     }
 
+    /**
+     * Handles ensure table processing for this API workflow.
+     */
     public static function ensureTable(mysqli $con): void
     {
         $sql = "
@@ -61,6 +70,9 @@ class PerformanceService
         }
     }
 
+    /**
+     * Handles read json processing for this API workflow.
+     */
     public static function readJson(string $path, array $fallback = []): array
     {
         if (!file_exists($path)) {
@@ -72,6 +84,9 @@ class PerformanceService
         return is_array($data) ? $data : $fallback;
     }
 
+    /**
+     * Handles rules config processing for this API workflow.
+     */
     public static function rulesConfig(): array
     {
         return self::readJson(__DIR__ . '/../config/performance/rules.json', [
@@ -86,6 +101,9 @@ class PerformanceService
         ]);
     }
 
+    /**
+     * Handles facility type rule processing for this API workflow.
+     */
     public static function facilityTypeRule(int $facilityTypeId): array
     {
         $config = self::rulesConfig();
@@ -108,6 +126,9 @@ class PerformanceService
         ];
     }
 
+    /**
+     * Handles assert indicator allowed processing for this API workflow.
+     */
     public static function assertIndicatorAllowed(int $facilityTypeId, string $indicatorType): array
     {
         $type = strtoupper(trim($indicatorType));
@@ -128,6 +149,9 @@ class PerformanceService
         return $rule;
     }
 
+    /**
+     * Handles configured indicator count processing for this API workflow.
+     */
     public static function configuredIndicatorCount(string $indicatorType, int $facilityTypeId = 0, int $departmentId = 0): int
     {
         $type = strtoupper(trim($indicatorType));
@@ -139,6 +163,9 @@ class PerformanceService
         return count(self::flattenIndicators($config, $type, $facilityTypeId, $departmentId));
     }
 
+    /**
+     * Handles effective performance type processing for this API workflow.
+     */
     public static function effectivePerformanceType(int $facilityTypeId): string
     {
         $rule = self::facilityTypeRule($facilityTypeId);
@@ -147,6 +174,9 @@ class PerformanceService
             : 'KPI';
     }
 
+    /**
+     * Handles facility meta processing for this API workflow.
+     */
     public static function facilityMeta(int $facId): array
     {
         $path = __DIR__ . '/../config/masters/facilities.json';
@@ -185,6 +215,9 @@ class PerformanceService
         return $empty;
     }
 
+    /**
+     * Handles department names processing for this API workflow.
+     */
     public static function departmentNames(): array
     {
         if (self::$departmentNameCache !== null) {
@@ -221,6 +254,9 @@ class PerformanceService
         return self::$departmentNameCache;
     }
 
+    /**
+     * Handles department name processing for this API workflow.
+     */
     public static function departmentName(int $departmentId, string $fallback = ''): string
     {
         $map = self::departmentNames();
@@ -232,6 +268,9 @@ class PerformanceService
         return $fallback !== '' ? $fallback : 'Department ' . $departmentId;
     }
 
+    /**
+     * Handles active assessment processing for this API workflow.
+     */
     public static function activeAssessment(mysqli $con, int $facilityId): ?array
     {
         if ($facilityId <= 0) {
@@ -321,6 +360,9 @@ class PerformanceService
         ] : null;
     }
 
+    /**
+     * Handles latest active assessment period id processing for this API workflow.
+     */
     public static function latestActiveAssessmentPeriodId(mysqli $con, int $facilityId): int
     {
         if ($facilityId <= 0) {
@@ -348,6 +390,9 @@ class PerformanceService
         return $row ? (int)$row['ass_period_id'] : 0;
     }
 
+    /**
+     * Handles active department ids processing for this API workflow.
+     */
     public static function activeDepartmentIds(mysqli $con, int $facilityId): array
     {
         $assessment = self::activeAssessment($con, $facilityId);
@@ -383,6 +428,9 @@ class PerformanceService
         return array_values(array_unique(array_filter($ids)));
     }
 
+    /**
+     * Handles filter by department ids processing for this API workflow.
+     */
     public static function filterByDepartmentIds(array $items, array $departmentIds): array
     {
         $allowed = array_flip(array_map('intval', $departmentIds));
@@ -393,6 +441,9 @@ class PerformanceService
         }));
     }
 
+    /**
+     * Handles flatten indicators processing for this API workflow.
+     */
     public static function flattenIndicators(array $config, string $type, int $facilityTypeId = 0, int $departmentId = 0): array
     {
         $rows = [];
@@ -442,6 +493,9 @@ class PerformanceService
         return $rows;
     }
 
+    /**
+     * Handles normalize indicator processing for this API workflow.
+     */
     public static function normalizeIndicator(
         array $indicator,
         string $type,
@@ -469,6 +523,9 @@ class PerformanceService
         ];
     }
 
+    /**
+     * Handles dashboard processing for this API workflow.
+     */
     public static function dashboard(mysqli $con, int $facId, array $filters = []): array
     {
         self::ensureTable($con);
@@ -497,6 +554,9 @@ class PerformanceService
         ];
     }
 
+    /**
+     * Handles summary processing for this API workflow.
+     */
     public static function summary(mysqli $con, int $facId): array
     {
         self::ensureTable($con);
@@ -533,6 +593,9 @@ class PerformanceService
         ];
     }
 
+    /**
+     * Handles monthly status processing for this API workflow.
+     */
     public static function monthlyStatus(mysqli $con, int $facId, array $filters = []): array
     {
         self::ensureTable($con);
@@ -583,6 +646,9 @@ class PerformanceService
         return $rows;
     }
 
+    /**
+     * Handles trend processing for this API workflow.
+     */
     public static function trend(mysqli $con, int $facId, array $filters = []): array
     {
         self::ensureTable($con);
@@ -632,6 +698,9 @@ class PerformanceService
         ];
     }
 
+    /**
+     * Handles indicator trends processing for this API workflow.
+     */
     public static function indicatorTrends(mysqli $con, int $facId, array $filters = []): array
     {
         self::ensureTable($con);

@@ -79,37 +79,10 @@
     }
 
     async function login(username, password, captcha = "") {
-        if (!username || !password) {
-            throw {
-                status: "error",
-                message: "Username and password are required"
-            };
-        }
-
-        await loadCsrf();
-
-        const response = await SQ.api.post(
-            "/auth/v1/login.php",
-            {
-                username: username,
-                password: password,
-                captcha: captcha
-            },
-            {
-                loaderText: "Signing in..."
-            }
-        );
-
-        const user =
-            response.data?.user ||
-            response.user ||
-            null;
-
-        if (user) {
-            saveUser(user);
-        }
-
-        return response;
+        throw {
+            status: "error",
+            message: "Raw password login is disabled. Use encrypted login."
+        };
     }
 
     async function loginEncrypted(username, passwordEnc, captcha = "") {
@@ -231,7 +204,10 @@
             const captcha = form.querySelector("[name='captcha']")?.value.trim() || "";
 
             try {
-                const response = await login(username, password, captcha);
+                throw {
+                    status: "error",
+                    message: "This login form must use encrypted password transport."
+                };
 
                 if (SQ.toast) {
                     SQ.toast(response.message || "Login successful", "success");

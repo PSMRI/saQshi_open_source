@@ -3,8 +3,14 @@
 require_once __DIR__ . '/CertificationValidator.php';
 require_once __DIR__ . '/CertificationExpiryService.php';
 
+/**
+ * Provides certification service behavior for SaQshi API workflows.
+ */
 class CertificationService
 {
+    /**
+     * Handles config processing for this API workflow.
+     */
     public static function config(): array
     {
         $path = __DIR__ . '/../config/certification/certification.json';
@@ -13,6 +19,9 @@ class CertificationService
         return is_array($data) ? $data : [];
     }
 
+    /**
+     * Handles ensure tables processing for this API workflow.
+     */
     public static function ensureTables(mysqli $con): void
     {
         $sql = "
@@ -78,12 +87,18 @@ class CertificationService
         }
     }
 
+    /**
+     * Handles current processing for this API workflow.
+     */
     public static function current(mysqli $con, array $filters): ?array
     {
         $rows = self::list($con, $filters + ['limit' => 1]);
         return $rows[0] ?? null;
     }
 
+    /**
+     * Handles list processing for this API workflow.
+     */
     public static function list(mysqli $con, array $filters = []): array
     {
         self::ensureTables($con);
@@ -142,6 +157,9 @@ class CertificationService
         return $rows;
     }
 
+    /**
+     * Handles save processing for this API workflow.
+     */
     public static function save(mysqli $con, array $payload): array
     {
         self::ensureTables($con);
@@ -236,6 +254,9 @@ class CertificationService
         return $row;
     }
 
+    /**
+     * Handles update processing for this API workflow.
+     */
     public static function update(mysqli $con, int $id, array $payload): array
     {
         self::ensureTables($con);
@@ -294,6 +315,9 @@ class CertificationService
         return $row;
     }
 
+    /**
+     * Handles dashboard processing for this API workflow.
+     */
     public static function dashboard(mysqli $con, array $filters): array
     {
         $rows = self::list($con, $filters);
@@ -322,11 +346,17 @@ class CertificationService
         ];
     }
 
+    /**
+     * Handles history processing for this API workflow.
+     */
     public static function history(mysqli $con, array $filters): array
     {
         return self::list($con, $filters);
     }
 
+    /**
+     * Handles find by id processing for this API workflow.
+     */
     public static function findById(mysqli $con, int $id): array
     {
         $row = self::rawById($con, $id);
@@ -337,6 +367,9 @@ class CertificationService
         return self::present($row);
     }
 
+    /**
+     * Handles raw by id processing for this API workflow.
+     */
     private static function rawById(mysqli $con, int $id): ?array
     {
         self::ensureTables($con);
@@ -348,6 +381,9 @@ class CertificationService
         return $row ?: null;
     }
 
+    /**
+     * Handles present processing for this API workflow.
+     */
     private static function present(array $row): array
     {
         $validTo = $row['validity'] ?? null;
@@ -384,6 +420,9 @@ class CertificationService
         ];
     }
 
+    /**
+     * Handles audit processing for this API workflow.
+     */
     private static function audit(mysqli $con, int $id, ?int $facId, ?int $facNin, ?array $old, array $new, string $action, int $userId): void
     {
         $stmt = $con->prepare("
@@ -402,11 +441,19 @@ class CertificationService
         $stmt->execute();
     }
 
+    /**
+     * Handles ensure column processing for this API workflow.
+     */
     private static function ensureColumn(mysqli $con, string $table, string $column, string $definition): void
     {
-        $tableEscaped = $con->real_escape_string($table);
-        $columnEscaped = $con->real_escape_string($column);
-        $result = $con->query("SHOW COLUMNS FROM {$tableEscaped} LIKE '{$columnEscaped}'");
+        if (!preg_match('/^[A-Za-z0-9_]+$/', $table) || !preg_match('/^[A-Za-z0-9_]+$/', $column)) {
+            throw new InvalidArgumentException('Invalid schema identifier');
+        }
+
+        $tableEscaped = '`' . str_replace('`', '``', $table) . '`';
+        $columnEscaped = '`' . str_replace('`', '``', $column) . '`';
+        $columnLike = $con->real_escape_string($column);
+        $result = $con->query("SHOW COLUMNS FROM {$tableEscaped} LIKE '{$columnLike}'");
 
         if ($result && $result->num_rows > 0) {
             return;
@@ -417,16 +464,25 @@ class CertificationService
         }
     }
 
+    /**
+     * Handles current user id processing for this API workflow.
+     */
     private static function currentUserId(): int
     {
         return (int)($_SESSION['u_id'] ?? $_SESSION['user_id'] ?? $_SESSION['id'] ?? $_SESSION['uid'] ?? 0);
     }
 
+    /**
+     * Handles session facility id processing for this API workflow.
+     */
     private static function sessionFacilityId(): int
     {
         return (int)($_SESSION['fac_id'] ?? 0);
     }
 
+    /**
+     * Handles with assigned facility processing for this API workflow.
+     */
     private static function withAssignedFacility(array $payload): array
     {
         $facId = (int)($payload['fac_id'] ?? 0);
@@ -466,6 +522,9 @@ class CertificationService
         return $payload;
     }
 
+    /**
+     * Handles facility from json processing for this API workflow.
+     */
     private static function facilityFromJson(int $facId): ?array
     {
         $path = __DIR__ . '/../config/masters/facilities.json';

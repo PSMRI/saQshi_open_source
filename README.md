@@ -158,6 +158,7 @@ SECURITY.md
 
 Important checks before release:
 
+- Run `php tools/release_readiness_check.php` from the repository root.
 - Run syntax checks for changed PHP/JS files.
 - Run available API smoke tests.
 - Run VAPT/security checks.
@@ -168,9 +169,13 @@ Important checks before release:
 
 Release and compliance documents:
 
+- `docs/compliance/open_source_dpg_release_status.md`
 - `docs/compliance/open_source_readiness_checklist.md`
 - `docs/compliance/license_consistency_before_after.md`
 - `docs/compliance/third_party_licenses.md`
+- `docs/compliance/legal_privacy_confirmation.md`
+- `docs/compliance/public_data_audit.md`
+- `docs/compliance/data_redistribution_approval.md`
 - `docs/compliance/release_checklist.md`
 - `NOTICE`
 - `CHANGELOG.md`
@@ -189,6 +194,7 @@ Please read:
 
 - [CONTRIBUTING.md](CONTRIBUTING.md)
 - [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
+- [MAINTAINERS.md](MAINTAINERS.md)
 - [SECURITY.md](SECURITY.md)
 
 ## License

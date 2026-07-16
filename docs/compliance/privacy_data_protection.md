@@ -50,3 +50,10 @@ The source code is open, but deployment data is not. Public repositories must no
 ## Local Policy
 
 Each deployment should align with local government, health department and institutional data protection rules. This document is a starting point, not a substitute for legal or policy review.
+
+Before public release or public-sector/health deployment, complete:
+
+```text
+docs/compliance/legal_privacy_confirmation.md
+docs/compliance/data_redistribution_approval.md
+```

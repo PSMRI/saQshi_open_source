@@ -5,6 +5,9 @@ require_once dirname(__DIR__, 2) . '/assets/conn/db.php';
 require_once dirname(__DIR__, 2) . '/service/CertificationService.php';
 
 if (!function_exists('respond')) {
+    /**
+     * Handles respond processing for this API workflow.
+     */
     function respond(array $data, int $status = 200): void
     {
         if (!headers_sent()) {
@@ -17,12 +20,18 @@ if (!function_exists('respond')) {
     }
 }
 
+/**
+ * Handles certification payload processing for this API workflow.
+ */
 function certificationPayload(): array
 {
     $input = json_decode(file_get_contents('php://input'), true);
     return is_array($input) ? $input : [];
 }
 
+/**
+ * Handles certification filters processing for this API workflow.
+ */
 function certificationFilters(): array
 {
     $filters = [
@@ -44,6 +53,9 @@ function certificationFilters(): array
     return $filters;
 }
 
+/**
+ * Handles certification handle processing for this API workflow.
+ */
 function certificationHandle(callable $fn): void
 {
     try {

@@ -2,10 +2,16 @@
 
 require_once __DIR__ . '/ConfigLoader.php';
 
+/**
+ * Provides framework engine behavior for SaQshi API workflows.
+ */
 class FrameworkEngine
 {
     private array $framework;
 
+    /**
+     * Handles construct processing for this API workflow.
+     */
     public function __construct(string|array $framework)
     {
         if (is_string($framework)) {
@@ -17,21 +23,33 @@ class FrameworkEngine
         $this->validateFramework();
     }
 
+    /**
+     * Handles load processing for this API workflow.
+     */
     public static function load(string $frameworkCode): self
     {
         return new self($frameworkCode);
     }
 
+    /**
+     * Handles to array processing for this API workflow.
+     */
     public function toArray(): array
     {
         return $this->framework;
     }
 
+    /**
+     * Handles get facility types processing for this API workflow.
+     */
     public function getFacilityTypes(): array
     {
         return $this->framework;
     }
 
+    /**
+     * Handles get facility type by id processing for this API workflow.
+     */
     public function getFacilityTypeById(int $facTypeId): ?array
     {
         foreach ($this->framework as $facilityType) {
@@ -43,6 +61,9 @@ class FrameworkEngine
         return null;
     }
 
+    /**
+     * Handles get departments processing for this API workflow.
+     */
     public function getDepartments(int $facTypeId): array
     {
         $facilityType = $this->getFacilityTypeById($facTypeId);
@@ -54,6 +75,9 @@ class FrameworkEngine
         return $facilityType['departments'] ?? [];
     }
 
+    /**
+     * Handles get department by id processing for this API workflow.
+     */
     public function getDepartmentById(int $facTypeId, int $deptId): ?array
     {
         foreach ($this->getDepartments($facTypeId) as $department) {
@@ -65,6 +89,9 @@ class FrameworkEngine
         return null;
     }
 
+    /**
+     * Handles get concerns processing for this API workflow.
+     */
     public function getConcerns(int $facTypeId, int $deptId): array
     {
         $department = $this->getDepartmentById($facTypeId, $deptId);
@@ -76,6 +103,9 @@ class FrameworkEngine
         return $department['concerns'] ?? [];
     }
 
+    /**
+     * Handles get concern by id processing for this API workflow.
+     */
     public function getConcernById(
         int $facTypeId,
         int $deptId,
@@ -90,6 +120,9 @@ class FrameworkEngine
         return null;
     }
 
+    /**
+     * Handles get subtypes processing for this API workflow.
+     */
     public function getSubtypes(
         int $facTypeId,
         int $deptId,
@@ -108,6 +141,9 @@ class FrameworkEngine
         return $concern['subtypes'] ?? [];
     }
 
+    /**
+     * Handles get subtype by id processing for this API workflow.
+     */
     public function getSubtypeById(
         int $facTypeId,
         int $deptId,
@@ -123,6 +159,9 @@ class FrameworkEngine
         return null;
     }
 
+    /**
+     * Handles get checkpoints processing for this API workflow.
+     */
     public function getCheckpoints(
         int $facTypeId,
         int $deptId,
@@ -159,6 +198,9 @@ class FrameworkEngine
         return $checkpoints;
     }
 
+    /**
+     * Handles get checkpoint by id processing for this API workflow.
+     */
     public function getCheckpointById(int|string $checkpointId): ?array
     {
         foreach ($this->framework as $facilityType) {
@@ -187,6 +229,9 @@ class FrameworkEngine
         return null;
     }
 
+    /**
+     * Handles calculate score processing for this API workflow.
+     */
     public function calculateScore(array $responses): array
     {
         $totalCheckpoints = 0;
@@ -231,6 +276,9 @@ class FrameworkEngine
         ];
     }
 
+    /**
+     * Handles calculate score for scope processing for this API workflow.
+     */
     public function calculateScoreForScope(
         int $facTypeId,
         int $deptId,
@@ -277,6 +325,9 @@ class FrameworkEngine
         ];
     }
 
+    /**
+     * Handles resolve option score processing for this API workflow.
+     */
     private function resolveOptionScore(array $checkpoint, mixed $value): float
     {
         $options = $checkpoint['response']['options'] ?? [];
@@ -290,6 +341,9 @@ class FrameworkEngine
         return is_numeric($value) ? (float)$value : 0;
     }
 
+    /**
+     * Handles get max score processing for this API workflow.
+     */
     private function getMaxScore(array $checkpoint): float
     {
         $options = $checkpoint['response']['options'] ?? [];
@@ -306,6 +360,9 @@ class FrameworkEngine
         return max($scores);
     }
 
+    /**
+     * Handles validate framework processing for this API workflow.
+     */
     private function validateFramework(): void
     {
         if (!is_array($this->framework)) {

@@ -77,6 +77,8 @@ api/sql/schema/001_base_schema.sql
 
 Do not commit production data dumps.
 
+The repository includes `api/sql/schema/README.md` to define the expected public schema location and sanitization rules. Until `001_base_schema.sql` is added and verified, a fresh installation may still require private schema preparation outside the public repository.
+
 ## Applying Migrations
 
 1. Back up the database.

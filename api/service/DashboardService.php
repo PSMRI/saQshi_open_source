@@ -18,13 +18,22 @@
 
 require_once __DIR__ . '/PerformanceService.php';
 
+/**
+ * Provides dashboard service behavior for SaQshi API workflows.
+ */
 class DashboardService
 {
+    /**
+     * Handles dashboard processing for this API workflow.
+     */
     public static function dashboard(mysqli $con, int $facilityId, array $filters = []): array
     {
         return PerformanceService::dashboard($con, $facilityId, $filters);
     }
 
+    /**
+     * Handles summary processing for this API workflow.
+     */
     public static function summary(mysqli $con, int $facilityId): array
     {
         return PerformanceService::summary($con, $facilityId);

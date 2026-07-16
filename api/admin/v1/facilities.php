@@ -13,6 +13,9 @@
 require_once __DIR__ . '/../../auth_api.php';
 require_once __DIR__ . '/../../assets/conn/db.php';
 
+/**
+ * Handles admin facility request processing for this API workflow.
+ */
 function adminFacilityRequest(): array
 {
     $raw = file_get_contents('php://input');
@@ -20,6 +23,9 @@ function adminFacilityRequest(): array
     return is_array($data) ? $data : [];
 }
 
+/**
+ * Handles admin facility columns processing for this API workflow.
+ */
 function adminFacilityColumns(mysqli $con): array
 {
     $result = $con->query("SHOW COLUMNS FROM facilities");
@@ -37,6 +43,9 @@ function adminFacilityColumns(mysqli $con): array
     return $columns;
 }
 
+/**
+ * Handles admin facility column processing for this API workflow.
+ */
 function adminFacilityColumn(array $columns, array $candidates): ?string
 {
     foreach ($candidates as $candidate) {
@@ -48,6 +57,9 @@ function adminFacilityColumn(array $columns, array $candidates): ?string
     return null;
 }
 
+/**
+ * Handles admin facility json master processing for this API workflow.
+ */
 function adminFacilityJsonMaster(int $facId): ?array
 {
     $path = __DIR__ . '/../../config/masters/facilities.json';
@@ -105,6 +117,9 @@ function adminFacilityJsonMaster(int $facId): ?array
     return null;
 }
 
+/**
+ * Handles admin facility type name processing for this API workflow.
+ */
 function adminFacilityTypeName(int $typeId): string
 {
     $path = __DIR__ . '/../../config/masters/facility_types.json';
@@ -128,6 +143,9 @@ function adminFacilityTypeName(int $typeId): string
     return '';
 }
 
+/**
+ * Handles admin facility find processing for this API workflow.
+ */
 function adminFacilityFind(mysqli $con, int $facId): ?array
 {
     $base = adminFacilityJsonMaster($facId);
@@ -169,6 +187,9 @@ function adminFacilityFind(mysqli $con, int $facId): ?array
     return array_merge($base, $row);
 }
 
+/**
+ * Handles admin facility db exists processing for this API workflow.
+ */
 function adminFacilityDbExists(mysqli $con, int $facId): bool
 {
     $stmt = $con->prepare("SELECT fac_id FROM facilities WHERE fac_id = ? LIMIT 1");
@@ -184,6 +205,9 @@ function adminFacilityDbExists(mysqli $con, int $facId): bool
     return $stmt->num_rows > 0;
 }
 
+/**
+ * Handles admin facility nin exists for other facility processing for this API workflow.
+ */
 function adminFacilityNinExistsForOtherFacility(mysqli $con, string $ninNo, int $facId, array $columns): bool
 {
     $ninColumn = adminFacilityColumn($columns, ['NIN_no', 'nin_no']);
@@ -211,6 +235,9 @@ function adminFacilityNinExistsForOtherFacility(mysqli $con, string $ninNo, int 
     return $stmt->num_rows > 0;
 }
 
+/**
+ * Handles admin facility validate coordinate processing for this API workflow.
+ */
 function adminFacilityValidateCoordinate(mixed $value, float $min, float $max): bool
 {
     if ($value === null || $value === '') {

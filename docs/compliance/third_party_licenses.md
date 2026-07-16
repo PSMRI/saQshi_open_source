@@ -1,82 +1,105 @@
 # Third-Party License and Attribution Inventory
 
-Version: 1.0  
-Updated: 2026-07-13  
+Version: 1.1  
+Updated: 2026-07-16  
 Project license: GPL-3.0
 
 ## Purpose
 
-This document records third-party libraries, UI files and public services known to be used by SaQshi. It is a release-readiness document and should be reviewed before every public release.
+This document records third-party libraries, browser CDN references, public map services and release attribution checks known in the current `open_source` package. It is a release-readiness document and should be reviewed before every public release.
 
-This inventory is not a legal opinion. Project maintainers should verify exact versions and license files before publishing a release package.
+This inventory is not a legal opinion. Project maintainers should still complete final owner/legal verification before publishing a public release package.
 
-## Summary
+## Current Source Scan
 
-| Component / Service | Usage | License / Attribution | Status |
+Scan scope:
+
+```text
+open_source/ui/
+open_source/api/
+open_source/docs/
+open_source/gitbook.html
+open_source/developer.php
+```
+
+Scan date: 2026-07-16
+
+No `package.json`, `composer.json`, `node_modules/` or Composer `vendor/` dependency manifest was found in the current public source package. The PHP API currently uses project PHP code and PHP runtime extensions directly rather than Composer-managed libraries.
+
+## Detected Runtime / Documentation Dependencies
+
+| Component / Service | Version / Source | Where Used | License / Attribution | Release Status |
+|---|---|---|---|---|
+| Bootstrap Icons | `bootstrap-icons@1.11.3` from `cdn.jsdelivr.net` | `ui/login.html`, `ui/dashboard.html` | MIT | Detected and version-pinned. Keep attribution/license note if vendored locally. |
+| Mermaid | `mermaid@10` from `cdn.jsdelivr.net` | `gitbook.html` for Mermaid diagram rendering | MIT | Detected and major-version pinned. Consider pinning an exact patch version before public release if strict reproducibility is required. |
+| Swagger UI | `swagger-ui-dist@5` from `unpkg.com` | `docs/api/swagger-ui.html` | Apache-2.0 | Detected and major-version pinned. Consider pinning an exact patch version or vendoring with license before public release. |
+| js-yaml | `js-yaml@4` from `cdn.jsdelivr.net` | `docs/api/swagger-ui.html` for loading OpenAPI YAML | MIT | Detected and major-version pinned. Consider pinning an exact patch version before public release. |
+| OpenStreetMap tiles/data | Configured tile URL in `api/config/masters/map_config.json` | State certification map | OSM attribution required | Detected. UI must keep visible `OpenStreetMap contributors` attribution wherever OSM tiles are shown. |
+| Postman Collection schema | `https://schema.getpostman.com/json/collection/v2.1.0/collection.json` | API testing collections | Postman schema reference | Documentation/test artifact reference only. |
+
+## Referenced But Missing From Public Source Package
+
+| Component | Reference Found | Issue | Required Action |
 |---|---|---|---|
-| Bootstrap | UI JavaScript/styles and responsive components. | MIT. | Review supported UI copies under `ui/` before release. |
-| Bootstrap Icons | UI icons. | MIT. | Review supported UI copies under `ui/` before release. |
-| Font Awesome Free | Icons/fonts where used by the UI. | Icons: CC BY 4.0; Fonts: SIL OFL 1.1; Code: MIT. | Review supported UI copies under `ui/` before release. |
-| Leaflet | State certification map. | BSD-2-Clause. | Review supported UI map files/manifests under `ui/` before release. |
-| OpenStreetMap | Map tile/data attribution. | OSM contributors; attribution required. | Used by state map. |
-| jQuery | UI and DataTables dependency where used. | MIT. | Review supported UI copies under `ui/` before release. |
-| jQuery UI | UI support where used. | MIT. | Review supported UI copies under `ui/` before release. |
-| DataTables | Tabular UI/export support where used. | MIT. | Review supported UI copies under `ui/` before release. |
-| JSZip | Spreadsheet/export support. | MIT or dual-licensed depending version; verify exact bundled version. | Review supported UI/report copies under `ui/` or `api/` before release. |
-| jsPDF | PDF/export support. | MIT. | Review supported UI/report copies under `ui/` or `api/` before release. |
-| pdfmake | PDF/export support. | MIT. | Review supported UI/report copies under `ui/` or `api/` before release. |
-| html2canvas | Image/PDF export support. | MIT; verify exact bundled version. | Review supported UI/report copies under `ui/` or `api/` before release. |
-| ApexCharts | Dashboard/chart pages where used. | MIT for included open-source build; verify exact version. | Review supported UI copies under `ui/` before release. |
-| Chart.js | Legacy report charts via CDN. | MIT. | Used in legacy report renderers. |
-| SheetJS / xlsx | Excel export in legacy report renderers via CDN. | Apache-2.0 for some community versions; verify exact CDN version/license before release. | Used by legacy report renderers. |
-| xlsx-populate | Excel workbook generation in legacy report renderers via CDN. | MIT. | Used by legacy report renderers. |
-| Swagger UI | Local OpenAPI viewer via CDN. | Apache-2.0. | Referenced by `docs/api/swagger-ui.html`. |
-| PhpXlsxGenerator | PHP XLSX generation utility. | Verify bundled source/license before public release. | Present as `PhpXlsxGenerator.php`. |
+| Leaflet | `ui/pages/state/map.json` references `/assets/datatables/leaflet.css` and `/assets/datatables/leaflet.js`; `ui/pages/state/map.js` calls `L.map`, `L.tileLayer` and `L.geoJSON`. | The referenced Leaflet files were not found under `open_source/ui/assets/` during the current scan. | Add the exact Leaflet files with BSD-2-Clause license/notice, or change the page to load a documented CDN version, or remove the map dependency before release. |
+
+## Not Detected In Current Public Source Scan
+
+The following libraries appeared in older notes or common UI assumptions, but no current bundled file or active CDN reference was detected under the scan scope above:
+
+| Component | Current Status |
+|---|---|
+| Bootstrap CSS/JS | Not detected. Bootstrap Icons only is detected. |
+| jQuery | Not detected. |
+| jQuery UI | Not detected. |
+| DataTables | Not detected as bundled JavaScript/CSS in `open_source/ui/assets/`. |
+| Font Awesome Free | Not detected. |
+| ApexCharts | Not detected. |
+| Chart.js | Not detected. |
+| SheetJS / `xlsx` | Not detected. |
+| `xlsx-populate` | Not detected. |
+| JSZip | Not detected. |
+| jsPDF | Not detected. |
+| pdfmake | Not detected. |
+| html2canvas | Not detected. |
+| PhpXlsxGenerator | Not detected in current `open_source/api/` scan. |
+
+If any of these are reintroduced later, add the exact version, source path, license and attribution requirement in this document before release.
 
 ## Public Data and Map Attribution
 
-State map pages use OpenStreetMap/Leaflet. Any UI displaying OSM map tiles must keep visible attribution such as:
+The state map uses OpenStreetMap tiles through configurable map settings. Any UI displaying OSM map tiles must keep visible attribution such as:
 
 ```text
 © OpenStreetMap contributors
 ```
 
-If custom state boundary files are used, document the source and license of each boundary file, for example:
+If custom state boundary files are used, document the source and redistribution permission for each boundary/config file, for example:
 
 ```text
-bihar.geojson
-api/config/masters/map.json
+api/config/masters/map_config.json
+api/config/masters/biharmap.json
+api/config/masters/upmap.json
 ```
 
-## Bundled UI Files To Review Before Release
-
-Only `ui/` and `api/` paths should be used as release references. Review supported third-party copies under:
+Facility master data, framework/checklist data and state boundary data are treated as data/configuration ownership items, not only software dependencies. Their redistribution approval is tracked separately in:
 
 ```text
-ui/assets/
-ui/components/
-ui/pages/
-api/
+docs/compliance/data_redistribution_approval.md
+docs/compliance/public_data_audit.md
 ```
 
-## CDN References To Review
+## CDN Release Rule
 
-Several legacy report renderers reference CDN libraries. Before an offline or public release, either:
+Current CDN dependencies are acceptable for development documentation, but before a formal public release maintainers should choose one release approach:
 
-- document each CDN dependency and version, or
-- vendor the exact dependency with its license file under `ui/` or `api/`, or
-- replace CDN usage with project-managed UI/API files.
+1. Keep CDN usage and pin exact patch versions.
+2. Vendor the exact dependency files under `ui/` or `docs/` with their license files.
+3. Replace the dependency with project-owned code.
 
-Examples found in legacy report renderers:
+For production/offline deployments, vendoring exact local copies is recommended so the application and documentation do not depend on public CDN availability.
 
-```text
-cdn.jsdelivr.net/npm/chart.js
-cdn.jsdelivr.net/npm/xlsx
-cdnjs.cloudflare.com/ajax/libs/jspdf
-unpkg.com/xlsx-populate
-```
-
-## Release Rule
+## Release Checklist
 
 Before publishing SaQshi:
 
@@ -85,3 +108,5 @@ Before publishing SaQshi:
 3. Do not rewrite third-party license headers.
 4. Update this document when adding/removing dependencies.
 5. Keep map/data attribution visible in the UI.
+6. Resolve the missing Leaflet reference or document the exact external source.
+7. Re-run dependency and secret scans before tagging a release.

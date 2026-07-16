@@ -20,6 +20,16 @@ page and `SUMMARY.md` as the left navigation.
 | `docs/testing/` | Test plan, VAPT, load testing and WCAG documents. |
 | `docs/compliance/` | Open-source, licensing, DPG and release readiness documents. |
 
+## Current Release-Readiness Pages
+
+The GitBook includes a consolidated reviewer page:
+
+```text
+docs/compliance/open_source_dpg_release_status.md
+```
+
+Use this page as the first stop for open-source and DPG readiness review. It links to the detailed readiness checklist, DPG assessment, release checklist, security scan, public data audit, legal/privacy confirmation and data redistribution approval records.
+
 ## Recommended GitBook Structure
 
 ```text
@@ -45,6 +55,8 @@ docs/
 
 Whenever a new public document is added under `docs/`, update `SUMMARY.md` so
 the page appears in GitBook navigation.
+
+If the document should appear in the standalone HTML reader, also update the document list in `gitbook.html`.
 
 Do not add `.env`, logs, uploads, keys, database dumps or real user/facility data
 to the GitBook repository.

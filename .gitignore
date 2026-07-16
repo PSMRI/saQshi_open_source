@@ -10,6 +10,14 @@ uploads/
 *.rar
 *.zip
 *.7z
+*.docx
+*.xlsx
+*.xls
+*.csv
+*.bak
+*.backup
+*.dump
+*.sql.gz
 
 .codex_tmp/
 node_modules/

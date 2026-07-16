@@ -1,7 +1,13 @@
 <?php
 
+/**
+ * Provides auth middleware behavior for SaQshi API workflows.
+ */
 class AuthMiddleware {
 
+    /**
+     * Handles check processing for this API workflow.
+     */
     public static function check() {
         session_start();
 
@@ -16,6 +22,9 @@ class AuthMiddleware {
         return $_SESSION['user'];
     }
 
+    /**
+     * Handles role processing for this API workflow.
+     */
     public static function role($allowed_roles = []) {
         $user = self::check();
 

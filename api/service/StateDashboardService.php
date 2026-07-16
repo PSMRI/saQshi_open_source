@@ -14,8 +14,14 @@ require_once __DIR__ . '/CertificationExpiryService.php';
 require_once __DIR__ . '/PerformanceService.php';
 require_once __DIR__ . '/../core/FrameworkEngine.php';
 
+/**
+ * Provides state dashboard service behavior for SaQshi API workflows.
+ */
 class StateDashboardService
 {
+    /**
+     * Handles require state role processing for this API workflow.
+     */
     public static function requireStateRole(): void
     {
         if (!in_array((int)SessionManager::roleId(), [4, 5, 8, 9], true)) {
@@ -23,6 +29,9 @@ class StateDashboardService
         }
     }
 
+    /**
+     * Handles apply monitoring scope processing for this API workflow.
+     */
     public static function applyMonitoringScope(array $filters): array
     {
         $roleId = (int)SessionManager::roleId();
@@ -51,6 +60,9 @@ class StateDashboardService
         return $filters;
     }
 
+    /**
+     * Handles monitoring scope for user processing for this API workflow.
+     */
     private static function monitoringScopeForUser(array $user): array
     {
         $roleId = (int)($user['role_id'] ?? 0);
@@ -100,6 +112,9 @@ class StateDashboardService
         return ['level' => 'UNKNOWN', 'label' => 'Restricted'];
     }
 
+    /**
+     * Handles dashboard processing for this API workflow.
+     */
     public static function dashboard(mysqli $con, array $filters = []): array
     {
         return [
@@ -114,6 +129,9 @@ class StateDashboardService
         ];
     }
 
+    /**
+     * Handles safe section processing for this API workflow.
+     */
     private static function safeSection(string $section, callable $callback, array $fallback): array
     {
         try {
@@ -130,6 +148,9 @@ class StateDashboardService
         }
     }
 
+    /**
+     * Handles facility category processing for this API workflow.
+     */
     public static function facilityCategory(mysqli $con, array $filters = []): array
     {
         $facilities = self::filteredFacilities($filters);
@@ -215,6 +236,9 @@ class StateDashboardService
         ];
     }
 
+    /**
+     * Handles facility type label processing for this API workflow.
+     */
     private static function facilityTypeLabel(array $facility): string
     {
         $direct = trim((string)(
@@ -238,6 +262,9 @@ class StateDashboardService
         return $direct !== '' ? $direct : 'Unknown';
     }
 
+    /**
+     * Handles facility type map processing for this API workflow.
+     */
     private static function facilityTypeMap(): array
     {
         static $map = null;
@@ -273,6 +300,9 @@ class StateDashboardService
         return $map;
     }
 
+    /**
+     * Handles certification summary processing for this API workflow.
+     */
     public static function certificationSummary(mysqli $con, array $filters = []): array
     {
         $facilities = self::filteredFacilities($filters);
@@ -419,6 +449,9 @@ class StateDashboardService
         return $response;
     }
 
+    /**
+     * Handles certification row matches processing for this API workflow.
+     */
     private static function certificationRowMatches(array $row, string $search, string $statusFilter): bool
     {
         if ($statusFilter !== '' && strtoupper((string)($row['status'] ?? '')) !== $statusFilter) {
@@ -443,6 +476,9 @@ class StateDashboardService
         return str_contains($haystack, $search);
     }
 
+    /**
+     * Handles certification map processing for this API workflow.
+     */
     public static function certificationMap(mysqli $con, array $filters = []): array
     {
         $filters['_all_facilities'] = true;
@@ -516,6 +552,9 @@ class StateDashboardService
         ];
     }
 
+    /**
+     * Handles update certification status processing for this API workflow.
+     */
     public static function updateCertificationStatus(mysqli $con, array $payload): array
     {
         $facId = (int)($payload['fac_id'] ?? 0);
@@ -656,6 +695,9 @@ class StateDashboardService
         ];
     }
 
+    /**
+     * Handles assessment progress processing for this API workflow.
+     */
     public static function assessmentProgress(mysqli $con, array $filters = [], bool $summaryOnly = false): array
     {
         if (!self::tableExists($con, 'assessment_master')) {
@@ -800,6 +842,9 @@ class StateDashboardService
         ];
     }
 
+    /**
+     * Handles assessment department progress processing for this API workflow.
+     */
     private static function assessmentDepartmentProgress(mysqli $con, array $assessmentIds): array
     {
         if (!$assessmentIds) {
@@ -857,6 +902,9 @@ class StateDashboardService
         return $map;
     }
 
+    /**
+     * Handles assessment response progress processing for this API workflow.
+     */
     private static function assessmentResponseProgress(mysqli $con, array $assessmentIds): array
     {
         if (!$assessmentIds) {
@@ -919,6 +967,9 @@ class StateDashboardService
         return $map;
     }
 
+    /**
+     * Handles assessment action plan progress processing for this API workflow.
+     */
     private static function assessmentActionPlanProgress(mysqli $con, array $assessmentIds): array
     {
         if (!$assessmentIds || !self::tableExists($con, 'assessment_action_plan')) {
@@ -948,6 +999,9 @@ class StateDashboardService
         return $map;
     }
 
+    /**
+     * Handles assessment score base processing for this API workflow.
+     */
     private static function assessmentScoreBase(string $frameworkCode, int $facTypeId, array $deptIds, array &$engineCache): array
     {
         if ($facTypeId <= 0 || !$deptIds) {
@@ -994,6 +1048,9 @@ class StateDashboardService
         }
     }
 
+    /**
+     * Handles checkpoint max score processing for this API workflow.
+     */
     private static function checkpointMaxScore(array $checkpoint): float
     {
         $options = $checkpoint['response']['options'] ?? [];
@@ -1007,6 +1064,9 @@ class StateDashboardService
         return $max > 0 ? $max : 2.0;
     }
 
+    /**
+     * Handles cqi summary processing for this API workflow.
+     */
     public static function cqiSummary(mysqli $con, array $filters = []): array
     {
         if (!self::tableExists($con, 'assessment_action_plan')) {
@@ -1094,6 +1154,9 @@ class StateDashboardService
         ];
     }
 
+    /**
+     * Handles performance summary processing for this API workflow.
+     */
     public static function performanceSummary(mysqli $con, array $filters = []): array
     {
         if (!self::tableExists($con, 'performance_entries')) {
@@ -1213,6 +1276,9 @@ class StateDashboardService
         ];
     }
 
+    /**
+     * Handles performance details for facilities processing for this API workflow.
+     */
     private static function performanceDetailsForFacilities(mysqli $con, array $facilityIds, array $filters): array
     {
         if (!$facilityIds) {
@@ -1270,6 +1336,9 @@ class StateDashboardService
         return $map;
     }
 
+    /**
+     * Handles performance latest submitted count processing for this API workflow.
+     */
     private static function performanceLatestSubmittedCount(mysqli $con, int $facilityId, string $indicatorType, string $period): int
     {
         if ($facilityId <= 0 || $period === '') {
@@ -1294,6 +1363,9 @@ class StateDashboardService
         ", 'isii', [$facilityId, strtoupper($indicatorType), $year, $month]);
     }
 
+    /**
+     * Handles facility detail processing for this API workflow.
+     */
     public static function facilityDetail(mysqli $con, int $facilityId): array
     {
         if ($facilityId <= 0) {
@@ -1323,6 +1395,9 @@ class StateDashboardService
         ];
     }
 
+    /**
+     * Handles facility hierarchy processing for this API workflow.
+     */
     public static function facilityHierarchy(array $filters = []): array
     {
         $states = [];
@@ -1426,6 +1501,9 @@ class StateDashboardService
         ];
     }
 
+    /**
+     * Handles facility assessment summary processing for this API workflow.
+     */
     private static function facilityAssessmentSummary(mysqli $con, int $facilityId): array
     {
         $empty = ['total' => 0, 'active' => 0, 'completed' => 0, 'cancelled' => 0, 'in_progress' => 0, 'other' => 0];
@@ -1454,6 +1532,9 @@ class StateDashboardService
         return $empty;
     }
 
+    /**
+     * Handles facility performance summary processing for this API workflow.
+     */
     private static function facilityPerformanceSummary(mysqli $con, int $facilityId): array
     {
         $empty = ['kpi_entries' => 0, 'outcome_entries' => 0, 'months' => 0, 'latest_period' => null];
@@ -1479,6 +1560,9 @@ class StateDashboardService
         ];
     }
 
+    /**
+     * Handles facility cqi summary processing for this API workflow.
+     */
     private static function facilityCqiSummary(mysqli $con, int $facilityId): array
     {
         $empty = ['total_action_plans' => 0, 'completed' => 0, 'pending' => 0, 'overdue' => 0, 'open_gaps' => 0];
@@ -1506,6 +1590,9 @@ class StateDashboardService
         ];
     }
 
+    /**
+     * Handles resolve facility id processing for this API workflow.
+     */
     public static function resolveFacilityId(mysqli $con, string $search): int
     {
         $search = trim($search);
@@ -1541,6 +1628,9 @@ class StateDashboardService
         ", 'sss', [$like, $like, $like]);
     }
 
+    /**
+     * Handles users processing for this API workflow.
+     */
     public static function users(mysqli $con, array $filters = []): array
     {
         if (!self::tableExists($con, 's_user')) {
@@ -1603,6 +1693,9 @@ class StateDashboardService
         ];
     }
 
+    /**
+     * Handles update user status processing for this API workflow.
+     */
     public static function updateUserStatus(mysqli $con, int $userId, int $isActive): array
     {
         if ($userId <= 0) {
@@ -1640,6 +1733,9 @@ class StateDashboardService
         ];
     }
 
+    /**
+     * Handles attention processing for this API workflow.
+     */
     public static function attention(mysqli $con, array $filters = []): array
     {
         $items = [];
@@ -1654,6 +1750,9 @@ class StateDashboardService
         return $items;
     }
 
+    /**
+     * Handles current month status processing for this API workflow.
+     */
     public static function currentMonthStatus(mysqli $con, array $filters = []): array
     {
         $month = (int)($filters['month'] ?? date('n'));
@@ -1755,6 +1854,9 @@ class StateDashboardService
         ];
     }
 
+    /**
+     * Handles latest assessment attention processing for this API workflow.
+     */
     public static function latestAssessmentAttention(mysqli $con, array $filters = []): array
     {
         $empty = [
@@ -1869,6 +1971,9 @@ class StateDashboardService
         ];
     }
 
+    /**
+     * Handles normalize filters processing for this API workflow.
+     */
     private static function normalizeFilters(array $filters): array
     {
         return [
@@ -1883,6 +1988,9 @@ class StateDashboardService
         ];
     }
 
+    /**
+     * Handles pagination processing for this API workflow.
+     */
     private static function pagination(array $filters, int $defaultPerPage = 50, int $maxPerPage = 100): array
     {
         $page = max(1, (int)($filters['page'] ?? 1));
@@ -1895,6 +2003,9 @@ class StateDashboardService
         ];
     }
 
+    /**
+     * Handles pagination meta processing for this API workflow.
+     */
     private static function paginationMeta(array $pagination, int $totalRows): array
     {
         return [
@@ -1905,6 +2016,9 @@ class StateDashboardService
         ];
     }
 
+    /**
+     * Handles facilities from json processing for this API workflow.
+     */
     private static function facilitiesFromJson(): array
     {
         static $facilities = null;
@@ -1961,6 +2075,9 @@ class StateDashboardService
         return $facilities;
     }
 
+    /**
+     * Handles filtered facilities processing for this API workflow.
+     */
     private static function filteredFacilities(array $filters): array
     {
         $facilities = self::facilitiesFromJson();
@@ -2018,6 +2135,9 @@ class StateDashboardService
         }));
     }
 
+    /**
+     * Handles facilities by id processing for this API workflow.
+     */
     private static function facilitiesById(): array
     {
         $indexed = [];
@@ -2033,6 +2153,9 @@ class StateDashboardService
         return $indexed;
     }
 
+    /**
+     * Handles facility coordinates from db processing for this API workflow.
+     */
     private static function facilityCoordinatesFromDb(mysqli $con, array $filters = []): array
     {
         $indexed = ['id' => [], 'nin' => []];
@@ -2073,6 +2196,9 @@ class StateDashboardService
         return $indexed;
     }
 
+    /**
+     * Handles map boundary processing for this API workflow.
+     */
     public static function mapBoundary(mixed $state): array
     {
         $config = self::mapMasterConfig();
@@ -2104,6 +2230,9 @@ class StateDashboardService
         throw new InvalidArgumentException('Map boundary JSON must be GeoJSON FeatureCollection or Topology.');
     }
 
+    /**
+     * Handles map config processing for this API workflow.
+     */
     private static function mapConfig(array $filters = []): array
     {
         $config = self::mapMasterConfig();
@@ -2126,6 +2255,9 @@ class StateDashboardService
         ];
     }
 
+    /**
+     * Handles map master config processing for this API workflow.
+     */
     private static function mapMasterConfig(): array
     {
         $path = __DIR__ . '/../config/masters/map_config.json';
@@ -2133,6 +2265,9 @@ class StateDashboardService
         return is_array($data) ? $data : [];
     }
 
+    /**
+     * Handles selected map state processing for this API workflow.
+     */
     private static function selectedMapState(array $filters, array $config): array
     {
         $states = is_array($config['states'] ?? null) ? $config['states'] : [];
@@ -2164,11 +2299,17 @@ class StateDashboardService
         return $state;
     }
 
+    /**
+     * Handles map key processing for this API workflow.
+     */
     private static function mapKey(string $value): string
     {
         return preg_replace('/[^A-Z0-9]+/', '_', strtoupper(trim($value))) ?? '';
     }
 
+    /**
+     * Handles map source path processing for this API workflow.
+     */
     private static function mapSourcePath(string $source): ?string
     {
         $root = dirname(__DIR__, 2);
@@ -2189,6 +2330,9 @@ class StateDashboardService
         return null;
     }
 
+    /**
+     * Handles topology to feature collection processing for this API workflow.
+     */
     private static function topologyToFeatureCollection(array $topology): array
     {
         $features = [];
@@ -2213,6 +2357,9 @@ class StateDashboardService
         ];
     }
 
+    /**
+     * Handles topology geometries processing for this API workflow.
+     */
     private static function topologyGeometries(array $object): array
     {
         if (($object['type'] ?? '') === 'GeometryCollection') {
@@ -2222,6 +2369,9 @@ class StateDashboardService
         return [$object];
     }
 
+    /**
+     * Handles topology geometry processing for this API workflow.
+     */
     private static function topologyGeometry(array $geometry, array $topology): ?array
     {
         $type = $geometry['type'] ?? '';
@@ -2247,6 +2397,9 @@ class StateDashboardService
         return null;
     }
 
+    /**
+     * Handles topology line processing for this API workflow.
+     */
     private static function topologyLine(array $arcRefs, array $topology): array
     {
         $line = [];
@@ -2262,6 +2415,9 @@ class StateDashboardService
         return $line;
     }
 
+    /**
+     * Handles topology arc processing for this API workflow.
+     */
     private static function topologyArc(int $arcRef, array $topology): array
     {
         $index = $arcRef < 0 ? ~$arcRef : $arcRef;
@@ -2284,11 +2440,17 @@ class StateDashboardService
         return $arcRef < 0 ? array_reverse($points) : $points;
     }
 
+    /**
+     * Handles normalize nin processing for this API workflow.
+     */
     private static function normalizeNin(mixed $value): string
     {
         return preg_replace('/\D+/', '', (string)$value) ?? '';
     }
 
+    /**
+     * Handles date or empty processing for this API workflow.
+     */
     private static function dateOrEmpty(mixed $value): string
     {
         $date = trim((string)$value);
@@ -2300,12 +2462,18 @@ class StateDashboardService
         return $time ? date('Y-m-d', $time) : '';
     }
 
+    /**
+     * Handles decode json object processing for this API workflow.
+     */
     private static function decodeJsonObject(mixed $value): array
     {
         $decoded = json_decode((string)$value, true);
         return is_array($decoded) ? $decoded : [];
     }
 
+    /**
+     * Handles cert status from payload processing for this API workflow.
+     */
     private static function certStatusFromPayload(array $payload): string
     {
         return self::normalizeCertStatus(
@@ -2317,6 +2485,9 @@ class StateDashboardService
         ) ?: 'NOT CERTIFIED';
     }
 
+    /**
+     * Handles normalize cert status processing for this API workflow.
+     */
     private static function normalizeCertStatus(mixed $value): string
     {
         $status = strtoupper(trim((string)$value));
@@ -2340,6 +2511,9 @@ class StateDashboardService
         return $map[$status] ?? $status;
     }
 
+    /**
+     * Handles latest certification history processing for this API workflow.
+     */
     private static function latestCertificationHistory(mysqli $con, int $facId, string $nin): ?array
     {
         if (!self::tableExists($con, 'certification_history')) {
@@ -2387,6 +2561,9 @@ class StateDashboardService
         return null;
     }
 
+    /**
+     * Handles facility where processing for this API workflow.
+     */
     private static function facilityWhere(mysqli $con, array $filters): array
     {
         $where = ['1=1'];
@@ -2418,11 +2595,17 @@ class StateDashboardService
         return ['sql' => 'WHERE ' . implode(' AND ', $where), 'types' => $types, 'params' => $params];
     }
 
+    /**
+     * Handles cert where processing for this API workflow.
+     */
     private static function certWhere(mysqli $con, array $filters): array
     {
         return self::facilityWhere($con, $filters);
     }
 
+    /**
+     * Handles assessment where processing for this API workflow.
+     */
     private static function assessmentWhere(mysqli $con, array $filters): array
     {
         $ids = array_map(
@@ -2444,11 +2627,17 @@ class StateDashboardService
         ];
     }
 
+    /**
+     * Handles action plan where processing for this API workflow.
+     */
     private static function actionPlanWhere(mysqli $con, array $filters): array
     {
         return self::facilityWhere($con, $filters);
     }
 
+    /**
+     * Handles performance where processing for this API workflow.
+     */
     private static function performanceWhere(mysqli $con, array $filters): array
     {
         $where = self::facilityWhere($con, $filters);
@@ -2465,6 +2654,9 @@ class StateDashboardService
         return $where;
     }
 
+    /**
+     * Handles table exists processing for this API workflow.
+     */
     private static function tableExists(mysqli $con, string $table): bool
     {
         $stmt = $con->prepare("
@@ -2483,6 +2675,9 @@ class StateDashboardService
         return (int)($row['table_count'] ?? 0) > 0;
     }
 
+    /**
+     * Handles column exists processing for this API workflow.
+     */
     private static function columnExists(mysqli $con, string $table, string $column): bool
     {
         $stmt = $con->prepare("
@@ -2502,6 +2697,9 @@ class StateDashboardService
         return (int)($row['column_count'] ?? 0) > 0;
     }
 
+    /**
+     * Handles facility type id column processing for this API workflow.
+     */
     private static function facilityTypeIdColumn(mysqli $con): ?string
     {
         if (!self::tableExists($con, 'facilities_type')) {
@@ -2517,6 +2715,9 @@ class StateDashboardService
         return null;
     }
 
+    /**
+     * Handles cert facility column processing for this API workflow.
+     */
     private static function certFacilityColumn(mysqli $con): string
     {
         foreach (['fac_id_fk', 'fac_id'] as $column) {
@@ -2528,18 +2729,27 @@ class StateDashboardService
         return 'fac_id';
     }
 
+    /**
+     * Handles scalar processing for this API workflow.
+     */
     private static function scalar(mysqli $con, string $sql, string $types = '', array $params = []): mixed
     {
         $row = self::one($con, $sql, $types, $params);
         return $row ? reset($row) : 0;
     }
 
+    /**
+     * Handles one processing for this API workflow.
+     */
     private static function one(mysqli $con, string $sql, string $types = '', array $params = []): array
     {
         $rows = self::rows($con, $sql, $types, $params);
         return $rows[0] ?? [];
     }
 
+    /**
+     * Handles rows processing for this API workflow.
+     */
     private static function rows(mysqli $con, string $sql, string $types = '', array $params = []): array
     {
         $stmt = $con->prepare($sql);
@@ -2554,6 +2764,9 @@ class StateDashboardService
         return $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
     }
 
+    /**
+     * Handles percent processing for this API workflow.
+     */
     private static function percent(float $value, float $total): float
     {
         return $total > 0 ? round(($value / $total) * 100, 2) : 0.0;

@@ -15,6 +15,9 @@ require_once __DIR__ . '/../../assets/conn/db.php';
 
 Security::requireMethod('GET');
 
+/**
+ * Handles dashboard facility type id processing for this API workflow.
+ */
 function dashboardFacilityTypeId(int $facId): int
 {
     $path = __DIR__ . '/../../config/masters/facilities.json';

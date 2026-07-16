@@ -18,8 +18,14 @@
 
 require_once __DIR__ . '/KPIService.php';
 
+/**
+ * Provides outcome service behavior for SaQshi API workflows.
+ */
 class OutcomeService
 {
+    /**
+     * Handles config path processing for this API workflow.
+     */
     public static function configPath(): string
     {
         $correct = __DIR__ . '/../config/performance/outcome.json';
@@ -34,18 +40,27 @@ class OutcomeService
         return file_exists($legacy) ? $legacy : $correct;
     }
 
+    /**
+     * Handles list processing for this API workflow.
+     */
     public static function list(int $facilityTypeId = 0, int $departmentId = 0): array
     {
         $config = PerformanceService::readJson(self::configPath(), ['outcomes' => []]);
         return PerformanceService::flattenIndicators($config, 'OUTCOME', $facilityTypeId, $departmentId);
     }
 
+    /**
+     * Handles save processing for this API workflow.
+     */
     public static function save(mysqli $con, array $payload, int $userId, int $facilityId): array
     {
         $payload['indicator_type'] = 'OUTCOME';
         return KPIService::saveEntry($con, $payload, $userId, $facilityId, 'OUTCOME');
     }
 
+    /**
+     * Handles history processing for this API workflow.
+     */
     public static function history(mysqli $con, int $facilityId, array $filters = []): array
     {
         return KPIService::entryHistory($con, $facilityId, 'OUTCOME', $filters);

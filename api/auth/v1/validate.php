@@ -1,4 +1,11 @@
 <?php
+
+/**
+ * SaQshi API
+ * auth/v1/validate.php
+ * Purpose: validate endpoint/support workflow.
+ */
+
 require_once "../../../service/AuthService.php";
 
 session_start();

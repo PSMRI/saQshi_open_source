@@ -1,7 +1,15 @@
 # SaQshi VAPT Report and Security Test Cases
 
-Version: 1.0  
-Updated: 2026-07-13
+Version: 1.1  
+Updated: 2026-07-16
+
+Security update note, 2026-07-16:
+
+- Release security scan completed and documented in `docs/security/release_security_scan_2026_07_16.md`.
+- Local `.env`, runtime uploads, event logs and generated key files were removed from the public source folder.
+- Raw password transport helper in `ui/assets/js/core/auth.js` now fails closed; login uses `password_enc`.
+- Upload validation now uses extension-specific MIME checks and image content validation.
+- Dynamic schema identifier handling in `api/service/CertificationService.php` now validates table/column identifiers.
 
 Security update note, 2026-07-13:
 
@@ -34,11 +42,11 @@ Overall posture: **Improving, but release should require closure of high-risk it
 
 | ID | Severity | Finding | Current status | Recommendation |
 |---|---|---|---|---|
-| VAPT-F-001 | High | Local `.env` contains real DB username/password. `.env` is ignored by git, but credentials are visible in local workspace. | Open | Rotate DB password before sharing/deploying. Keep `.env` out of git and distribute only `.env.example`. |
+| VAPT-F-001 | High | Local `.env` contained real DB username/password. `.env` is ignored by git, but credentials were visible in local workspace. | Fixed for public source folder | `.env` removed from `open_source`; rotate any credentials that were previously present before deployment/sharing. |
 | VAPT-F-002 | High | Legacy endpoint `api/auth/v1/login1.php` accepted raw `password` field. | Fixed | Endpoint now returns 410 and directs callers to encrypted `login.php`. Remove references to old endpoint. |
-| VAPT-F-003 | Medium | Upload allows `application/octet-stream` and `application/zip` for Office files. This may be practical but needs stronger content validation. | Open | Keep extension allow-list, add deeper validation for Office/PDF where possible, and consider virus scan in production. |
+| VAPT-F-003 | Medium | Upload allowed broad `application/octet-stream` and `application/zip` matches for all allowed extensions. | Improved | Extension-specific MIME validation and image validation added; production antivirus scanning still recommended. |
 | VAPT-F-004 | Medium | Uploaded files are under `/uploads`; direct public access may expose evidence URLs if guessed/shared. | Open | Consider access-controlled download endpoint for sensitive evidence. |
-| VAPT-F-005 | Medium | Some dynamic DDL/query usages exist, mostly table/column maintenance. | Review required | Ensure all dynamic identifiers are allow-listed and never user-controlled. |
+| VAPT-F-005 | Medium | Some dynamic DDL/query usages exist, mostly table/column maintenance. | Improved | `CertificationService::ensureColumn()` now validates identifiers; keep future dynamic identifiers allow-listed. |
 | VAPT-F-006 | Low | CSP is strong for APIs, but full UI pages may need separate CSP review if inline scripts remain. | Open | Add UI-level CSP plan before production hardening. |
 
 ## 4. Positive Controls Observed
@@ -127,7 +135,7 @@ Overall posture: **Improving, but release should require closure of high-risk it
 
 ## 6. Immediate Remediation Checklist
 
-1. Rotate the DB password found in local `.env` before any sharing or deployment.
+1. Rotate any DB password that was previously present in local `.env` before any sharing or deployment.
 2. Keep `.env` and `api/storage/keys` out of git.
 3. Confirm no code references `api/auth/v1/login1.php`.
 4. Consider replacing public evidence URLs with an authenticated download endpoint.
@@ -139,9 +147,9 @@ Overall posture: **Improving, but release should require closure of high-risk it
 
 | Check | Status | Notes |
 |---|---|---|
-| Static secret scan | Completed | Real DB credential found in local `.env`; file is gitignored. |
+| Static secret scan | Completed | Public source folder now has no `.env`, runtime logs, generated keys or upload evidence files. |
 | Error handling review | Completed | Friendly error handler exists. |
 | Legacy login check | Fixed | `login1.php` now disabled with 410 response. |
-| Upload review | Completed | Extension and MIME checks exist; production hardening recommended. |
+| Upload review | Improved | Extension-specific MIME checks and image validation exist; production malware scanning recommended. |
 | Scope review | Completed | Shared state bootstrap applies role scope. |
 | Active exploit testing | Not performed | Requires explicit test environment and approval. |

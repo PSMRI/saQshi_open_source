@@ -16,6 +16,9 @@ require_once __DIR__ . '/../../assets/conn/db.php';
 
 Security::requireMethod('GET');
 
+/**
+ * Handles scorecard normalize processing for this API workflow.
+ */
 function scorecardNormalize(string $value): string
 {
     $value = html_entity_decode($value, ENT_QUOTES | ENT_HTML5, 'UTF-8');
@@ -27,6 +30,9 @@ function scorecardNormalize(string $value): string
         : strtolower($value);
 }
 
+/**
+ * Handles scorecard facility processing for this API workflow.
+ */
 function scorecardFacility(int $facId): array
 {
     $facilityJsonPath = __DIR__ . '/../../config/masters/facilities.json';
@@ -74,6 +80,9 @@ function scorecardFacility(int $facId): array
     ];
 }
 
+/**
+ * Handles scorecard shared strings processing for this API workflow.
+ */
 function scorecardSharedStrings(ZipArchive $zip): array
 {
     $xml = $zip->getFromName('xl/sharedStrings.xml');
@@ -107,6 +116,9 @@ function scorecardSharedStrings(ZipArchive $zip): array
     return $strings;
 }
 
+/**
+ * Handles scorecard cell text processing for this API workflow.
+ */
 function scorecardCellText(DOMXPath $xpath, array $sharedStrings, string $cellRef): string
 {
     $cell = $xpath->query("//x:c[@r='" . $cellRef . "']")->item(0);
@@ -132,6 +144,9 @@ function scorecardCellText(DOMXPath $xpath, array $sharedStrings, string $cellRe
     return $value ? (string)$value->nodeValue : '';
 }
 
+/**
+ * Handles scorecard column index processing for this API workflow.
+ */
 function scorecardColumnIndex(string $cellRef): int
 {
     preg_match('/^[A-Z]+/', $cellRef, $matches);
@@ -145,6 +160,9 @@ function scorecardColumnIndex(string $cellRef): int
     return $index;
 }
 
+/**
+ * Handles scorecard set cell processing for this API workflow.
+ */
 function scorecardSetCell(
     DOMDocument $dom,
     DOMXPath $xpath,
@@ -211,6 +229,9 @@ function scorecardSetCell(
     $cell->appendChild($is);
 }
 
+/**
+ * Handles scorecard create row processing for this API workflow.
+ */
 function scorecardCreateRow(DOMDocument $dom, int $rowNo): DOMElement
 {
     $row = $dom->createElementNS(
@@ -221,6 +242,9 @@ function scorecardCreateRow(DOMDocument $dom, int $rowNo): DOMElement
     return $row;
 }
 
+/**
+ * Handles scorecard apply style processing for this API workflow.
+ */
 function scorecardApplyStyle(DOMXPath $xpath, DOMElement $row, string $cellRef, ?string $styleId): void
 {
     if ($styleId === null || $styleId === '') {
@@ -234,6 +258,9 @@ function scorecardApplyStyle(DOMXPath $xpath, DOMElement $row, string $cellRef, 
     }
 }
 
+/**
+ * Handles scorecard template styles processing for this API workflow.
+ */
 function scorecardTemplateStyles(DOMXPath $xpath, array $rowMap, int $rowNo): array
 {
     $styles = [];
@@ -256,6 +283,9 @@ function scorecardTemplateStyles(DOMXPath $xpath, array $rowMap, int $rowNo): ar
     return $styles;
 }
 
+/**
+ * Handles scorecard set styled cell processing for this API workflow.
+ */
 function scorecardSetStyledCell(
     DOMDocument $dom,
     DOMXPath $xpath,
@@ -271,6 +301,9 @@ function scorecardSetStyledCell(
     scorecardApplyStyle($xpath, $row, $cellRef, $styles[$column] ?? null);
 }
 
+/**
+ * Handles scorecard set column width processing for this API workflow.
+ */
 function scorecardSetColumnWidth(DOMDocument $dom, DOMXPath $xpath, DOMElement $worksheet, string $column, float $width): void
 {
     $index = scorecardColumnIndex($column);
@@ -322,6 +355,9 @@ function scorecardSetColumnWidth(DOMDocument $dom, DOMXPath $xpath, DOMElement $
     }
 }
 
+/**
+ * Handles scorecard remove merges processing for this API workflow.
+ */
 function scorecardRemoveMerges(DOMXPath $xpath, DOMElement $mergeCells, int $fromRow, int $toRow): void
 {
     foreach (iterator_to_array($xpath->query('x:mergeCell', $mergeCells)) as $mergeCell) {
@@ -339,6 +375,9 @@ function scorecardRemoveMerges(DOMXPath $xpath, DOMElement $mergeCells, int $fro
     }
 }
 
+/**
+ * Handles scorecard add merge processing for this API workflow.
+ */
 function scorecardAddMerge(DOMDocument $dom, DOMElement $mergeCells, string $ref): void
 {
     $mergeCell = $dom->createElementNS(
@@ -349,6 +388,9 @@ function scorecardAddMerge(DOMDocument $dom, DOMElement $mergeCells, string $ref
     $mergeCells->appendChild($mergeCell);
 }
 
+/**
+ * Handles scorecard remove columns after processing for this API workflow.
+ */
 function scorecardRemoveColumnsAfter(DOMXPath $xpath, DOMElement $sheetData, int $lastColumnIndex): void
 {
     foreach ($xpath->query('x:row', $sheetData) as $row) {

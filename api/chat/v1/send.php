@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * SaQshi API
+ * chat/v1/send.php
+ * Purpose: send endpoint/support workflow.
+ */
+
+
 require_once __DIR__ . '/_common.php';
 
 Security::requireMethod('POST');

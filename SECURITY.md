@@ -9,13 +9,13 @@ If you find a security issue in SaQshi, please report it privately first. Do not
 
 Report vulnerabilities to the project maintainers through the private channel configured by the SaQshi project owner.
 
-Recommended reporting email placeholder:
+The official security reporting contact must be recorded in:
 
 ```text
-security@saqshi.org
+MAINTAINERS.md
 ```
 
-Project owners should replace this placeholder with the real security contact before public release.
+Until that file is completed, SaQshi should not be treated as ready for public security disclosure workflows.
 
 ## What to Include
 
@@ -72,6 +72,16 @@ Do not commit:
 - Production database dumps
 
 The repository `.gitignore` already excludes `.env`, `.env.*`, generated logs, generated keys and uploads. Confirm this before every release.
+
+## Security Contact Ownership
+
+Before public release:
+
+- Fill the `Security Contact` row in `MAINTAINERS.md`.
+- Confirm who acknowledges vulnerability reports.
+- Confirm who triages severity.
+- Confirm who approves security fixes and releases.
+- Confirm the private reporting channel is monitored.
 
 ## Security Features Already Present
 

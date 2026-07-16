@@ -11,6 +11,9 @@
 
 class StateIndicatorAnalyticsService
 {
+    /**
+     * Handles analytics processing for this API workflow.
+     */
     public static function analytics(mysqli $con, array $filters = []): array
     {
         $pagination = self::pagination($filters, 25, 100);
@@ -27,6 +30,9 @@ class StateIndicatorAnalyticsService
         ];
     }
 
+    /**
+     * Handles stream zero facility list processing for this API workflow.
+     */
     public static function streamZeroFacilityList(mysqli $con, int $checkpointId, array $filters = []): void
     {
         $responseTable = self::responseTable($con);
@@ -89,6 +95,9 @@ class StateIndicatorAnalyticsService
         exit;
     }
 
+    /**
+     * Handles assessment weak indicators processing for this API workflow.
+     */
     private static function assessmentWeakIndicators(mysqli $con, array $filters, array $pagination, int $minFacilities): array
     {
         $responseTable = self::responseTable($con);
@@ -172,6 +181,9 @@ class StateIndicatorAnalyticsService
         ];
     }
 
+    /**
+     * Handles performance weak indicators processing for this API workflow.
+     */
     private static function performanceWeakIndicators(mysqli $con, array $filters, string $type, int $limit, int $minFacilities): array
     {
         if (!self::tableExists($con, 'performance_entries')) {
@@ -236,6 +248,9 @@ class StateIndicatorAnalyticsService
         ];
     }
 
+    /**
+     * Handles weakness label processing for this API workflow.
+     */
     private static function weaknessLabel(float $rate): string
     {
         if ($rate >= 80) {
@@ -250,6 +265,9 @@ class StateIndicatorAnalyticsService
         return 'Watch';
     }
 
+    /**
+     * Handles facility type name processing for this API workflow.
+     */
     private static function facilityTypeName(mixed $typeId): string
     {
         $id = (int)$typeId;
@@ -267,11 +285,17 @@ class StateIndicatorAnalyticsService
         return $map[$id] ?? (string)$typeId;
     }
 
+    /**
+     * Handles csv row processing for this API workflow.
+     */
     private static function csvRow($out, array $fields): void
     {
         fputcsv($out, $fields, ',', '"', '', "\r\n");
     }
 
+    /**
+     * Handles response table processing for this API workflow.
+     */
     private static function responseTable(mysqli $con): string
     {
         if (self::tableExists($con, 'assessment_response')) {
@@ -283,6 +307,9 @@ class StateIndicatorAnalyticsService
         return '';
     }
 
+    /**
+     * Handles checkpoint map processing for this API workflow.
+     */
     private static function checkpointMap(): array
     {
         static $map = null;
@@ -325,6 +352,9 @@ class StateIndicatorAnalyticsService
         return $map;
     }
 
+    /**
+     * Handles performance indicator map processing for this API workflow.
+     */
     private static function performanceIndicatorMap(): array
     {
         static $map = null;
@@ -346,6 +376,9 @@ class StateIndicatorAnalyticsService
         return $map;
     }
 
+    /**
+     * Handles collect performance indicators processing for this API workflow.
+     */
     private static function collectPerformanceIndicators(array $node, array &$map): void
     {
         if (isset($node['indicator_id']) || isset($node['kpi_id']) || isset($node['outcome_id'])) {
@@ -368,6 +401,9 @@ class StateIndicatorAnalyticsService
         }
     }
 
+    /**
+     * Handles facility where processing for this API workflow.
+     */
     private static function facilityWhere(array $filters, string $alias): array
     {
         $where = ['1=1'];
@@ -398,6 +434,9 @@ class StateIndicatorAnalyticsService
         return ['sql' => 'WHERE ' . implode(' AND ', $where), 'types' => $types, 'params' => $params];
     }
 
+    /**
+     * Handles pagination processing for this API workflow.
+     */
     private static function pagination(array $filters, int $defaultPerPage = 25, int $maxPerPage = 100): array
     {
         $page = max(1, (int)($filters['page'] ?? 1));
@@ -410,6 +449,9 @@ class StateIndicatorAnalyticsService
         ];
     }
 
+    /**
+     * Handles pagination meta processing for this API workflow.
+     */
     private static function paginationMeta(array $pagination, int $totalRows): array
     {
         return [
@@ -420,6 +462,9 @@ class StateIndicatorAnalyticsService
         ];
     }
 
+    /**
+     * Handles rows processing for this API workflow.
+     */
     private static function rows(mysqli $con, string $sql, string $types = '', array $params = []): array
     {
         $stmt = self::prepare($con, $sql, $types, $params);
@@ -430,12 +475,18 @@ class StateIndicatorAnalyticsService
         return $rows;
     }
 
+    /**
+     * Handles one processing for this API workflow.
+     */
     private static function one(mysqli $con, string $sql, string $types = '', array $params = []): array
     {
         $rows = self::rows($con, $sql, $types, $params);
         return $rows[0] ?? [];
     }
 
+    /**
+     * Handles prepare processing for this API workflow.
+     */
     private static function prepare(mysqli $con, string $sql, string $types = '', array $params = []): mysqli_stmt
     {
         $stmt = $con->prepare($sql);
@@ -452,6 +503,9 @@ class StateIndicatorAnalyticsService
         return $stmt;
     }
 
+    /**
+     * Handles table exists processing for this API workflow.
+     */
     private static function tableExists(mysqli $con, string $table): bool
     {
         $stmt = $con->prepare("SELECT COUNT(*) AS table_count FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ?");
@@ -466,6 +520,9 @@ class StateIndicatorAnalyticsService
         return (int)($row['table_count'] ?? 0) > 0;
     }
 
+    /**
+     * Handles column exists processing for this API workflow.
+     */
     private static function columnExists(mysqli $con, string $table, string $column): bool
     {
         $stmt = $con->prepare("SELECT COUNT(*) AS column_count FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ? AND COLUMN_NAME = ?");
