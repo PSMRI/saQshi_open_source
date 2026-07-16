@@ -3,9 +3,277 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="SaQshi GitBook documentation index.">
+    <meta name="description" content="SaQshi GitBook documentation reader.">
     <title>SaQshi | GitBook Documentation</title>
     <link rel="stylesheet" href="/ui/assets/css/saqshi-developer.css">
+    <style>
+        .book-shell {
+            display: grid;
+            grid-template-columns: 276px minmax(0, 1fr);
+            gap: 18px;
+            align-items: start;
+            padding: 18px 0 42px;
+        }
+
+        .book-hero {
+            padding: 18px 0;
+            border-bottom: 1px solid var(--sq-dev-border);
+            background: #f7faff;
+        }
+
+        .book-hero .eyebrow {
+            margin-bottom: 6px;
+            font-size: 0.72rem;
+            letter-spacing: 0.12em;
+        }
+
+        .book-hero h1 {
+            margin: 0;
+            font-size: 1.9rem;
+            line-height: 1.15;
+        }
+
+        .book-sidebar,
+        .book-content {
+            border: 1px solid var(--sq-dev-border);
+            border-radius: 12px;
+            background: #fff;
+            box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+        }
+
+        .book-sidebar {
+            position: sticky;
+            top: 92px;
+            max-height: calc(100vh - 112px);
+            overflow: auto;
+            padding: 14px;
+            box-shadow: 0 10px 28px rgba(15, 23, 42, 0.06);
+        }
+
+        .book-sidebar h2 {
+            margin: 0 0 10px;
+            font-size: 0.96rem;
+            line-height: 1.2;
+        }
+
+        .book-nav-group {
+            margin-top: 12px;
+        }
+
+        .book-nav-group h3 {
+            margin: 0 0 6px;
+            color: var(--sq-dev-muted);
+            font-size: 0.66rem;
+            letter-spacing: 0.09em;
+            line-height: 1.2;
+            text-transform: uppercase;
+        }
+
+        .book-link {
+            display: block;
+            margin: 2px 0;
+            padding: 6px 8px;
+            border-radius: 7px;
+            color: var(--sq-dev-text);
+            font-size: 0.86rem;
+            font-weight: 600;
+            line-height: 1.25;
+            text-decoration: none;
+        }
+
+        .book-link:hover,
+        .book-link.active {
+            background: var(--sq-dev-soft);
+            color: var(--sq-dev-primary);
+            font-weight: 700;
+        }
+
+        .book-content {
+            min-height: 70vh;
+            padding: 30px;
+        }
+
+        .book-content h1 {
+            margin-bottom: 14px;
+            font-size: 2.4rem;
+            line-height: 1.1;
+        }
+
+        .book-content h2 {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--sq-dev-border);
+            font-size: 1.65rem;
+        }
+
+        .book-content h3 {
+            margin-top: 22px;
+            font-size: 1.2rem;
+        }
+
+        .book-content p,
+        .book-content li {
+            color: var(--sq-dev-muted);
+        }
+
+        .book-content a {
+            color: var(--sq-dev-primary);
+            font-weight: 800;
+        }
+
+        .book-content pre {
+            overflow: auto;
+            padding: 16px;
+            border-radius: 8px;
+            background: var(--sq-dev-code);
+            color: #dbeafe;
+            line-height: 1.6;
+        }
+
+        .book-content code {
+            padding: 2px 6px;
+            border-radius: 6px;
+            background: var(--sq-dev-soft);
+            color: var(--sq-dev-primary-dark);
+        }
+
+        .book-content pre code {
+            padding: 0;
+            background: transparent;
+            color: inherit;
+        }
+
+        .book-content img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            margin: 18px auto;
+            border: 1px solid var(--sq-dev-border);
+            border-radius: 10px;
+            background: #fff;
+            box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+        }
+
+        .book-content .mermaid {
+            margin: 18px 0;
+            padding: 18px;
+            overflow: auto;
+            border: 1px solid var(--sq-dev-border);
+            border-radius: 10px;
+            background: #ffffff;
+        }
+
+        .book-content .mermaid svg {
+            max-width: none;
+        }
+
+        .book-content .mermaid-error {
+            margin: 18px 0;
+            padding: 14px;
+            border: 1px solid #fde68a;
+            border-radius: 8px;
+            background: #fffbeb;
+            color: #92400e;
+        }
+
+        .diagram-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            margin: 12px 0 -8px;
+        }
+
+        .diagram-download {
+            display: inline-flex;
+            align-items: center;
+            min-height: 34px;
+            padding: 7px 12px;
+            border: 1px solid var(--sq-dev-border);
+            border-radius: 8px;
+            background: #ffffff;
+            color: var(--sq-dev-primary-dark);
+            font-size: 0.84rem;
+            font-weight: 800;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .diagram-download:hover {
+            background: var(--sq-dev-soft);
+            color: var(--sq-dev-primary);
+        }
+
+        .book-html-frame {
+            width: 100%;
+            min-height: 78vh;
+            border: 1px solid var(--sq-dev-border);
+            border-radius: 10px;
+            background: #fff;
+        }
+
+        .book-content table {
+            width: 100%;
+            margin: 16px 0;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+
+        .book-content details {
+            margin: 14px 0 20px;
+            border: 1px solid var(--sq-dev-border);
+            border-radius: 10px;
+            background: #ffffff;
+        }
+
+        .book-content summary {
+            padding: 12px 14px;
+            cursor: pointer;
+            color: var(--sq-dev-primary-dark);
+            font-weight: 800;
+        }
+
+        .book-content details[open] summary {
+            border-bottom: 1px solid var(--sq-dev-border);
+            background: var(--sq-dev-soft);
+        }
+
+        .book-content details table {
+            width: calc(100% - 28px);
+            margin: 14px;
+        }
+
+        .book-content th,
+        .book-content td {
+            padding: 10px;
+            border: 1px solid var(--sq-dev-border);
+            text-align: left;
+            vertical-align: top;
+        }
+
+        .book-content th {
+            background: #f8fbff;
+            color: var(--sq-dev-text);
+        }
+
+        .book-error {
+            padding: 16px;
+            border: 1px solid #fecaca;
+            border-radius: 8px;
+            background: #fff1f2;
+            color: #991b1b;
+        }
+
+        @media (max-width: 900px) {
+            .book-shell {
+                grid-template-columns: 1fr;
+            }
+
+            .book-sidebar {
+                position: static;
+                max-height: none;
+            }
+        }
+    </style>
 </head>
 <body>
 <header class="site-header">
@@ -13,91 +281,496 @@
         <a class="brand" href="developer.php"><span class="mark">S</span>SaQshi <span class="badge">GitBook</span></a>
         <div class="links">
             <a href="developer.php">Developer Home</a>
-            <a href="README.md">Overview</a>
-            <a href="docs/gitbook.md">Publishing Guide</a>
+            <a href="gitbook.html?doc=README.md">Overview</a>
+            <a href="gitbook.html?doc=docs/gitbook.md">Publishing Guide</a>
         </div>
         <a class="button primary" href="login.php">Open application</a>
     </nav>
 </header>
 
 <main>
-    <section class="hero">
+    <section class="book-hero">
         <div class="container">
             <div class="eyebrow">Documentation hub</div>
             <h1>SaQshi GitBook</h1>
-            <p class="lead">Use this page as the browser-friendly GitBook index. The formal GitBook sidebar source is available in <a href="SUMMARY.md">SUMMARY.md</a>.</p>
-            <div class="actions">
-                <a class="button primary" href="SUMMARY.md">View SUMMARY.md</a>
-                <a class="button secondary" href="docs/gitbook.md">Publishing guide</a>
-            </div>
         </div>
     </section>
 
-    <section class="section white">
-        <div class="container">
-            <div class="section-heading">
-                <div class="eyebrow">Start here</div>
-                <h2>Project essentials</h2>
-            </div>
-            <div class="resources">
-                <a class="resource" href="README.md"><div><h3>SaQshi overview</h3><p>Project purpose, modules, setup, technology and release references.</p></div><span class="arrow">-&gt;</span></a>
-                <a class="resource" href="CONTRIBUTING.md"><div><h3>Contributing</h3><p>How to contribute safely and keep changes aligned with the project structure.</p></div><span class="arrow">-&gt;</span></a>
-                <a class="resource" href="SECURITY.md"><div><h3>Security policy</h3><p>How to report vulnerabilities and handle sensitive security concerns.</p></div><span class="arrow">-&gt;</span></a>
-                <a class="resource" href="CHANGELOG.md"><div><h3>Changelog</h3><p>Current project change history.</p></div><span class="arrow">-&gt;</span></a>
-            </div>
-        </div>
-    </section>
-
-    <section class="section">
-        <div class="container">
-            <div class="section-heading">
-                <div class="eyebrow">Developer guide</div>
-                <h2>Build, extend and test SaQshi</h2>
-            </div>
-            <div class="grid">
-                <article class="card"><div class="icon">API</div><h3>API</h3><p><a href="docs/api/README.md">API developer documentation</a></p><p><a href="docs/api/endpoint-inventory.md">Endpoint inventory</a></p><p><a href="docs/api/source-reference.md">Source reference</a></p></article>
-                <article class="card"><div class="icon">DB</div><h3>Database</h3><p><a href="docs/database/database_setup_and_migration.md">Database setup and migration guide</a></p></article>
-                <article class="card"><div class="icon">QA</div><h3>Testing</h3><p><a href="docs/testing/saqshi_test_plan.md">Test plan</a></p><p><a href="docs/testing/saqshi_vapt_report.md">VAPT report</a></p><p><a href="docs/testing/saqshi_wcag_web_platform_compliance.md">WCAG compliance</a></p></article>
-            </div>
-        </div>
-    </section>
-
-    <section class="section white">
-        <div class="container">
-            <div class="section-heading">
-                <div class="eyebrow">API testing</div>
-                <h2>Postman and Swagger</h2>
-            </div>
-            <div class="resources">
-                <a class="resource" href="docs/api/POSTMAN_TESTING_GUIDE.md"><div><h3>Postman testing guide</h3><p>Step-by-step API testing flow.</p></div><span class="arrow">-&gt;</span></a>
-                <a class="resource" href="docs/api/saqshi_postman_collection.json"><div><h3>Postman collection</h3><p>Importable API collection.</p></div><span class="arrow">-&gt;</span></a>
-                <a class="resource" href="docs/api/swagger-ui.html"><div><h3>Swagger UI</h3><p>OpenAPI browser view.</p></div><span class="arrow">-&gt;</span></a>
-                <a class="resource" href="docs/api/openapi.yaml"><div><h3>OpenAPI YAML</h3><p>Machine-readable API specification.</p></div><span class="arrow">-&gt;</span></a>
-            </div>
-        </div>
-    </section>
-
-    <section class="section">
-        <div class="container">
-            <div class="section-heading">
-                <div class="eyebrow">Open source and release</div>
-                <h2>Compliance documents</h2>
-            </div>
-            <div class="resources">
-                <a class="resource" href="docs/compliance/open_source_readiness_checklist.md"><div><h3>Open-source readiness checklist</h3><p>Release readiness and open-source criteria.</p></div><span class="arrow">-&gt;</span></a>
-                <a class="resource" href="docs/compliance/third_party_licenses.md"><div><h3>Third-party licenses</h3><p>Attribution and dependency license inventory.</p></div><span class="arrow">-&gt;</span></a>
-                <a class="resource" href="docs/compliance/release_checklist.md"><div><h3>Release checklist</h3><p>Pre-release checks for source hygiene, docs and packaging.</p></div><span class="arrow">-&gt;</span></a>
-                <a class="resource" href="docs/compliance/dpg_readiness_assessment.md"><div><h3>DPG readiness assessment</h3><p>Digital public goods readiness status and gaps.</p></div><span class="arrow">-&gt;</span></a>
-            </div>
-        </div>
+    <section class="container book-shell" aria-label="SaQshi documentation reader">
+        <aside class="book-sidebar" aria-label="Documentation navigation">
+            <h2>Documentation</h2>
+            <div id="bookNav"></div>
+        </aside>
+        <article id="bookContent" class="book-content" aria-live="polite">
+            <p>Loading documentation...</p>
+        </article>
     </section>
 </main>
 
-<footer class="footer">
-    <div class="container footer-row">
-        <span>SaQshi GitBook documentation</span>
-        <span><a href="SUMMARY.md">SUMMARY.md</a> - <a href="LICENSE">GPL-3.0</a> - <a href="developer.php">Developer home</a></span>
-    </div>
-</footer>
+<script>
+(function () {
+    "use strict";
+
+    const groups = [
+        {
+            title: "Start Here",
+            items: [
+                ["SaQshi Overview", "README.md"],
+                ["Project Overview and NQAS Alignment", "docs/architecture/project_overview.md"],
+                ["Version Matrix", "docs/architecture/version_matrix.md"],
+                ["Complete User Guide", "docs/user/user_guide.md"],
+                ["Contributing", "CONTRIBUTING.md"],
+                ["Security Policy", "SECURITY.md"],
+                ["Changelog", "CHANGELOG.md"],
+                ["Code of Conduct", "CODE_OF_CONDUCT.md"],
+                ["License", "LICENSE.txt"],
+                ["Notice", "NOTICE.txt"]
+            ]
+        },
+        {
+            title: "Developer Guide",
+            items: [
+                ["Project Overview and NQAS Alignment", "docs/architecture/project_overview.md"],
+                ["Version Matrix", "docs/architecture/version_matrix.md"],
+                ["Technical Architecture Overview", "docs/architecture/technical_architecture.md"],
+                ["Service Architecture and Map", "docs/architecture/service_map.md"],
+                ["HLD and LLD Architecture Design", "docs/architecture/hld_lld_design.md"],
+                ["Configuration JSON Formats", "docs/architecture/configuration_formats.md"],
+                ["Data Dictionary and ER Diagram", "docs/database/data_dictionary_erd.md"],
+                ["Database Setup and Migration", "docs/database/database_setup_and_migration.md"],
+                ["API Developer Documentation", "docs/api/README.md"],
+                ["Endpoint Inventory", "docs/api/endpoint-inventory.md"],
+                ["API Source Reference", "docs/api/source-reference.md"],
+                ["Assessment API Guide", "docs/api/assessment.md"]
+            ]
+        },
+        {
+            title: "Deployment and Operations",
+            items: [
+                ["Deployment Guide", "docs/deployment/deployment_guide.md"],
+                ["Backup and Restore Guide", "docs/deployment/backup_restore_guide.md"],
+                ["Upgrade and Migration Guide", "docs/deployment/upgrade_migration_guide.md"],
+                ["Troubleshooting and FAQ", "docs/deployment/troubleshooting_faq.md"]
+            ]
+        },
+        {
+            title: "API Testing",
+            items: [
+                ["Postman Testing Guide", "docs/api/POSTMAN_TESTING_GUIDE.md"],
+                ["Postman Local Environment", "docs/api/saqshi_local_postman_environment.json"],
+                ["OpenAPI Specification", "docs/api/openapi.yaml"],
+                ["Swagger UI", "docs/api/swagger-ui.html"],
+                ["Postman Collection", "docs/api/saqshi_postman_collection.json"]
+            ]
+        },
+        {
+            title: "Security and Testing",
+            items: [
+                ["SQL Injection Security Review", "docs/security/sql_injection_security_review.md"],
+                ["VAPT Report", "docs/testing/saqshi_vapt_report.md"],
+                ["Test Plan", "docs/testing/saqshi_test_plan.md"],
+                ["Test Case Template", "docs/testing/saqshi_test_case_template.csv"],
+                ["Black Box and White Box Testing", "docs/testing/saqshi_blackbox_whitebox_testing.md"],
+                ["Black Box / White Box Test Cases", "docs/testing/saqshi_blackbox_whitebox_test_cases.csv"],
+                ["Load Testing Guide", "docs/testing/saqshi_load_testing_guide.md"],
+                ["Non-functional Test Cases", "docs/testing/saqshi_non_functional_test_cases.csv"],
+                ["WCAG and Web Platform Compliance", "docs/testing/saqshi_wcag_web_platform_compliance.md"],
+                ["WCAG Page Audit", "docs/testing/wcag_page_by_page_audit.csv"]
+            ]
+        },
+        {
+            title: "Open Source and Release",
+            items: [
+                ["Open Source Readiness Checklist", "docs/compliance/open_source_readiness_checklist.md"],
+                ["License Before and After", "docs/compliance/license_consistency_before_after.md"],
+                ["Third-party Licenses", "docs/compliance/third_party_licenses.md"],
+                ["Privacy and Data Protection", "docs/compliance/privacy_data_protection.md"],
+                ["Release Checklist", "docs/compliance/release_checklist.md"],
+                ["DPG Readiness Assessment", "docs/compliance/dpg_readiness_assessment.md"],
+                ["GitBook Publishing Guide", "docs/gitbook.md"]
+            ]
+        }
+    ];
+
+    const content = document.getElementById("bookContent");
+    const nav = document.getElementById("bookNav");
+
+    function escapeHtml(value) {
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    function normalizeDoc(doc) {
+        let clean = String(doc || "README.md").replace(/\\/g, "/").replace(/^\/+/, "");
+        if (clean === "LICENSE") {
+            clean = "LICENSE.txt";
+        }
+        if (clean === "NOTICE") {
+            clean = "NOTICE.txt";
+        }
+        if (clean.includes("..")) {
+            return "README.md";
+        }
+        return clean;
+    }
+
+    function docUrl(doc) {
+        return "gitbook.html?doc=" + encodeURIComponent(normalizeDoc(doc));
+    }
+
+    function isReadableDoc(href) {
+        return href && (
+            /\.md($|#)/i.test(href) ||
+            /\.txt($|#)/i.test(href) ||
+            /\.html?($|#)/i.test(href) ||
+            /\.yaml($|#)/i.test(href) ||
+            /\.yml($|#)/i.test(href) ||
+            /\.json($|#)/i.test(href) ||
+            href === "LICENSE" ||
+            href === "NOTICE"
+        );
+    }
+
+    function inlineMarkdown(text) {
+        let html = escapeHtml(text);
+        html = html.replace(/`([^`]+)`/g, "<code>$1</code>");
+        html = html.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+        html = html.replace(/\*([^*]+)\*/g, "<em>$1</em>");
+        html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, function (_, alt, src) {
+            return `<img src="${escapeHtml(src)}" alt="${escapeHtml(alt)}">`;
+        });
+        html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, function (_, label, href) {
+            const safeHref = escapeHtml(href);
+            const target = isReadableDoc(href) ? docUrl(href) : safeHref;
+            return `<a href="${target}" data-doc-link="${escapeHtml(href)}">${label}</a>`;
+        });
+        return html;
+    }
+
+    function renderTable(lines) {
+        const rows = lines.map(line => line.trim().replace(/^\||\|$/g, "").split("|").map(cell => inlineMarkdown(cell.trim())));
+        const head = rows.shift() || [];
+        if (rows.length && rows[0].every(cell => /^:?-{3,}:?$/.test(cell.replace(/<[^>]+>/g, "")))) {
+            rows.shift();
+        }
+        return "<table><thead><tr>" + head.map(cell => `<th>${cell}</th>`).join("") +
+            "</tr></thead><tbody>" + rows.map(row => "<tr>" + row.map(cell => `<td>${cell}</td>`).join("") + "</tr>").join("") +
+            "</tbody></table>";
+    }
+
+    function renderMarkdown(markdown) {
+        const lines = String(markdown || "").replace(/\r\n/g, "\n").split("\n");
+        const html = [];
+        let paragraph = [];
+        let list = [];
+        let table = [];
+        let inCode = false;
+        let code = [];
+        let codeLang = "";
+
+        function flushParagraph() {
+            if (paragraph.length) {
+                html.push("<p>" + inlineMarkdown(paragraph.join(" ")) + "</p>");
+                paragraph = [];
+            }
+        }
+
+        function flushList() {
+            if (list.length) {
+                html.push("<ul>" + list.map(item => "<li>" + inlineMarkdown(item) + "</li>").join("") + "</ul>");
+                list = [];
+            }
+        }
+
+        function flushTable() {
+            if (table.length) {
+                html.push(renderTable(table));
+                table = [];
+            }
+        }
+
+        lines.forEach(line => {
+            const trimmed = line.trim();
+
+            if (trimmed.startsWith("```")) {
+                flushParagraph();
+                flushList();
+                flushTable();
+                if (inCode) {
+                    if (codeLang.toLowerCase() === "mermaid") {
+                        html.push(`<div class="mermaid">${escapeHtml(code.join("\n"))}</div>`);
+                    } else {
+                        html.push(`<pre><code class="language-${escapeHtml(codeLang)}">${escapeHtml(code.join("\n"))}</code></pre>`);
+                    }
+                    code = [];
+                    codeLang = "";
+                    inCode = false;
+                } else {
+                    inCode = true;
+                    codeLang = trimmed.slice(3).trim();
+                }
+                return;
+            }
+
+            if (inCode) {
+                code.push(line);
+                return;
+            }
+
+            if (!trimmed) {
+                flushParagraph();
+                flushList();
+                flushTable();
+                return;
+            }
+
+            if (trimmed === "<details>") {
+                flushParagraph();
+                flushList();
+                flushTable();
+                html.push("<details>");
+                return;
+            }
+
+            if (trimmed === "</details>") {
+                flushParagraph();
+                flushList();
+                flushTable();
+                html.push("</details>");
+                return;
+            }
+
+            const summary = trimmed.match(/^<summary>(.+)<\/summary>$/i);
+            if (summary) {
+                flushParagraph();
+                flushList();
+                flushTable();
+                const label = summary[1].replace(/<\/?strong>/gi, "");
+                html.push(`<summary>${inlineMarkdown(label)}</summary>`);
+                return;
+            }
+
+            if (/^\|.+\|$/.test(trimmed)) {
+                flushParagraph();
+                flushList();
+                table.push(line);
+                return;
+            }
+
+            flushTable();
+
+            const heading = trimmed.match(/^(#{1,6})\s+(.+)$/);
+            if (heading) {
+                flushParagraph();
+                flushList();
+                const level = heading[1].length;
+                html.push(`<h${level}>${inlineMarkdown(heading[2])}</h${level}>`);
+                return;
+            }
+
+            const bullet = trimmed.match(/^[-*]\s+(.+)$/);
+            if (bullet) {
+                flushParagraph();
+                list.push(bullet[1]);
+                return;
+            }
+
+            paragraph.push(trimmed);
+        });
+
+        flushParagraph();
+        flushList();
+        flushTable();
+
+        if (inCode) {
+            html.push(`<pre><code>${escapeHtml(code.join("\n"))}</code></pre>`);
+        }
+
+        return html.join("\n");
+    }
+
+    function loadMermaidScript() {
+        if (window.mermaid) {
+            return Promise.resolve(window.mermaid);
+        }
+
+        if (window.__saqshiMermaidLoading) {
+            return window.__saqshiMermaidLoading;
+        }
+
+        window.__saqshiMermaidLoading = new Promise((resolve, reject) => {
+            const script = document.createElement("script");
+            script.src = "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js";
+            script.onload = () => resolve(window.mermaid);
+            script.onerror = () => reject(new Error("Mermaid renderer could not be loaded."));
+            document.head.appendChild(script);
+        });
+
+        return window.__saqshiMermaidLoading;
+    }
+
+    async function renderMermaidDiagrams() {
+        const diagrams = Array.from(content.querySelectorAll(".mermaid"));
+        if (!diagrams.length) {
+            return;
+        }
+
+        try {
+            const mermaid = await loadMermaidScript();
+            mermaid.initialize({
+                startOnLoad: false,
+                securityLevel: "loose",
+                theme: "default",
+                flowchart: { htmlLabels: true, useMaxWidth: false }
+            });
+            await mermaid.run({ nodes: diagrams });
+            addDiagramDownloadControls();
+        } catch (error) {
+            diagrams.forEach(diagram => {
+                const source = diagram.textContent || "";
+                diagram.outerHTML = `<div class="mermaid-error"><strong>Diagram renderer unavailable.</strong><br>${escapeHtml(error.message)}<pre><code>${escapeHtml(source)}</code></pre></div>`;
+            });
+        }
+    }
+
+    function downloadBlob(filename, mime, text) {
+        const blob = new Blob([text], { type: mime });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }
+
+    function filenameFromHeading(prefix, index, extension) {
+        const heading = content.querySelector("h1");
+        const base = (heading ? heading.textContent : prefix)
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, "-")
+            .replace(/^-+|-+$/g, "") || prefix;
+        return `${base}-${prefix}-${index + 1}.${extension}`;
+    }
+
+    function addDiagramDownloadControls() {
+        content.querySelectorAll(".mermaid").forEach((diagram, index) => {
+            if (diagram.dataset.downloadReady === "1") {
+                return;
+            }
+            const svg = diagram.querySelector("svg");
+            if (!svg) {
+                return;
+            }
+            diagram.dataset.downloadReady = "1";
+            const actions = document.createElement("div");
+            actions.className = "diagram-actions";
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className = "diagram-download";
+            button.textContent = "Download SVG";
+            button.addEventListener("click", () => {
+                const clone = svg.cloneNode(true);
+                clone.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+                const source = new XMLSerializer().serializeToString(clone);
+                downloadBlob(filenameFromHeading("diagram", index, "svg"), "image/svg+xml;charset=utf-8", source);
+            });
+            actions.appendChild(button);
+            diagram.parentNode.insertBefore(actions, diagram);
+        });
+
+        content.querySelectorAll("img").forEach((image, index) => {
+            if (image.dataset.downloadReady === "1") {
+                return;
+            }
+            image.dataset.downloadReady = "1";
+            const actions = document.createElement("div");
+            actions.className = "diagram-actions";
+            const link = document.createElement("a");
+            link.className = "diagram-download";
+            link.href = image.getAttribute("src");
+            link.download = filenameFromHeading("image", index, "png");
+            link.textContent = "Download Image";
+            actions.appendChild(link);
+            image.parentNode.insertBefore(actions, image);
+        });
+    }
+
+    async function loadDoc(doc) {
+        const normalized = normalizeDoc(doc);
+        const activeUrl = docUrl(normalized);
+        content.innerHTML = "<p>Loading documentation...</p>";
+
+        document.querySelectorAll(".book-link").forEach(link => {
+            link.classList.toggle("active", link.dataset.doc === normalized);
+        });
+
+        try {
+            const ext = normalized.split(".").pop().toLowerCase();
+            if (["html", "htm"].includes(ext)) {
+                content.innerHTML = `<h1>${inlineMarkdown(normalized)}</h1><iframe class="book-html-frame" src="${escapeHtml(normalized)}" title="${escapeHtml(normalized)}"></iframe>`;
+                history.replaceState(null, "", activeUrl);
+                window.scrollTo({ top: 0, behavior: "smooth" });
+                return;
+            }
+
+            const response = await fetch(normalized, { cache: "no-store" });
+            if (!response.ok) {
+                throw new Error("HTTP " + response.status);
+            }
+            const text = await response.text();
+            if (["json", "yaml", "yml"].includes(ext)) {
+                content.innerHTML = `<h1>${inlineMarkdown(normalized)}</h1><pre><code>${escapeHtml(text)}</code></pre>`;
+            } else {
+                content.innerHTML = renderMarkdown(text);
+                await renderMermaidDiagrams();
+                addDiagramDownloadControls();
+            }
+            history.replaceState(null, "", activeUrl);
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        } catch (error) {
+            content.innerHTML = `<div class="book-error"><strong>Unable to load document.</strong><br>${escapeHtml(normalized)}<br>${escapeHtml(error.message)}</div>`;
+        }
+    }
+
+    function renderNav() {
+        nav.innerHTML = groups.map(group => {
+            const links = group.items.map(([label, doc]) => `<a class="book-link" href="${docUrl(doc)}" data-doc="${normalizeDoc(doc)}">${escapeHtml(label)}</a>`).join("");
+            return `<div class="book-nav-group"><h3>${escapeHtml(group.title)}</h3>${links}</div>`;
+        }).join("");
+    }
+
+    document.addEventListener("click", function (event) {
+        const link = event.target.closest("a");
+        if (!link) {
+            return;
+        }
+
+        const href = link.getAttribute("href") || "";
+        const doc = link.dataset.doc || link.dataset.docLink;
+
+        if (doc) {
+            event.preventDefault();
+            loadDoc(doc);
+            return;
+        }
+
+        if (href.startsWith("gitbook.html?doc=")) {
+            event.preventDefault();
+            const url = new URL(href, window.location.href);
+            loadDoc(url.searchParams.get("doc"));
+        }
+    });
+
+    renderNav();
+    const params = new URLSearchParams(window.location.search);
+    loadDoc(params.get("doc") || "README.md");
+})();
+</script>
 </body>
 </html>

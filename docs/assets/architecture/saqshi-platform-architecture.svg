@@ -1,0 +1,237 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="820" viewBox="0 0 1400 820" role="img" aria-labelledby="title desc">
+  <title id="title">SaQshi Platform Architecture</title>
+  <desc id="desc">Presentation style architecture diagram showing users, frontend channels, API gateway, services, registries, queue, database, storage, reports and external integrations.</desc>
+  <defs>
+    <style>
+      .title { font: 700 30px Arial, sans-serif; fill: #0f2f57; }
+      .subtitle { font: 400 16px Arial, sans-serif; fill: #52627a; }
+      .label { font: 700 15px Arial, sans-serif; fill: #0f172a; }
+      .small { font: 400 13px Arial, sans-serif; fill: #1f2937; }
+      .tiny { font: 400 12px Arial, sans-serif; fill: #475569; }
+      .white { fill: #ffffff; }
+      .boxBlue { fill: #2f6fed; stroke: #1f55c8; stroke-width: 1; }
+      .boxLight { fill: #dbeafe; stroke: #9dc3f7; stroke-width: 1; }
+      .boxSoft { fill: #f1f5f9; stroke: #cbd5e1; stroke-width: 1; }
+      .boxGreen { fill: #dcfce7; stroke: #86efac; stroke-width: 1; }
+      .boxOrange { fill: #ffedd5; stroke: #fdba74; stroke-width: 1; }
+      .band { fill: #f3f4f6; stroke: #e5e7eb; stroke-width: 1; }
+      .db { fill: #ffffff; stroke: #cbd5e1; stroke-width: 1.5; }
+      .line { stroke: #94a3b8; stroke-width: 1.5; fill: none; marker-end: url(#arrow); }
+      .dash { stroke: #94a3b8; stroke-width: 1.3; stroke-dasharray: 5 5; fill: none; marker-end: url(#arrow); }
+      .legendText { font: 400 12px Arial, sans-serif; fill: #334155; }
+    </style>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1400" height="820" fill="#ffffff"/>
+  <text x="700" y="34" text-anchor="middle" class="title">SaQshi Platform Architecture</text>
+  <text x="700" y="58" text-anchor="middle" class="subtitle">Healthcare Quality Assessment, CQI, Performance Monitoring, Certification and State Monitoring</text>
+
+  <!-- Top channels -->
+  <rect x="330" y="86" width="140" height="64" rx="2" class="boxLight"/>
+  <text x="400" y="111" text-anchor="middle" class="label">Facility User</text>
+  <text x="400" y="131" text-anchor="middle" class="small">Dashboard</text>
+
+  <rect x="540" y="86" width="150" height="64" rx="2" class="boxLight"/>
+  <text x="615" y="111" text-anchor="middle" class="label">Monitoring Users</text>
+  <text x="615" y="131" text-anchor="middle" class="small">Block / District / State</text>
+
+  <rect x="760" y="86" width="150" height="64" rx="2" class="boxLight"/>
+  <text x="835" y="111" text-anchor="middle" class="label">Developer</text>
+  <text x="835" y="131" text-anchor="middle" class="small">GitBook / Swagger</text>
+
+  <rect x="1040" y="86" width="130" height="64" rx="2" class="boxLight"/>
+  <text x="1105" y="111" text-anchor="middle" class="label">Admin</text>
+  <text x="1105" y="131" text-anchor="middle" class="small">System / State</text>
+
+  <!-- Frontends -->
+  <rect x="220" y="190" width="130" height="58" rx="2" class="boxLight"/>
+  <text x="285" y="215" text-anchor="middle" class="label">Assessment UI</text>
+  <text x="285" y="234" text-anchor="middle" class="tiny">Checklist / Score</text>
+
+  <rect x="370" y="190" width="120" height="58" rx="2" class="boxLight"/>
+  <text x="430" y="215" text-anchor="middle" class="label">CQI UI</text>
+  <text x="430" y="234" text-anchor="middle" class="tiny">Gaps / Closure</text>
+
+  <rect x="510" y="190" width="145" height="58" rx="2" class="boxLight"/>
+  <text x="582" y="215" text-anchor="middle" class="label">Performance UI</text>
+  <text x="582" y="234" text-anchor="middle" class="tiny">KPI / Outcome</text>
+
+  <rect x="675" y="190" width="135" height="58" rx="2" class="boxLight"/>
+  <text x="742" y="215" text-anchor="middle" class="label">Certification UI</text>
+  <text x="742" y="234" text-anchor="middle" class="tiny">History / Validity</text>
+
+  <rect x="830" y="190" width="135" height="58" rx="2" class="boxLight"/>
+  <text x="897" y="215" text-anchor="middle" class="label">State UI</text>
+  <text x="897" y="234" text-anchor="middle" class="tiny">Map / Monitoring</text>
+
+  <rect x="985" y="190" width="125" height="58" rx="2" class="boxLight"/>
+  <text x="1047" y="215" text-anchor="middle" class="label">Reports UI</text>
+  <text x="1047" y="234" text-anchor="middle" class="tiny">Excel / PDF</text>
+
+  <rect x="1130" y="190" width="125" height="58" rx="2" class="boxLight"/>
+  <text x="1192" y="215" text-anchor="middle" class="label">Docs UI</text>
+  <text x="1192" y="234" text-anchor="middle" class="tiny">GitBook</text>
+
+  <!-- Side common services -->
+  <rect x="30" y="292" width="130" height="58" rx="2" class="boxBlue"/>
+  <text x="95" y="316" text-anchor="middle" class="white label">Auth</text>
+  <text x="95" y="336" text-anchor="middle" class="white tiny">Session / CSRF</text>
+  <rect x="30" y="368" width="130" height="58" rx="2" class="boxBlue"/>
+  <text x="95" y="392" text-anchor="middle" class="white label">RBAC</text>
+  <text x="95" y="412" text-anchor="middle" class="white tiny">Role Scope</text>
+  <rect x="30" y="444" width="130" height="58" rx="2" class="boxBlue"/>
+  <text x="95" y="468" text-anchor="middle" class="white label">Security</text>
+  <text x="95" y="488" text-anchor="middle" class="white tiny">Validation</text>
+  <rect x="30" y="520" width="130" height="58" rx="2" class="boxBlue"/>
+  <text x="95" y="544" text-anchor="middle" class="white label">Config Loader</text>
+  <text x="95" y="564" text-anchor="middle" class="white tiny">JSON Driven</text>
+
+  <!-- API Gateway band -->
+  <rect x="0" y="270" width="1400" height="52" class="band"/>
+  <text x="700" y="301" text-anchor="middle" class="label">API Gateway / Versioned PHP API Layer</text>
+
+  <!-- Services row -->
+  <rect x="225" y="360" width="130" height="70" rx="2" class="boxBlue"/>
+  <text x="290" y="387" text-anchor="middle" class="white label">Assessment</text>
+  <text x="290" y="409" text-anchor="middle" class="white small">Service</text>
+
+  <rect x="380" y="360" width="115" height="70" rx="2" class="boxBlue"/>
+  <text x="437" y="387" text-anchor="middle" class="white label">CQI</text>
+  <text x="437" y="409" text-anchor="middle" class="white small">Service</text>
+
+  <rect x="520" y="360" width="145" height="70" rx="2" class="boxBlue"/>
+  <text x="592" y="387" text-anchor="middle" class="white label">Performance</text>
+  <text x="592" y="409" text-anchor="middle" class="white small">Service</text>
+
+  <rect x="690" y="360" width="140" height="70" rx="2" class="boxBlue"/>
+  <text x="760" y="387" text-anchor="middle" class="white label">Certification</text>
+  <text x="760" y="409" text-anchor="middle" class="white small">Service</text>
+
+  <rect x="855" y="360" width="115" height="70" rx="2" class="boxBlue"/>
+  <text x="912" y="387" text-anchor="middle" class="white label">State</text>
+  <text x="912" y="409" text-anchor="middle" class="white small">Service</text>
+
+  <rect x="995" y="360" width="120" height="70" rx="2" class="boxBlue"/>
+  <text x="1055" y="387" text-anchor="middle" class="white label">Report</text>
+  <text x="1055" y="409" text-anchor="middle" class="white small">Service</text>
+
+  <rect x="1140" y="360" width="130" height="70" rx="2" class="boxBlue"/>
+  <text x="1205" y="387" text-anchor="middle" class="white label">File Upload</text>
+  <text x="1205" y="409" text-anchor="middle" class="white small">Service</text>
+
+  <!-- Registry and queue -->
+  <rect x="270" y="486" width="150" height="68" rx="2" class="boxLight"/>
+  <text x="345" y="513" text-anchor="middle" class="label">Assessment</text>
+  <text x="345" y="534" text-anchor="middle" class="small">Registry</text>
+
+  <rect x="445" y="486" width="150" height="68" rx="2" class="boxLight"/>
+  <text x="520" y="513" text-anchor="middle" class="label">Framework</text>
+  <text x="520" y="534" text-anchor="middle" class="small">Registry</text>
+
+  <rect x="620" y="486" width="150" height="68" rx="2" class="boxLight"/>
+  <text x="695" y="513" text-anchor="middle" class="label">Performance</text>
+  <text x="695" y="534" text-anchor="middle" class="small">Registry</text>
+
+  <rect x="795" y="486" width="150" height="68" rx="2" class="boxLight"/>
+  <text x="870" y="513" text-anchor="middle" class="label">Certification</text>
+  <text x="870" y="534" text-anchor="middle" class="small">Registry</text>
+
+  <rect x="970" y="486" width="160" height="68" rx="2" class="boxSoft"/>
+  <text x="1050" y="513" text-anchor="middle" class="label">Event Queue</text>
+  <text x="1050" y="534" text-anchor="middle" class="small">Kafka-ready later</text>
+
+  <!-- Data layer -->
+  <ellipse cx="360" cy="660" rx="78" ry="24" class="db"/>
+  <rect x="282" y="620" width="156" height="40" class="db"/>
+  <ellipse cx="360" cy="620" rx="78" ry="24" class="db"/>
+  <text x="360" y="643" text-anchor="middle" class="label">Relational DB</text>
+  <text x="360" y="662" text-anchor="middle" class="tiny">MySQL / MariaDB</text>
+
+  <rect x="515" y="608" width="160" height="86" rx="2" class="boxGreen"/>
+  <text x="595" y="637" text-anchor="middle" class="label">JSON Config</text>
+  <text x="595" y="658" text-anchor="middle" class="small">Frameworks, masters,</text>
+  <text x="595" y="676" text-anchor="middle" class="small">formula, validation</text>
+
+  <rect x="750" y="608" width="160" height="86" rx="2" class="boxGreen"/>
+  <text x="830" y="637" text-anchor="middle" class="label">File Storage</text>
+  <text x="830" y="658" text-anchor="middle" class="small">Evidence, certificates,</text>
+  <text x="830" y="676" text-anchor="middle" class="small">reports, documents</text>
+
+  <rect x="985" y="608" width="160" height="86" rx="2" class="boxGreen"/>
+  <text x="1065" y="637" text-anchor="middle" class="label">Analytics Data</text>
+  <text x="1065" y="658" text-anchor="middle" class="small">Dashboards, reports,</text>
+  <text x="1065" y="676" text-anchor="middle" class="small">state monitoring</text>
+
+  <!-- Right integrations -->
+  <rect x="1255" y="292" width="120" height="58" rx="2" class="boxOrange"/>
+  <text x="1315" y="316" text-anchor="middle" class="label">Maps</text>
+  <text x="1315" y="336" text-anchor="middle" class="tiny">Leaflet / OSM</text>
+  <rect x="1255" y="368" width="120" height="58" rx="2" class="boxOrange"/>
+  <text x="1315" y="392" text-anchor="middle" class="label">Email / SMS</text>
+  <text x="1315" y="412" text-anchor="middle" class="tiny">Optional</text>
+  <rect x="1255" y="444" width="120" height="58" rx="2" class="boxOrange"/>
+  <text x="1315" y="468" text-anchor="middle" class="label">Cloud</text>
+  <text x="1315" y="488" text-anchor="middle" class="tiny">S3 / Backups</text>
+
+  <!-- Flow arrows -->
+  <path d="M400 150 L400 190" class="line"/>
+  <path d="M615 150 L897 190" class="line"/>
+  <path d="M835 150 L1192 190" class="line"/>
+  <path d="M1105 150 L1047 190" class="line"/>
+
+  <path d="M285 248 L285 270" class="line"/>
+  <path d="M430 248 L430 270" class="line"/>
+  <path d="M582 248 L582 270" class="line"/>
+  <path d="M742 248 L742 270" class="line"/>
+  <path d="M897 248 L897 270" class="line"/>
+  <path d="M1047 248 L1047 270" class="line"/>
+  <path d="M1192 248 L1192 270" class="line"/>
+
+  <path d="M290 322 L290 360" class="line"/>
+  <path d="M437 322 L437 360" class="line"/>
+  <path d="M592 322 L592 360" class="line"/>
+  <path d="M760 322 L760 360" class="line"/>
+  <path d="M912 322 L912 360" class="line"/>
+  <path d="M1055 322 L1055 360" class="line"/>
+  <path d="M1205 322 L1205 360" class="line"/>
+
+  <path d="M290 430 L345 486" class="line"/>
+  <path d="M437 430 L345 486" class="line"/>
+  <path d="M592 430 L695 486" class="line"/>
+  <path d="M760 430 L870 486" class="line"/>
+  <path d="M912 430 L1065 608" class="line"/>
+  <path d="M1055 430 L1065 608" class="line"/>
+  <path d="M1205 430 L830 608" class="line"/>
+
+  <path d="M345 554 L360 620" class="line"/>
+  <path d="M520 554 L595 608" class="line"/>
+  <path d="M695 554 L1065 608" class="line"/>
+  <path d="M870 554 L360 620" class="line"/>
+  <path d="M1050 554 L1065 608" class="line"/>
+
+  <path d="M160 321 L225 395" class="dash"/>
+  <path d="M160 397 L225 395" class="dash"/>
+  <path d="M160 473 L225 395" class="dash"/>
+  <path d="M160 549 L225 395" class="dash"/>
+  <path d="M1270 395 L1255 397" class="dash"/>
+  <path d="M1270 395 L1255 321" class="dash"/>
+  <path d="M1270 395 L1255 473" class="dash"/>
+
+  <!-- Legend -->
+  <rect x="35" y="750" width="1330" height="44" rx="3" fill="#ffffff" stroke="#cbd5e1"/>
+  <rect x="58" y="764" width="24" height="18" class="boxLight"/>
+  <text x="92" y="778" class="legendText">UI / User Channels</text>
+  <rect x="238" y="764" width="24" height="18" class="boxBlue"/>
+  <text x="272" y="778" class="legendText">SaQshi Services</text>
+  <rect x="420" y="764" width="24" height="18" class="boxGreen"/>
+  <text x="454" y="778" class="legendText">Data / Storage</text>
+  <rect x="620" y="764" width="24" height="18" class="boxOrange"/>
+  <text x="654" y="778" class="legendText">External / Optional Integrations</text>
+  <line x1="880" y1="773" x2="930" y2="773" class="line"/>
+  <text x="945" y="778" class="legendText">Runtime Flow</text>
+  <line x1="1085" y1="773" x2="1135" y2="773" class="dash"/>
+  <text x="1150" y="778" class="legendText">Shared / Optional Dependency</text>
+</svg>

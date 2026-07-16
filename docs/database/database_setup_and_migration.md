@@ -44,11 +44,11 @@ Example for local development:
 ```sql
 CREATE DATABASE saqshi CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-CREATE USER 'saqshi_user'@'localhost' IDENTIFIED BY 'change_me';
+CREATE USER 'saqshi_user'@'{db_host}' IDENTIFIED BY 'change_me';
 
 GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, ALTER, INDEX, DROP, CREATE VIEW
 ON saqshi.*
-TO 'saqshi_user'@'localhost';
+TO 'saqshi_user'@'{db_host}';
 
 FLUSH PRIVILEGES;
 ```

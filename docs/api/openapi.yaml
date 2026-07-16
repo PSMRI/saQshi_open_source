@@ -7,8 +7,8 @@ info:
     reports and monitoring APIs. Authentication is session-cookie based. State-changing
     requests require CSRF token header.
 servers:
-  - url: http://localhost:94/api
-    description: Local development API
+  - url: /api
+    description: Same-origin API. Open Swagger from {main_url} so session-cookie APIs use the active deployment host.
 security:
   - SessionCookie: []
 tags:

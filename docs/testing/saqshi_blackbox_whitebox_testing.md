@@ -104,7 +104,7 @@ Executed on: 2026-07-13
 Command:
 
 ```text
-node scripts\load-test\saqshi-load-test.js --url http://localhost:94/api/auth/v1/csrf.php --duration 5 --concurrency 2 --output docs\testing\load_test_results\blackbox-smoke-csrf.json
+node scripts\load-test\saqshi-load-test.js --url {main_url}/api/auth/v1/csrf.php --duration 5 --concurrency 2 --output docs\testing\load_test_results\blackbox-smoke-csrf.json
 ```
 
 Result:

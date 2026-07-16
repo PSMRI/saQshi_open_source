@@ -26,27 +26,83 @@
             color: #52677f;
             font-size: 14px;
         }
+        .sq-swagger-status {
+            margin-top: 8px;
+            padding: 8px 10px;
+            border-radius: 6px;
+            background: #eaf1ff;
+            color: #1d4ed8;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+        }
+        .sq-swagger-error {
+            margin: 14px 18px;
+            padding: 12px 14px;
+            border: 1px solid #fecaca;
+            border-radius: 8px;
+            background: #fff1f2;
+            color: #991b1b;
+            font-family: Arial, sans-serif;
+        }
     </style>
 </head>
 <body>
     <header class="sq-swagger-header">
         <h1>SaQshi API Swagger</h1>
-        <p>Loads docs/api/openapi.yaml. If this file is opened directly and the YAML does not load, serve the project through localhost and open this page from the same host.</p>
+        <p>Loads docs/api/openapi.yaml. Open this page from the same {main_url} host as the SaQshi application so session-cookie APIs can be tested.</p>
+        <div id="sqSwaggerStatus" class="sq-swagger-status">Preparing API base URL...</div>
     </header>
     <div id="swagger-ui"></div>
     <script src="https://unpkg.com/swagger-ui-dist@5/swagger-ui-bundle.js"></script>
     <script>
-        window.addEventListener("load", function () {
-            window.ui = SwaggerUIBundle({
-                url: "./openapi.yaml",
+        window.addEventListener("load", async function () {
+            const status = document.getElementById("sqSwaggerStatus");
+            const sameOriginApi = window.location.origin + "/api";
+            status.textContent = "Swagger API base URL: " + sameOriginApi;
+
+            try {
+                const specResponse = await fetch("./openapi.yaml", { cache: "no-store" });
+                if (!specResponse.ok) {
+                    throw new Error("Unable to load openapi.yaml. HTTP " + specResponse.status);
+                }
+
+                const specText = await specResponse.text();
+                const parser = window.jsyaml || window.jsyaml;
+                if (!parser) {
+                    throw new Error("YAML parser not loaded.");
+                }
+
+                const spec = parser.load(specText);
+                spec.servers = [
+                    {
+                        url: sameOriginApi,
+                        description: "Current browser origin API"
+                    }
+                ];
+
+                window.ui = SwaggerUIBundle({
+                spec: spec,
                 dom_id: "#swagger-ui",
                 deepLinking: true,
+                validatorUrl: null,
+                requestCredentials: "include",
+                requestInterceptor: function (request) {
+                    request.credentials = "include";
+                    return request;
+                },
                 presets: [
                     SwaggerUIBundle.presets.apis
                 ],
                 layout: "BaseLayout"
             });
+            } catch (error) {
+                document.getElementById("swagger-ui").innerHTML =
+                    '<div class="sq-swagger-error"><strong>Swagger could not start.</strong><br>' +
+                    String(error.message || error) +
+                    '<br><br>Check that <code>docs/api/openapi.yaml</code> opens from the same host and that CDN JavaScript is available.</div>';
+            }
         });
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/js-yaml@4/dist/js-yaml.min.js"></script>
 </body>
 </html>

@@ -35,7 +35,7 @@ Recommended load-test areas:
 Use a very small test first:
 
 ```text
-node scripts/load-test/saqshi-load-test.js --url http://localhost:94/api/auth/v1/csrf.php --duration 10 --concurrency 3
+node scripts/load-test/saqshi-load-test.js --url {main_url}/api/auth/v1/csrf.php --duration 10 --concurrency 3
 ```
 
 This checks whether the server can handle basic API requests without stressing it.
@@ -45,7 +45,7 @@ This checks whether the server can handle basic API requests without stressing i
 After smoke test passes:
 
 ```text
-node scripts/load-test/saqshi-load-test.js --url http://localhost:94/api/auth/v1/csrf.php --duration 60 --concurrency 20
+node scripts/load-test/saqshi-load-test.js --url {main_url}/api/auth/v1/csrf.php --duration 60 --concurrency 20
 ```
 
 ## Multiple URL Test
@@ -53,7 +53,7 @@ node scripts/load-test/saqshi-load-test.js --url http://localhost:94/api/auth/v1
 Workers rotate through comma-separated URLs:
 
 ```text
-node scripts/load-test/saqshi-load-test.js --urls http://localhost:94/api/auth/v1/csrf.php,http://localhost:94/api/auth/v1/captcha.php --duration 30 --concurrency 10
+node scripts/load-test/saqshi-load-test.js --urls {main_url}/api/auth/v1/csrf.php,{main_url}/api/auth/v1/captcha.php --duration 30 --concurrency 10
 ```
 
 ## Authenticated API Test
@@ -63,13 +63,13 @@ For authenticated endpoints, first login in Postman or browser and copy the sess
 Then run:
 
 ```text
-node scripts/load-test/saqshi-load-test.js --url http://localhost:94/api/state/v1/dashboard.php --duration 30 --concurrency 10 --cookie "SAQSHI_SESSION=your-session-cookie"
+node scripts/load-test/saqshi-load-test.js --url {main_url}/api/state/v1/dashboard.php --duration 30 --concurrency 10 --cookie "SAQSHI_SESSION=your-session-cookie"
 ```
 
 If the API needs CSRF for POST:
 
 ```text
-node scripts/load-test/saqshi-load-test.js --url http://localhost:94/api/performance/v1/kpi_save.php --method POST --header "X-CSRF-TOKEN: your-token" --cookie "SAQSHI_SESSION=your-session-cookie" --body "{\"indicator_id\":\"KPI_001\",\"department_id\":25,\"entry_month\":7,\"entry_year\":2026,\"numerator\":10,\"denominator\":20,\"result\":50}" --duration 20 --concurrency 3
+node scripts/load-test/saqshi-load-test.js --url {main_url}/api/performance/v1/kpi_save.php --method POST --header "X-CSRF-TOKEN: your-token" --cookie "SAQSHI_SESSION=your-session-cookie" --body "{\"indicator_id\":\"KPI_001\",\"department_id\":25,\"entry_month\":7,\"entry_year\":2026,\"numerator\":10,\"denominator\":20,\"result\":50}" --duration 20 --concurrency 3
 ```
 
 Use POST load tests carefully because they can create/update data repeatedly.
@@ -139,7 +139,7 @@ Executed on: 2026-07-13
 Command:
 
 ```text
-node scripts\load-test\saqshi-load-test.js --url http://localhost:94/api/auth/v1/csrf.php --duration 10 --concurrency 3
+node scripts\load-test\saqshi-load-test.js --url {main_url}/api/auth/v1/csrf.php --duration 10 --concurrency 3
 ```
 
 Result file:

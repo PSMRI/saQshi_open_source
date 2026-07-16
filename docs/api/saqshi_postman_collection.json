@@ -6,7 +6,8 @@
     "version": "1.0.0"
   },
   "variable": [
-    { "key": "baseUrl", "value": "http://localhost:94/api" },
+    { "key": "main_url", "value": "{main_url}" },
+    { "key": "baseUrl", "value": "{{main_url}}/api" },
     { "key": "csrfToken", "value": "" },
     { "key": "assessmentId", "value": "1" },
     { "key": "departmentId", "value": "1" },

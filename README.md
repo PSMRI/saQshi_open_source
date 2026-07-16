@@ -4,6 +4,18 @@ SaQshi is an open-source digital quality assessment and monitoring application f
 
 License: GPL-3.0. See [LICENSE](LICENSE).
 
+## Project Context
+
+SaQshi is aligned with the digital workflow needs of healthcare quality assessment programmes such as NQAS. The NQAS public guidance describes quality standards for public health facilities, self-assessment for improvement, preparation for certification, and eight Areas of Concern including Service Provision, Patient Rights, Inputs, Support Services, Clinical Care, Infection Control, Quality Management, and Outcome.
+
+SaQshi implements this as a configurable application: facility and framework data are loaded through JSON and APIs, assessment responses are stored against an assessment, CQI tracks gaps and revised scores, performance monitoring captures monthly KPI/outcome data, and state-level dashboards provide aggregated monitoring. See [Project Overview and NQAS Alignment](docs/architecture/project_overview.md).
+
+## Version Evolution
+
+SaQshi evolved from an MVP checklist assessment tool into V1, V2, and the current open-source release. The current open-source version includes assessment, CQI, performance monitoring, certification, downloadable reports, advanced visualizations, state/district/division/block dashboards, and public project documentation.
+
+See [Version Matrix](docs/architecture/version_matrix.md) for the MVP, V1, V2 and Open Source feature comparison.
+
 ## Main Modules
 
 | Module | Purpose |
@@ -77,7 +89,7 @@ docs/
 7. Open:
 
 ```text
-http://localhost:94/ui/login.html
+{main_url}/ui/login.html
 ```
 
 The port/path may differ depending on your local server setup.

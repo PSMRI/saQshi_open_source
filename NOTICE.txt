@@ -1,0 +1,13 @@
+SaQshi
+Copyright (c) 2024 Piramal Swasthya Management and Research Intitute
+
+SaQshi is distributed under GPL-3.0. See LICENSE.
+
+This product includes third-party open-source components and public web services.
+Their original copyright notices and license terms remain with those components.
+
+Third-party attribution and license inventory:
+
+docs/compliance/third_party_licenses.md
+
+This NOTICE file is provided for release packaging and attribution convenience.

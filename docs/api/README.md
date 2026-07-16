@@ -10,6 +10,8 @@ the implementation path behind each endpoint.
 |---|---|
 | [Endpoint inventory](endpoint-inventory.md) | Complete list of API endpoint source files, grouped by module. |
 | [Source reference](source-reference.md) | Generated reference for every API PHP file and JSON configuration file. |
+| `saqshi_postman_collection.json` | Importable Postman API testing collection. |
+| `saqshi_local_postman_environment.json` | Importable Postman local environment variables. |
 | `assessment.md` | Assessment lifecycle, assessment endpoints, validation, and data flow. |
 | `auth.md` | Authentication, session, CSRF, and access control endpoints. |
 | `framework.md` | Framework metadata endpoints. |
