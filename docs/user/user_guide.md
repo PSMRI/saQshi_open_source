@@ -1,7 +1,7 @@
 # SaQshi User Guide
 
 Version: 1.0  
-Updated: 2026-07-15  
+Updated: 2026-07-18  
 License: GPL-3.0
 
 ## Purpose
@@ -17,6 +17,21 @@ Use this guide when you want to know:
 - what action you should perform,
 - what common messages mean,
 - what to do if something does not load.
+
+## Important Data Entry Rule
+
+SaQshi is for facility quality assessment and monitoring. It is not a patient record system.
+
+Do not enter patient-level personal health information anywhere in SaQshi, including:
+
+- patient name,
+- patient ID or registration number,
+- case-sheet details,
+- diagnosis or clinical history linked to a person,
+- lab report or prescription linked to a person,
+- patient photograph or patient-identifiable evidence.
+
+Use SaQshi for facility-level observations, checklist scores, CQI actions, evidence of system/process improvement, KPI/outcome numbers and monitoring reports. If any evidence document accidentally contains patient-identifiable information, do not upload it until it is redacted or cleared by the deployment owner.
 
 ## Login
 
@@ -35,10 +50,44 @@ On the login page:
 
 If login is successful, SaQshi opens the dashboard according to your role.
 
+SaQshi login uses the value stored in `s_user.u_name`. It does not login by
+display name, assessor name, mobile number or email unless that value has been
+created as the actual `u_name`. For assessor users, the expected login user name
+is normally the assessor code created by state administration.
+
+### Screen Reader on Login Page
+
+The login page does not show the authenticated SaQshi header, so the built-in
+SaQshi accessibility menu is not available before login.
+
+For login, use your device or browser screen reader:
+
+- Windows Narrator: press `Ctrl + Windows + Enter`.
+- NVDA/JAWS: start the screen reader before opening the login page.
+- macOS VoiceOver: press `Command + F5`.
+
+The captcha is a text-based math question. It is announced as text and the
+captcha input includes help text. If you cannot complete the captcha
+independently, contact your administrator for assisted login or password reset.
+
+After login, open the accessibility menu in the top header. From there you can
+turn on:
+
+- `Screen reader mode`
+- `Read page`
+- `Stop`
+- text size controls `A--`, `A`, `A+`, `A++`
+
+SaQshi remembers the selected accessibility settings for later authenticated
+pages on the same browser.
+
 If login fails:
 
 - Check user name.
 - Check password.
+- Confirm the user name exists in `s_user.u_name` and the user is active.
+- For assessor login, confirm the assessor profile is linked to a user in
+  `s_user` and that the assessor code is being used as the login user name.
 - Refresh captcha and try again.
 - If the message says something went wrong, contact the technical person and share the time of error.
 
@@ -51,9 +100,70 @@ If login fails:
 | District User | Monitoring data for assigned district. |
 | Division User | Monitoring data for assigned division/region. |
 | State User | State-level monitoring, certification, reports, users and drill-down views. |
+| Assessor | Facilities assigned by state administration for assessment entry. |
 
 Menus are role-based. A state user should not see facility assessment-entry
 menus. A facility user should not see full state administration menus.
+
+## State-Led Assessor Workflow
+
+This workflow is used when state administration wants one assessor to assess
+multiple facilities.
+
+For state admin:
+
+1. Open `State Monitoring > Assessor Management`.
+2. Create the assessor profile.
+3. Leave linked user ID blank if SaQshi should create the assessor login automatically.
+4. SaQshi uses assessor code as username, generates a temporary password and sends it through configured email/SMS service.
+5. Search and assign one or more facilities to that assessor.
+
+Before giving login details to the assessor, confirm that a matching user row
+exists in `s_user` with `u_name` equal to assessor code, role `Assessor`, active
+status and the generated password hash.
+
+For assessor:
+
+1. Login with the assessor user account.
+2. If you are using a temporary password, SaQshi opens My Profile and asks you to create a new password.
+3. Open `Assessor Dashboard` or `Assigned Facilities`.
+4. Select the facility to assess.
+5. SaQshi creates or reuses the active assessment for that facility.
+6. If only one department applies, SaQshi activates it automatically.
+7. If multiple departments apply, SaQshi opens department activation.
+8. Continue with assessor info, checklist, CQI and reports.
+
+If department activation and assessor information are already completed, the
+assessor dashboard shows `Start Checklist` or `Continue Checklist` directly.
+You do not need to repeat the earlier screens.
+
+Use `View` on a mapped facility to see:
+
+- previous assessments for that facility,
+- current assessment status and score,
+- KPI/outcome months when those modules are enabled.
+
+From the same view, use the performance buttons to open:
+
+- `Performance Dashboard`,
+- `Outcome Trend`,
+- `KPI Trend`,
+- month-wise KPI/outcome charts filled by the facility user.
+
+These buttons appear only when the deployment has performance, KPI and outcome
+modules enabled for the healthcare implementation.
+
+Assessor access to KPI/outcome is view-only. Assessors cannot fill or update
+KPI/outcome entries, CQI gap closure or action plans. The assessor's work is
+assessment entry: department activation where needed, assessor info and
+checklist scoring.
+
+Assessment scores saved by the assessor appear in normal facility dashboards,
+reports and state/district/division/block monitoring because the result is
+stored against the facility assessment.
+
+An assessor can see and assess only the facilities mapped to that assessor
+profile.
 
 ## Facility User Workflow
 
@@ -107,11 +217,13 @@ Important rule:
 
 Typical fields:
 
-- Assessment name
+- Assessment name, generated automatically from facility, framework and assessment month
 - Framework
 - Start date
 - End date
 - Remarks
+
+You may edit the generated assessment name before saving if your programme uses a local naming format.
 
 If the page says active assessment already exists, use the current assessment or cancel it if your process allows.
 
@@ -189,13 +301,17 @@ Select:
 
 Then checkpoints load one by one.
 
-Response meaning:
+In the healthcare/NQAS profile, response meaning is:
 
 | Score | Meaning |
 |---:|---|
 | `0` | Non-compliance |
 | `1` | Partial compliance |
 | `2` | Full compliance |
+
+In other configured domains, the checkpoint may instead show yes/no, dropdown,
+number, text or multi-field entry. In those cases, enter the requested value and
+use **Save / Update** or **Next** in the same way.
 
 Use:
 
@@ -455,6 +571,138 @@ For monitoring/admin users, user administration can:
 - activate user,
 - deactivate user.
 
+## AI Chat Assistant
+
+The AI Chat Assistant is a help and monitoring assistant inside SaQshi. It is
+opened from the floating chat button or the chat icon in the application header,
+depending on the page layout.
+
+Use it for quick help such as:
+
+- how to start an assessment,
+- how to activate departments,
+- how to continue checklist entry,
+- what `0`, `1` and `2` mean,
+- why an error message is appearing,
+- how to use accessibility options,
+- how to download reports.
+
+The chat panel also provides quick buttons:
+
+| Button | What It Asks |
+|---|---|
+| Start | How to start an assessment. |
+| Checklist | How to continue checklist entry. |
+| Current Month | Current month monitoring status for authorised monitoring users. |
+| Pending CQI | Pending action plan/gap closure status for authorised monitoring users. |
+| Reports | How to download reports. |
+
+The assistant is role-aware. It should answer only from the data that your login
+role is allowed to see.
+
+### Facility User Questions
+
+Facility users can ask questions such as:
+
+```text
+How do I start assessment?
+Why checklist is not loading?
+How many checkpoints are pending?
+How do I create action plan?
+How do I close gaps?
+How do I download score report?
+```
+
+Expected answers should guide the user to the correct SaQshi page and next
+action. Facility-level data responses should be limited to the logged-in
+facility.
+
+### External Assessor Questions
+
+Assessors can ask:
+
+```text
+How do I start assessment?
+Show my assigned facilities.
+How do I continue checklist?
+Can I view KPI outcome status?
+Why facility not assigned is showing?
+```
+
+The assistant should guide assessors through:
+
+```text
+Assigned Facilities -> Select Facility -> Start Assessment -> Department Activation -> Assessor Info -> Checklist
+```
+
+Assessors can complete assessment for mapped facilities. CQI action plan, gap
+closure, KPI entry and Outcome entry are not assessor entry workflows, but the
+assistant may help explain view-only information where available.
+
+### Monitoring User Questions
+
+State, division, district and block users can ask monitoring questions such as:
+
+```text
+Current month status
+KPI filled status
+Outcome filled status
+Show report for Kashipur
+How many facilities have not started action plan?
+How many facilities have pending gap closure?
+Assessment completed this month
+```
+
+The assistant should apply the user scope automatically:
+
+| Role | Assistant Data Scope |
+|---|---|
+| State | Configured state data |
+| Division | Assigned division |
+| District | Assigned district |
+| Block | Assigned block |
+
+Example response for current month status:
+
+```text
+Current month status for your scope:
+
+- Assessment started: 18 facilities
+- Assessment in progress: 10 facilities
+- Assessment completed: 8 facilities
+- KPI filled: 12 facilities
+- Outcome filled: 15 facilities
+- Action plan not started: 7 facilities
+- Gap closure pending: 9 facilities
+```
+
+Example response for a facility report:
+
+```text
+Kashipur facility summary:
+
+- Latest assessment: In Progress
+- Score: 42%
+- Checkpoints completed: 40 / 100
+- Open gaps: 12
+- Pending action plans: 6
+- Gap closures completed: 2
+- KPI months filled: Jan-26, Feb-26
+- Outcome months filled: Jan-26
+- State certification: Conditional
+```
+
+If a facility is outside your assigned scope, the assistant should not show its
+details.
+
+### Chat Safety
+
+- Do not type passwords, secrets or patient information into chat.
+- Do not upload patient-identifiable evidence through chat.
+- Use the official page forms to save assessment, CQI, KPI, Outcome and certification records.
+- Treat chat answers as guidance; saved records and downloaded reports remain the official source.
+- If the assistant gives unclear guidance, use the Documentation page or contact the technical team.
+
 ## Documentation and Help
 
 Open:
@@ -513,6 +761,7 @@ Use documentation to read:
 | View trend | Performance > Trend |
 | Download scorecard | Reports > Score |
 | Download progress | Reports > Progress |
+| Ask help or monitoring question | AI Chat Assistant |
 | Update profile | Administration > My Profile |
 | Update facility | Administration > Facility Profile |
 | Read help | GitBook Documentation |

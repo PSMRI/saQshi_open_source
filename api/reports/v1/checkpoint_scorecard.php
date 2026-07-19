@@ -12,6 +12,7 @@
 
 require_once __DIR__ . '/../../auth_api.php';
 require_once __DIR__ . '/../../core/FrameworkEngine.php';
+require_once __DIR__ . '/../../core/Crypto.php';
 require_once __DIR__ . '/../../assets/conn/db.php';
 
 Security::requireMethod('GET');
@@ -28,6 +29,23 @@ function scorecardNormalize(string $value): string
     return function_exists('mb_strtolower')
         ? mb_strtolower($value, 'UTF-8')
         : strtolower($value);
+}
+
+/**
+ * Returns the assessment reference column used by department status table.
+ */
+function scorecardDepartmentStatusColumn(mysqli $con): string
+{
+    $result = $con->query("
+        SELECT 1
+        FROM INFORMATION_SCHEMA.COLUMNS
+        WHERE TABLE_SCHEMA = DATABASE()
+          AND TABLE_NAME = 'assessment_department_status'
+          AND COLUMN_NAME = 'assessment_id'
+        LIMIT 1
+    ");
+
+    return ($result && $result->fetch_assoc()) ? 'assessment_id' : 'ass_period_id';
 }
 
 /**
@@ -352,11 +370,12 @@ try {
     $checklistRows = [];
 
     $activeDeptIds = [];
+    $departmentStatusColumn = scorecardDepartmentStatusColumn($con);
 
     $sqlActiveDept = "
         SELECT dept_id
         FROM assessment_department_status
-        WHERE ass_period_id = ?
+        WHERE {$departmentStatusColumn} = ?
           AND fac_id_fk = ?
           AND is_active = 1
     ";
@@ -549,7 +568,7 @@ try {
         FROM assessment_assessor_info
         WHERE assessment_id = ?
           AND fac_id_fk = ?
-        ORDER BY id ASC
+        ORDER BY info_id ASC
         LIMIT 1
     ";
 
@@ -561,7 +580,7 @@ try {
         $row = $stmt->get_result()->fetch_assoc();
 
         if ($row) {
-            $assessor = $row;
+            $assessor = Crypto::decryptFields($row, ['assessor_name', 'assessee_name']);
         }
     }
 
@@ -648,7 +667,12 @@ try {
         }
     }
 
-    $standardFillStyle = $standardStyles['B'] ?? ($fallbackStyles['B'] ?? null);
+    $areaFillStyle = $areaStyles['A'] ?? ($areaStyles['C'] ?? null);
+    $standardFillStyle = $standardStyles['B'] ?? '7';
+
+    foreach (['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'] as $column) {
+        $areaStyles[$column] = $areaFillStyle;
+    }
 
     foreach (['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'] as $column) {
         $standardStyles[$column] = $standardFillStyle;
@@ -681,14 +705,25 @@ try {
         $sheetData->appendChild($row);
 
         if ($item['type'] === 'area') {
-            scorecardSetStyledCell($dom, $xpath, $row, $rowNo, 'C', $item['measurable'], false, $areaStyles);
+            foreach (['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'] as $column) {
+                scorecardSetStyledCell(
+                    $dom,
+                    $xpath,
+                    $row,
+                    $rowNo,
+                    $column,
+                    $column === 'A' ? $item['measurable'] : '',
+                    false,
+                    $areaStyles
+                );
+            }
 
             if ($mergeCells instanceof DOMElement) {
                 $mergeCell = $dom->createElementNS(
                     'http://schemas.openxmlformats.org/spreadsheetml/2006/main',
                     'mergeCell'
                 );
-                $mergeCell->setAttribute('ref', 'C' . $rowNo . ':H' . $rowNo);
+                $mergeCell->setAttribute('ref', 'A' . $rowNo . ':H' . $rowNo);
                 $mergeCells->appendChild($mergeCell);
             }
 
@@ -720,26 +755,29 @@ try {
         }
 
         $response = $responseMap[(int)$item['checkpoint_id']] ?? null;
-        $score = null;
+        $userScore = null;
+        $revisedScore = null;
 
         if ($response) {
-            $rawScore = $response['revised_score'] !== null
-                ? $response['revised_score']
-                : $response['response_value'];
-            $score = is_numeric($rawScore)
+            $rawScore = $response['response_value'];
+            $userScore = is_numeric($rawScore)
                 ? (int)$rawScore
                 : (int)$response['score'];
+
+            if ($response['revised_score'] !== null && is_numeric($response['revised_score'])) {
+                $revisedScore = (int)$response['revised_score'];
+            }
         }
 
         $remarks = $response ? (string)$response['remarks'] : '';
 
         scorecardSetStyledCell($dom, $xpath, $row, $rowNo, 'A', $item['reference'], false, $dataStyles);
-        scorecardSetStyledCell($dom, $xpath, $row, $rowNo, 'B', $item['standard'], false, $dataStyles);
-        scorecardSetStyledCell($dom, $xpath, $row, $rowNo, 'C', $item['measurable'], false, $dataStyles);
-        scorecardSetStyledCell($dom, $xpath, $row, $rowNo, 'D', $item['checkpoint'], false, $dataStyles);
-        scorecardSetStyledCell($dom, $xpath, $row, $rowNo, 'E', $item['verification'], false, $dataStyles);
-        scorecardSetStyledCell($dom, $xpath, $row, $rowNo, 'F', $item['method'], false, $dataStyles);
-        scorecardSetStyledCell($dom, $xpath, $row, $rowNo, 'G', $score, true, $dataStyles);
+        scorecardSetStyledCell($dom, $xpath, $row, $rowNo, 'B', $item['measurable'], false, $dataStyles);
+        scorecardSetStyledCell($dom, $xpath, $row, $rowNo, 'C', $item['checkpoint'], false, $dataStyles);
+        scorecardSetStyledCell($dom, $xpath, $row, $rowNo, 'D', $item['verification'], false, $dataStyles);
+        scorecardSetStyledCell($dom, $xpath, $row, $rowNo, 'E', $item['method'], false, $dataStyles);
+        scorecardSetStyledCell($dom, $xpath, $row, $rowNo, 'F', $userScore, true, $dataStyles);
+        scorecardSetStyledCell($dom, $xpath, $row, $rowNo, 'G', $revisedScore, true, $dataStyles);
         scorecardSetStyledCell($dom, $xpath, $row, $rowNo, 'H', $remarks, false, $dataStyles);
 
         $rowNo++;

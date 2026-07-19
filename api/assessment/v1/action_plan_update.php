@@ -49,7 +49,7 @@ try {
     $sql = "
         SELECT *
         FROM assessment_action_plan
-        WHERE id = ?
+        WHERE action_plan_id = ?
         LIMIT 1
     ";
 
@@ -124,7 +124,7 @@ try {
             status=?,
             updated_by=?,
             updated_on=CURRENT_TIMESTAMP
-        WHERE id=?
+        WHERE action_plan_id=?
     ";
 
     $stmt = $con->prepare($sql);

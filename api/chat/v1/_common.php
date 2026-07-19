@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/../../auth_api.php';
 require_once __DIR__ . '/../../assets/conn/db.php';
+require_once __DIR__ . '/../../core/ErrorHandler.php';
 require_once __DIR__ . '/../../service/ChatAssistantService.php';
 
 /**
@@ -39,6 +40,7 @@ function chatHandle(callable $fn): void
     } catch (InvalidArgumentException $e) {
         Response::validation(['message' => $e->getMessage()]);
     } catch (Throwable $e) {
-        Response::serverError($e->getMessage());
+        ErrorHandler::log($e, ['module' => 'ai_chat']);
+        Response::serverError('Unable to process chat request right now. Please try again.');
     }
 }

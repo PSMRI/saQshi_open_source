@@ -21,6 +21,23 @@ Reference: [NHSRC National Quality Assurance Standards](https://qps.nhsrcindia.o
 
 SaQshi does not replace official NQAS policy or certification guidance. It provides an implementation layer that helps facilities and monitoring teams capture, calculate, review, and report the information needed for a quality improvement workflow.
 
+## Data Scope Notice
+
+SaQshi is designed for facility-level quality assessment and monitoring. It is not an electronic medical record, hospital information system, patient registry, or patient-level clinical documentation system.
+
+The default SaQshi workflow does not require and should not store patient-level personal health information. Users should not enter patient names, patient identifiers, clinical histories, case-sheet details, lab reports linked to individuals, or other patient-level information in remarks, uploads, CQI notes or reports.
+
+SaQshi data should remain at the level of:
+
+- facility master and administrative geography,
+- assessment/checklist responses and scores,
+- CQI action plans and closure status,
+- performance KPI/outcome numbers,
+- certification and monitoring status,
+- administrative users and assessor/assessee identity fields.
+
+Administrative identity fields such as user profile details and assessor/assessee names are treated as personal/sensitive administrative data and protected through field encryption where implemented.
+
 ## Why SaQshi Exists
 
 Quality assessment work involves many connected steps: selecting the correct facility framework, activating relevant departments, recording assessor information, answering checkpoints, calculating scores, identifying gaps, preparing action plans, closing gaps, maintaining evidence, and producing reports. When these steps happen in separate files, the quality team loses continuity.
@@ -107,7 +124,7 @@ The project is intentionally JSON-driven where possible:
 - `api/config/state/map.json` controls state map boundary and fit behavior.
 - `api/config/certification/certification.json` controls certification options and validity rules.
 
-This keeps SaQshi adaptable for future NQAS revisions, other states, or additional quality programmes.
+This keeps SaQshi adaptable for future NQAS revisions, state deployments, and approved healthcare quality programmes where the checklist and indicator configuration are authorized for use.
 
 ## Event-Ready Architecture
 
@@ -140,5 +157,5 @@ The latest technical design document confirms the current implementation directi
 - [Technical Architecture Overview](technical_architecture.md)
 - [Configuration JSON Formats](configuration_formats.md)
 - [Service Architecture and Map](service_map.md)
-- [Complete User Guide](../user/user_guide.md)
+- [User Guide](../user/user_guide.md)
 - [API Developer Documentation](../api/README.md)

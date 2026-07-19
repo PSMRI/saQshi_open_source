@@ -101,10 +101,6 @@ class KPIService
             $errors['year'] = 'Valid year is required';
         }
 
-        if (!$denominatorNA && $denominator == 0.0) {
-            $errors['denominator'] = 'Denominator cannot be zero';
-        }
-
         if ($result === null) {
             $errors['result'] = 'Unable to calculate result';
         }

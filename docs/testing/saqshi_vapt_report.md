@@ -45,7 +45,7 @@ Overall posture: **Improving, but release should require closure of high-risk it
 | VAPT-F-001 | High | Local `.env` contained real DB username/password. `.env` is ignored by git, but credentials were visible in local workspace. | Fixed for public source folder | `.env` removed from `open_source`; rotate any credentials that were previously present before deployment/sharing. |
 | VAPT-F-002 | High | Legacy endpoint `api/auth/v1/login1.php` accepted raw `password` field. | Fixed | Endpoint now returns 410 and directs callers to encrypted `login.php`. Remove references to old endpoint. |
 | VAPT-F-003 | Medium | Upload allowed broad `application/octet-stream` and `application/zip` matches for all allowed extensions. | Improved | Extension-specific MIME validation and image validation added; production antivirus scanning still recommended. |
-| VAPT-F-004 | Medium | Uploaded files are under `/uploads`; direct public access may expose evidence URLs if guessed/shared. | Open | Consider access-controlled download endpoint for sensitive evidence. |
+| VAPT-F-004 | Medium | Uploaded files are under `/uploads`; direct public access may expose evidence URLs if guessed/shared. | Documented production hardening item | Consider access-controlled download endpoint or non-public upload storage for sensitive evidence. |
 | VAPT-F-005 | Medium | Some dynamic DDL/query usages exist, mostly table/column maintenance. | Improved | `CertificationService::ensureColumn()` now validates identifiers; keep future dynamic identifiers allow-listed. |
 | VAPT-F-006 | Low | CSP is strong for APIs, but full UI pages may need separate CSP review if inline scripts remain. | Open | Add UI-level CSP plan before production hardening. |
 
@@ -59,6 +59,7 @@ Overall posture: **Improving, but release should require closure of high-risk it
 | CSRF for state-changing requests | `api/auth_api.php` validates CSRF for POST/PUT/PATCH/DELETE. |
 | Password transport | Current `api/auth/v1/login.php` requires `password_enc` and captcha. |
 | File delete path safety | `api/files/v1/delete.php` resolves path under uploads and blocks traversal outside uploads. |
+| Event log redaction | `api/core/Event.php` redacts sensitive keys such as password, token, CSRF, captcha, secret, API key, authorization, cookie and session before writing event logs. |
 | `.env` ignored | `.gitignore` ignores `.env` and `.env.*` while allowing `.env.example`. |
 | Monitoring role scope | `StateDashboardService::applyMonitoringScope()` scopes role 9/5/4/8 data. |
 
@@ -151,5 +152,6 @@ Overall posture: **Improving, but release should require closure of high-risk it
 | Error handling review | Completed | Friendly error handler exists. |
 | Legacy login check | Fixed | `login1.php` now disabled with 410 response. |
 | Upload review | Improved | Extension-specific MIME checks and image validation exist; production malware scanning recommended. |
+| Event log redaction | Improved | Sensitive event payload/meta/query keys are redacted before event log writes. |
 | Scope review | Completed | Shared state bootstrap applies role scope. |
 | Active exploit testing | Not performed | Requires explicit test environment and approval. |

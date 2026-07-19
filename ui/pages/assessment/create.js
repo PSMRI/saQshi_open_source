@@ -26,7 +26,8 @@
     const state = {
         user: null,
         facility: null,
-        activeAssessment: null
+        activeAssessment: null,
+        assessmentNameEdited: false
     };
 
     function $(id) {
@@ -128,6 +129,65 @@
         if (end && !end.value) {
             end.value = after30Days.toISOString().slice(0, 10);
         }
+    }
+
+    function frameworkLabel(value) {
+        const framework = String(value || "saqshi-nqas").toLowerCase();
+
+        if (framework.includes("musqan")) {
+            return "MusQan";
+        }
+
+        if (framework.includes("laqshya")) {
+            return "LaQshya";
+        }
+
+        return "NQAS";
+    }
+
+    function monthYear(value) {
+        const date = value ? new Date(value) : new Date();
+
+        if (Number.isNaN(date.getTime())) {
+            return new Date().toLocaleDateString("en-IN", {
+                month: "long",
+                year: "numeric"
+            });
+        }
+
+        return date.toLocaleDateString("en-IN", {
+            month: "long",
+            year: "numeric"
+        });
+    }
+
+    function generateAssessmentName() {
+        const user = state.user || {};
+        const facility = state.facility || user.facility || {};
+        const facilityName =
+            facility.fac_name ||
+            facility.facility_name ||
+            user.facility_name ||
+            "Facility";
+
+        const framework = frameworkLabel($("framework_code")?.value);
+        const period = monthYear($("start_date")?.value);
+
+        return `${facilityName} - ${framework} - ${period}`;
+    }
+
+    function autoFillAssessmentName(force) {
+        const input = $("assessment_name");
+
+        if (!input) {
+            return;
+        }
+
+        if (!force && state.assessmentNameEdited) {
+            return;
+        }
+
+        input.value = generateAssessmentName();
     }
 
     function renderFacility() {
@@ -270,6 +330,7 @@
         }
 
         renderFacility();
+        autoFillAssessmentName();
     }
 
     async function loadActiveAssessment() {
@@ -292,13 +353,13 @@
     function validateForm(form) {
         const data = new FormData(form);
 
-        const assessmentName = String(data.get("assessment_name") || "").trim();
+        const assessmentName = String(data.get("assessment_name") || generateAssessmentName()).trim();
         const frameworkCode = String(data.get("framework_code") || "").trim();
         const startDate = String(data.get("start_date") || "").trim();
         const endDate = String(data.get("end_date") || "").trim();
 
         if (!assessmentName) {
-            notify("warning", "Please enter assessment name.");
+            notify("warning", "Assessment name could not be generated.");
             return false;
         }
 
@@ -338,10 +399,12 @@
             return;
         }
 
+        autoFillAssessmentName();
+
         const data = new FormData(form);
 
         const payload = {
-            assessment_name: String(data.get("assessment_name") || "").trim(),
+            assessment_name: String(data.get("assessment_name") || generateAssessmentName()).trim(),
             framework_code: String(data.get("framework_code") || "saqshi-nqas").trim(),
             start_date: String(data.get("start_date") || "").trim(),
             end_date: String(data.get("end_date") || "").trim(),
@@ -474,10 +537,35 @@
                 }
             });
         }
+
+        const assessmentName = $("assessment_name");
+
+        if (assessmentName) {
+            assessmentName.addEventListener("input", function () {
+                state.assessmentNameEdited = String(assessmentName.value || "").trim() !== "";
+            });
+        }
+
+        const framework = $("framework_code");
+
+        if (framework) {
+            framework.addEventListener("change", function () {
+                autoFillAssessmentName();
+            });
+        }
+
+        const startDate = $("start_date");
+
+        if (startDate) {
+            startDate.addEventListener("change", function () {
+                autoFillAssessmentName();
+            });
+        }
     }
 
     async function init() {
         setDefaultDates();
+        autoFillAssessmentName(true);
         bindEvents();
 
         try {

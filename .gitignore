@@ -5,6 +5,7 @@
 api/storage/events/*.log
 api/storage/logs/*.log
 api/storage/keys/
+api/storage/schema/
 uploads/
 
 *.rar

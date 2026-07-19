@@ -101,7 +101,7 @@ try {
      */
     $sqlDept = "
         SELECT
-            id,
+            assessment_dept_id AS id,
             dept_id,
             is_active,
             status

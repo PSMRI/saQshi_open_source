@@ -119,6 +119,8 @@
 
         if (existing && departments.some(([id]) => id === existing)) {
             select.value = existing;
+        } else if (!existing && departments.length === 1) {
+            select.value = departments[0][0];
         }
     }
 
@@ -189,6 +191,28 @@
         return { total, saved, complete: total > 0 && saved >= total };
     }
 
+    function firstPendingIndex(startAt = 0) {
+        if (!state.items.length) {
+            return 0;
+        }
+
+        const start = Math.max(0, Math.min(startAt, state.items.length - 1));
+
+        for (let index = start; index < state.items.length; index += 1) {
+            if (!currentSaved(state.items[index])) {
+                return index;
+            }
+        }
+
+        for (let index = 0; index < start; index += 1) {
+            if (!currentSaved(state.items[index])) {
+                return index;
+            }
+        }
+
+        return 0;
+    }
+
     function renderProgress() {
         const status = completionState();
         const index = status.total ? state.selectedIndex + 1 : 0;
@@ -210,7 +234,7 @@
         const denominatorNA = isNotApplicable(denominatorField.label);
         const d = num($("indicatorDenominator").value);
         const n = num($("indicatorNumerator").value);
-        $("indicatorResult").value = denominatorNA ? n.toFixed(2) : (d > 0 ? ((n / d) * 100).toFixed(2) : "");
+        $("indicatorResult").value = denominatorNA ? n.toFixed(2) : (d > 0 ? ((n / d) * 100).toFixed(2) : "0.00");
     }
 
     function showItem() {
@@ -296,7 +320,7 @@
     }
 
     async function loadIndicators() {
-        const deptId = $("indicatorDepartmentFilter")?.value || "";
+        let deptId = $("indicatorDepartmentFilter")?.value || "";
         const response = await SQ.api.get("/performance/v1/indicator_list.php", {
             indicator_type: indicatorType(),
             department_id: deptId
@@ -314,6 +338,7 @@
 
         if (!deptId) {
             renderDepartments();
+            deptId = $("indicatorDepartmentFilter")?.value || "";
         }
 
         state.items = deptId
@@ -324,11 +349,11 @@
             state.items = [];
         }
 
-        state.selectedIndex = 0;
         state.editMode = false;
 
         renderFacility();
         await loadHistory();
+        state.selectedIndex = firstPendingIndex(0);
         showItem();
     }
 
@@ -361,10 +386,10 @@
         notify("success", response?.message || "Indicator saved.");
         await loadHistory();
 
-        if (state.selectedIndex < state.items.length - 1) {
-            state.selectedIndex += 1;
-        } else {
+        if (completionState().complete) {
             state.editMode = false;
+        } else {
+            state.selectedIndex = firstPendingIndex(state.selectedIndex + 1);
         }
 
         showItem();

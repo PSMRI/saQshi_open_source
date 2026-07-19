@@ -150,7 +150,7 @@ try {
      * 2. Validate department activated
      */
     $sqlDept = "
-        SELECT id
+        SELECT assessment_dept_id AS id
         FROM assessment_department
         WHERE assessment_id = ?
           AND fac_id_fk = ?

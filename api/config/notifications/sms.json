@@ -1,0 +1,33 @@
+{
+  "enabled": false,
+  "transport": "log",
+  "log_path": "api/storage/notifications/sms.log",
+  "sender_id": "SAQSHI",
+  "templates": {
+    "assessor_login": {
+      "body": "SaQshi login created. Username: {{username}} Temporary password: {{temporary_password}}. Change password after login: {{main_url}}/ui/login.html"
+    }
+  },
+  "http": {
+    "url": "",
+    "method": "POST",
+    "content_type": "json",
+    "timeout_seconds": 10,
+    "auth": {
+      "type": "none",
+      "bearer_token_env": "SAQSHI_SMS_API_TOKEN",
+      "username_env": "SAQSHI_SMS_API_USERNAME",
+      "password_env": "SAQSHI_SMS_API_PASSWORD",
+      "api_key_header": "X-API-Key",
+      "api_key_env": "SAQSHI_SMS_API_KEY"
+    },
+    "headers": {
+      "Accept": "application/json"
+    },
+    "body": {
+      "sender": "{{sender_id}}",
+      "to": "{{mobile}}",
+      "message": "{{message}}"
+    }
+  }
+}

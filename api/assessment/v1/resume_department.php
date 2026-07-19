@@ -95,7 +95,7 @@ try {
      */
     $sqlDepartment = "
         SELECT
-            id,
+            assessment_dept_id AS id,
             assessment_id,
             fac_id_fk,
             dept_id,
@@ -166,7 +166,7 @@ try {
      * 3. Validate assessor info exists
      */
     $sqlAssessor = "
-        SELECT id
+        SELECT info_id AS id
         FROM assessment_assessor_info
         WHERE assessment_id = ?
           AND fac_id_fk = ?
@@ -205,7 +205,7 @@ try {
             SET
                 status = 'IN_PROGRESS',
                 started_on = CURRENT_TIMESTAMP
-            WHERE id = ?
+            WHERE assessment_dept_id = ?
         ";
 
         $stmt = $con->prepare($sqlStart);

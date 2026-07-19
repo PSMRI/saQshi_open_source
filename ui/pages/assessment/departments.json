@@ -14,11 +14,11 @@
     "assets": {
 
         "css": [
-            "/ui/pages/assessment/departments.css?v=20260702-13"
+            "/ui/pages/assessment/departments.css?v=20260718-1"
         ],
 
         "js": [
-            "/ui/pages/assessment/departments.js?v=20260702-13"
+            "/ui/pages/assessment/departments.js?v=20260718-2"
         ]
 
     },

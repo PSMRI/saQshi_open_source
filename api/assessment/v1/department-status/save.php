@@ -18,7 +18,7 @@
  *
  * Body bulk:
  * {
- *   "ass_period": 1,
+ *   "assessment_id": 1,
  *   "departments": [
  *     {"dept_id": 1, "is_active": 1},
  *     {"dept_id": 2, "is_active": 0}
@@ -27,7 +27,7 @@
  *
  * Body single:
  * {
- *   "ass_period": 1,
+ *   "assessment_id": 1,
  *   "dept_id": 1,
  *   "is_active": 1
  * }
@@ -56,19 +56,21 @@ try {
     }
 
     if (
-        !isset($request['ass_period']) ||
-        $request['ass_period'] === ''
+        (!isset($request['assessment_id']) || $request['assessment_id'] === '') &&
+        (!isset($request['ass_period']) || $request['ass_period'] === '')
     ) {
         Response::validation([
-            'ass_period' => 'ass_period is required'
+            'assessment_id' => 'assessment_id is required'
         ]);
     }
 
-    $assPeriod = (int)$request['ass_period'];
+    $assPeriod = isset($request['assessment_id']) && $request['assessment_id'] !== ''
+        ? (int)$request['assessment_id']
+        : (int)$request['ass_period'];
 
     if ($assPeriod <= 0) {
         Response::validation([
-            'ass_period' => 'Invalid assessment period'
+            'assessment_id' => 'Invalid assessment ID'
         ]);
     }
 

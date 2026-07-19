@@ -1,0 +1,156 @@
+{
+  "intents": [
+    {
+      "intent": "facility_report_lookup",
+      "title": "Facility Report Lookup",
+      "keywords": [
+        "facility report",
+        "facility summary",
+        "show report",
+        "show report for",
+        "report for",
+        "show facility",
+        "facility status",
+        "report of",
+        "details of",
+        "summary of",
+        "nin"
+      ],
+      "roles": ["facility", "assessor", "state", "division", "district", "block"],
+      "answer_key": "facility_report_lookup",
+      "data_tool": "facility_report"
+    },
+    {
+      "intent": "current_month_status",
+      "title": "Current Month Status",
+      "keywords": [
+        "current month",
+        "this month",
+        "monthly status",
+        "assessment started",
+        "assessment completed",
+        "assessment in progress",
+        "kpi filled",
+        "outcome filled"
+      ],
+      "roles": ["state", "division", "district", "block"],
+      "answer_key": "current_month_status",
+      "data_tool": "current_month_status"
+    },
+    {
+      "intent": "pending_cqi_status",
+      "title": "Pending CQI Status",
+      "keywords": [
+        "action plan pending",
+        "gap closure pending",
+        "not started action plan",
+        "open gaps",
+        "overdue action plan",
+        "facility not started action plan",
+        "pending gap closure"
+      ],
+      "roles": ["state", "division", "district", "block"],
+      "answer_key": "pending_cqi_status",
+      "data_tool": "pending_cqi_status"
+    },
+    {
+      "intent": "start_assessment",
+      "title": "Start Assessment",
+      "keywords": [
+        "start assessment",
+        "create assessment",
+        "new assessment",
+        "active assessment",
+        "continue assessment"
+      ],
+      "roles": ["all"],
+      "answer_key": "start_assessment"
+    },
+    {
+      "intent": "checklist_help",
+      "title": "Checklist Help",
+      "keywords": [
+        "checklist",
+        "checkpoint",
+        "checklist score",
+        "assessment score",
+        "score 0",
+        "score 1",
+        "score 2",
+        "0 1 2",
+        "remaining checkpoint"
+      ],
+      "roles": ["all"],
+      "answer_key": "checklist_help"
+    },
+    {
+      "intent": "cqi_help",
+      "title": "CQI Help",
+      "keywords": [
+        "gap",
+        "action plan",
+        "gap closure",
+        "close gap",
+        "revised score"
+      ],
+      "roles": ["all"],
+      "answer_key": "cqi_help"
+    },
+    {
+      "intent": "performance_help",
+      "title": "KPI and Outcome Help",
+      "keywords": [
+        "kpi",
+        "outcome",
+        "indicator",
+        "numerator",
+        "denominator",
+        "trend"
+      ],
+      "roles": ["all"],
+      "answer_key": "performance_help"
+    },
+    {
+      "intent": "certification_help",
+      "title": "Certification Help",
+      "keywords": [
+        "certification",
+        "certificate",
+        "national",
+        "state certification",
+        "renewal",
+        "expiry"
+      ],
+      "roles": ["all"],
+      "answer_key": "certification_help"
+    },
+    {
+      "intent": "accessibility_help",
+      "title": "Accessibility Help",
+      "keywords": [
+        "screen reader",
+        "read page",
+        "zoom",
+        "text size",
+        "accessibility",
+        "a+",
+        "a++"
+      ],
+      "roles": ["all"],
+      "answer_key": "accessibility_help"
+    },
+    {
+      "intent": "report_help",
+      "title": "Report Help",
+      "keywords": [
+        "report",
+        "download",
+        "scorecard",
+        "progress report",
+        "excel"
+      ],
+      "roles": ["all"],
+      "answer_key": "report_help"
+    }
+  ]
+}

@@ -84,10 +84,6 @@ class FormulaEngine
         $precision = (int)($formula['precision'] ?? 2);
         $zeroAllowed = (bool)($formula['denominator_zero_allowed'] ?? false);
 
-        if ($denominator == 0.0 && !$zeroAllowed) {
-            return null;
-        }
-
         if ($denominator == 0.0) {
             return 0.0;
         }

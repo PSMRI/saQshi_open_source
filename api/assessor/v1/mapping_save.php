@@ -1,0 +1,26 @@
+<?php
+
+/*! SaQshi Open Source | Assessor Facility Mapping Save API | mapping_save.php | Version 1.0.0 */
+
+require_once __DIR__ . '/../../auth_api.php';
+require_once __DIR__ . '/../../assets/conn/db.php';
+require_once __DIR__ . '/../../service/AssessorService.php';
+
+Security::requireAnyMethod(['POST', 'PATCH']);
+
+try {
+    $payload = Security::jsonInput();
+    $data = (new AssessorService($con))->saveMapping($payload, SessionManager::userId());
+
+    Event::dispatch('assessor.facility_mapped', [
+        'assessor_id' => $data['assessor_id'] ?? null,
+        'fac_id' => $data['fac_id'] ?? null,
+        'mapped_by' => SessionManager::userId()
+    ]);
+
+    Response::success('Facility mapping saved', $data);
+} catch (InvalidArgumentException $e) {
+    Response::validation(['mapping' => $e->getMessage()]);
+} catch (Throwable $e) {
+    Response::serverError($e->getMessage());
+}

@@ -32,8 +32,8 @@
 .sq-login-intro{
     display:flex;
     flex-direction:column;
-    justify-content:space-between;
-    gap:24px;
+    justify-content:center;
+    gap:36px;
     padding:34px;
     background:
         linear-gradient(145deg,#ffffff 0%,#f1f7ff 58%,#effcf7 100%);
@@ -98,34 +98,6 @@
     color:#475569;
     font-size:.92rem;
     line-height:1.6;
-}
-
-.sq-login-meta-grid{
-    display:grid;
-    grid-template-columns:repeat(3,minmax(0,1fr));
-    gap:10px;
-}
-
-.sq-login-meta-grid div{
-    min-width:0;
-    padding:10px 12px;
-    border:1px solid rgba(148,163,184,.32);
-    border-radius:10px;
-    background:rgba(255,255,255,.72);
-}
-
-.sq-login-meta-grid strong{
-    display:block;
-    color:#0f172a;
-    font-size:.78rem;
-}
-
-.sq-login-meta-grid span{
-    display:block;
-    margin-top:3px;
-    color:#64748b;
-    font-size:.66rem;
-    line-height:1.25;
 }
 
 .sq-login-panel{
@@ -335,14 +307,12 @@
     border-color:#33445f;
 }
 
-[data-theme="dark"] .sq-login-logo,
-[data-theme="dark"] .sq-login-meta-grid div{
+[data-theme="dark"] .sq-login-logo{
     background:#0f172a;
     border-color:#33445f;
 }
 
 [data-theme="dark"] .sq-login-copy h2,
-[data-theme="dark"] .sq-login-meta-grid strong,
 [data-theme="dark"] .sq-login-card-header h2,
 [data-theme="dark"] .sq-login-form label,
 [data-theme="dark"] .sq-label-row label,
@@ -352,7 +322,6 @@
 
 [data-theme="dark"] .sq-login-copy p,
 [data-theme="dark"] .sq-login-brandmark p,
-[data-theme="dark"] .sq-login-meta-grid span,
 [data-theme="dark"] .sq-login-card-header p,
 [data-theme="dark"] .sq-login-card-footer,
 [data-theme="dark"] .sq-login-options{
@@ -417,10 +386,6 @@
 
     .sq-login-intro{
         padding:18px;
-    }
-
-    .sq-login-meta-grid{
-        grid-template-columns:1fr;
     }
 
     .sq-login-options,

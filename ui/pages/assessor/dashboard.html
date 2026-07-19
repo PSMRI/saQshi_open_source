@@ -1,0 +1,35 @@
+<!-- SaQshi Open Source | Assessor Dashboard | dashboard.html | Version 1.0.0 -->
+<section class="sq-assessor-page">
+    <div class="sq-assessor-toolbar">
+        <div>
+            <h3>Assessor Dashboard</h3>
+            <p>Select an assigned facility and continue the assessment workflow.</p>
+        </div>
+        <button class="sq-btn sq-btn-primary" id="assessorDashboardRefresh" type="button">Refresh</button>
+    </div>
+
+    <div class="sq-assessor-kpis">
+        <div><span>Assigned Facilities</span><strong id="assessorTotalFacilities">0</strong></div>
+        <div><span>Active Assignments</span><strong id="assessorActiveMappings">0</strong></div>
+        <div><span>Assessor</span><strong id="assessorName">-</strong></div>
+    </div>
+
+    <div class="sq-card">
+        <div class="sq-card-header">
+            <h3>Mapped Facilities</h3>
+            <p>Use the next action to continue from the exact pending step.</p>
+        </div>
+        <div class="sq-card-body" id="assessorFacilityRows"></div>
+    </div>
+
+    <div class="sq-card" id="assessorFacilitySummaryCard" hidden>
+        <div class="sq-card-header sq-assessor-summary-header">
+            <div>
+                <h3 id="assessorFacilitySummaryTitle">Facility Details</h3>
+                <p id="assessorFacilitySummaryMeta">Assessment, CQI and performance history.</p>
+            </div>
+            <button class="sq-btn sq-btn-muted" id="assessorFacilitySummaryClose" type="button">Close</button>
+        </div>
+        <div class="sq-card-body" id="assessorFacilitySummaryBody"></div>
+    </div>
+</section>

@@ -106,7 +106,7 @@ try {
          * If already exists, do not deactivate/update to 0.
          */
         $sqlExists = "
-            SELECT id, is_active
+            SELECT assessment_dept_id AS id, is_active
             FROM assessment_department
             WHERE assessment_id = ?
               AND dept_id = ?
@@ -134,9 +134,8 @@ try {
             $sqlUpdate = "
                 UPDATE assessment_department
                 SET is_active = 1,
-                    activated_by = ?,
-                    activated_on = CURRENT_TIMESTAMP
-                WHERE id = ?
+                    activated_by = ?
+                WHERE assessment_dept_id = ?
             ";
 
             $stmt = $con->prepare($sqlUpdate);

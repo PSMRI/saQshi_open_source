@@ -43,7 +43,7 @@ flowchart LR
 <details>
 <summary><strong>+ HLD Reference Image</strong></summary>
 
-![SaQshi High Level Design](docs/assets/architecture/saqshi-hld-reference.png)
+![SaQshi High Level Design](../assets/architecture/saqshi-hld-reference.png)
 
 </details>
 
@@ -81,7 +81,7 @@ flowchart LR
 <details>
 <summary><strong>+ LLD Reference Image</strong></summary>
 
-![SaQshi Low Level Design](docs/assets/architecture/saqshi-lld-reference.png)
+![SaQshi Low Level Design](../assets/architecture/saqshi-lld-reference.png)
 
 </details>
 

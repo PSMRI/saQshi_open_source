@@ -120,33 +120,7 @@ License : GPL-3.0
                 <div class="sq-checkpoint-verification" id="checkpointVerification"></div>
             </div>
 
-            <fieldset class="sq-score-options">
-                <legend>Compliance Score</legend>
-
-                <label class="sq-score-option sq-score-zero">
-                    <input type="radio" name="response_value" value="0" aria-label="Response Value 0">
-                    <span>
-                        <strong>0</strong>
-                        Non Compliance
-                    </span>
-                </label>
-
-                <label class="sq-score-option sq-score-one">
-                    <input type="radio" name="response_value" value="1" aria-label="Response Value 1">
-                    <span>
-                        <strong>1</strong>
-                        Partial Compliance
-                    </span>
-                </label>
-
-                <label class="sq-score-option sq-score-two">
-                    <input type="radio" name="response_value" value="2" aria-label="Response Value 2">
-                    <span>
-                        <strong>2</strong>
-                        Fully Compliance
-                    </span>
-                </label>
-            </fieldset>
+            <div id="responseControl" class="sq-response-control" aria-live="polite"></div>
         </div>
 
         <div class="sq-card-footer sq-checkpoint-actions">

@@ -65,6 +65,17 @@
         return `/ui/pages/performance/indicator.html?${params.toString()}`;
     }
 
+    function isAssessorUser() {
+        const user = SQ.auth && typeof SQ.auth.getUser === "function" ? SQ.auth.getUser() : null;
+        const roleName = String(user?.role_name || user?.user_type || "").toLowerCase();
+        return Number(user?.role_id || 0) === 10 || roleName.includes("assessor");
+    }
+
+    function isReadonly() {
+        const params = new URLSearchParams(window.location.search);
+        return params.get("readonly") === "1" || params.get("mode") === "view" || isAssessorUser();
+    }
+
     function handleEditLink(event) {
         const link = event.target.closest('a[href*="/ui/pages/performance/indicator.html"]');
         if (!link || !SQ.router || typeof SQ.router.navigate !== "function") {
@@ -72,6 +83,11 @@
         }
 
         event.preventDefault();
+
+        if (isReadonly()) {
+            return;
+        }
+
         const url = new URL(link.href, window.location.origin);
         const params = {};
         url.searchParams.forEach((value, key) => {
@@ -89,7 +105,7 @@
                 <div class="sq-trend-month-card">
                     <strong>${esc(shortMonth(row.period))}</strong>
                     <span>${esc(state.effectiveLabel || "Performance")} <b>${esc(row.total_entries || 0)}</b></span>
-                    <a href="${esc(indicatorEntryUrl(state.effectiveType || "OUTCOME", "", row.period))}">Edit month</a>
+                    ${isReadonly() ? `<span>View only</span>` : `<a href="${esc(indicatorEntryUrl(state.effectiveType || "OUTCOME", "", row.period))}">Edit month</a>`}
                 </div>
             `).join("")
             : `<div class="sq-trend-empty">No month-wise performance entries available.</div>`;
@@ -149,12 +165,22 @@
         const target = $(targetId);
         if (!target) return;
         const style = $("trendChartStyle")?.value || "line";
+        const summaryId = targetId === "trendOutcomeCharts" ? "trendOutcomeSummary" : "trendKpiSummary";
+        let summary = $(summaryId);
+        if (!summary) {
+            summary = document.createElement("div");
+            summary.id = summaryId;
+            summary.className = "sq-sr-only";
+            target.parentNode.insertBefore(summary, target.nextSibling);
+            target.setAttribute("aria-describedby", summaryId);
+        }
 
         target.innerHTML = series.length
             ? series.map(item => {
                 const points = item.points || [];
                 const latest = points[points.length - 1] || {};
                 const editUrl = indicatorEntryUrl(item.indicator_type, item.department_id, latest.period);
+                const readonly = isReadonly();
                 return `
                     <div class="sq-trend-chart-card">
                         <div class="sq-trend-chart-head">
@@ -164,26 +190,41 @@
                         ${chartSvg(points, style)}
                         <div class="sq-trend-points">
                             ${points.map(point => `
-                                <a href="${esc(indicatorEntryUrl(item.indicator_type, item.department_id, point.period))}">
+                                ${readonly ? `<span>${esc(shortMonth(point.period))}: ${esc(fmt(point.result))}</span>` : `<a href="${esc(indicatorEntryUrl(item.indicator_type, item.department_id, point.period))}">
                                     ${esc(shortMonth(point.period))}: ${esc(fmt(point.result))}
-                                </a>
+                                </a>`}
                             `).join("")}
                         </div>
                         <div class="sq-trend-chart-foot">
                             <span>${esc(points.length)} month${points.length === 1 ? "" : "s"}</span>
-                            <a href="${esc(editUrl)}">Edit latest</a>
+                            ${readonly ? `<span>View only</span>` : `<a href="${esc(editUrl)}">Edit latest</a>`}
                         </div>
                     </div>
                 `;
             }).join("")
             : `<div class="sq-trend-empty">No trend data available.</div>`;
+
+        summary.textContent = series.length
+            ? series.map(item => {
+                const points = item.points || [];
+                const latest = points[points.length - 1] || {};
+                return `${item.indicator_name || "Indicator"} has ${points.length} month${points.length === 1 ? "" : "s"} of data. Latest ${shortMonth(latest.period)} result is ${fmt(latest.result)}.`;
+            }).join(" ")
+            : "No trend data available.";
+
+        if (SQ.a11y) {
+            SQ.a11y.enhance(target);
+        }
     }
 
     function renderAll() {
+        const readonly = isReadonly();
         setText("trendFacility", state.facility?.fac_name || "-");
         setText("trendTotalMonths", state.summary?.total_months || 0);
         setText("trendTotalEntries", state.summary?.total_entries || 0);
         setText("trendLatestPeriod", state.summary?.latest_period ? shortMonth(state.summary.latest_period) : "-");
+        if ($("btnDownloadOutcomeTrend")) $("btnDownloadOutcomeTrend").hidden = readonly;
+        if ($("btnDownloadKpiTrend")) $("btnDownloadKpiTrend").hidden = readonly;
         renderMonthStatus();
         setText("trendEffectiveTitle", `${state.effectiveLabel || "Performance"} Trends`);
         renderCharts("trendOutcomeCharts", state.trends.EFFECTIVE || state.trends.OUTCOME || []);

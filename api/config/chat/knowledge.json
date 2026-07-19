@@ -1,0 +1,91 @@
+{
+  "answers": {
+    "start_assessment": {
+      "short": "To start an assessment, open Assessment List or Create Assessment.",
+      "steps": [
+        "If no active assessment exists, create a new assessment.",
+        "Activate applicable departments.",
+        "Fill assessor information.",
+        "Open Checklist and start checkpoint entry.",
+        "If you are an external assessor, first open Assigned Facilities and select the mapped facility."
+      ]
+    },
+    "checklist_help": {
+      "short": "Checklist is completed checkpoint by checkpoint for selected department and area of concern.",
+      "steps": [
+        "Select department.",
+        "Select area of concern.",
+        "Select subtype.",
+        "Select assessment method if available.",
+        "Enter score 0, 1 or 2.",
+        "Click Save & Next."
+      ],
+      "notes": [
+        "0 means non-compliance.",
+        "1 means partial compliance.",
+        "2 means full compliance.",
+        "If some checkpoints are already saved, checklist should continue from the first pending checkpoint."
+      ]
+    },
+    "cqi_help": {
+      "short": "CQI starts from gaps found during checklist scoring.",
+      "steps": [
+        "Open Gap Analysis to review non-compliant and partial checkpoints.",
+        "Open Action Plan to add facility action, responsible post/person and target date.",
+        "Open Gap Closure after action completion.",
+        "Add closure remarks, revised score and optional evidence where available."
+      ]
+    },
+    "performance_help": {
+      "short": "KPI and Outcome pages capture monthly performance indicators.",
+      "steps": [
+        "Select KPI or Outcome page.",
+        "Select activated department and month.",
+        "Enter numerator, denominator, result and remarks.",
+        "Use Save & Next to complete remaining indicators.",
+        "Use Trend page to review month-wise chart and Excel reports."
+      ]
+    },
+    "certification_help": {
+      "short": "Certification tracks State and National certification status for facilities.",
+      "steps": [
+        "Open Manage Certification or Certification Status.",
+        "Select certification status, type, date, validity and score.",
+        "National certification should be entered only after State certification exists.",
+        "Use Certification History to review previous records."
+      ]
+    },
+    "accessibility_help": {
+      "short": "Use Accessibility controls to change text size or enable screen reader support.",
+      "steps": [
+        "Use A-- to reduce text size.",
+        "Use A for normal text size.",
+        "Use A+ or A++ to increase text size.",
+        "Use Screen reader mode to announce pages automatically.",
+        "Use Read page to hear the current page.",
+        "Use Stop to stop speech."
+      ]
+    },
+    "report_help": {
+      "short": "Reports are available from Report Dashboard and module-specific report buttons.",
+      "steps": [
+        "Use Score Report for checklist scorecard.",
+        "Use Progress Report for checkpoint, action plan and revised score details.",
+        "Use KPI/Outcome report buttons from performance trend pages.",
+        "State Reports provide scoped downloads for state, division, district and block users."
+      ]
+    },
+    "facility_report_lookup": {
+      "short": "I can show a facility summary when the facility is inside your assigned scope."
+    },
+    "current_month_status": {
+      "short": "I can show current month assessment, KPI, Outcome and CQI status for your assigned monitoring scope."
+    },
+    "pending_cqi_status": {
+      "short": "I can show action plan and gap closure pending counts for your assigned monitoring scope."
+    },
+    "fallback": {
+      "short": "I could not match this question with a current SaQshi help topic. I can help with assessment, checklist scoring, CQI gap/action/closure, KPI and Outcome entry, reports, certification, accessibility and monitoring workflows. Please mention the page, facility or task you are working on."
+    }
+  }
+}

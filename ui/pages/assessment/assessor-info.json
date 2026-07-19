@@ -16,10 +16,10 @@
 
     "assets": {
         "css": [
-            "/ui/pages/assessment/assessor-info.css?v=20260702-3"
+            "/ui/pages/assessment/assessor-info.css?v=20260718-1"
         ],
         "js": [
-            "/ui/pages/assessment/assessor-info.js?v=20260702-3"
+            "/ui/pages/assessment/assessor-info.js?v=20260718-2"
         ]
     },
 

@@ -11,13 +11,15 @@ erDiagram
     FACILITIES ||--o{ ASSESSMENT_MASTER : has
     ASSESSMENT_MASTER ||--o{ ASSESSMENT_DEPARTMENT : activates
     ASSESSMENT_MASTER ||--o{ ASSESSMENT_ASSESSOR_INFO : records
-    ASSESSMENT_MASTER ||--o{ ASSESSMENT_CYCLE_RESPONSE : stores
-    ASSESSMENT_DEPARTMENT ||--o{ ASSESSMENT_CYCLE_RESPONSE : contains
-    ASSESSMENT_CYCLE_RESPONSE ||--o{ ASSESSMENT_ACTION_PLAN : creates_gap
-    ASSESSMENT_ACTION_PLAN ||--o{ GAP_CLOSURE : closes
-    FACILITIES ||--o{ PERFORMANCE_MONTHLY_HEADER : submits
-    PERFORMANCE_MONTHLY_HEADER ||--o{ PERFORMANCE_MONTHLY_DETAIL : has
+    ASSESSMENT_MASTER ||--o{ ASSESSMENT_RESPONSE : stores
+    ASSESSMENT_DEPARTMENT ||--o{ ASSESSMENT_RESPONSE : contains
+    ASSESSMENT_RESPONSE ||--o{ ASSESSMENT_ACTION_PLAN : creates_gap
+    FACILITIES ||--o{ PERFORMANCE_ENTRIES : submits
     FACILITIES ||--o{ CERTIFICATION_HISTORY : tracks
+    S_USER ||--o{ ASSESSOR_MASTER : links
+    ASSESSOR_MASTER ||--o{ ASSESSOR_FACILITY_MAPPING : maps
+    FACILITIES ||--o{ ASSESSOR_FACILITY_MAPPING : assigned_to
+    S_USER ||--o{ AI_CHAT_MESSAGES : asks
 
     FACILITIES {
         int fac_id PK
@@ -60,12 +62,15 @@ erDiagram
         string status
     }
 
-    ASSESSMENT_CYCLE_RESPONSE {
+    ASSESSMENT_RESPONSE {
         bigint response_id PK
-        bigint cycle_id FK
+        bigint assessment_id FK
         int dept_id
         int checkpoint_id
+        string response_type
         decimal score
+        decimal max_score
+        string score_status
     }
 
     ASSESSMENT_ACTION_PLAN {
@@ -76,17 +81,16 @@ erDiagram
         decimal revised_score
     }
 
-    PERFORMANCE_MONTHLY_HEADER {
+    PERFORMANCE_ENTRIES {
         bigint entry_id PK
-        int fac_id_fk FK
+        int fac_id FK
+        int dept_id
+        string indicator_type
+        string indicator_id
         int entry_month
         int entry_year
-    }
-
-    PERFORMANCE_MONTHLY_DETAIL {
-        bigint detail_id PK
-        bigint entry_id FK
-        string indicator_id
+        decimal numerator_value
+        decimal denominator_value
         decimal result_value
     }
 
@@ -107,12 +111,20 @@ erDiagram
 | `u_role` | Role definitions such as facility, block, district, division and state. |
 | `assessment_master` | Main assessment record for a facility. |
 | `assessment_department` | Activated departments and department-level assessment status. |
+| `assessment_department_status` | Department activation status used by activation/list workflows. |
 | `assessment_assessor_info` | Assessor and assessee details by assessment and department. |
-| `assessment_cycle_response` | Checklist checkpoint responses and baseline scores. |
+| `assessment_response` | Checklist checkpoint responses, baseline scores and structured response metadata. |
+| `assessment_response_field_index` | Indexed structured checkpoint fields for future analytics. |
+| `assessment_response_evidence` | Field/checkpoint-level evidence file references. |
 | `assessment_action_plan` | CQI action plans, target dates, responsible person and revised score. |
-| `performance_monthly_header` | Monthly KPI/outcome submission header. |
-| `performance_monthly_detail` | Indicator-level monthly performance values. |
+| `assessment_action_plan_library` | Reusable facility/user suggested action plans by checkpoint. |
+| `performance_entries` | Monthly KPI/outcome indicator values. |
+| `cert_details` | Current certification records. |
 | `certification_history` | Certification change history and audit data. |
+| `assessor_master` | State-created assessor profiles. |
+| `assessor_facility_mapping` | Assessor-to-facility mapping for external/state assessments. |
+| `ai_chat_messages` | AI chat assistant history and fallback/intention audit. |
+| `login_attempts` | Login throttling/failed-attempt tracking. |
 
 ## Key Relationships
 
@@ -121,11 +133,12 @@ erDiagram
 | Facility to user | A facility user is mapped to one facility through `fac_id_fk`. |
 | Facility to assessment | A facility may have many assessments over time. |
 | Assessment to department | An assessment activates one or more departments. |
-| Assessment to response | Checkpoint responses are stored against the assessment cycle. |
+| Assessment to response | Checkpoint responses are stored against the assessment. |
 | Response to action plan | Score 0/1 responses can become CQI gaps with action plans. |
-| Action plan to closure | Closure records revised score and completion evidence/status. |
-| Facility to performance | Facilities submit monthly KPI/outcome data. |
+| Action plan to closure | Closure is tracked on `assessment_action_plan` with status, revised score, closure remarks and evidence URL. |
+| Facility to performance | Facilities submit monthly KPI/outcome data in `performance_entries`. |
 | Facility to certification | Certification history is linked by facility id and/or NIN. |
+| Assessor to facility | State-created assessors can be mapped to multiple facilities. |
 
 ## Scoring Notes
 
@@ -135,4 +148,4 @@ erDiagram
 | 1 | Partial compliance |
 | 2 | Full compliance |
 
-Baseline score comes from `assessment_cycle_response.score`. Improved score uses `assessment_action_plan.revised_score` when available.
+Baseline score comes from `assessment_response.score`. Improved score uses `assessment_action_plan.revised_score` when available. A compatibility view named `assessment_cycle_response` is included for older report code paths.

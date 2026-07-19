@@ -44,6 +44,7 @@ Open the collection, go to **Variables**, and check these values:
 | `departmentId` | `25` | Used by department/checklist APIs |
 | `checkpointId` | `1` | Used by response/action-plan APIs |
 | `facilityId` | `1` | Used by facility/state APIs where needed |
+| `assessorId` | `1` | Used by assessor profile and mapping APIs |
 | `facilityNin` | `1625533227` | Used by certification/facility matching tests |
 | `entryMonth` | `7` | Performance KPI/Outcome month |
 | `entryYear` | `2026` | Performance KPI/Outcome year |
@@ -52,6 +53,7 @@ Open the collection, go to **Variables**, and check these values:
 | `page` | `1` | State API pagination page |
 | `perPage` | `25` | State API pagination size |
 | `search` | empty | Facility/name/NIN search text |
+| `searchText` | empty | Assessor/facility search text in assessor assignment APIs |
 | `downloadType` | `facilities` | State report download type |
 | `evidenceUrl` | `/uploads/.../sample.pdf` | Evidence URL for action plan closure tests |
 
@@ -341,7 +343,93 @@ Score meaning:
 | `1` | Partial compliance |
 | `2` | Full compliance |
 
-## 9. Sample CQI Flow
+## 9. Sample External Assessor Flow
+
+This flow is for state-led assessment where a state admin creates an external
+assessor profile and maps that assessor to one or more facilities.
+
+State admin setup order:
+
+1. **Assessor Assignment > Assessor List**
+2. **Assessor Assignment > Save Assessor Profile**
+3. Set `assessorId` from the response.
+4. **Assessor Assignment > Facility Search for Mapping**
+5. Set `facilityId` from the selected facility.
+6. **Assessor Assignment > Save Assessor Facility Mapping**
+7. **Assessor Assignment > Assessor Mapping List**
+
+External assessor execution order:
+
+1. Login as the assessor user.
+2. **Assessor Assignment > Assessor Dashboard**
+3. **Assessor Assignment > Assessor My Facilities**
+4. Set `facilityId` from the assigned facility.
+5. **Assessor Assignment > Assessor Facility Summary**
+6. **Assessor Assignment > Assessor Start Assessment**
+7. Continue with department activation, assessor info and checklist APIs.
+
+Visual order:
+
+```mermaid
+flowchart LR
+    A["State admin saves assessor"] --> B["Map facility"]
+    B --> C["Assessor login"]
+    C --> D["My facilities"]
+    D --> E["Facility summary"]
+    E --> F["Start/reuse assessment"]
+    F --> G["Departments / Assessor Info / Checklist"]
+```
+
+Example assessor profile payload:
+
+```json
+{
+  "assessor_id": "",
+  "assessor_code": "ASM001",
+  "assessor_name": "Sample Assessor",
+  "designation": "Quality Assessor",
+  "mobile_no": "9999999999",
+  "mail_id": "assessor@example.org",
+  "user_id": "",
+  "is_active": 1
+}
+```
+
+Example facility mapping payload:
+
+```json
+{
+  "assessor_id": 1,
+  "fac_id": 101,
+  "assignment_status": "ACTIVE",
+  "assigned_from": "2026-07-18",
+  "assigned_to": "",
+  "remarks": "Mapped for state-led assessment"
+}
+```
+
+Example start-assessment payload:
+
+```json
+{
+  "fac_id": 101,
+  "framework_code": "saqshi-nqas",
+  "assessment_name": "State Assessment - Sample Facility",
+  "start_date": "2026-07-18",
+  "end_date": "2026-08-17"
+}
+```
+
+Assessor role rules:
+
+| Area | Rule |
+|---|---|
+| Facility selection | Assessor can select only mapped active facilities. |
+| Assessment/checklist | Allowed for selected mapped facility. |
+| CQI/action plan/gap closure | View-only where shown; not an assessor entry workflow. |
+| KPI/outcome entry | View-only; save APIs reject assessor role. |
+
+## 10. Sample CQI Flow
 
 After checklist responses are saved:
 
@@ -370,7 +458,7 @@ Example action-plan payload:
 }
 ```
 
-## 10. Sample Performance Flow
+## 11. Sample Performance Flow
 
 Use this order:
 
@@ -408,7 +496,7 @@ Example KPI/Outcome save payload:
 
 If denominator is `N/A` in the UI/config, denominator should be treated as not applicable.
 
-## 11. Sample Monitoring Flow
+## 12. Sample Monitoring Flow
 
 For state, regional, district and block users:
 
@@ -449,7 +537,7 @@ flowchart TD
     F --> G
 ```
 
-## 12. Testing File Upload
+## 13. Testing File Upload
 
 Open:
 
@@ -473,7 +561,7 @@ To remove wrong upload:
 Files > Delete Evidence
 ```
 
-## 13. Testing Downloads
+## 14. Testing Downloads
 
 Report endpoints may return Excel or file download response instead of JSON.
 
@@ -485,7 +573,7 @@ In Postman:
 4. Save the downloaded file.
 5. Open it in Excel and verify data/format.
 
-## 14. Swagger UI Testing Notes
+## 15. Swagger UI Testing Notes
 
 Open Swagger from the same host/port as the application:
 
@@ -513,8 +601,11 @@ If you still see this error:
 - Open Swagger from the same `{main_url}` where the application is running.
 - Login first if the endpoint needs session authentication.
 - For state-changing APIs, get CSRF token and add `X-CSRF-TOKEN`.
+- The **Assessor Assignment** tag contains the state-admin assessor setup APIs
+  and the external-assessor dashboard, mapped-facility summary and
+  start-assessment APIs.
 
-## 15. Common Errors
+## 16. Common Errors
 
 | Error | Meaning | Fix |
 |---|---|---|
@@ -527,7 +618,7 @@ If you still see this error:
 | `500 Internal Server Error` | Backend exception | Check PHP error log and SaQshi event log |
 | Swagger `NetworkError` | Wrong host/port, API unavailable, YAML unavailable or CORS/session mismatch | Open Swagger from same host/port and confirm `/api/auth/v1/csrf.php` works |
 
-## 16. Recommended Regression Checklist
+## 17. Recommended Regression Checklist
 
 Before release, test at least:
 
@@ -546,7 +637,7 @@ Before release, test at least:
 - Open monitoring dashboard and verify scoped counts.
 - Download state reports.
 
-## 17. Where to See More Details
+## 18. Where to See More Details
 
 | File | Purpose |
 |---|---|

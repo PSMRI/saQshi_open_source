@@ -102,7 +102,7 @@ try {
      */
     $sqlDept = "
         SELECT
-            id,
+            assessment_dept_id AS id,
             dept_id,
             is_active,
             status,
@@ -144,7 +144,7 @@ try {
      * 3. Check assessor information exists
      */
     $sqlAssessor = "
-        SELECT id
+        SELECT info_id AS id
         FROM assessment_assessor_info
         WHERE assessment_id = ?
           AND fac_id_fk = ?

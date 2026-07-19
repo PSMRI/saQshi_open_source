@@ -328,7 +328,7 @@
         try {
             const response = await apiGet(API.departments, {
                 fac_id: facId,
-                ass_period: assessmentId
+                assessment_id: assessmentId
             });
 
             if (response.status === "error" || response.success === false) {

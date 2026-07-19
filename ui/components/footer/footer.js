@@ -187,8 +187,7 @@
             .forEach(function (element) {
 
                 element.addEventListener("click", function () {
-
-                    console.log("[SQ Footer] License Clicked");
+                    element.blur();
 
                 });
 
@@ -199,8 +198,7 @@
             .forEach(function (element) {
 
                 element.addEventListener("click", function () {
-
-                    console.log("[SQ Footer] Support");
+                    element.blur();
 
                 });
 

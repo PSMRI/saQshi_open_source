@@ -128,7 +128,7 @@ try {
      * 2. Validate department belongs to assessment.
      */
     $sqlDept = "
-        SELECT id
+        SELECT assessment_dept_id AS id
         FROM assessment_department
         WHERE assessment_id = ?
           AND fac_id_fk = ?
@@ -205,7 +205,7 @@ try {
      */
     $sqlPlan = "
         SELECT
-            id,
+            action_plan_id AS id,
             status,
             achievability
         FROM assessment_action_plan

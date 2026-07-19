@@ -130,6 +130,13 @@ html[data-font-size="xlarge"] body {
     font-size: .75rem !important;
 }
 
+.sq-btn:not(.sq-btn-xs):not(.sq-compact-control),
+button:not(.sq-btn-xs):not(.sq-compact-control),
+a.sq-btn:not(.sq-btn-xs):not(.sq-compact-control) {
+    min-height: 36px !important;
+    min-width: 36px !important;
+}
+
 .sq-form-group {
     gap: .3rem !important;
     margin-bottom: .6rem !important;
@@ -147,6 +154,15 @@ html[data-font-size="xlarge"] body {
 .sq-textarea,
 textarea.sq-form-control {
     min-height: 54px !important;
+}
+
+.sq-form-control:not(.sq-compact-control),
+.sq-input:not(.sq-compact-control),
+.sq-select:not(.sq-compact-control),
+input:not(.sq-compact-control),
+select:not(.sq-compact-control),
+textarea:not(.sq-compact-control) {
+    min-height: 36px !important;
 }
 
 .sq-label,

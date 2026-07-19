@@ -1,12 +1,12 @@
 # SaQshi Technical Architecture
 
 Version: 1.0  
-Updated: 2026-07-15  
+Updated: 2026-07-18  
 License: GPL-3.0
 
 ## Purpose
 
-This document shows the high-level technical architecture of SaQshi.
+This document shows the high-level technical architecture of the current healthcare/NQAS release of SaQshi.
 It is intended for developers, implementers, technical reviewers and deployment
 teams who need to understand how UI pages, APIs, services, configuration,
 database tables, reporting, monitoring and future event integration fit together.
@@ -29,15 +29,15 @@ This diagram gives a readable top-level view. It intentionally keeps only the ma
 
 ### Presentation-style Platform Diagram
 
-![SaQshi Platform Architecture](docs/assets/architecture/saqshi-platform-architecture.svg)
+![SaQshi Platform Architecture](../assets/architecture/saqshi-platform-architecture.svg)
 
 ### Layer Diagram
 
 ```mermaid
 flowchart LR
-    Users["Users<br/>Facility, Block, District,<br/>Division, State, Admin"]
+    Users["Users<br/>Facility, External Assessor,<br/>Block, District, Division,<br/>State, Admin"]
     UI["Web UI<br/>ui/ pages, components,<br/>router and API client"]
-    Modules["Application Modules<br/>Assessment, CQI, Performance,<br/>Certification, Reports, State Monitoring"]
+    Modules["Application Modules<br/>Assessment, CQI, Performance,<br/>Certification, Reports,<br/>State Monitoring, AI Chat"]
     API["Versioned APIs<br/>api/<module>/v1"]
     Core["Core + Services<br/>Session, CSRF, validation,<br/>business rules, events"]
     Data["Data + Storage<br/>Database, JSON config,<br/>uploads, logs"]
@@ -57,6 +57,7 @@ flowchart LR
 flowchart TB
     subgraph Roles["Who uses SaQshi"]
         Facility["Facility User"]
+        Assessor["External Assessor<br/>(mapped facilities)"]
         Monitoring["Block / District / Division / State Users"]
         Admin["System / State Admin"]
         Developer["Developer / Maintainer"]
@@ -69,6 +70,8 @@ flowchart TB
         Certification["Certification"]
         State["State Monitoring"]
         Reports["Reports"]
+        AssessorModule["Assessor Assignment"]
+        Chat["AI Chat Assistant"]
         Docs["Documentation"]
     end
 
@@ -76,12 +79,23 @@ flowchart TB
     Facility --> CQI
     Facility --> Performance
     Facility --> Certification
+    Assessor --> AssessorModule
+    Assessor --> Assessment
+    Assessor --> Reports
+    Facility --> Chat
+    Assessor --> Chat
+    Monitoring --> Chat
     Monitoring --> State
     Monitoring --> Reports
     Admin --> State
+    Admin --> AssessorModule
     Admin --> Reports
+    Admin --> Chat
     Developer --> Docs
 ```
+
+For the detailed role-module matrix and module flow diagrams, see
+[User and Module View](user_module_view.md).
 
 ### API and Data View
 
@@ -94,10 +108,12 @@ flowchart TB
     DB[("MySQL / MariaDB")]
     Files["Uploads<br/>evidence, certificates, reports"]
     Events["Event log<br/>Kafka-ready later"]
+    ChatConfig["Chat config<br/>intents, knowledge,<br/>safety rules"]
 
     API --> Core
     Core --> Services
     Services --> Config
+    Services --> ChatConfig
     Services --> DB
     Services --> Files
     Services --> Events
@@ -105,7 +121,7 @@ flowchart TB
 
 ### Service Architecture
 
-![SaQshi Service Architecture](docs/assets/architecture/saqshi-service-architecture.svg)
+![SaQshi Service Architecture](../assets/architecture/saqshi-service-architecture.svg)
 
 The service architecture shows how UI pages, shared UI components, versioned
 API endpoints, core helpers, PHP service classes, database records, JSON
@@ -118,7 +134,7 @@ configuration, uploads, reports, logs and events work together.
 | Users | Facility users enter data. Monitoring users review progress. Admin users manage broader state-level activities. |
 | UI | Browser pages collect input, show dashboards and call APIs. |
 | Modules | Assessment, CQI, performance, certification, reports and state monitoring are separate functional areas. |
-| API | Versioned PHP endpoints receive requests and return friendly JSON responses. |
+| API | Versioned PHP endpoints receive requests and return friendly JSON responses. Chat APIs also receive user questions and return scoped assistant answers. |
 | Core + Services | Shared validation, session, CSRF, security, business rules, formulas and event dispatching live here. |
 | Data + Storage | MySQL stores transactions, JSON config drives dynamic behavior, uploads store evidence/report files. |
 
@@ -148,10 +164,10 @@ flowchart LR
 | --- | --- |
 | Root files | Project entry documentation, developer landing page and GitBook reader. |
 | `ui/` | Browser screens, shared components, styles and JavaScript runtime. |
-| `api/` | Versioned API endpoints for auth, assessment, CQI, performance, certification, state and files. |
+| `api/` | Versioned API endpoints for auth, assessment, CQI, performance, certification, state, chat and files. |
 | `api/core/` | Common request handling, session, CSRF, security, response and event helpers. |
-| `api/service/` | Business rules, calculations, reporting logic and state monitoring logic. |
-| `api/config/` | JSON configuration for framework, master data, performance indicators, certification and maps. |
+| `api/service/` | Business rules, calculations, reporting logic, state monitoring logic and chat orchestration logic. |
+| `api/config/` | JSON configuration for framework, master data, performance indicators, certification, maps and planned chat intents/knowledge. |
 | Data and files | MySQL/MariaDB tables, uploaded evidence/certificates/reports, logs and event records. |
 
 ## Architecture Folder Map
@@ -171,6 +187,7 @@ open_source/
 |   +-- performance/v1/
 |   +-- certification/v1/
 |   +-- state/v1/
+|   +-- chat/v1/
 |   +-- files/v1/
 |   +-- core/
 |   +-- service/
@@ -232,7 +249,7 @@ sequenceDiagram
 | 4. Bootstrap | `api/bootstrap.php` | Bootstrap loads environment values, database connection, error handling, response helpers, session and common core classes. | API has application context. |
 | 5. Security check | `api/core/*`, endpoint validation | API checks request method, login session, role permission, CSRF token, required fields and payload type. | Validated request or friendly error response. |
 | 6. Role scope | Session + service filters | Facility users are limited to their facility. Block, district, division and state users get scoped data only for their level. | Safe query/filter context. |
-| 7. Service call | `api/service/*.php` | Endpoint delegates business logic to service classes such as assessment, performance, certification, state or reports. | Service result object. |
+| 7. Service call | `api/service/*.php` | Endpoint delegates business logic to service classes such as assessment, performance, certification, state, reports or chat assistant. | Service result object. |
 | 8. Configuration read | `api/config/**/*.json` | Services load framework, department, facility type, validation, performance indicator, formula or map configuration as needed. | Dynamic rules and labels. |
 | 9. Data operation | MySQL/MariaDB tables | Services use prepared queries or safe helpers to read/write assessment, CQI, performance, certification, user or state data. | Rows, calculated values or saved records. |
 | 10. Files and evidence | `uploads/`, report output | File APIs validate upload type/path. Report APIs generate Excel/PDF/CSV output. Evidence and reports are stored or streamed. | File URL, report download or storage update. |
@@ -259,6 +276,34 @@ Examples:
 - Checklist checkpoint response save.
 - KPI/outcome monthly entry.
 - State dashboard card loading.
+
+#### AI Chat Assistant Flow
+
+The chat assistant uses the same security model as other APIs, but the service
+first classifies the user question before choosing a help answer or a scoped
+data summary.
+
+```mermaid
+flowchart LR
+    User["User asks question"] --> ChatUI["Chat UI component"]
+    ChatUI --> ChatAPI["api/chat/v1/send.php"]
+    ChatAPI --> Scope["Session, role and scope check"]
+    Scope --> Assistant["ChatAssistantService"]
+    Assistant --> Intent["Intent classifier"]
+    Intent --> Knowledge["Knowledge JSON<br/>help answers"]
+    Intent --> DataTool["Allowed data tool<br/>facility report, monthly status,<br/>pending CQI"]
+    Knowledge --> Reply["Response builder"]
+    DataTool --> Reply
+    Reply --> History["Chat history / audit"]
+    History --> ChatUI
+```
+
+Examples:
+
+- Facility user asks how to start assessment: answer comes from configured help knowledge.
+- External assessor asks how to assess mapped facility: answer explains Assigned Facilities and checklist flow.
+- State user asks current month status: answer comes from scoped monitoring data.
+- District user asks for one facility report: lookup is restricted to that district.
 
 #### Report Download Flow
 
@@ -422,17 +467,18 @@ flowchart TB
 | Performance | `ui/pages/performance` | `api/performance/v1` | KPI/outcome month-wise entry, trend and dashboard analytics. |
 | Reports | `ui/pages/reports` | `api/reports/v1`, `api/state/v1/reports.php` | Scorecards, checklist downloads, state reports and performance exports. |
 | State Monitoring | `ui/pages/state` | `api/state/v1` | Role-based state, division, district and block monitoring. |
+| AI Chat Assistant | `ui/components/chat-assistant`, header/chat widget | `api/chat/v1` | Role-aware workflow help, error explanation and scoped monitoring summaries. |
 | Documentation | `developer.php`, `gitbook.html`, `docs/` | Static markdown/docs | Open-source, developer, API, testing, security and release documentation. |
 
 ## Deployment View
 
 ### Infrastructure Architecture
 
-![SaQshi Infrastructure Architecture](docs/assets/architecture/saqshi-infrastructure-architecture.svg)
+![SaQshi Infrastructure Architecture](../assets/architecture/saqshi-infrastructure-architecture.svg)
 
 ### Release and Deployment Architecture
 
-![SaQshi Release and Deployment Architecture](docs/assets/architecture/saqshi-cicd-deployment-architecture.svg)
+![SaQshi Release and Deployment Architecture](../assets/architecture/saqshi-cicd-deployment-architecture.svg)
 
 ```mermaid
 flowchart LR
@@ -490,6 +536,7 @@ Future behavior:
 - [API Developer Documentation](../api/README.md)
 - [Configuration JSON Formats](configuration_formats.md)
 - [Service Architecture and Map](service_map.md)
+- [AI Chat Assistant Architecture](ai_chat_assistant_architecture.md)
 - [Database Setup and Migration](../database/database_setup_and_migration.md)
 - [SQL Injection Security Review](../security/sql_injection_security_review.md)
 - [Open Source Readiness Checklist](../compliance/open_source_readiness_checklist.md)

@@ -202,7 +202,10 @@ This document defines the test cases required before release or demo of SaQshi. 
 |---|---|---|
 | SEC-001 | `.env` secret handling | DB credentials are not committed in public config |
 | SEC-002 | Password hashing | Plain password is hashed on first login/update |
-| SEC-003 | Profile encryption | Name, mobile and email are encrypted where configured |
+| SEC-003 | Profile encryption | Update profile name/mobile/email, then verify `s_user.f_name`, `m_name`, `l_name`, `mail_id` and `mob_no` are stored with `enc:v1:` values and still display decrypted in UI |
+| SEC-003A | Existing profile encryption migration | Run `api/sql/schema/user_profile_encryption_columns.sql`, then `php scripts/encrypt_existing_user_profile_fields.php` against a test DB containing plaintext profile rows | Existing plaintext values become `enc:v1:` values; rerunning script does not double-encrypt |
+| SEC-003B | Assessor/assessee encryption | Save assessor information, then verify `assessment_assessor_info` name/mobile/email fields are stored with `enc:v1:` values and still display decrypted in UI |
+| SEC-003C | Existing assessor info encryption migration | Run `api/sql/schema/assessor_info_encryption_columns.sql`, then `php scripts/encrypt_existing_assessor_info_fields.php` against a test DB containing plaintext assessor rows | Existing plaintext values become `enc:v1:` values; rerunning script does not double-encrypt |
 | SEC-004 | CSRF | POST/PUT/PATCH/DELETE without CSRF blocked |
 | SEC-005 | Role access | Facility user cannot call state APIs |
 | SEC-006 | Monitoring scope | District/block/regional user cannot access out-of-scope data |
@@ -281,6 +284,7 @@ Run this after each major change:
 | DATA-003 | Concurrent action plan update | Two sessions update same plan | Saved data remains consistent | P1 |
 | DATA-004 | Score recalculation | Save responses and revised score | Dashboard/report score updates from latest data | P0 |
 | DATA-005 | Certification history | Update certification multiple times | History records old/new data and latest status shows correctly | P1 |
+| DATA-006 | Configurable response type | Save radio, yes/no, dropdown, number, text and form checkpoint responses | Scored responses calculate on server; non-scored responses store `score_status = NOT_SCORED` and index fields for analytics | P1 |
 
 ### Backup, Restore and Deployment
 

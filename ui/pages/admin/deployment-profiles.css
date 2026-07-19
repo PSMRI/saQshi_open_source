@@ -1,0 +1,8 @@
+/*!
+ * ==========================================================
+ * SaQshi Open Source
+ * Deployment Profiles
+ * deployment-profiles.css
+ * ==========================================================
+ */
+.sq-deployment-page{display:grid;gap:10px}.sq-deployment-current{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:10px}.sq-deployment-current>div,.sq-deployment-profile{border:1px solid var(--sq-border,#d8e1ef);border-radius:8px;background:var(--sq-card-bg,#fff);padding:10px}.sq-deployment-current span,.sq-deployment-profile small{display:block;color:var(--sq-muted,#586b86);font-size:12px}.sq-deployment-current strong{font-size:18px}.sq-deployment-profiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.sq-deployment-profile{display:flex;flex-direction:column;gap:8px}.sq-deployment-profile h4{margin:0;font-size:16px}.sq-deployment-module-list{display:flex;gap:5px;flex-wrap:wrap}.sq-deployment-module-list span{padding:3px 7px;border-radius:999px;background:var(--sq-soft-bg,#f5f7fb);font-size:11px}.sq-deployment-module-list span.is-off{opacity:.55;text-decoration:line-through}@media(max-width:900px){.sq-deployment-current,.sq-deployment-profiles{grid-template-columns:1fr}}

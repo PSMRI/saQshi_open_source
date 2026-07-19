@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 require_once __DIR__ . '/../core/Crypto.php';
 
@@ -12,7 +12,7 @@ class AuthService {
      */
     public static function login($conn, $username, $password) {
 
-        $sql = "SELECT u.*, r.role_name 
+        $sql = "SELECT u.*, r.role_name
                 FROM s_user u
                 LEFT JOIN u_role r ON u.role_id_fk = r.role_id
                 WHERE u.u_name = ? AND u.is_active = 1";

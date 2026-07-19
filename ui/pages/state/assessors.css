@@ -1,0 +1,9 @@
+/*!
+ * ==========================================================
+ * SaQshi Open Source
+ * State Assessor Management
+ * assessors.css
+ * Version 1.0.0 | Updated 2026-07-18
+ * ==========================================================
+ */
+.sq-assessor-grid{display:grid;grid-template-columns:minmax(320px,520px) 1fr;gap:10px}.sq-assessor-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.sq-assessor-form label{display:grid;gap:4px;font-size:12px;font-weight:700;color:var(--sq-muted,#586b86)}.sq-assessor-form label span{text-transform:uppercase;font-size:11px}.sq-assessor-actions{grid-column:1/-1;display:flex;gap:8px}.sq-assessor-map-tools{display:grid;grid-template-columns:minmax(180px,260px) 1fr;gap:10px;align-items:end;margin-bottom:10px}.sq-assessor-map-tools span{display:block;font-size:11px;text-transform:uppercase;color:var(--sq-muted,#586b86)}.sq-assessor-map-tools strong{font-size:14px}.sq-assessor-search,.sq-assessor-mappings{display:grid;gap:7px}.sq-assessor-mini-row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:8px 10px;border:1px solid var(--sq-border,#d8e1ef);border-radius:7px;background:var(--sq-card-bg,#fff)}.sq-assessor-mini-row strong{font-size:13px}.sq-assessor-mini-row small{display:block;color:var(--sq-muted,#586b86);font-size:11px}.sq-assessor-admin .sq-state-table{min-width:980px}.sq-assessor-status{display:inline-flex;border-radius:999px;padding:2px 8px;font-size:12px;font-weight:700}.sq-assessor-status.is-active{background:#dcfce7;color:#166534}.sq-assessor-status.is-inactive{background:#fee2e2;color:#991b1b}@media(max-width:1100px){.sq-assessor-grid{grid-template-columns:1fr}}@media(max-width:720px){.sq-assessor-form,.sq-assessor-map-tools{grid-template-columns:1fr}.sq-assessor-actions .sq-btn{flex:1}}

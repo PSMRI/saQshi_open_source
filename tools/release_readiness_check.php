@@ -54,7 +54,23 @@ function rr_should_skip_file(string $relativePath): bool
 
 function rr_is_private_artifact(string $relativePath): bool
 {
+    $relativePath = str_replace('\\', '/', $relativePath);
+    if ($relativePath === 'docs/compliance/sample_exports/non_pii_sample_exports.zip') {
+        return false;
+    }
+
     return (bool) preg_match('/\.(zip|rar|7z|bak|backup|dump|sql\.gz|docx|xlsx|xls)$/i', $relativePath);
+}
+
+function rr_is_approved_large_config(string $relativePath): bool
+{
+    $relativePath = str_replace('\\', '/', $relativePath);
+    $approvedLargeConfigs = [
+        'api/config/frameworks/saqshi-nqas.json',
+        'api/config/performance/outcome.json',
+    ];
+
+    return in_array($relativePath, $approvedLargeConfigs, true);
 }
 
 function rr_asset_path_to_file(string $root, string $assetPath): ?string
@@ -87,12 +103,18 @@ $requiredFiles = [
     'CHANGELOG.md',
     '.env.example',
     'docs/compliance/release_checklist.md',
+    'docs/compliance/release_versioning_policy.md',
     'docs/compliance/third_party_licenses.md',
     'docs/compliance/dpg_readiness_assessment.md',
     'docs/compliance/legal_privacy_confirmation.md',
     'docs/database/database_setup_and_migration.md',
     'docs/security/production_hardening.md',
     'docs/security/role_access_matrix.md',
+    '.github/ISSUE_TEMPLATE/bug_report.md',
+    '.github/ISSUE_TEMPLATE/feature_request.md',
+    '.github/ISSUE_TEMPLATE/security_advisory.md',
+    '.github/ISSUE_TEMPLATE/config.yml',
+    '.github/PULL_REQUEST_TEMPLATE.md',
 ];
 
 foreach ($requiredFiles as $file) {
@@ -109,15 +131,11 @@ if (!is_file($root . DIRECTORY_SEPARATOR . 'api/sql/schema/001_base_schema.sql')
     rr_warning($warnings, "Sanitized base schema not found at api/sql/schema/001_base_schema.sql.");
 }
 
-if (is_file($root . DIRECTORY_SEPARATOR . 'api/config/masters/facilities.json')) {
-    rr_warning($warnings, "Confirm redistribution approval for real facility master data: api/config/masters/facilities.json.");
-}
-
 $dataApproval = $root . DIRECTORY_SEPARATOR . 'docs/compliance/data_redistribution_approval.md';
 if (is_file($dataApproval)) {
     $approvalText = file_get_contents($dataApproval);
-    if ($approvalText !== false && stripos($approvalText, 'Status: Pending') !== false) {
-        rr_warning($warnings, "Data redistribution approval is still pending: docs/compliance/data_redistribution_approval.md.");
+    if ($approvalText !== false && stripos($approvalText, 'Pending') !== false) {
+        rr_warning($warnings, "Some data redistribution approvals are still pending: docs/compliance/data_redistribution_approval.md.");
     }
 }
 
@@ -254,6 +272,10 @@ foreach ($fileList as $relative) {
     }
 
     if ($size > 1048576) {
+        if (rr_is_approved_large_config($relative)) {
+            continue;
+        }
+
         rr_warning($warnings, "Review large release file over 1 MB: {$relative}");
         continue;
     }

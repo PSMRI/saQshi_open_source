@@ -83,6 +83,7 @@ None detected.
 - `function adminUsersRequest`
 - `function adminUsersPasswordErrors`
 - `function adminUsersRow`
+- `function adminUsersEncryptedProfilePayload`
 - `function adminUsersFind`
 
 **Request fields read from `$request`**
@@ -4626,7 +4627,7 @@ Configuration files define static behaviour, validation rules, master data, cert
 - **JSON shape:** object
 - **Top-level keys:** `info`, `item`, `variable`
 
-### `api/sql/sql.json`
+### `api/sql/legacy_sql_notes.sql`
 
 - **Role:** Configuration
 - **JSON shape:** invalid JSON

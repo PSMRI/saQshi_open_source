@@ -182,6 +182,120 @@
         return document.documentElement.getAttribute("data-screen-reader-mode") === "true";
     }
 
+    function focusableSelector() {
+        return "a, button, input, select, textarea, summary, [role='button'], [role='link'], [tabindex]:not([tabindex='-1'])";
+    }
+
+    function readableSelector() {
+        return focusableSelector() + ", h1, h2, h3, h4, h5, h6, label, th, td";
+    }
+
+    function readableControlText(element) {
+        if (!element) {
+            return "";
+        }
+
+        const tag = String(element.tagName || "").toLowerCase();
+        const role = element.getAttribute("role") || "";
+        const id = element.getAttribute("id") || "";
+        const label = id
+            ? document.querySelector("label[for='" + (window.CSS && CSS.escape ? CSS.escape(id) : id) + "']")
+            : null;
+        const text = [
+            element.getAttribute("aria-label"),
+            label ? label.textContent : "",
+            element.getAttribute("placeholder"),
+            element.getAttribute("title"),
+            element.textContent
+        ].map(cleanSpeechText).find(Boolean) || "";
+
+        let type = role || tag;
+
+        if (tag === "input") {
+            type = element.getAttribute("type") || "input";
+        }
+
+        if (tag === "a") {
+            type = "link";
+        } else if (tag === "button") {
+            type = "button";
+        } else if (tag === "select") {
+            type = "selection list";
+        } else if (tag === "textarea") {
+            type = "text area";
+        }
+
+        if (!text && /^h[1-6]$/.test(tag)) {
+            type = "heading";
+        }
+
+        return cleanSpeechText([text, type].filter(Boolean).join(", "));
+    }
+
+    function announceElement(element, delay) {
+        if (!screenReaderModeEnabled()) {
+            return;
+        }
+
+        const target = element && element.closest
+            ? element.closest(readableSelector())
+            : element;
+
+        if (!target) {
+            return;
+        }
+
+        const message = readableControlText(target);
+
+        if (!message) {
+            return;
+        }
+
+        const now = Date.now();
+
+        if (
+            window.__sqLastFocusSpeechText === message &&
+            (now - (window.__sqLastFocusSpeechAt || 0)) < 1200
+        ) {
+            return;
+        }
+
+        window.__sqLastFocusSpeechText = message;
+        window.__sqLastFocusSpeechAt = now;
+        window.clearTimeout(window.__sqAutoPageSpeechTimer);
+        window.clearTimeout(window.__sqFocusSpeechTimer);
+
+        window.__sqFocusSpeechTimer = window.setTimeout(function () {
+            speakText(message);
+        }, typeof delay === "number" ? delay : 80);
+    }
+
+    function bindFocusSpeech() {
+        if (document.documentElement.dataset.sqFocusSpeechBound === "true") {
+            return;
+        }
+
+        document.documentElement.dataset.sqFocusSpeechBound = "true";
+
+        document.addEventListener("focusin", function (event) {
+            announceElement(event.target, 60);
+        });
+
+        document.addEventListener("keydown", function (event) {
+            if (event.key !== "Tab") {
+                return;
+            }
+
+            window.setTimeout(function () {
+                announceElement(document.activeElement, 0);
+            }, 90);
+        });
+
+        document.addEventListener("pointerover", function (event) {
+            announceElement(event.target, 120);
+        });
+    }
+
     function speakCurrentPageAutomatically() {
         if (!screenReaderModeEnabled()) {
             return;
@@ -444,6 +558,7 @@
         bindThemeToggle();
         bindAccessibilityControls();
         bindAutoPageSpeech();
+        bindFocusSpeech();
         bindDropdown();
         bindLogout();
         bindAiButton();

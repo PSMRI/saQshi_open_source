@@ -1,7 +1,7 @@
 # SaQshi GitBook Publishing Guide
 
-Version: 1.0  
-Updated: 2026-07-14
+Version: 1.1  
+Updated: 2026-07-18
 
 ## Purpose
 
@@ -29,6 +29,25 @@ docs/compliance/open_source_dpg_release_status.md
 ```
 
 Use this page as the first stop for open-source and DPG readiness review. It links to the detailed readiness checklist, DPG assessment, release checklist, security scan, public data audit, legal/privacy confirmation and data redistribution approval records.
+
+## Accessibility Evidence
+
+The GitBook Testing and Accessibility section publishes both the WCAG review and
+the execution record:
+
+```text
+docs/testing/saqshi_wcag_web_platform_compliance.md
+docs/testing/accessibility_test_execution_report_2026_07_17.md
+```
+
+The current record includes a passed NVDA run for every result captured in the
+authenticated login and assessment flows. Preserve its scoped wording when
+publishing: it records the tested flows and does not claim validation of
+untested pages, JAWS or VoiceOver.
+
+The Developer Guide includes `docs/database/sql_query_inventory.md`, which maps
+the application's SQL query operations to their responsible modules and source
+files.
 
 ## Recommended GitBook Structure
 

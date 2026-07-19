@@ -13,6 +13,8 @@ This guide explains how to deploy SaQshi on common PHP web servers. Adjust paths
 | Writable folders | `uploads/`, `api/storage/logs/`, `api/storage/events/` |
 | Secrets | Store in `.env`, not in committed PHP files |
 
+For environment sizing, server capacity, PHP settings, database sizing and UAT/production readiness, see [System Requirements for UAT and Production](system_requirements.md).
+
 ## Deployment Steps
 
 1. Copy the project to the web root or application folder.
@@ -24,6 +26,26 @@ This guide explains how to deploy SaQshi on common PHP web servers. Adjust paths
 7. Confirm `{main_url}/ui/login.html` opens.
 8. Confirm `{main_url}/api/auth/v1/csrf.php` returns JSON.
 9. Login with a test user and verify dashboard routing.
+
+## UI Deployment
+
+The web UI is a static HTML/CSS/JavaScript application under `ui/`. It should be deployed with the API under the same `{main_url}` so sessions, CSRF validation and relative API calls work reliably.
+
+Important UI URLs:
+
+```text
+{main_url}/ui/login.html
+{main_url}/ui/dashboard.html
+{main_url}/ui/help/documentation.html
+```
+
+Most routed feature pages are loaded by `ui/dashboard.html` using route query strings, for example:
+
+```text
+{main_url}/ui/dashboard.html?route=assessment/checklist
+```
+
+See [UI Deployment Guide](ui_deployment_guide.md) for static asset setup, page manifests, same-origin rules, server examples, cache/versioning and UI troubleshooting.
 
 ## IIS
 
@@ -83,11 +105,11 @@ SaQshi can be deployed on a cloud VM or managed cloud services. The simplest clo
 
 ### Infrastructure Architecture
 
-![SaQshi Infrastructure Architecture](docs/assets/architecture/saqshi-infrastructure-architecture.svg)
+![SaQshi Infrastructure Architecture](../assets/architecture/saqshi-infrastructure-architecture.svg)
 
 ### Release and Deployment Architecture
 
-![SaQshi Release and Deployment Architecture](docs/assets/architecture/saqshi-cicd-deployment-architecture.svg)
+![SaQshi Release and Deployment Architecture](../assets/architecture/saqshi-cicd-deployment-architecture.svg)
 
 This is the current recommended release flow for SaQshi. It uses Git, release validation, ZIP/Git-pull/SFTP style deployment, database backup, `.env` secrets and Dev/UAT/Production promotion.
 

@@ -34,6 +34,8 @@
     const STORAGE_KEY = "sq_sidebar_state";
 
     let collapsed = false;
+    let deploymentConfig = null;
+    let navigationEventsBound = false;
 
     /* ======================================================
        Elements
@@ -138,10 +140,20 @@
     function activeMenu() {
 
         const current = window.location.pathname;
+        const currentHash = window.location.hash || "";
+        const links = Array.from(document.querySelectorAll(".sq-sidebar-link"));
+        const hasHashSpecificMatch = links.some(function (link) {
+            const href = link.getAttribute("href");
 
-        document
-            .querySelectorAll(".sq-sidebar-link")
-            .forEach(function (link) {
+            if (!href) {
+                return false;
+            }
+
+            const url = new URL(href, window.location.origin);
+            return url.pathname === current && url.hash && url.hash === currentHash;
+        });
+
+        links.forEach(function (link) {
 
                 link.classList.remove("is-active");
 
@@ -153,7 +165,11 @@
 
                 const url = new URL(href, window.location.origin);
 
-                if (url.pathname === current) {
+                const isActive = url.pathname === current &&
+                    ((hasHashSpecificMatch && url.hash === currentHash) ||
+                    (!hasHashSpecificMatch && !url.hash));
+
+                if (isActive) {
 
                     link.classList.add("is-active");
 
@@ -207,6 +223,9 @@
 
         const roleId = Number(user && user.role_id);
         const isMonitoringRole = [4, 5, 8, 9].indexOf(roleId) !== -1;
+        const isAssessorRole =
+            roleId === 10 ||
+            /assessor/i.test(String(user && user.role_name || ""));
         const monitoringLabel =
             roleId === 5 ? "Regional Monitoring" :
             roleId === 4 ? "District Monitoring" :
@@ -221,13 +240,25 @@
         document
             .querySelectorAll("[data-state-only]")
             .forEach(function (item) {
-                item.hidden = !isMonitoringRole;
+                const hiddenByRole = !isMonitoringRole;
+                item.dataset.roleHidden = hiddenByRole ? "1" : "0";
+                item.hidden = hiddenByRole;
             });
 
         document
             .querySelectorAll("[data-facility-only]")
             .forEach(function (item) {
-                item.hidden = isMonitoringRole;
+                const hiddenByRole = isMonitoringRole || isAssessorRole;
+                item.dataset.roleHidden = hiddenByRole ? "1" : "0";
+                item.hidden = hiddenByRole;
+            });
+
+        document
+            .querySelectorAll("[data-assessor-only]")
+            .forEach(function (item) {
+                const hiddenByRole = !isAssessorRole;
+                item.dataset.roleHidden = hiddenByRole ? "1" : "0";
+                item.hidden = hiddenByRole;
             });
 
         document
@@ -242,6 +273,61 @@
                 item.textContent = dashboardLabel;
             });
 
+    }
+
+    async function loadDeploymentConfig(force = false) {
+        if (deploymentConfig && !force) {
+            return deploymentConfig;
+        }
+
+        if (SQ.deployment && typeof SQ.deployment.load === "function") {
+            deploymentConfig = await SQ.deployment.load(force);
+            return deploymentConfig;
+        }
+
+        if (!SQ.api || typeof SQ.api.get !== "function") {
+            return null;
+        }
+
+        try {
+            const response = await SQ.api.get("/config/v1/deployment.php", {}, {
+                loader: false,
+                showError: false,
+                redirectOnUnauthorized: false
+            });
+            deploymentConfig = response.data || null;
+            window.SQ.deployment = deploymentConfig;
+            return deploymentConfig;
+        } catch (error) {
+            return null;
+        }
+    }
+
+    function moduleEnabled(config, key) {
+        if (!key) {
+            return true;
+        }
+
+        const modules = config && config.modules && config.modules.modules;
+        return modules && modules[key] ? modules[key].enabled !== false : true;
+    }
+
+    function applyModuleVisibility(config) {
+        document.querySelectorAll("[data-module-key]").forEach(function (item) {
+            const hiddenByRole = item.dataset.roleHidden === "1";
+            const hiddenByModule = !moduleEnabled(config, item.getAttribute("data-module-key"));
+            item.hidden = hiddenByRole || hiddenByModule;
+        });
+    }
+
+    async function refresh() {
+        applyRoleVisibility();
+        const config = await loadDeploymentConfig(true);
+        applyModuleVisibility(config);
+        if (SQ.deployment && typeof SQ.deployment.applyLabels === "function") {
+            SQ.deployment.applyLabels(document);
+        }
+        activeMenu();
     }
 
     /* ======================================================
@@ -312,6 +398,17 @@
 
     }
 
+    function bindNavigationEvents() {
+
+        if (navigationEventsBound) {
+            return;
+        }
+
+        window.addEventListener("hashchange", activeMenu);
+        navigationEventsBound = true;
+
+    }
+
     /* ======================================================
        Search Filter (Future Ready)
     ====================================================== */
@@ -344,7 +441,7 @@
        Public API
     ====================================================== */
 
-    function init() {
+    async function init() {
 
         collapsed = load();
 
@@ -360,9 +457,17 @@
 
         bindAccordion();
 
+        bindNavigationEvents();
+
         ensureAssessorInfoLink();
 
         applyRoleVisibility();
+
+        const config = await loadDeploymentConfig();
+        applyModuleVisibility(config);
+        if (SQ.deployment && typeof SQ.deployment.applyLabels === "function") {
+            SQ.deployment.applyLabels(document);
+        }
 
         activeMenu();
 
@@ -389,6 +494,7 @@
         toggleMobile,
 
         activeMenu,
+        refresh,
 
         filter,
 

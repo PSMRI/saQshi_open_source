@@ -1,0 +1,88 @@
+<!-- SaQshi Open Source | State Assessor Management | assessors.html | Version 1.0.0 -->
+<section class="sq-state-page sq-assessor-admin">
+    <div class="sq-state-toolbar">
+        <div>
+            <h3 data-domain-label="assessor_management">Assessor Management</h3>
+            <p>Create assessor profiles and map facilities for state assessments.</p>
+        </div>
+        <div class="sq-state-filters">
+            <input type="search" class="sq-form-control" id="assessorSearch" placeholder="Search assessor code or user ID" aria-label="Search assessor">
+            <button class="sq-btn sq-btn-primary" id="assessorRefresh" type="button">Refresh</button>
+        </div>
+    </div>
+
+    <div class="sq-assessor-grid">
+        <div class="sq-card">
+            <div class="sq-card-header">
+                <h3 data-domain-label="assessor_profile">Assessor Profile</h3>
+                <p>Username is created from assessor code. A temporary password is sent by configured email/SMS service.</p>
+            </div>
+            <div class="sq-card-body">
+                <form id="assessorForm" class="sq-assessor-form">
+                    <input type="hidden" name="assessor_id" id="assessorId">
+                    <label>
+                        <span>Assessor Code</span>
+                        <input class="sq-form-control" name="assessor_code" id="assessorCode" placeholder="Example: ASM001" required>
+                    </label>
+                    <label>
+                        <span>Assessor Name</span>
+                        <input class="sq-form-control" name="assessor_name" id="assessorName" required>
+                    </label>
+                    <label>
+                        <span>Linked User ID</span>
+                        <input class="sq-form-control" name="user_id" id="assessorUserId" type="number" min="1" placeholder="Auto-created if blank">
+                    </label>
+                    <label>
+                        <span>Designation</span>
+                        <input class="sq-form-control" name="designation" id="assessorDesignation" placeholder="Assessor / Quality Consultant">
+                    </label>
+                    <label>
+                        <span>Mobile</span>
+                        <input class="sq-form-control" name="mobile_no" id="assessorMobile" inputmode="tel">
+                    </label>
+                    <label>
+                        <span>Email</span>
+                        <input class="sq-form-control" name="mail_id" id="assessorEmail" type="email">
+                    </label>
+                    <label>
+                        <span>Status</span>
+                        <select class="sq-form-control" name="is_active" id="assessorStatus">
+                            <option value="1">Active</option>
+                            <option value="0">Inactive</option>
+                        </select>
+                    </label>
+                    <div class="sq-assessor-actions">
+                        <button class="sq-btn sq-btn-primary" type="submit">Save Assessor</button>
+                        <button class="sq-btn sq-btn-light" type="button" id="assessorReset">Clear</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="sq-card">
+            <div class="sq-card-header">
+                <h3 data-domain-label="assessor_mapping">Facility Mapping</h3>
+                <p>Select an assessor from the list, search a facility, then assign it.</p>
+            </div>
+            <div class="sq-card-body">
+                <div class="sq-assessor-map-tools">
+                    <div>
+                        <span>Selected Assessor</span>
+                        <strong id="mappingAssessorName">None selected</strong>
+                    </div>
+                    <input type="search" class="sq-form-control" id="facilitySearch" placeholder="Search facility name, NIN, district or block" aria-label="Search facility">
+                </div>
+                <div id="facilitySearchRows" class="sq-assessor-search"></div>
+                <div id="mappingRows" class="sq-assessor-mappings"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="sq-card">
+        <div class="sq-card-header">
+            <h3>Assessors</h3>
+            <div id="assessorPager"></div>
+        </div>
+        <div class="sq-card-body" id="assessorRows"></div>
+    </div>
+</section>

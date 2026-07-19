@@ -1,7 +1,7 @@
 # SaQshi Configuration JSON Formats
 
 Version: 1.0  
-Updated: 2026-07-15  
+Updated: 2026-07-18  
 License: GPL-3.0
 
 ## Purpose
@@ -13,9 +13,49 @@ important configuration files:
 
 - Facility master JSON: `api/config/masters/facilities.json`
 - Checklist/framework JSON: `api/config/frameworks/saqshi-nqas.json`
+- Module configuration JSON: `api/config/modules.json`
 
 Keep these files valid JSON. A single missing comma, extra comma or mismatched
 bracket can stop the related module from loading.
+
+## Module Configuration JSON
+
+Path:
+
+```text
+api/config/modules.json
+```
+
+This file controls optional healthcare modules such as CQI, performance, KPI,
+outcome, certification, reports, analytics and map features.
+
+Example:
+
+```json
+{
+  "domain": "healthcare",
+  "modules": {
+    "assessment": { "enabled": true, "label": "Assessment" },
+    "cqi": { "enabled": true, "label": "CQI / Gap Closure" },
+    "performance": { "enabled": true, "label": "Performance Monitoring" },
+    "kpi": { "enabled": true, "label": "KPI" },
+    "outcome": { "enabled": true, "label": "Outcome" },
+    "certification": { "enabled": true, "label": "Certification" },
+    "reports": { "enabled": true, "label": "Reports" }
+  },
+  "role_visibility": {
+    "assessor": ["assessment", "reports"]
+  }
+}
+```
+
+Rules:
+
+- Keep `assessment.enabled = true` when checklist assessment is required.
+- Disable `kpi`, `outcome` and `performance` only when the healthcare deployment does not collect monthly indicator data.
+- Disable `certification` if the deployment does not track facility certification.
+- Keep labels short because they are displayed in compact dashboards.
+- Do not delete unknown module keys during upgrades; set `enabled` instead.
 
 ## Facility Master JSON
 
@@ -277,7 +317,7 @@ Facility Type
 
 ### Response Format
 
-The standard SaQshi checklist scoring response is radio-based:
+The healthcare/NQAS checklist scoring response is radio-based:
 
 ```json
 {
@@ -313,6 +353,80 @@ Rules:
 - If `evidence_required` is `true`, the UI/API may require evidence upload before completion.
 - If `remarks_required` is `true`, the UI/API may require remarks before saving.
 
+For healthcare development and future approved extensions, a checkpoint may use
+structured response types. The assessment engine stores `response_value` for
+quick display and `response_json` for the full structured answer.
+
+Supported response types:
+
+| Type | Use For | Scoring |
+|---|---|---|
+| `radio` | Standard `0/1/2` compliance scoring or any configured option set. | Uses option `score`. |
+| `yes_no` | Simple health service availability questions. | Uses configured option score. |
+| `dropdown` | Controlled single-select answers. | Uses option `score` when supplied. |
+| `number` | Counts such as OPD attendance, beds, equipment or staff. | Stored as data; not scored by default. |
+| `text` | Narrative/short remarks. | Stored as data; not scored by default. |
+| `form` | Multi-field healthcare operational data. | Stored as indexed data; not scored by default. |
+
+Example non-scored number response:
+
+```json
+{
+  "type": "number",
+  "label": "Average Daily OPD",
+  "mandatory": true,
+  "score_mode": "none"
+}
+```
+
+Example form response:
+
+```json
+{
+  "type": "form",
+  "label": "OPD Load and Staffing",
+  "mandatory": true,
+  "fields": [
+    { "key": "monthly_opd", "label": "Monthly OPD", "type": "number", "required": true },
+    { "key": "doctor_count", "label": "Doctors Available", "type": "number", "required": true },
+    { "key": "nurse_count", "label": "Nurses Available", "type": "number", "required": true },
+    { "key": "has_staff_gap", "label": "Staff Gap", "type": "yes_no", "required": true }
+  ]
+}
+```
+
+Non-scored responses are saved with `score_status = NOT_SCORED` and indexed in
+`assessment_response_field_index`. This supports healthcare analytics such as
+service load, staff availability or operational counts without forcing every
+data point to contribute to the quality score.
+
+### Healthcare Framework Example
+
+The official health checklist remains:
+
+```text
+api/config/frameworks/saqshi-nqas.json
+```
+
+Do not modify this large NQAS-aligned framework casually. For healthcare
+deployment validation and developer validation, a smaller health example with
+every supported response type is available here:
+
+```text
+api/config/frameworks/healthcare-example.json
+```
+
+The sample contains:
+
+| Question Type | Example Use |
+|---|---|
+| `radio` | OPD readiness compliance scored as `0/1/2`. |
+| `yes_no` | Emergency support availability. |
+| `dropdown` | Essential drug stock status. |
+| `number` | Average daily OPD count. |
+| `text` | Service gap remarks. |
+| `form` | OPD load and staffing data. |
+
 ## Checklist Validation Checklist
 
 Before publishing checklist/framework JSON:
@@ -336,9 +450,10 @@ Before publishing checklist/framework JSON:
 5. Create a test assessment.
 6. Activate the department.
 7. Open checklist page and verify concern, subtype, method and checkpoint loading.
-8. Save sample `0`, `1`, and `2` responses.
-9. Check scorecard/report output.
-10. Only then publish to production.
+8. Save sample `0`, `1`, and `2` responses for scored frameworks.
+9. Save sample text/number/form responses when validating the healthcare example framework.
+10. Check scorecard/report output and field analytics output.
+11. Only then publish to production.
 
 ## Related Files
 
@@ -346,4 +461,7 @@ Before publishing checklist/framework JSON:
 - `api/config/masters/facility_types.json`
 - `api/config/masters/departmet.json`
 - `api/config/frameworks/saqshi-nqas.json`
+- `api/config/frameworks/healthcare-example.json`
+- `api/config/examples/healthcare-domain.example.json`
+- `api/config/examples/healthcare-modules.example.json`
 - `docs/architecture/technical_architecture.md`

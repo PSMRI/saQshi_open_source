@@ -1,0 +1,146 @@
+[
+  {
+    "fac_type_id": 2001,
+    "facilities_type": "Healthcare Facility Example",
+    "departments": [
+      {
+        "fac_dept_id": 601,
+        "dept_name": "Outpatient Services",
+        "program_tag": "Healthcare Example",
+        "concerns": [
+          {
+            "concern_id": 1,
+            "concern_name": "Service Readiness",
+            "concern_des": "Example health service readiness checks",
+            "subtypes": [
+              {
+                "c_subtype_id": 1,
+                "area_of_con_subtypedeatils": "The facility provides safe and accessible outpatient services",
+                "Reference_No": "Standard HLT-A1",
+                "checkpoints": [
+                  {
+                    "csqa_id": 910001,
+                    "c_subtype_Reference_No_fk": "Standard HLT-A1",
+                    "csqa_reference_id": "HLT A1.1",
+                    "Measurable_Element": "OPD functional status",
+                    "Checkpoint": "Rate OPD functional readiness.",
+                    "Assessment_Method": "OB/RR",
+                    "action_plan": "Ensure OPD area, staff availability and patient flow are functional.",
+                    "program_tag": "Healthcare Example",
+                    "response": {
+                      "type": "radio",
+                      "label": "Compliance Score",
+                      "mandatory": true,
+                      "score_mode": "fixed",
+                      "options": [
+                        { "label": "Fully Compliant", "value": "2", "score": 2 },
+                        { "label": "Partially Compliant", "value": "1", "score": 1 },
+                        { "label": "Non Compliant", "value": "0", "score": 0 }
+                      ]
+                    }
+                  },
+                  {
+                    "csqa_id": 910002,
+                    "c_subtype_Reference_No_fk": "Standard HLT-A1",
+                    "csqa_reference_id": "HLT A1.2",
+                    "Measurable_Element": "Emergency support availability",
+                    "Checkpoint": "Is emergency support available during service hours?",
+                    "Assessment_Method": "SI/RR",
+                    "action_plan": "Ensure emergency support protocol, contact list and basic emergency supplies are available.",
+                    "program_tag": "Healthcare Example",
+                    "response": {
+                      "type": "yes_no",
+                      "label": "Emergency Support Available",
+                      "mandatory": true,
+                      "score_mode": "fixed",
+                      "options": [
+                        { "label": "Yes", "value": "1", "score": 1 },
+                        { "label": "No", "value": "0", "score": 0 }
+                      ]
+                    }
+                  },
+                  {
+                    "csqa_id": 910003,
+                    "c_subtype_Reference_No_fk": "Standard HLT-A1",
+                    "csqa_reference_id": "HLT A1.3",
+                    "Measurable_Element": "Drug stock status",
+                    "Checkpoint": "Select current essential drug stock status.",
+                    "Assessment_Method": "RR",
+                    "action_plan": "Replenish essential medicines and strengthen stock review frequency.",
+                    "program_tag": "Healthcare Example",
+                    "response": {
+                      "type": "dropdown",
+                      "label": "Essential Drug Stock",
+                      "mandatory": true,
+                      "score_mode": "fixed",
+                      "options": [
+                        { "label": "Adequate", "value": "adequate", "score": 2 },
+                        { "label": "Partial stock-out", "value": "partial_stock_out", "score": 1 },
+                        { "label": "Major stock-out", "value": "major_stock_out", "score": 0 }
+                      ]
+                    }
+                  },
+                  {
+                    "csqa_id": 910004,
+                    "c_subtype_Reference_No_fk": "Standard HLT-A1",
+                    "csqa_reference_id": "HLT A1.4",
+                    "Measurable_Element": "Daily OPD count",
+                    "Checkpoint": "Enter average daily OPD count for the previous month.",
+                    "Assessment_Method": "RR",
+                    "action_plan": "Use OPD count for workload analysis and staffing planning.",
+                    "program_tag": "Healthcare Example",
+                    "response": {
+                      "type": "number",
+                      "label": "Average Daily OPD",
+                      "mandatory": true,
+                      "score_mode": "none"
+                    }
+                  },
+                  {
+                    "csqa_id": 910005,
+                    "c_subtype_Reference_No_fk": "Standard HLT-A1",
+                    "csqa_reference_id": "HLT A1.5",
+                    "Measurable_Element": "Service gap remarks",
+                    "Checkpoint": "Write short remarks on any service delivery gap observed.",
+                    "Assessment_Method": "OB/SI",
+                    "action_plan": "Review remarks and convert major service gaps into CQI actions.",
+                    "program_tag": "Healthcare Example",
+                    "response": {
+                      "type": "text",
+                      "label": "Service Gap Remarks",
+                      "mandatory": false,
+                      "multiline": true,
+                      "score_mode": "none"
+                    }
+                  },
+                  {
+                    "csqa_id": 910006,
+                    "c_subtype_Reference_No_fk": "Standard HLT-A1",
+                    "csqa_reference_id": "HLT A1.6",
+                    "Measurable_Element": "Service load and staffing",
+                    "Checkpoint": "Enter service load and available staff details.",
+                    "Assessment_Method": "RR",
+                    "action_plan": "Use service load and staffing information for deployment planning.",
+                    "program_tag": "Healthcare Example",
+                    "response": {
+                      "type": "form",
+                      "label": "OPD Load and Staffing",
+                      "mandatory": true,
+                      "score_mode": "none",
+                      "fields": [
+                        { "key": "monthly_opd", "label": "Monthly OPD", "type": "number", "required": true },
+                        { "key": "doctor_count", "label": "Doctors Available", "type": "number", "required": true },
+                        { "key": "nurse_count", "label": "Nurses Available", "type": "number", "required": true },
+                        { "key": "has_staff_gap", "label": "Staff Gap", "type": "yes_no", "required": true }
+                      ]
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

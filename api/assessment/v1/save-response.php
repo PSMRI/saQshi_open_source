@@ -28,6 +28,8 @@
 
 require_once __DIR__ . '/../../auth_api.php';
 require_once __DIR__ . '/../../assets/conn/db.php';
+require_once __DIR__ . '/../../core/FrameworkEngine.php';
+require_once __DIR__ . '/../../service/ResponseTypeService.php';
 
 Security::requireMethod('POST');
 
@@ -58,14 +60,6 @@ try {
         ? (int)$request['checkpoint_id']
         : 0;
 
-    $responseValue = isset($request['response_value'])
-        ? trim((string)$request['response_value'])
-        : '';
-
-    $score = isset($request['score'])
-        ? (float)$request['score']
-        : (is_numeric($responseValue) ? (float)$responseValue : 0);
-
     $remarks = trim((string)($request['remarks'] ?? ''));
     $evidenceUrl = trim((string)($request['evidence_url'] ?? ''));
 
@@ -87,11 +81,7 @@ try {
         ]);
     }
 
-    if ($responseValue === '') {
-        Response::validation([
-            'response_value' => 'response_value is required'
-        ]);
-    }
+    ResponseTypeService::ensureSchema($con);
 
     /*
      * 1. Validate active assessment
@@ -100,6 +90,7 @@ try {
         SELECT
             assessment_id,
             assessment_name,
+            framework_code,
             status
         FROM assessment_master
         WHERE assessment_id = ?
@@ -128,7 +119,7 @@ try {
      */
     $sqlDepartment = "
         SELECT
-            id,
+            assessment_dept_id AS id,
             status,
             is_active
         FROM assessment_department
@@ -166,7 +157,7 @@ try {
      * 3. Validate assessor info exists
      */
     $sqlInfo = "
-        SELECT id
+        SELECT info_id AS id
         FROM assessment_assessor_info
         WHERE assessment_id = ?
           AND fac_id_fk = ?
@@ -190,7 +181,24 @@ try {
     }
 
     /*
-     * 4. Save / update response
+     * 4. Calculate response from framework JSON.
+     * The server owns the scoring rule; the browser only sends the selected
+     * or entered response value.
+     */
+    $frameworkCode = trim((string)($assessment['framework_code'] ?? 'saqshi-nqas'));
+    $engine = FrameworkEngine::load($frameworkCode !== '' ? $frameworkCode : 'saqshi-nqas');
+    $checkpoint = $engine->getCheckpointById($checkpointId) ?? [];
+    $calculated = ResponseTypeService::evaluate($checkpoint, $request);
+
+    $responseValue = $calculated['response_value'];
+    $responseType = $calculated['response_type'];
+    $responseJson = $calculated['response_json'];
+    $score = $calculated['score'];
+    $maxScore = $calculated['max_score'];
+    $scoreStatus = $calculated['score_status'];
+
+    /*
+     * 5. Save / update response
      *
      * Existing table:
      * assessment_response
@@ -204,18 +212,26 @@ try {
                 dept_id,
                 checkpoint_id,
                 response_value,
+                response_type,
+                response_json,
                 score,
+                max_score,
+                score_status,
                 remarks,
                 evidence_url,
                 updated_by
             )
         VALUES
             (
-                ?, ?, ?, ?, ?, ?, ?, ?
+                ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
             )
         ON DUPLICATE KEY UPDATE
             response_value = VALUES(response_value),
+            response_type = VALUES(response_type),
+            response_json = VALUES(response_json),
             score = VALUES(score),
+            max_score = VALUES(max_score),
+            score_status = VALUES(score_status),
             remarks = VALUES(remarks),
             evidence_url = VALUES(evidence_url),
             updated_by = VALUES(updated_by),
@@ -229,12 +245,16 @@ try {
     }
 
     $stmt->bind_param(
-        'iiisdssi',
+        'iiisssddsssi',
         $assessmentId,
         $deptId,
         $checkpointId,
         $responseValue,
+        $responseType,
+        $responseJson,
         $score,
+        $maxScore,
+        $scoreStatus,
         $remarks,
         $evidenceUrl,
         $userId
@@ -245,7 +265,19 @@ try {
     }
 
     /*
-     * 5. Update current checkpoint in assessment_department
+     * Store indexed response fields for future domain-neutral analytics.
+     */
+    ResponseTypeService::replaceFieldIndex(
+        $con,
+        $assessmentId,
+        $deptId,
+        $checkpointId,
+        $userId,
+        $calculated['fields'] ?? []
+    );
+
+    /*
+     * 6. Update current checkpoint in assessment_department
      */
     $sqlUpdateDept = "
         UPDATE assessment_department
@@ -274,7 +306,7 @@ try {
     }
 
     /*
-     * 6. Count saved responses
+     * 7. Count saved responses
      */
     $sqlCount = "
         SELECT COUNT(*) AS saved_count
@@ -298,8 +330,11 @@ try {
         'assessment_id' => $assessmentId,
         'dept_id' => $deptId,
         'checkpoint_id' => $checkpointId,
+        'response_type' => $responseType,
         'response_value' => $responseValue,
         'score' => $score,
+        'max_score' => $maxScore,
+        'score_status' => $scoreStatus,
         'fac_id' => $facId,
         'updated_by' => $userId
     ]);
@@ -310,8 +345,12 @@ try {
             'assessment_id' => $assessmentId,
             'dept_id' => $deptId,
             'checkpoint_id' => $checkpointId,
+            'response_type' => $responseType,
             'response_value' => $responseValue,
+            'response_json' => json_decode($responseJson, true),
             'score' => $score,
+            'max_score' => $maxScore,
+            'score_status' => $scoreStatus,
             'remarks' => $remarks,
             'evidence_url' => $evidenceUrl,
             'updated_by' => $userId,

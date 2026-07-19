@@ -16,6 +16,8 @@ This page lists common SaQshi issues and first checks.
 | Issue | Possible Cause | First Check |
 | --- | --- | --- |
 | Something went wrong | API/db/config error | Check API JSON and `api/storage/logs/` |
+| Invalid username or password | `s_user.u_name` not found, inactive user, inactive role, wrong password or wrong captcha | Check exact `s_user.u_name`, `is_active`, `role_id_fk`, role status and captcha |
+| Assessor cannot login | Assessor profile exists but linked `s_user` row was not created or user is inactive | Check `assessor_master.user_id`, matching `s_user.u_name = assessor_code`, role `Assessor`, `is_active = 1` |
 | Captcha not loading | Captcha endpoint or session issue | Open captcha API directly |
 | CSRF validation failed | Token missing/expired | Call CSRF API again and retry |
 | Role menu wrong | Role mapping issue | Check user role and role status |

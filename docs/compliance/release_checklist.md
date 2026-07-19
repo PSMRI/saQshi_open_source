@@ -5,6 +5,12 @@ Updated: 2026-07-13
 
 Use this checklist before publishing SaQshi to GitHub, sharing a release archive, or deploying a tagged version.
 
+Release numbering, branch/tag rules and changelog expectations are defined in:
+
+```text
+docs/compliance/release_versioning_policy.md
+```
+
 ## Automated Local Check
 
 Run this command from the `open_source/` directory before public release:
@@ -19,7 +25,7 @@ The command checks required release files, local `.env` presence, private/binary
 
 | Check | Status |
 |---|---|
-| Release version selected. | Pending |
+| Release version selected using release/versioning policy. | Pending |
 | Release date selected. | Pending |
 | Release branch/tag created. | Pending |
 | `CHANGELOG.md` updated. | Done for current development baseline |
@@ -36,7 +42,7 @@ The command checks required release files, local `.env` presence, private/binary
 | Uploads are ignored. | `.gitignore` excludes `uploads/`. | Done |
 | Large archives removed before public release. | Review `*.rar`, `*.zip`, `*.7z`. | Pending |
 | No production database dumps committed. | Manual review required. | Pending |
-| No real patient/person data committed. | Manual review required. | Pending |
+| No patient-level personal health information or real person data committed. | Manual review required. | Pending |
 
 ## 3. License and Attribution
 
@@ -73,7 +79,7 @@ The command checks required release files, local `.env` presence, private/binary
 | Migration files in `api/sql` applied in order. | Pending |
 | Migration rollback/backup plan documented. | Partial |
 | Seed/test data separated from production data. | Pending |
-| Facility master data source/license confirmed. | Pending |
+| Facility master data source/license confirmed. | Not redistributable publicly; sample/template only in public source. |
 
 ## 6. Build and Syntax Checks
 
@@ -151,7 +157,7 @@ Before public release, confirm:
 Do not publish if any of these are true:
 
 - `.env` or secrets are tracked.
-- Real patient/person data is committed.
+- Patient-level personal health information or real person data is committed.
 - License is inconsistent.
 - Security contact is missing.
 - Database setup cannot be reproduced.

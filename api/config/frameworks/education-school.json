@@ -1,0 +1,166 @@
+[
+  {
+    "fac_type_id": 1001,
+    "facilities_type": "School",
+    "departments": [
+      {
+        "fac_dept_id": 501,
+        "dept_name": "Infrastructure",
+        "program_tag": "Education",
+        "concerns": [
+          {
+            "concern_id": 1,
+            "concern_name": "Basic Facilities",
+            "concern_des": "School infrastructure and safety",
+            "subtypes": [
+              {
+                "c_subtype_id": 1,
+                "area_of_con_subtypedeatils": "The school has safe and functional basic infrastructure",
+                "Reference_No": "Standard EDU-A1",
+                "checkpoints": [
+                  {
+                    "csqa_id": 900001,
+                    "c_subtype_Reference_No_fk": "Standard EDU-A1",
+                    "csqa_reference_id": "EDU A1.1",
+                    "Measurable_Element": "School building availability",
+                    "Checkpoint": "Does the school have a functional building?",
+                    "Assessment_Method": "OB/RR",
+                    "action_plan": "Ensure functional building availability and document gaps for repair or construction.",
+                    "program_tag": "Education",
+                    "response": {
+                      "type": "yes_no",
+                      "label": "Building Available",
+                      "mandatory": true,
+                      "score_mode": "fixed",
+                      "options": [
+                        { "label": "Yes", "value": "1", "score": 1 },
+                        { "label": "No", "value": "0", "score": 0 }
+                      ]
+                    }
+                  },
+                  {
+                    "csqa_id": 900002,
+                    "c_subtype_Reference_No_fk": "Standard EDU-A1",
+                    "csqa_reference_id": "EDU A1.2",
+                    "Measurable_Element": "Classroom count",
+                    "Checkpoint": "Enter total number of usable classrooms.",
+                    "Assessment_Method": "OB/RR",
+                    "action_plan": "Prepare classroom adequacy plan if classroom count is lower than enrollment requirement.",
+                    "program_tag": "Education",
+                    "response": {
+                      "type": "number",
+                      "label": "Usable Classrooms",
+                      "mandatory": true,
+                      "score_mode": "none"
+                    }
+                  },
+                  {
+                    "csqa_id": 900003,
+                    "c_subtype_Reference_No_fk": "Standard EDU-A1",
+                    "csqa_reference_id": "EDU A1.3",
+                    "Measurable_Element": "Toilet facility status",
+                    "Checkpoint": "Select toilet facility status.",
+                    "Assessment_Method": "OB/RR",
+                    "action_plan": "Plan repair, cleaning schedule or new construction based on toilet status.",
+                    "program_tag": "Education",
+                    "response": {
+                      "type": "dropdown",
+                      "label": "Toilet Status",
+                      "mandatory": true,
+                      "score_mode": "fixed",
+                      "options": [
+                        { "label": "Separate and functional", "value": "separate_functional", "score": 2 },
+                        { "label": "Available but needs repair", "value": "needs_repair", "score": 1 },
+                        { "label": "Not available", "value": "not_available", "score": 0 }
+                      ]
+                    }
+                  },
+                  {
+                    "csqa_id": 900006,
+                    "c_subtype_Reference_No_fk": "Standard EDU-A1",
+                    "csqa_reference_id": "EDU A1.4",
+                    "Measurable_Element": "Classroom learning environment",
+                    "Checkpoint": "Rate classroom learning environment based on cleanliness, seating and display material.",
+                    "Assessment_Method": "OB",
+                    "action_plan": "Improve classroom cleanliness, seating arrangement and learning display material.",
+                    "program_tag": "Education",
+                    "response": {
+                      "type": "radio",
+                      "label": "Classroom Environment",
+                      "mandatory": true,
+                      "score_mode": "fixed",
+                      "options": [
+                        { "label": "Good", "value": "2", "score": 2 },
+                        { "label": "Needs improvement", "value": "1", "score": 1 },
+                        { "label": "Poor", "value": "0", "score": 0 }
+                      ]
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "fac_dept_id": 502,
+        "dept_name": "Teaching and Learning",
+        "program_tag": "Education",
+        "concerns": [
+          {
+            "concern_id": 2,
+            "concern_name": "Human Resources",
+            "concern_des": "Teacher and student availability",
+            "subtypes": [
+              {
+                "c_subtype_id": 2,
+                "area_of_con_subtypedeatils": "The school records core teaching and enrollment data",
+                "Reference_No": "Standard EDU-B1",
+                "checkpoints": [
+                  {
+                    "csqa_id": 900004,
+                    "c_subtype_Reference_No_fk": "Standard EDU-B1",
+                    "csqa_reference_id": "EDU B1.1",
+                    "Measurable_Element": "Teacher and student count",
+                    "Checkpoint": "Enter teacher and student count.",
+                    "Assessment_Method": "RR",
+                    "action_plan": "Use staffing and enrollment data for resource planning.",
+                    "program_tag": "Education",
+                    "response": {
+                      "type": "form",
+                      "label": "Teacher and Student Details",
+                      "mandatory": true,
+                      "score_mode": "none",
+                      "fields": [
+                        { "key": "teacher_count", "label": "Total Teachers", "type": "number", "required": true },
+                        { "key": "student_count", "label": "Total Students", "type": "number", "required": true },
+                        { "key": "has_subject_teacher_gap", "label": "Subject Teacher Gap", "type": "yes_no", "required": true }
+                      ]
+                    }
+                  },
+                  {
+                    "csqa_id": 900005,
+                    "c_subtype_Reference_No_fk": "Standard EDU-B1",
+                    "csqa_reference_id": "EDU B1.2",
+                    "Measurable_Element": "Learning material remarks",
+                    "Checkpoint": "Write brief remarks on availability of learning material.",
+                    "Assessment_Method": "OB/RR",
+                    "action_plan": "Provide learning material support where gaps are identified.",
+                    "program_tag": "Education",
+                    "response": {
+                      "type": "text",
+                      "label": "Learning Material Remarks",
+                      "mandatory": false,
+                      "multiline": true,
+                      "score_mode": "none"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

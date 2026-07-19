@@ -25,6 +25,13 @@ Source directory: `api/assessment/v1/`
 
 Source directory: `api/auth/v1/`
 
+## Assessor (8)
+
+`dashboard`, `facility_search`, `list`, `mapping_list`, `mapping_save`,
+`my_facilities`, `save`, `start_assessment`.
+
+Source directory: `api/assessor/v1/`
+
 ## Certification (8 endpoints, 1 helper)
 
 Endpoints: `current`, `dashboard`, `history`, `list`, `renewal_status`, `save`,

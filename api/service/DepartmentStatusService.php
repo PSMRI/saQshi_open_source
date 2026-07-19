@@ -10,6 +10,7 @@
 class DepartmentStatusService
 {
     private mysqli $db;
+    private ?string $assessmentColumn = null;
 
     /**
      * Handles construct processing for this API workflow.
@@ -25,9 +26,11 @@ class DepartmentStatusService
     public function saveStatus(array $data): array
     {
         try {
+            $assessmentColumn = $this->assessmentColumn();
+
             $sql = "
                 INSERT INTO assessment_department_status
-                    (fac_id_fk, ass_period_id, dept_id, is_active, activated_by)
+                    (fac_id_fk, {$assessmentColumn}, dept_id, is_active, activated_by)
                 VALUES (?, ?, ?, ?, ?)
                 ON DUPLICATE KEY UPDATE
                     is_active = VALUES(is_active),
@@ -53,10 +56,11 @@ class DepartmentStatusService
             $stmt->execute();
 
             return $this->success("Department status saved", [
-                "fac_id"     => (int)$data['fac_id'],
-                "ass_period" => (int)$data['ass_period'],
-                "dept_id"    => (int)$data['dept_id'],
-                "is_active"  => (int)$data['is_active']
+                "fac_id"        => (int)$data['fac_id'],
+                "assessment_id" => (int)$data['ass_period'],
+                "ass_period"    => (int)$data['ass_period'],
+                "dept_id"       => (int)$data['dept_id'],
+                "is_active"     => (int)$data['is_active']
             ]);
 
         } catch (Throwable $e) {
@@ -77,6 +81,7 @@ class DepartmentStatusService
 
         try {
             $saved = [];
+            $assessmentColumn = $this->assessmentColumn();
 
             foreach ($data['departments'] as $department) {
                 if (!isset($department['dept_id'], $department['is_active'])) {
@@ -93,7 +98,7 @@ class DepartmentStatusService
 
                 $sql = "
                     INSERT INTO assessment_department_status
-                        (fac_id_fk, ass_period_id, dept_id, is_active, activated_by)
+                        (fac_id_fk, {$assessmentColumn}, dept_id, is_active, activated_by)
                     VALUES (?, ?, ?, ?, ?)
                     ON DUPLICATE KEY UPDATE
                         is_active = VALUES(is_active),
@@ -127,9 +132,10 @@ class DepartmentStatusService
             $this->db->commit();
 
             return $this->success("Department statuses saved", [
-                "fac_id"      => (int)$data['fac_id'],
-                "ass_period"  => (int)$data['ass_period'],
-                "departments" => $saved
+                "fac_id"        => (int)$data['fac_id'],
+                "assessment_id" => (int)$data['ass_period'],
+                "ass_period"    => (int)$data['ass_period'],
+                "departments"   => $saved
             ]);
 
         } catch (Throwable $e) {
@@ -144,6 +150,8 @@ class DepartmentStatusService
     public function getStatusList(int $facId, int $assPeriod): array
     {
         try {
+            $assessmentColumn = $this->assessmentColumn();
+
             $sql = "
                 SELECT
                     dept_id,
@@ -153,7 +161,7 @@ class DepartmentStatusService
                     updated_on
                 FROM assessment_department_status
                 WHERE fac_id_fk = ?
-                  AND ass_period_id = ?
+                  AND {$assessmentColumn} = ?
                 ORDER BY dept_id
             ";
 
@@ -192,11 +200,13 @@ class DepartmentStatusService
      */
     public function isDepartmentActive(int $facId, int $assPeriod, int $deptId): bool
     {
+        $assessmentColumn = $this->assessmentColumn();
+
         $sql = "
             SELECT is_active
             FROM assessment_department_status
             WHERE fac_id_fk = ?
-              AND ass_period_id = ?
+              AND {$assessmentColumn} = ?
               AND dept_id = ?
             LIMIT 1
         ";
@@ -217,6 +227,50 @@ class DepartmentStatusService
         }
 
         return (int)$row['is_active'] === 1;
+    }
+
+    /**
+     * Returns the assessment reference column used by the installed schema.
+     */
+    private function assessmentColumn(): string
+    {
+        if ($this->assessmentColumn !== null) {
+            return $this->assessmentColumn;
+        }
+
+        if ($this->columnExists('assessment_id')) {
+            $this->assessmentColumn = 'assessment_id';
+            return $this->assessmentColumn;
+        }
+
+        $this->assessmentColumn = 'ass_period_id';
+        return $this->assessmentColumn;
+    }
+
+    /**
+     * Checks whether a column exists on assessment_department_status.
+     */
+    private function columnExists(string $column): bool
+    {
+        $sql = "
+            SELECT 1
+            FROM INFORMATION_SCHEMA.COLUMNS
+            WHERE TABLE_SCHEMA = DATABASE()
+              AND TABLE_NAME = 'assessment_department_status'
+              AND COLUMN_NAME = ?
+            LIMIT 1
+        ";
+
+        $stmt = $this->db->prepare($sql);
+
+        if (!$stmt) {
+            return false;
+        }
+
+        $stmt->bind_param('s', $column);
+        $stmt->execute();
+
+        return (bool)$stmt->get_result()->fetch_assoc();
     }
 
     /**

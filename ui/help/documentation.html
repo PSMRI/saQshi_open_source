@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -18,19 +18,32 @@
         }
         *{box-sizing:border-box}
         body{margin:0;background:var(--sq-bg);color:var(--sq-ink);font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.45}
+        .sq-sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+        .sq-skip-link{position:absolute;left:12px;top:10px;z-index:1000;transform:translateY(-140%);padding:10px 12px;border-radius:8px;background:#0f172a;color:#fff;text-decoration:none;font-weight:800}
+        .sq-skip-link:focus{transform:translateY(0);outline:3px solid #facc15;outline-offset:2px}
         .sq-doc-shell{display:grid;grid-template-columns:250px minmax(0,1fr);min-height:100vh}
         .sq-doc-nav{position:sticky;top:0;height:100vh;overflow:auto;padding:18px 16px;background:#fff;border-right:1px solid var(--sq-line)}
         .sq-doc-brand{font-weight:800;font-size:18px;margin-bottom:4px}
         .sq-doc-version{color:var(--sq-muted);font-size:12px;margin-bottom:18px}
         .sq-doc-nav-title{margin:14px 0 4px;padding:0 8px;color:#64748b;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
-        .sq-doc-search{width:100%;height:34px;margin-bottom:10px;padding:0 10px;border:1px solid var(--sq-line);border-radius:8px;color:var(--sq-ink)}
-        .sq-doc-search:focus{outline:2px solid #bfdbfe;border-color:var(--sq-blue)}
-        .sq-doc-tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 0 12px}
-        .sq-doc-tab{display:block;text-align:center;padding:9px 10px;border:1px solid var(--sq-line);border-radius:8px;background:#fff;color:#334155;text-decoration:none;font-weight:800}
-        .sq-doc-tab.is-active{background:var(--sq-blue);border-color:var(--sq-blue);color:#fff}
-        .sq-doc-nav a{display:block;padding:7px 8px;border-radius:7px;color:#334155;text-decoration:none;font-size:13px}
-        .sq-doc-nav a:hover{background:var(--sq-soft);color:var(--sq-blue)}
+        .sq-doc-search{width:100%;min-height:40px;margin-bottom:10px;padding:0 10px;border:1px solid var(--sq-line);border-radius:8px;color:var(--sq-ink)}
+        .sq-doc-search:focus{outline:3px solid #93c5fd;border-color:var(--sq-blue)}
+        .sq-doc-nav a{display:flex;align-items:center;min-height:34px;padding:7px 8px;border-radius:7px;color:#334155;text-decoration:none;font-size:13px}
+        .sq-doc-nav a:hover,.sq-doc-nav a[aria-current="true"]{background:var(--sq-soft);color:var(--sq-blue)}
         .sq-doc-main{padding:22px;max-width:1180px}
+        .sq-doc-main:focus{outline:none}
+        .sq-doc-a11ybar{position:sticky;top:0;z-index:20;display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:14px;padding:10px;border:1px solid var(--sq-line);border-radius:10px;background:#fff;box-shadow:0 8px 18px rgba(15,23,42,.06)}
+        .sq-doc-a11ybar-title{font-weight:800;color:var(--sq-ink);margin-right:4px}
+        .sq-doc-a11ybar button{min-height:38px;min-width:56px;padding:0 12px;border:1px solid var(--sq-line);border-radius:8px;background:#f8fafc;color:var(--sq-ink);font:inherit;font-weight:700;cursor:pointer}
+        .sq-doc-a11ybar button:hover{background:var(--sq-soft);border-color:#bfdbfe}
+        .sq-doc-a11ybar button[aria-pressed="true"]{background:var(--sq-blue);border-color:var(--sq-blue);color:#fff}
+        .sq-doc-a11y-separator{width:1px;align-self:stretch;background:var(--sq-line)}
+        body.sq-text-xs{font-size:12px}
+        body.sq-text-md{font-size:14px}
+        body.sq-text-lg{font-size:16px}
+        body.sq-text-xl{font-size:18px}
+        body.sq-text-lg h1{font-size:30px}
+        body.sq-text-xl h1{font-size:32px}
         .sq-doc-hero{padding:18px 20px;border:1px solid var(--sq-line);border-radius:10px;background:#fff;margin-bottom:14px}
         h1{margin:0 0 6px;font-size:28px}
         h2{margin:0;font-size:18px}
@@ -45,6 +58,18 @@
         .sq-doc-flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:10px}
         .sq-doc-step{padding:10px;border:1px solid var(--sq-line);border-radius:8px;background:var(--sq-soft)}
         .sq-doc-step strong{display:block;font-size:13px}
+        .sq-doc-visual{display:grid;grid-template-columns:1fr;gap:10px;margin-top:12px}
+        .sq-doc-lane{display:grid;grid-template-columns:150px minmax(0,1fr);gap:10px;align-items:stretch}
+        .sq-doc-lane-title{display:flex;align-items:center;justify-content:center;padding:10px;border-radius:9px;background:#0f172a;color:#fff;font-weight:800;text-align:center}
+        .sq-doc-chain{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+        .sq-doc-chip{position:relative;min-height:58px;padding:9px 10px;border:1px solid var(--sq-line);border-radius:9px;background:#fff}
+        .sq-doc-chip::after{content:"";position:absolute;right:-8px;top:50%;width:8px;height:2px;background:var(--sq-blue)}
+        .sq-doc-chip:last-child::after{display:none}
+        .sq-doc-chip strong{display:block;font-size:13px;color:var(--sq-ink)}
+        .sq-doc-chip span{display:block;margin-top:3px;color:var(--sq-muted);font-size:12px}
+        .sq-doc-chip.is-green{border-color:#bbf7d0;background:#f0fdf4}
+        .sq-doc-chip.is-amber{border-color:#fde68a;background:#fffbeb}
+        .sq-doc-chip.is-blue{border-color:#bfdbfe;background:#eff6ff}
         .sq-doc-workflow{display:grid;grid-template-columns:repeat(9,minmax(96px,1fr));gap:8px;margin-top:12px;overflow:auto;padding-bottom:6px}
         .sq-doc-node{position:relative;min-height:116px;padding:10px;border:1px solid var(--sq-line);border-radius:10px;background:#fff}
         .sq-doc-node::after{content:"";position:absolute;right:-9px;top:50%;width:9px;height:2px;background:var(--sq-blue)}
@@ -53,7 +78,6 @@
         .sq-doc-node strong{display:block;font-size:13px;color:var(--sq-ink)}
         .sq-doc-node span{display:block;margin-top:4px;color:var(--sq-muted);font-size:12px}
         .sq-doc-hidden{display:none!important}
-        .sq-doc-guide-hidden{display:none!important}
         .sq-doc-no-results{display:none;margin:12px 0;padding:12px;border:1px dashed var(--sq-line);border-radius:10px;background:#fff;color:var(--sq-muted)}
         .sq-doc-no-results.is-visible{display:block}
         .sq-doc-tag{display:inline-flex;align-items:center;min-height:22px;padding:0 8px;border-radius:999px;background:var(--sq-soft);color:var(--sq-blue);font-size:12px;font-weight:700;margin:3px 4px 3px 0}
@@ -63,68 +87,119 @@
         .sq-doc-table th{background:#eaf1ff}
         .sq-doc-error-code{display:inline-flex;align-items:center;min-height:22px;padding:0 8px;border-radius:999px;background:#fff7ed;color:#9a3412;font-size:12px;font-weight:800}
         .sq-doc-path{font-family:Consolas,Monaco,monospace;font-size:12px;color:#1e3a8a;word-break:break-word}
-        .sq-doc-top{display:inline-block;margin-top:8px;color:var(--sq-blue);text-decoration:none;font-size:12px}
-        @media(max-width:1100px){.sq-doc-workflow{grid-template-columns:repeat(3,minmax(160px,1fr));overflow:visible}.sq-doc-node::after{display:none}}
-        @media(max-width:900px){.sq-doc-shell{grid-template-columns:1fr}.sq-doc-nav{position:relative;height:auto}.sq-doc-grid,.sq-doc-flow,.sq-doc-workflow{grid-template-columns:1fr}}
+        .sq-doc-top{display:inline-flex;align-items:center;min-height:30px;margin-top:8px;color:var(--sq-blue);text-decoration:none;font-size:12px}
+        a:focus-visible,input:focus-visible,button:focus-visible{outline:3px solid #f59e0b;outline-offset:2px}
+        @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+        @media(max-width:1100px){.sq-doc-workflow{grid-template-columns:repeat(3,minmax(160px,1fr));overflow:visible}.sq-doc-node::after,.sq-doc-chip::after{display:none}.sq-doc-chain{grid-template-columns:repeat(2,minmax(0,1fr))}}
+        @media(max-width:900px){.sq-doc-shell{grid-template-columns:1fr}.sq-doc-nav{position:relative;height:auto}.sq-doc-grid,.sq-doc-flow,.sq-doc-workflow,.sq-doc-lane,.sq-doc-chain{grid-template-columns:1fr}.sq-doc-a11ybar{position:relative}.sq-doc-a11y-separator{display:none}}
     </style>
 </head>
 <body>
+<a class="sq-skip-link" href="#mainContent">Skip to main content</a>
 <div class="sq-doc-shell" id="top">
-    <aside class="sq-doc-nav">
+    <aside class="sq-doc-nav" aria-label="Help navigation">
         <div class="sq-doc-brand">SaQshi Help</div>
         <div class="sq-doc-version">User Documentation | Version 1.0</div>
-        <input id="docSearch" class="sq-doc-search" type="search" placeholder="Search documentation..." aria-label="Search documentation">
-        <div class="sq-doc-tabs">
-            <a class="sq-doc-tab is-active" data-guide-tab="user" href="#user-guide">User Guide</a>
-            <a class="sq-doc-tab" data-guide-tab="developer" href="#developer-guide">Developer Guide</a>
-        </div>
-        <div class="sq-doc-nav-title" data-guide-nav="user">User Guide</div>
-        <a data-guide-nav="user" href="#overview">Overview</a>
-        <a data-guide-nav="user" href="#assessment">Assessment</a>
-        <a data-guide-nav="user" href="#departments">Department Activation</a>
-        <a data-guide-nav="user" href="#assessor">Assessor Info</a>
-        <a data-guide-nav="user" href="#checklist">Checklist Entry</a>
-        <a data-guide-nav="user" href="#cqi">CQI: Gap, Action, Closure</a>
-        <a data-guide-nav="user" href="#performance">KPI & Outcome</a>
-        <a data-guide-nav="user" href="#certification">Certification</a>
-        <a data-guide-nav="user" href="#ai-chat">AI Chat Assistant</a>
-        <a data-guide-nav="user" href="#reports">Reports</a>
-        <a data-guide-nav="user" href="#profile">Profile & Facility</a>
-        <a data-guide-nav="user" href="#monitoring-roles">State, Regional, District & Block Monitoring</a>
-        <a data-guide-nav="user" href="#errors">Errors & Messages</a>
-        <a data-guide-nav="user" href="#workflow">Recommended Workflow</a>
-        <div class="sq-doc-nav-title sq-doc-guide-hidden" data-guide-nav="developer">Developer Guide</div>
-        <a class="sq-doc-guide-hidden" data-guide-nav="developer" href="#developer-tech">Tech Specs</a>
-        <a class="sq-doc-guide-hidden" data-guide-nav="developer" href="#developer-architecture">Architecture</a>
-        <a class="sq-doc-guide-hidden" data-guide-nav="developer" href="#developer-api">API Reference</a>
-        <a class="sq-doc-guide-hidden" data-guide-nav="developer" href="#developer-ui">UI Reference</a>
-        <a class="sq-doc-guide-hidden" data-guide-nav="developer" href="#developer-testing">Testing</a>
+        <label class="sq-sr-only" for="docSearch">Search user documentation</label>
+        <input id="docSearch" class="sq-doc-search" type="search" placeholder="Search documentation..." aria-label="Search user documentation" autocomplete="off">
+        <div class="sq-doc-nav-title" id="userGuideNavTitle">User Guide</div>
+        <nav aria-labelledby="userGuideNavTitle">
+        <a href="#overview">Overview</a>
+        <a href="#visual-flow">Visual Flow</a>
+        <a href="#assessment">Assessment</a>
+        <a href="#departments">Department Activation</a>
+        <a href="#assessor">Assessor Info</a>
+        <a href="#checklist">Checklist Entry</a>
+        <a href="#external-assessor">External Assessor</a>
+        <a href="#cqi">CQI: Gap, Action, Closure</a>
+        <a href="#performance">KPI & Outcome</a>
+        <a href="#certification">Certification</a>
+        <a href="#ai-chat">AI Chat Assistant</a>
+        <a href="#reports">Reports</a>
+        <a href="#profile">Profile & Facility</a>
+        <a href="#monitoring-roles">State, Regional, District & Block Monitoring</a>
+        <a href="#accessibility">Accessibility</a>
+        <a href="#errors">Errors & Messages</a>
+        <a href="#workflow">Recommended Workflow</a>
+        </nav>
     </aside>
 
-    <main class="sq-doc-main">
-        <div id="docNoResults" class="sq-doc-no-results">No documentation section matched your search.</div>
+    <main class="sq-doc-main" id="mainContent" tabindex="-1">
+        <section class="sq-doc-a11ybar" aria-labelledby="docA11yTitle">
+            <span class="sq-doc-a11ybar-title" id="docA11yTitle">Accessibility</span>
+            <button type="button" data-doc-font="xs" aria-label="Reduce text size">A--</button>
+            <button type="button" data-doc-font="md" aria-label="Normal text size">A</button>
+            <button type="button" data-doc-font="lg" aria-label="Increase text size">A+</button>
+            <button type="button" data-doc-font="xl" aria-label="Largest text size">A++</button>
+            <span class="sq-doc-a11y-separator" aria-hidden="true"></span>
+            <button type="button" id="docScreenReaderToggle" aria-pressed="false">Screen reader mode</button>
+            <button type="button" id="docReadPage">Read page</button>
+            <button type="button" id="docStopRead">Stop</button>
+            <span id="docA11yStatus" class="sq-sr-only" role="status" aria-live="polite"></span>
+        </section>
+
+        <div id="docNoResults" class="sq-doc-no-results" role="status" aria-live="polite">No documentation section matched your search.</div>
 
         <section class="sq-doc-hero" data-guide="user">
             <h1>SaQshi User Documentation</h1>
-            <p>This guide explains what each page is used for and what actions a facility user can perform.</p>
+            <p>This guide explains what each page is used for and what facility users, external assessors and monitoring users can do.</p>
             <span class="sq-doc-tag">User Guide</span>
-            <span class="sq-doc-tag">Developer Guide</span>
             <span class="sq-doc-tag">Assessment</span>
             <span class="sq-doc-tag">CQI</span>
+            <span class="sq-doc-tag">External Assessor</span>
             <span class="sq-doc-tag">Reports</span>
             <span class="sq-doc-tag">Performance Monitoring</span>
             <span class="sq-doc-tag">Certification</span>
+            <span class="sq-doc-tag">Accessibility</span>
             <span class="sq-doc-tag">AI Chat Assistant</span>
         </section>
 
         <section class="sq-doc-card full" id="overview" data-guide="user">
             <h2>Overview</h2>
-            <p>SaQshi supports facility quality assessment, checklist scoring, continuous quality improvement, reporting, certification tracking, and monthly KPI/Outcome monitoring.</p>
+            <p>SaQshi supports facility quality assessment, external assessor workflows, checklist scoring, continuous quality improvement, reporting, certification tracking, monthly KPI/Outcome monitoring and role-based state/district/block review.</p>
             <div class="sq-doc-flow">
                 <div class="sq-doc-step"><strong>1. Create</strong><span>Create or continue an active assessment.</span></div>
                 <div class="sq-doc-step"><strong>2. Activate</strong><span>Enable applicable departments.</span></div>
                 <div class="sq-doc-step"><strong>3. Assess</strong><span>Fill assessor info and checklist responses.</span></div>
                 <div class="sq-doc-step"><strong>4. Improve</strong><span>Use gap analysis, action plan and closure.</span></div>
+            </div>
+            <a class="sq-doc-top" href="#top">Back to top</a>
+        </section>
+
+        <section class="sq-doc-card full sq-doc-section" id="visual-flow" data-guide="user">
+            <h2>User Flow Visualisation</h2>
+            <p>This quick view shows how the main user actions connect inside SaQshi.</p>
+            <div class="sq-doc-visual" aria-label="SaQshi user flow visualisation">
+                <div class="sq-doc-lane">
+                    <div class="sq-doc-lane-title">Facility User</div>
+                    <div class="sq-doc-chain">
+                        <div class="sq-doc-chip is-blue"><strong>Create Assessment</strong><span>Start or continue active assessment.</span></div>
+                        <div class="sq-doc-chip is-blue"><strong>Activate Departments</strong><span>Select applicable departments.</span></div>
+                        <div class="sq-doc-chip is-blue"><strong>Checklist</strong><span>Enter 0, 1 or 2 checkpoint score.</span></div>
+                        <div class="sq-doc-chip is-amber"><strong>CQI</strong><span>Gap analysis, action plan and closure.</span></div>
+                        <div class="sq-doc-chip is-green"><strong>Reports</strong><span>Download score and progress reports.</span></div>
+                    </div>
+                </div>
+                <div class="sq-doc-lane">
+                    <div class="sq-doc-lane-title">External Assessor</div>
+                    <div class="sq-doc-chain">
+                        <div class="sq-doc-chip is-blue"><strong>Assigned Facilities</strong><span>See mapped facilities only.</span></div>
+                        <div class="sq-doc-chip is-blue"><strong>Select Facility</strong><span>Open facility summary and history.</span></div>
+                        <div class="sq-doc-chip is-blue"><strong>Start Assessment</strong><span>Create or reuse assessment.</span></div>
+                        <div class="sq-doc-chip is-blue"><strong>Checklist</strong><span>Complete assessment entry.</span></div>
+                        <div class="sq-doc-chip is-green"><strong>View Results</strong><span>Review facility progress and reports.</span></div>
+                    </div>
+                </div>
+                <div class="sq-doc-lane">
+                    <div class="sq-doc-lane-title">Monitoring User</div>
+                    <div class="sq-doc-chain">
+                        <div class="sq-doc-chip is-blue"><strong>Dashboard</strong><span>View scoped counts.</span></div>
+                        <div class="sq-doc-chip is-blue"><strong>Certification</strong><span>Track status and map.</span></div>
+                        <div class="sq-doc-chip is-amber"><strong>Assessment Progress</strong><span>Find completed, pending and latest records.</span></div>
+                        <div class="sq-doc-chip is-amber"><strong>Indicator Analytics</strong><span>Find weak checklist indicators.</span></div>
+                        <div class="sq-doc-chip is-green"><strong>State Reports</strong><span>Download scoped monitoring reports.</span></div>
+                    </div>
+                </div>
             </div>
             <a class="sq-doc-top" href="#top">Back to top</a>
         </section>
@@ -177,11 +252,27 @@
                     <li>If all checkpoints are completed, use Edit/Update to revise responses.</li>
                 </ul>
             </section>
+
+            <section class="sq-doc-card" id="external-assessor" data-guide="user">
+                <h2>External Assessor</h2>
+                <p>External assessor login is used when a state admin maps an assessor to one or more facilities for assessment.</p>
+                <ul class="sq-doc-list">
+                    <li>Open <strong>Assigned Facilities</strong> to see only facilities mapped to the logged-in assessor.</li>
+                    <li>Select a facility to view facility summary, previous assessments, gaps and KPI/Outcome information where available.</li>
+                    <li>Use <strong>Start Assessment</strong> to create or reuse the active assessment for that facility.</li>
+                    <li>If the facility has one applicable department, SaQshi can auto-activate it.</li>
+                    <li>If multiple departments apply, activate the departments that will be assessed.</li>
+                    <li>Assessor information comes from the logged-in assessor profile and can be confirmed before checklist entry.</li>
+                    <li>External assessor can complete checklist assessment for mapped facilities.</li>
+                    <li>CQI action plan, gap closure, KPI entry and Outcome entry are not assessor entry workflows; they are view-only where shown.</li>
+                </ul>
+            </section>
         </div>
 
         <section class="sq-doc-card full sq-doc-section" id="cqi" data-guide="user">
             <h2>CQI: Gap Analysis, Action Plan and Gap Closure</h2>
             <table class="sq-doc-table">
+                <caption class="sq-sr-only">CQI pages, purpose and user actions</caption>
                 <thead>
                     <tr><th>Page</th><th>Purpose</th><th>User Action</th></tr>
                 </thead>
@@ -281,11 +372,10 @@
                 <div>
                     <h3>Current behavior</h3>
                     <ul class="sq-doc-list">
-                        <li>The assistant uses authenticated API endpoints under <span class="sq-doc-path">api/chat/v1</span>.</li>
-                        <li>Conversation history is stored per logged-in user and facility.</li>
-                        <li>Responses are SaQshi workflow help generated by <span class="sq-doc-path">ChatAssistantService.php</span>.</li>
-                        <li>The active UI component is <span class="sq-doc-path">ui/components/chat-assistant</span>; the older <span class="sq-doc-path">SQ.chat</span> widget is disabled by default to avoid duplicate floating buttons.</li>
-                        <li>The service boundary is ready for future external AI integration.</li>
+                        <li>Conversation history is stored for the logged-in user.</li>
+                        <li>The assistant gives workflow help for assessment, CQI, reports, certification and performance pages.</li>
+                        <li>Only one floating assistant button should appear. If two buttons appear, refresh once and inform the technical team.</li>
+                        <li>The assistant is for help and navigation support; official entries must still be saved from the actual page forms.</li>
                     </ul>
                 </div>
             </div>
@@ -334,6 +424,7 @@
             <h2>State, Regional, District and Block Monitoring</h2>
             <p>Monitoring users see the same monitoring tools, but SaQshi automatically limits data to the user&apos;s assigned level. Users do not need to choose this scope manually.</p>
             <table class="sq-doc-table">
+                <caption class="sq-sr-only">Monitoring role IDs, scope and main actions</caption>
                 <thead>
                     <tr><th>Role</th><th>Role ID</th><th>Data visible to user</th><th>Main actions</th></tr>
                 </thead>
@@ -358,10 +449,71 @@
             <a class="sq-doc-top" href="#top">Back to top</a>
         </section>
 
+        <section class="sq-doc-card full sq-doc-section" id="accessibility" data-guide="user">
+            <h2>Accessibility</h2>
+            <p>SaQshi includes accessibility support so users can navigate pages with keyboard, text-size controls, contrast options and screen reader assistance.</p>
+            <div class="sq-doc-grid">
+                <div>
+                    <h3>Accessibility Menu</h3>
+                    <ul class="sq-doc-list">
+                        <li>On this help page, use the Accessibility toolbar shown above the guide content.</li>
+                        <li>Open the accessibility menu from the header accessibility icon.</li>
+                        <li>Use <strong>A--</strong> to reduce text size when the screen looks too large.</li>
+                        <li>Use <strong>A</strong> to return to the normal text size.</li>
+                        <li>Use <strong>A+</strong> and <strong>A++</strong> to increase text size for better readability.</li>
+                        <li>Use <strong>Screen reader mode</strong> to switch page announcements on or off.</li>
+                        <li>Use <strong>Read page</strong> to hear the current page content.</li>
+                        <li>Use <strong>Stop</strong> to stop speech immediately.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Screen Reader Mode</h3>
+                    <ul class="sq-doc-list">
+                        <li>Use the accessibility menu from the header to enable screen reader mode.</li>
+                        <li>After enabling, SaQshi announces the current page name and key page status automatically when a page opens.</li>
+                        <li>On pages with dynamic data, announcements may start after the page finishes loading.</li>
+                        <li>If you move to another page while screen reader mode is on, SaQshi will announce that page automatically.</li>
+                        <li>If browser speech is blocked, click once anywhere on the page and enable screen reader mode again.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Keyboard and Focus</h3>
+                    <ul class="sq-doc-list">
+                        <li>Use Tab and Shift + Tab to move between fields, buttons, links and menus.</li>
+                        <li>Use Enter or Space to activate buttons, checkboxes and selected menu items.</li>
+                        <li>Focused fields and buttons should show a visible outline.</li>
+                        <li>If focus gets stuck, press Escape or refresh the page and continue from the sidebar.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Zoom, Text and Theme</h3>
+                    <ul class="sq-doc-list">
+                        <li>Browser zoom up to 200% should keep main workflows usable.</li>
+                        <li>Prefer the SaQshi text-size buttons first when only the application text needs to become smaller or larger.</li>
+                        <li>Use the theme toggle when light or dark mode is easier to read.</li>
+                        <li>Important buttons use high-contrast colors and text labels.</li>
+                        <li>Compact pages are designed to reduce scrolling while keeping controls readable.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Charts, Maps and Captcha</h3>
+                    <ul class="sq-doc-list">
+                        <li>Dashboard charts and maps should have nearby count/table summaries for users who cannot read visuals.</li>
+                        <li>For map pages, use the facility list below the map when visual map reading is difficult.</li>
+                        <li>Captcha is shown on login for security. If captcha is not accessible, ask the administrator for an approved assistive login support process.</li>
+                        <li>Report accessibility problems with page name, role, browser and what action was not possible.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="sq-doc-note">Accessibility support improves normal use, but users should still test their own browser and assistive technology combination during UAT.</div>
+            <a class="sq-doc-top" href="#top">Back to top</a>
+        </section>
+
         <section class="sq-doc-card full sq-doc-section" id="errors" data-guide="user">
             <h2>Errors and Messages</h2>
             <p>If any page shows an error or warning, use this list to understand the reason and the next action.</p>
             <table class="sq-doc-table">
+                <caption class="sq-sr-only">Common SaQshi messages, meanings and next actions</caption>
                 <thead>
                     <tr><th>Message / Error</th><th>Meaning</th><th>What user should do</th></tr>
                 </thead>
@@ -403,8 +555,8 @@
                     </tr>
                     <tr>
                         <td><span class="sq-doc-error-code">404 Not Found</span></td>
-                        <td>The page or API URL is not available at the requested path.</td>
-                        <td>Open the page from the sidebar/menu instead of browser refresh on a wrong route. If API is missing, inform administrator.</td>
+                        <td>The requested page or service is not available.</td>
+                        <td>Open the page from the sidebar/menu instead of manually typing the address. If it repeats, inform administrator.</td>
                     </tr>
                     <tr>
                         <td><span class="sq-doc-error-code">500 Internal Server Error</span></td>
@@ -414,7 +566,12 @@
                     <tr>
                         <td><span class="sq-doc-error-code">Session expired / Unauthorized</span></td>
                         <td>Login session is missing or user is not allowed for that action.</td>
-                        <td>Login again. Use only pages assigned to the facility user role.</td>
+                        <td>Login again. Use only pages assigned to your login role.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="sq-doc-error-code">Facility not assigned to logged-in user</span></td>
+                        <td>The selected facility is not mapped to the current assessor or monitoring user.</td>
+                        <td>Open the facility from Assigned Facilities or ask the state admin to verify assessor-facility mapping.</td>
                     </tr>
                     <tr>
                         <td><span class="sq-doc-error-code">Duplicate NIN number</span></td>
@@ -471,216 +628,26 @@
                 <div class="sq-doc-node"><b>9</b><strong>Certification</strong><span>Save State/National certification and monitor renewal status.</span></div>
                 <div class="sq-doc-node"><b>10</b><strong>KPI/Outcome</strong><span>Fill monthly performance indicators.</span></div>
             </div>
-            <div class="sq-doc-note">For best results, complete checklist first, then CQI action plan and gap closure, then generate final reports and update certification status where applicable.</div>
-            <a class="sq-doc-top" href="#top">Back to top</a>
-        </section>
-
-        <section class="sq-doc-hero sq-doc-guide-hidden" id="developer" data-guide="developer">
-            <h1>SaQshi Developer Guide</h1>
-            <p>Technical specification, architecture, API and UI reference for developers maintaining the facility-user application.</p>
-            <span class="sq-doc-tag">Tech Specs</span>
-            <span class="sq-doc-tag">Architecture</span>
-            <span class="sq-doc-tag">API</span>
-            <span class="sq-doc-tag">UI</span>
-        </section>
-
-        <section class="sq-doc-card full sq-doc-section sq-doc-guide-hidden" id="developer-tech" data-guide="developer">
-            <h2>Technical Specification</h2>
-            <div class="sq-doc-grid">
-                <div>
-                    <h3>Technology Used</h3>
-                    <ul class="sq-doc-list">
-                        <li>Frontend: HTML, CSS and vanilla JavaScript page bundles.</li>
-                        <li>Backend: PHP versioned REST-style APIs under <span class="sq-doc-path">api/*/v1</span>.</li>
-                        <li>Data: MySQL tables, JSON framework/master files and uploaded evidence files.</li>
-                        <li>Configuration: database credentials are loaded from local <span class="sq-doc-path">.env</span>; use <span class="sq-doc-path">.env.example</span> as the template and never commit real secrets.</li>
-                        <li>Reports: PHP Excel generation for scorecard, progress, KPI and Outcome downloads.</li>
-                    <li>Security: session auth, CSRF support, captcha login, password hashing, browser-side login password encryption and server-side encryption helpers.</li>
-                    <li>Errors: database/PHP details are logged server-side; users receive friendly JSON messages with Request ID.</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3>Framework and Master Data</h3>
-                    <ul class="sq-doc-list">
-                        <li>NQAS/SaQshi checklist framework is loaded from <span class="sq-doc-path">api/config/frameworks/saqshi-nqas.json</span>.</li>
-                        <li>Departments, assessment methods, facility types and facility masters are under <span class="sq-doc-path">api/config/masters</span>.</li>
-                        <li>KPI, Outcome, formula, target and validation metadata are under <span class="sq-doc-path">api/config/performance</span>.</li>
-                    </ul>
-                </div>
-            </div>
-            <a class="sq-doc-top" href="#top">Back to top</a>
-        </section>
-
-        <section class="sq-doc-card full sq-doc-section sq-doc-guide-hidden" id="developer-architecture" data-guide="developer">
-            <h2>Architecture</h2>
-            <p>The application is organized as a lightweight facility-user portal with shared UI components, page-level modules and PHP service-backed APIs.</p>
-            <div class="sq-doc-grid">
-                <div>
-                    <h3>UI Layer</h3>
-                    <ul class="sq-doc-list">
-                        <li>Each feature page normally has four files: <span class="sq-doc-path">.html</span>, <span class="sq-doc-path">.js</span>, <span class="sq-doc-path">.css</span> and <span class="sq-doc-path">.json</span>.</li>
-                        <li>Shared layout and navigation are loaded from <span class="sq-doc-path">ui/components</span> and <span class="sq-doc-path">ui/assets/js/core</span>.</li>
-                        <li>Facility-user pages are kept under <span class="sq-doc-path">ui/pages/facilityusers</span>.</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3>API and Service Layer</h3>
-                    <ul class="sq-doc-list">
-                        <li>Versioned endpoints are grouped under <span class="sq-doc-path">api/&lt;module&gt;/v1</span>.</li>
-                    <li>Shared helpers are under <span class="sq-doc-path">api/core</span> and business services under <span class="sq-doc-path">api/service</span>.</li>
-                    <li>JSON masters and framework data are under <span class="sq-doc-path">api/config</span>.</li>
-                </ul>
-            </div>
-        </div>
-            <div class="sq-doc-note">
-                <h3>Monitoring Role Scope</h3>
-                <p>State, regional, district and block monitoring use the same <span class="sq-doc-path">ui/pages/state</span> pages and <span class="sq-doc-path">api/state/v1</span> endpoints. Scope is applied centrally, not page-by-page.</p>
-                <ul class="sq-doc-list">
-                    <li><span class="sq-doc-path">role_id = 9</span> is State level and can see all configured facilities.</li>
-                    <li><span class="sq-doc-path">role_id = 5</span> is Regional/Division level and is filtered by session <span class="sq-doc-path">division_id</span>.</li>
-                    <li><span class="sq-doc-path">role_id = 4</span> is District level and is filtered by session <span class="sq-doc-path">dist_id</span>.</li>
-                    <li><span class="sq-doc-path">role_id = 8</span> is Block level and is filtered by session <span class="sq-doc-path">block_id</span>.</li>
-                    <li><span class="sq-doc-path">api/state/v1/_bootstrap.php</span> calls <span class="sq-doc-path">StateDashboardService::applyMonitoringScope()</span>, which injects <span class="sq-doc-path">division</span>, <span class="sq-doc-path">district</span> or <span class="sq-doc-path">block</span> filters into each request.</li>
-                    <li>Scope names are resolved from <span class="sq-doc-path">api/config/masters/facilities.json</span>, using the user&apos;s stored geography ids from <span class="sq-doc-path">s_user</span>.</li>
-                </ul>
-            </div>
-            <div class="sq-doc-note">
-                <h3>Login Password Transport</h3>
-                <p>The login page does not send the plain password field to the login API. It first loads a public RSA key from <span class="sq-doc-path">api/auth/v1/login_key.php</span>, encrypts the password in the browser with RSA-OAEP, then sends <span class="sq-doc-path">password_enc</span> to <span class="sq-doc-path">api/auth/v1/login.php</span>. The server decrypts it through <span class="sq-doc-path">api/core/LoginCrypto.php</span> before normal password verification.</p>
-                <ul class="sq-doc-list">
-                    <li>The private key is generated under <span class="sq-doc-path">api/storage/keys</span> and this folder is ignored by git.</li>
-                    <li>On Windows PHP, set <span class="sq-doc-path">OPENSSL_CONF</span> in <span class="sq-doc-path">.env</span> if key generation requires a local <span class="sq-doc-path">openssl.cnf</span> path.</li>
-                    <li>Developers may still see username, captcha and encrypted payload in browser DevTools, but the raw password should not appear in the request body.</li>
-                    <li>This protects accidental password exposure during local debugging, but production deployments must still use HTTPS.</li>
-                    <li>Shared API debug logging redacts sensitive keys such as password, password_enc, captcha and reset fields.</li>
-                </ul>
-            </div>
-            <div class="sq-doc-flow">
-                <div class="sq-doc-step"><strong>UI Page</strong><span>HTML/CSS/JS bundle handles screen and events.</span></div>
-                <div class="sq-doc-step"><strong>API Helper</strong><span>JS calls versioned API endpoint.</span></div>
-                <div class="sq-doc-step"><strong>PHP Service</strong><span>Validation, business rule and DB/config access.</span></div>
-                <div class="sq-doc-step"><strong>Response</strong><span>JSON response updates UI state and messages.</span></div>
-            </div>
-            <div class="sq-doc-note">
-                <h3>Future Event Architecture / Kafka Readiness</h3>
-                <p>Kafka is not recommended for the current simple deployment. Instead, keep the application ready for Kafka by introducing an event abstraction layer.</p>
-                <ul class="sq-doc-list">
-                    <li>Use a single event entry point such as <span class="sq-doc-path">Event::dispatch("assessment.completed", $assessmentData);</span>.</li>
-                    <li>The abstraction is implemented in <span class="sq-doc-path">api/core/Event.php</span> and loaded globally from <span class="sq-doc-path">api/bootstrap.php</span>.</li>
-                    <li>Current local event logs are written as JSON lines under <span class="sq-doc-path">api/storage/events/events-YYYY-MM-DD.log</span>.</li>
-                    <li>Every API that loads <span class="sq-doc-path">api/bootstrap.php</span> automatically emits <span class="sq-doc-path">api.request.started</span> and <span class="sq-doc-path">api.request.finished</span>.</li>
-                    <li>For now, <span class="sq-doc-path">Event::dispatch()</span> can log events or call local PHP listeners.</li>
-                    <li>Later, the same method can publish to Kafka without changing assessment, CQI, performance or certification business code.</li>
-                    <li>Recommended future events: <span class="sq-doc-path">assessment.created</span>, <span class="sq-doc-path">assessment.completed</span>, <span class="sq-doc-path">department.activated</span>, <span class="sq-doc-path">checklist.response.saved</span>, <span class="sq-doc-path">gap.action_plan.saved</span>, <span class="sq-doc-path">gap.closed</span>, <span class="sq-doc-path">performance.kpi.saved</span>, <span class="sq-doc-path">performance.outcome.saved</span> and <span class="sq-doc-path">certification.updated</span>.</li>
-                </ul>
-                <p>This gives SaQshi an event-driven design path while keeping today&apos;s installation easy to run and maintain.</p>
-            </div>
-            <a class="sq-doc-top" href="#top">Back to top</a>
-        </section>
-
-        <section class="sq-doc-card full sq-doc-section sq-doc-guide-hidden" id="developer-api" data-guide="developer">
-            <h2>API Reference</h2>
-            <p>Main API endpoints used by assessment, CQI, performance, reports, login and facility profile pages.</p>
-            <div class="sq-doc-note">
-                <h3>API testing assets</h3>
-                <p>Use <span class="sq-doc-path">docs/api/saqshi_postman_collection.json</span> for Postman API testing with sample payloads, and <span class="sq-doc-path">docs/api/openapi.yaml</span> for Swagger/OpenAPI documentation. A local viewer is available at <span class="sq-doc-path">docs/api/swagger-ui.html</span>. Setup notes are available in <span class="sq-doc-path">docs/api/README.md</span>, and full Postman steps are in <span class="sq-doc-path">docs/api/POSTMAN_TESTING_GUIDE.md</span>.</p>
-            </div>
-            <table class="sq-doc-table">
-                <thead>
-                    <tr><th>Area</th><th>API file / link</th><th>Purpose</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td>Auth</td><td><span class="sq-doc-path">api/auth/v1/login.php</span><br><span class="sq-doc-path">api/auth/v1/login_key.php</span><br><span class="sq-doc-path">api/auth/v1/logout.php</span><br><span class="sq-doc-path">api/auth/v1/me.php</span><br><span class="sq-doc-path">api/auth/v1/captcha.php</span><br><span class="sq-doc-path">api/core/LoginCrypto.php</span></td><td>Encrypted login password transport, login, logout, current user/session check and captcha generation.</td></tr>
-                    <tr><td>Assessment master</td><td><span class="sq-doc-path">api/assessment/v1/create_assessment.php</span><br><span class="sq-doc-path">api/assessment/v1/list.php</span><br><span class="sq-doc-path">api/assessment/v1/active_assessment.php</span><br><span class="sq-doc-path">api/assessment/v1/cancel_assessment.php</span><br><span class="sq-doc-path">api/assessment/v1/complete_assessment.php</span></td><td>Create, list, detect active, cancel and complete facility assessments.</td></tr>
-                    <tr><td>Department activation</td><td><span class="sq-doc-path">api/assessment/v1/department-status/list.php</span><br><span class="sq-doc-path">api/assessment/v1/department-status/save.php</span><br><span class="sq-doc-path">api/service/DepartmentStatusService.php</span></td><td>Load applicable departments and save activated/inactive status for current assessment.</td></tr>
-                    <tr><td>Assessor info</td><td><span class="sq-doc-path">api/assessment/v1/assessor_info_get.php</span><br><span class="sq-doc-path">api/assessment/v1/assessor_info_save.php</span></td><td>Get and save assessor, assessee, assessment date and assessment type department-wise.</td></tr>
-                    <tr><td>Checklist</td><td><span class="sq-doc-path">api/assessment/v1/get_checkpoint.php</span><br><span class="sq-doc-path">api/assessment/v1/next_checkpoint.php</span><br><span class="sq-doc-path">api/assessment/v1/previous_checkpoint.php</span><br><span class="sq-doc-path">api/assessment/v1/save-response.php</span><br><span class="sq-doc-path">api/assessment/v1/progress.php</span></td><td>Load checkpoints one by one, save 0/1/2 responses and calculate completion progress.</td></tr>
-                    <tr><td>CQI</td><td><span class="sq-doc-path">api/assessment/v1/gap_analysis.php</span><br><span class="sq-doc-path">api/assessment/v1/action_plan.php</span><br><span class="sq-doc-path">api/assessment/v1/action_plan_save.php</span><br><span class="sq-doc-path">api/assessment/v1/action_plan_update.php</span><br><span class="sq-doc-path">api/assessment/v1/action_plan_closure.php</span></td><td>Show gaps, save action plans, update closure, revised score, responsible person and target date.</td></tr>
-                    <tr><td>Evidence files</td><td><span class="sq-doc-path">api/files/v1/upload.php</span><br><span class="sq-doc-path">api/files/v1/delete.php</span></td><td>Upload and delete optional evidence files such as image, camera image, PDF, Word or Excel.</td></tr>
-                    <tr><td>Dashboard</td><td><span class="sq-doc-path">api/assessment/v1/dashboard_insights.php</span></td><td>Supplies main dashboard cards, baseline/final score, charts, outcome month status and checkpoint status.</td></tr>
-                    <tr><td>Reports</td><td><span class="sq-doc-path">api/reports/v1/checkpoint_scorecard.php</span><br><span class="sq-doc-path">api/reports/v1/checkpoint_progress_report.php</span></td><td>Downloads standard checklist scorecard and checkpoint progress/action-plan Excel reports.</td></tr>
-                    <tr><td>Performance</td><td><span class="sq-doc-path">api/performance/v1/dashboard.php</span><br><span class="sq-doc-path">api/performance/v1/kpi_list.php</span><br><span class="sq-doc-path">api/performance/v1/kpi_save.php</span><br><span class="sq-doc-path">api/performance/v1/outcome_list.php</span><br><span class="sq-doc-path">api/performance/v1/outcome_save.php</span><br><span class="sq-doc-path">api/performance/v1/trend.php</span></td><td>Loads KPI/Outcome indicators, saves monthly entries and provides month-wise trend data and report downloads.</td></tr>
-                    <tr><td>Certification</td><td><span class="sq-doc-path">api/certification/v1/dashboard.php</span><br><span class="sq-doc-path">api/certification/v1/save.php</span><br><span class="sq-doc-path">api/certification/v1/list.php</span><br><span class="sq-doc-path">api/certification/v1/history.php</span><br><span class="sq-doc-path">api/certification/v1/renewal_status.php</span><br><span class="sq-doc-path">api/service/CertificationService.php</span><br><span class="sq-doc-path">api/service/CertificationValidator.php</span></td><td>Saves State/National certification, validates applied date and certification date rules, calculates validity and returns dashboard/history/renewal data.</td></tr>
-                    <tr><td>AI Chat Assistant</td><td><span class="sq-doc-path">api/chat/v1/send.php</span><br><span class="sq-doc-path">api/chat/v1/history.php</span><br><span class="sq-doc-path">api/chat/v1/clear.php</span><br><span class="sq-doc-path">api/service/ChatAssistantService.php</span></td><td>Stores per-user chat history and returns SaQshi workflow assistant responses for assessment, CQI, reports, certification and performance questions.</td></tr>
-                    <tr><td>Facility user</td><td><span class="sq-doc-path">api/admin/v1/users.php</span><br><span class="sq-doc-path">api/admin/v1/facilities.php</span><br><span class="sq-doc-path">api/facility/v1/masters/facilities/profile.php</span><br><span class="sq-doc-path">api/facility/v1/masters/facilities/update.php</span></td><td>Loads and updates logged-in user profile and facility profile with duplicate NIN check and geo coordinates.</td></tr>
-                    <tr><td>State / Regional / District / Block Monitoring</td><td><span class="sq-doc-path">api/state/v1/_bootstrap.php</span><br><span class="sq-doc-path">api/state/v1/dashboard.php</span><br><span class="sq-doc-path">api/state/v1/facility_category.php</span><br><span class="sq-doc-path">api/state/v1/certification_summary.php</span><br><span class="sq-doc-path">api/state/v1/assessment_progress.php</span><br><span class="sq-doc-path">api/state/v1/cqi_summary.php</span><br><span class="sq-doc-path">api/state/v1/performance_summary.php</span><br><span class="sq-doc-path">api/state/v1/indicator_analytics.php</span><br><span class="sq-doc-path">api/state/v1/reports.php</span><br><span class="sq-doc-path">api/service/StateDashboardService.php</span></td><td>Shared monitoring APIs. Role 9 sees state data, role 5 is scoped to division, role 4 to district and role 8 to block through <span class="sq-doc-path">applyMonitoringScope()</span>.</td></tr>
-                    <tr><td>Framework and masters</td><td><span class="sq-doc-path">api/framework/v1/departments.php</span><br><span class="sq-doc-path">api/framework/v1/concerns.php</span><br><span class="sq-doc-path">api/framework/v1/subtypes.php</span><br><span class="sq-doc-path">api/framework/v1/checkpoints.php</span><br><span class="sq-doc-path">api/config/frameworks/saqshi-nqas.json</span><br><span class="sq-doc-path">api/config/masters/*.json</span></td><td>Loads framework, department, area of concern, subtype, checkpoint and master reference data.</td></tr>
-                    <tr><td>Core and services</td><td><span class="sq-doc-path">api/core/Response.php</span><br><span class="sq-doc-path">api/core/ErrorHandler.php</span><br><span class="sq-doc-path">api/core/Validator.php</span><br><span class="sq-doc-path">api/core/Crypto.php</span><br><span class="sq-doc-path">api/core/LoginCrypto.php</span><br><span class="sq-doc-path">api/service/PerformanceService.php</span><br><span class="sq-doc-path">api/service/FormulaEngine.php</span></td><td>Shared response format, friendly error handling, validation, encryption/decryption, login password decryption, performance calculations and formula handling.</td></tr>
-                </tbody>
-            </table>
-            <a class="sq-doc-top" href="#top">Back to top</a>
-        </section>
-
-        <section class="sq-doc-card full sq-doc-section sq-doc-guide-hidden" id="developer-ui" data-guide="developer">
-            <h2>UI Reference</h2>
-            <p>Main UI pages and shared assets used in the facility-user application.</p>
-            <table class="sq-doc-table">
-                <thead>
-                    <tr><th>Area</th><th>UI files</th><th>Purpose</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td>Layout and shell</td><td><span class="sq-doc-path">ui/layouts/dashboard.html</span><br><span class="sq-doc-path">ui/components/header/*</span><br><span class="sq-doc-path">ui/components/sidebar/*</span><br><span class="sq-doc-path">ui/components/footer/*</span><br><span class="sq-doc-path">ui/assets/js/core/router.js</span><br><span class="sq-doc-path">ui/assets/js/core/component-loader.js</span></td><td>Application frame, sidebar, header, footer, routing and component loading.</td></tr>
-                    <tr><td>Login</td><td><span class="sq-doc-path">ui/login.html</span><br><span class="sq-doc-path">ui/pages/login/login.*</span></td><td>Professional login page with captcha and authentication flow.</td></tr>
-                    <tr><td>Main dashboard</td><td><span class="sq-doc-path">ui/dashboard.html</span><br><span class="sq-doc-path">ui/pages/dashboard/dashboard.*</span></td><td>Facility dashboard with assessment counts, baseline/final score, charts, progress and shortcuts.</td></tr>
-                    <tr><td>Assessment</td><td><span class="sq-doc-path">ui/pages/assessment/create.*</span><br><span class="sq-doc-path">ui/pages/assessment/list.*</span><br><span class="sq-doc-path">ui/pages/assessment/departments.*</span><br><span class="sq-doc-path">ui/pages/assessment/assessor-info.*</span><br><span class="sq-doc-path">ui/pages/assessment/checklist.*</span></td><td>Create/list assessments, activate departments, capture assessor info and complete checklist checkpoint by checkpoint.</td></tr>
-                    <tr><td>CQI</td><td><span class="sq-doc-path">ui/pages/cqi/gap-analysis.*</span><br><span class="sq-doc-path">ui/pages/cqi/action-plan.*</span><br><span class="sq-doc-path">ui/pages/cqi/closure.*</span></td><td>Gap review, action-plan entry/update and gap closure with revised score and evidence.</td></tr>
-                    <tr><td>Performance</td><td><span class="sq-doc-path">ui/pages/performance/dashboard.*</span><br><span class="sq-doc-path">ui/pages/performance/kpi.*</span><br><span class="sq-doc-path">ui/pages/performance/outcome.*</span><br><span class="sq-doc-path">ui/pages/performance/trend.*</span><br><span class="sq-doc-path">ui/pages/performance/indicator.*</span></td><td>KPI/Outcome monthly entry, dashboard cards, charts, trend options and Excel downloads.</td></tr>
-                    <tr><td>Reports</td><td><span class="sq-doc-path">ui/pages/reports/dashboard.*</span><br><span class="sq-doc-path">ui/pages/reports/score.*</span><br><span class="sq-doc-path">ui/pages/reports/progress.*</span></td><td>Report shortcuts, scorecard download and progress/action-plan download.</td></tr>
-                    <tr><td>Certification</td><td><span class="sq-doc-path">ui/pages/certification/dashboard.*</span><br><span class="sq-doc-path">ui/pages/certification/manage.*</span><br><span class="sq-doc-path">ui/pages/certification/history.*</span><br><span class="sq-doc-path">ui/pages/certification/renewal.*</span></td><td>Certification dashboard, add certification form, history list and renewal status view.</td></tr>
-                    <tr><td>AI Chat Assistant</td><td><span class="sq-doc-path">ui/components/chat-assistant/chat-assistant.html</span><br><span class="sq-doc-path">ui/components/chat-assistant/chat-assistant.css</span><br><span class="sq-doc-path">ui/components/chat-assistant/chat-assistant.js</span><br><span class="sq-doc-path">ui/layouts/dashboard.html</span><br><span class="sq-doc-path">ui/assets/js/core/chat.js</span></td><td>Floating assistant component loaded globally by the dashboard layout. Legacy <span class="sq-doc-path">SQ.chat</span> remains opt-in only through <span class="sq-doc-path">data-enable-legacy-chat</span> and should not be enabled with the new component.</td></tr>
-                    <tr><td>Facility user profile</td><td><span class="sq-doc-path">ui/pages/facilityusers/users.*</span><br><span class="sq-doc-path">ui/pages/facilityusers/users_profile.*</span><br><span class="sq-doc-path">ui/pages/facilityusers/facilities.*</span><br><span class="sq-doc-path">ui/pages/facilityusers/users_facilities.*</span></td><td>Logged-in user profile update and facility profile update.</td></tr>
-                    <tr><td>State / Regional / District / Block monitoring</td><td><span class="sq-doc-path">ui/pages/state/dashboard.*</span><br><span class="sq-doc-path">ui/pages/state/map.*</span><br><span class="sq-doc-path">ui/pages/state/facility-category.*</span><br><span class="sq-doc-path">ui/pages/state/certification.*</span><br><span class="sq-doc-path">ui/pages/state/assessment-progress.*</span><br><span class="sq-doc-path">ui/pages/state/cqi.*</span><br><span class="sq-doc-path">ui/pages/state/performance.*</span><br><span class="sq-doc-path">ui/pages/state/indicator-analytics.*</span><br><span class="sq-doc-path">ui/pages/state/facility-detail.*</span><br><span class="sq-doc-path">ui/pages/state/reports.*</span><br><span class="sq-doc-path">ui/components/sidebar/sidebar.*</span><br><span class="sq-doc-path">ui/dashboard.html</span></td><td>Shared monitoring screens. Sidebar labels and dashboard heading change by role: State, Regional, District or Block. The route remains <span class="sq-doc-path">state/*</span>, while APIs return scoped data.</td></tr>
-                    <tr><td>Documentation</td><td><span class="sq-doc-path">ui/help/documentation.html</span></td><td>English user and developer documentation with search, workflow and error reference.</td></tr>
-                    <tr><td>Shared UI assets</td><td><span class="sq-doc-path">ui/assets/css/sq-ui.css</span><br><span class="sq-doc-path">ui/assets/css/base/*</span><br><span class="sq-doc-path">ui/assets/css/components/*</span><br><span class="sq-doc-path">ui/assets/css/themes/*</span><br><span class="sq-doc-path">ui/assets/js/core/api.js</span><br><span class="sq-doc-path">ui/assets/js/core/auth.js</span><br><span class="sq-doc-path">ui/assets/js/core/upload.js</span><br><span class="sq-doc-path">ui/assets/js/core/validator.js</span></td><td>Shared theme, compact layout, API helper with sensitive-field redaction, encrypted-auth helper, upload helper, form validation and reusable UI styling.</td></tr>
-                </tbody>
-            </table>
-            <div class="sq-doc-note">When adding a new page, keep the same page bundle pattern: HTML for markup, JS for API/state, CSS for local styling and JSON for metadata/sidebar configuration.</div>
-            <a class="sq-doc-top" href="#top">Back to top</a>
-        </section>
-
-        <section class="sq-doc-card full sq-doc-section sq-doc-guide-hidden" id="developer-testing" data-guide="developer">
-            <h2>Testing</h2>
-            <p>SaQshi currently uses a documentation-first test pack for manual QA, UAT, API verification, regression and role-scope checks.</p>
-            <table class="sq-doc-table">
-                <thead>
-                    <tr><th>File</th><th>Purpose</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td><span class="sq-doc-path">docs/api/saqshi_postman_collection.json</span></td><td>Postman collection grouped by Auth, Assessment, CQI, Files, Performance, Certification, Monitoring and Reports, with request payload examples.</td></tr>
-                    <tr><td><span class="sq-doc-path">docs/api/openapi.yaml</span></td><td>Swagger/OpenAPI 3.0 specification for API documentation, API client generation and test tooling.</td></tr>
-                    <tr><td><span class="sq-doc-path">docs/api/swagger-ui.html</span></td><td>Optional Swagger UI viewer for the OpenAPI file.</td></tr>
-                    <tr><td><span class="sq-doc-path">docs/api/README.md</span></td><td>Quick setup notes for Postman variables, CSRF token, session cookie and encrypted login payload.</td></tr>
-                    <tr><td><span class="sq-doc-path">docs/api/POSTMAN_TESTING_GUIDE.md</span></td><td>Detailed Postman testing steps, login flow, sample API sequence, upload/download testing and common error fixes.</td></tr>
-                    <tr><td><span class="sq-doc-path">docs/testing/saqshi_test_plan.md</span></td><td>Complete test plan covering authentication, assessment, checklist, CQI, performance, certification, reports, state/regional/district/block monitoring, security and regression.</td></tr>
-                    <tr><td><span class="sq-doc-path">docs/testing/saqshi_test_case_template.csv</span></td><td>Execution tracker template for testers to mark status, priority and remarks for selected test cases.</td></tr>
-                    <tr><td><span class="sq-doc-path">docs/testing/saqshi_blackbox_whitebox_testing.md</span></td><td>Black-box and white-box testing guide with scope, cases, execution order and initial smoke/syntax results.</td></tr>
-                    <tr><td><span class="sq-doc-path">docs/testing/saqshi_blackbox_whitebox_test_cases.csv</span></td><td>CSV tracker for black-box and white-box test execution.</td></tr>
-                    <tr><td><span class="sq-doc-path">docs/testing/saqshi_wcag_web_platform_compliance.md</span></td><td>WCAG 2.2 and W3C Web Platform Design Principles review, rectifications, known risks and manual audit checklist.</td></tr>
-                    <tr><td><span class="sq-doc-path">docs/testing/wcag_page_by_page_audit.csv</span></td><td>Page-by-page WCAG static audit tracker with manual keyboard, screen-reader and contrast columns.</td></tr>
-                    <tr><td><span class="sq-doc-path">docs/testing/saqshi_non_functional_test_cases.csv</span></td><td>Additional accessibility, browser compatibility, performance, data integrity, deployment and audit/event test cases.</td></tr>
-                    <tr><td><span class="sq-doc-path">docs/testing/saqshi_load_testing_guide.md</span></td><td>Load testing guide and local Node.js runner usage with smoke/baseline/moderate test commands and result interpretation.</td></tr>
-                    <tr><td><span class="sq-doc-path">docs/testing/saqshi_vapt_report.md</span></td><td>VAPT review report with findings, observed controls, remediation checklist and security test cases.</td></tr>
-                    <tr><td><span class="sq-doc-path">docs/testing/saqshi_vapt_test_cases.csv</span></td><td>CSV execution tracker for authentication, authorization, injection, upload, report and security-header VAPT checks.</td></tr>
-                    <tr><td><span class="sq-doc-path">docs/security/sql_injection_security_review.md</span></td><td>SQL injection/security review log documenting verified risks before code rectification and the fixes applied.</td></tr>
-                </tbody>
-            </table>
-            <div class="sq-doc-note">
-                <h3>Minimum release check</h3>
-                <p>Before release, all P0 and P1 test cases in the test plan should pass. Always verify monitoring role scope for role IDs 9, 5, 4 and 8 because report/download scope is a high-risk area. For VAPT, rotate any local credentials found in <span class="sq-doc-path">.env</span> before sharing or deployment.</p>
-            </div>
+            <div class="sq-doc-note">For best results, complete checklist first, then CQI action plan and gap closure, then generate final reports and update certification status where applicable. External assessors normally follow Assigned Facilities, Start Assessment, Department Activation, Assessor Info and Checklist; CQI, KPI and Outcome entry remain facility workflows.</div>
             <a class="sq-doc-top" href="#top">Back to top</a>
         </section>
     </main>
 </div>
 <script>
     (function () {
+        const FONT_STORAGE_KEY = "sq_doc_font_size";
+        const READER_STORAGE_KEY = "sq_doc_screen_reader";
         const search = document.getElementById("docSearch");
         const noResults = document.getElementById("docNoResults");
+        const a11yStatus = document.getElementById("docA11yStatus");
+        const readerToggle = document.getElementById("docScreenReaderToggle");
+        const readPageButton = document.getElementById("docReadPage");
+        const stopReadButton = document.getElementById("docStopRead");
+        const fontButtons = Array.from(document.querySelectorAll("[data-doc-font]"));
         const sections = Array.from(document.querySelectorAll(".sq-doc-main section"));
-        const tabs = Array.from(document.querySelectorAll("[data-guide-tab]"));
-        const guideNavItems = Array.from(document.querySelectorAll("[data-guide-nav]"));
-        const navLinks = Array.from(document.querySelectorAll(".sq-doc-nav a[href^='#']:not(.sq-doc-tab)"));
-        let activeGuide = "user";
+        const navLinks = Array.from(document.querySelectorAll(".sq-doc-nav a[href^='#']"));
+        const textSizeClasses = ["sq-text-xs", "sq-text-md", "sq-text-lg", "sq-text-xl"];
+        let screenReaderMode = localStorage.getItem(READER_STORAGE_KEY) === "1";
 
         function normalize(value) {
             return String(value || "").toLowerCase().trim();
@@ -691,15 +658,9 @@
             let visible = 0;
 
             sections.forEach(function (section) {
-                if (section.dataset.guide !== activeGuide) {
-                    section.classList.add("sq-doc-guide-hidden");
-                    section.classList.remove("sq-doc-hidden");
-                    return;
-                }
-
-                section.classList.remove("sq-doc-guide-hidden");
                 const match = !term || normalize(section.textContent).includes(term);
                 section.classList.toggle("sq-doc-hidden", !match);
+                section.setAttribute("aria-hidden", match ? "false" : "true");
                 if (match) visible++;
             });
 
@@ -707,53 +668,154 @@
                 const target = document.querySelector(link.getAttribute("href"));
                 const match = !term || (target && !target.classList.contains("sq-doc-hidden"));
                 link.classList.toggle("sq-doc-hidden", !match);
-            });
-
-            noResults.classList.toggle("is-visible", term && visible === 0);
-        }
-
-        function guideFromHash() {
-            const hash = String(window.location.hash || "").replace("#", "");
-            if (hash === "top") return activeGuide || "user";
-            if (hash === "developer-guide" || hash.indexOf("developer") === 0) return "developer";
-            return "user";
-        }
-
-        function applyGuide(scrollToHash) {
-            activeGuide = guideFromHash();
-
-            tabs.forEach(function (tab) {
-                tab.classList.toggle("is-active", tab.dataset.guideTab === activeGuide);
-            });
-
-            guideNavItems.forEach(function (item) {
-                item.classList.toggle("sq-doc-guide-hidden", item.dataset.guideNav !== activeGuide);
-            });
-
-            filterDocs();
-
-            if (scrollToHash) {
-                const hash = String(window.location.hash || "");
-                const target = hash && !["#user-guide", "#developer-guide"].includes(hash)
-                    ? document.querySelector(hash)
-                    : null;
-
-                if (target && target.dataset.guide === activeGuide) {
-                    target.scrollIntoView({ behavior: "smooth", block: "start" });
-                } else {
-                    window.scrollTo({ top: 0, behavior: "smooth" });
+                link.setAttribute("aria-hidden", match ? "false" : "true");
+                if (!match) {
+                    link.removeAttribute("aria-current");
                 }
+            });
+
+            noResults.textContent = term && visible === 0
+                ? "No documentation section matched your search."
+                : term
+                    ? visible + " documentation section" + (visible === 1 ? "" : "s") + " matched your search."
+                    : "";
+            noResults.classList.toggle("is-visible", term && visible === 0);
+            updateCurrentNav();
+        }
+
+        function setStatus(message) {
+            if (a11yStatus) {
+                a11yStatus.textContent = message;
             }
         }
 
+        function speechAvailable() {
+            return "speechSynthesis" in window && "SpeechSynthesisUtterance" in window;
+        }
+
+        function stopSpeech() {
+            if (speechAvailable()) {
+                window.speechSynthesis.cancel();
+            }
+        }
+
+        function speak(text) {
+            const message = String(text || "").replace(/\s+/g, " ").trim();
+
+            setStatus(message);
+
+            if (!message || !speechAvailable()) {
+                return;
+            }
+
+            stopSpeech();
+            const utterance = new SpeechSynthesisUtterance(message);
+            utterance.lang = document.documentElement.lang || "en";
+            utterance.rate = 0.95;
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function pageSummary() {
+            const hash = window.location.hash || "#overview";
+            const target = document.querySelector(hash);
+            const heading = target ? target.querySelector("h1,h2,h3") : document.querySelector("h1");
+            const lead = target ? target.querySelector("p") : document.querySelector("main p");
+            const title = heading ? heading.textContent : document.title;
+            const detail = lead ? lead.textContent : "";
+
+            return title + ". " + detail;
+        }
+
+        function readablePageText() {
+            const hiddenSelectors = ".sq-skip-link,.sq-doc-nav,.sq-doc-a11ybar,.sq-doc-hidden";
+            const clone = document.getElementById("mainContent").cloneNode(true);
+
+            clone.querySelectorAll(hiddenSelectors).forEach(function (node) {
+                node.remove();
+            });
+
+            return clone.textContent;
+        }
+
+        function setFontSize(size) {
+            const selected = ["xs", "md", "lg", "xl"].indexOf(size) >= 0 ? size : "md";
+
+            document.body.classList.remove.apply(document.body.classList, textSizeClasses);
+            document.body.classList.add("sq-text-" + selected);
+            localStorage.setItem(FONT_STORAGE_KEY, selected);
+
+            fontButtons.forEach(function (button) {
+                button.setAttribute("aria-pressed", button.dataset.docFont === selected ? "true" : "false");
+            });
+
+            setStatus("Text size changed to " + buttonLabelForSize(selected) + ".");
+        }
+
+        function buttonLabelForSize(size) {
+            return {
+                xs: "small",
+                md: "normal",
+                lg: "large",
+                xl: "extra large"
+            }[size] || "normal";
+        }
+
+        function setScreenReaderMode(enabled, announce) {
+            screenReaderMode = Boolean(enabled);
+            localStorage.setItem(READER_STORAGE_KEY, screenReaderMode ? "1" : "0");
+            readerToggle.setAttribute("aria-pressed", screenReaderMode ? "true" : "false");
+
+            if (announce) {
+                speak(screenReaderMode ? "Screen reader mode is on." : "Screen reader mode is off.");
+            }
+        }
+
+        function updateCurrentNav() {
+            const hash = window.location.hash || "#overview";
+
+            navLinks.forEach(function (link) {
+                const isVisible = !link.classList.contains("sq-doc-hidden");
+                const isCurrent = isVisible && link.getAttribute("href") === hash;
+                if (isCurrent) {
+                    link.setAttribute("aria-current", "true");
+                } else {
+                    link.removeAttribute("aria-current");
+                }
+            });
+        }
+
         search.addEventListener("input", filterDocs);
-        tabs.forEach(function (tab) {
-            tab.addEventListener("click", function () {
-                window.setTimeout(function () { applyGuide(true); }, 0);
+        fontButtons.forEach(function (button) {
+            button.addEventListener("click", function () {
+                setFontSize(button.dataset.docFont);
             });
         });
-        window.addEventListener("hashchange", function () { applyGuide(true); });
-        applyGuide(false);
+        readerToggle.addEventListener("click", function () {
+            setScreenReaderMode(!screenReaderMode, true);
+        });
+        readPageButton.addEventListener("click", function () {
+            speak(readablePageText());
+        });
+        stopReadButton.addEventListener("click", function () {
+            stopSpeech();
+            setStatus("Reading stopped.");
+        });
+        window.addEventListener("hashchange", function () {
+            updateCurrentNav();
+            if (screenReaderMode) {
+                window.setTimeout(function () {
+                    speak(pageSummary());
+                }, 100);
+            }
+        });
+        setFontSize(localStorage.getItem(FONT_STORAGE_KEY) || "md");
+        setScreenReaderMode(screenReaderMode, false);
+        filterDocs();
+        if (screenReaderMode) {
+            window.setTimeout(function () {
+                speak(pageSummary());
+            }, 400);
+        }
     })();
 </script>
 </body>

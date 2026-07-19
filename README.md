@@ -8,7 +8,13 @@ License: GPL-3.0. See [LICENSE](LICENSE).
 
 SaQshi is aligned with the digital workflow needs of healthcare quality assessment programmes such as NQAS. The NQAS public guidance describes quality standards for public health facilities, self-assessment for improvement, preparation for certification, and eight Areas of Concern including Service Provision, Patient Rights, Inputs, Support Services, Clinical Care, Infection Control, Quality Management, and Outcome.
 
-SaQshi implements this as a configurable application: facility and framework data are loaded through JSON and APIs, assessment responses are stored against an assessment, CQI tracks gaps and revised scores, performance monitoring captures monthly KPI/outcome data, and state-level dashboards provide aggregated monitoring. See [Project Overview and NQAS Alignment](docs/architecture/project_overview.md).
+This public release is scoped to healthcare quality assessment and monitoring, with NQAS as the primary reference framework. SaQshi implements this as a configurable healthcare application: facility and framework data are loaded through JSON and APIs, assessment responses are stored against an assessment, CQI tracks gaps and revised scores, performance monitoring captures monthly KPI/outcome data, and state-level dashboards provide aggregated monitoring. See [Project Overview and NQAS Alignment](docs/architecture/project_overview.md).
+
+## Data Scope Notice
+
+SaQshi is not a patient record system and is not designed to collect, process, or store patient-level personal health information. The application handles facility quality assessment, CQI, certification, performance-monitoring, reporting and administrative user data.
+
+Users should not enter patient names, patient identifiers, case-sheet details, clinical histories or any patient-level personal health information in checklist remarks, CQI notes, evidence uploads or reports. If a deployment requires handling such information, it must be governed outside the default SaQshi open-source configuration with explicit legal, privacy, retention and access-control approval.
 
 ## Version Evolution
 
@@ -120,10 +126,33 @@ Database setup and migration guidance is documented here:
 docs/database/database_setup_and_migration.md
 ```
 
-Current migration files are stored under:
+Fresh installations can start from the sanitized base schema:
+
+```text
+api/sql/schema/001_base_schema.sql
+```
+
+Current migration and schema-support files are stored under:
 
 ```text
 api/sql/
+```
+
+## UI Deployment
+
+The browser UI is served from `ui/` and should be deployed on the same `{main_url}` as `api/` so session cookies, CSRF validation and API calls work consistently.
+
+Main entry points:
+
+```text
+{main_url}/ui/login.html
+{main_url}/ui/dashboard.html
+```
+
+Detailed UI deployment, routing, static asset and verification guidance is available here:
+
+```text
+docs/deployment/ui_deployment_guide.md
 ```
 
 ## API Documentation
@@ -158,6 +187,7 @@ SECURITY.md
 
 Important checks before release:
 
+- Run `php tools/quality_gate.php` from the repository root.
 - Run `php tools/release_readiness_check.php` from the repository root.
 - Run syntax checks for changed PHP/JS files.
 - Run available API smoke tests.
@@ -171,11 +201,14 @@ Release and compliance documents:
 
 - `docs/compliance/open_source_dpg_release_status.md`
 - `docs/compliance/open_source_readiness_checklist.md`
+- `docs/compliance/data_privacy_policy.md`
+- `docs/compliance/privacy_data_protection.md`
 - `docs/compliance/license_consistency_before_after.md`
 - `docs/compliance/third_party_licenses.md`
 - `docs/compliance/legal_privacy_confirmation.md`
 - `docs/compliance/public_data_audit.md`
 - `docs/compliance/data_redistribution_approval.md`
+- `docs/compliance/release_versioning_policy.md`
 - `docs/compliance/release_checklist.md`
 - `NOTICE`
 - `CHANGELOG.md`

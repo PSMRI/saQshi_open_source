@@ -31,6 +31,20 @@ require_once __DIR__ . '/../../assets/conn/db.php';
 
 Security::requireMethod('POST');
 
+function startDepartmentStatusAssessmentColumn(mysqli $con): string
+{
+    $result = $con->query("
+        SELECT 1
+        FROM INFORMATION_SCHEMA.COLUMNS
+        WHERE TABLE_SCHEMA = DATABASE()
+          AND TABLE_NAME = 'assessment_department_status'
+          AND COLUMN_NAME = 'assessment_id'
+        LIMIT 1
+    ");
+
+    return ($result && $result->fetch_assoc()) ? 'assessment_id' : 'ass_period_id';
+}
+
 try {
 
     $request = Security::jsonInput();
@@ -104,7 +118,7 @@ try {
      */
     $sqlDepartment = "
         SELECT
-            id,
+            assessment_dept_id AS id,
             assessment_id,
             fac_id_fk,
             dept_id,
@@ -139,10 +153,12 @@ try {
     $department = $stmt->get_result()->fetch_assoc();
 
     if (!$department) {
+        $departmentStatusColumn = startDepartmentStatusAssessmentColumn($con);
+
         $sqlStatus = "
             SELECT dept_id, is_active
             FROM assessment_department_status
-            WHERE ass_period_id = ?
+            WHERE {$departmentStatusColumn} = ?
               AND fac_id_fk = ?
               AND dept_id = ?
               AND is_active = 1
@@ -166,7 +182,7 @@ try {
 
         $sqlExistingDepartment = "
             SELECT
-                id,
+                assessment_dept_id AS id,
                 assessment_id,
                 fac_id_fk,
                 dept_id,
@@ -197,9 +213,8 @@ try {
             $sqlReactivateDepartment = "
                 UPDATE assessment_department
                 SET is_active = 1,
-                    activated_by = ?,
-                    activated_on = COALESCE(activated_on, CURRENT_TIMESTAMP)
-                WHERE id = ?
+                    activated_by = ?
+                WHERE assessment_dept_id = ?
             ";
 
             $stmt = $con->prepare($sqlReactivateDepartment);
@@ -287,7 +302,7 @@ try {
      */
     $sqlAssessor = "
         SELECT
-            id,
+            info_id AS id,
             assessment_date,
             assessment_type,
             assessor_name,
@@ -336,7 +351,7 @@ try {
             SET
                 status = 'IN_PROGRESS',
                 started_on = CURRENT_TIMESTAMP
-            WHERE id = ?
+            WHERE assessment_dept_id = ?
         ";
 
         $stmt = $con->prepare($sqlStart);

@@ -377,11 +377,21 @@
             const response = await fetch(url, {
                 method: "GET",
                 credentials: "include",
-                headers: requestHeaders({}, false)
+                headers: {
+                    "Accept": "application/octet-stream, text/csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/json"
+                }
             });
 
             if (!response.ok) {
-                throw new Error("Download failed");
+                const contentType = response.headers.get("content-type") || "";
+
+                if (contentType.includes("application/json")) {
+                    const result = await response.json();
+                    throw new Error(result?.message || "Download failed");
+                }
+
+                const text = await response.text();
+                throw new Error(text || "Download failed");
             }
 
             const blob = await response.blob();

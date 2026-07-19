@@ -1,0 +1,71 @@
+{
+    "domain": "healthcare",
+    "description": "Controls optional SaQshi healthcare modules for assessment, CQI, performance, certification, reports, analytics and map features.",
+    "modules": {
+        "assessment": {
+            "enabled": true,
+            "label": "Assessment"
+        },
+        "cqi": {
+            "enabled": true,
+            "label": "CQI / Gap Closure"
+        },
+        "performance": {
+            "enabled": true,
+            "label": "Performance Monitoring"
+        },
+        "kpi": {
+            "enabled": true,
+            "label": "KPI"
+        },
+        "outcome": {
+            "enabled": true,
+            "label": "Outcome"
+        },
+        "certification": {
+            "enabled": true,
+            "label": "Certification"
+        },
+        "reports": {
+            "enabled": true,
+            "label": "Reports"
+        },
+        "field_analytics": {
+            "enabled": true,
+            "label": "Field Analytics"
+        },
+        "map": {
+            "enabled": true,
+            "label": "Map"
+        }
+    },
+    "role_visibility": {
+        "assessor": [
+            "assessment"
+        ],
+        "facility": [
+            "assessment",
+            "cqi",
+            "performance",
+            "kpi",
+            "outcome",
+            "certification",
+            "reports",
+            "field_analytics",
+            "map"
+        ],
+        "state": [
+            "assessment",
+            "cqi",
+            "performance",
+            "kpi",
+            "outcome",
+            "certification",
+            "reports",
+            "field_analytics",
+            "map"
+        ]
+    },
+    "active_profile": "healthcare",
+    "default_framework": "saqshi-nqas"
+}

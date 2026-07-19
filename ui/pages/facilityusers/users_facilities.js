@@ -107,7 +107,6 @@
         $("facilityLatitude").value = facility.latitude || facility.lat || "";
         $("facilityLongitude").value = facility.longitude || facility.longit || "";
 
-        setText("facilityIdText", facility.fac_id || "-");
         setText("facilityTypeText", facility.facilities_type || facility.Health_facilty_type || facility.fac_type_id || "-");
         setText("facilityNinText", facility.nin_no || "-");
         setText("facilityStatusText", Number(facility.is_active ?? 1) === 1 ? "Active" : "Inactive");

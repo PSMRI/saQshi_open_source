@@ -1,36 +1,36 @@
 # SaQshi Maintainers and Release Contacts
 
-Version: 1.0  
+Version: 1.1  
 Created: 2026-07-16  
-Status: Pending official project-owner confirmation
+Status: Maintainer contacts recorded
 
 ## Purpose
 
 This file records who maintains SaQshi, who receives security reports, who approves releases, and who handles public issues.
 
-Before a public release, replace every `Pending` value with the official name, organization and contact approved by the project owner.
+Before a public release, confirm these contacts remain current and monitored.
 
 ## Maintainer Contacts
 
 | Role | Name | Organization | Contact | Responsibility | Status |
 |---|---|---|---|---|---|
-| Product Maintainer | Pending | Pending | Pending | Roadmap, module scope, user workflows and release priorities | Pending |
-| Technical Maintainer | Pending | Pending | Pending | Architecture, API, database, frontend and integration review | Pending |
-| Documentation Maintainer | Pending | Pending | Pending | README, GitBook, API docs, release notes and user/developer guides | Pending |
-| Security Contact | Pending | Pending | Pending | Receives private vulnerability reports and coordinates triage | Pending |
-| Release Manager | Pending | Pending | Pending | Release checklist, versioning, changelog, approval and package sign-off | Pending |
-| Issue Triage Owner | Pending | Pending | Pending | Public bug reports, feature requests and contributor follow-up | Pending |
-| Data Owner | Pending | Pending | Pending | Facility master, map/boundary files, checklist/config publication rights | Pending |
-| Legal/Compliance Reviewer | Pending | Pending | Pending | License, privacy, data redistribution and DPG readiness review | Pending |
+| Product Maintainer | Tech4Gov Team | Piramal Swasthya | tech4gov@piramalswasthya.org | Roadmap, module scope, user workflows and release priorities | Confirmed |
+| Technical Maintainer | Tech4Gov Team | Piramal Swasthya | tech4gov@piramalswasthya.org | Architecture, API, database, frontend and integration review | Confirmed |
+| Documentation Maintainer | Tech4Gov Team | Piramal Swasthya | tech4gov@piramalswasthya.org | README, GitBook, API docs, release notes and user/developer guides | Confirmed |
+| Security Contact | Tech4Gov Team | Piramal Swasthya | tech4gov@piramalswasthya.org | Receives private vulnerability reports and coordinates triage | Confirmed |
+| Release Manager | Tech4Gov Team | Piramal Swasthya | tech4gov@piramalswasthya.org | Release checklist, versioning, changelog, approval and package sign-off | Confirmed |
+| Issue Triage Owner | Tech4Gov Team | Piramal Swasthya | tech4gov@piramalswasthya.org | Public bug reports, feature requests and contributor follow-up | Confirmed |
+| Data Owner | Tech4Gov Team | Piramal Swasthya | tech4gov@piramalswasthya.org | Facility master, map/boundary files, checklist/config publication rights | Confirmed |
+| Legal/Compliance Reviewer | Tech4Gov Team | Piramal Swasthya | tech4gov@piramalswasthya.org | License, privacy, data redistribution and DPG readiness review | Confirmed |
 
 ## Required Public Contacts
 
 | Contact Type | Official Contact | Status |
 |---|---|---|
-| General project contact | Pending | Pending |
-| Security reporting contact | Pending | Pending |
-| Contributor/issue contact | Pending | Pending |
-| Release approval contact | Pending | Pending |
+| General project contact | tech4gov@piramalswasthya.org | Confirmed |
+| Security reporting contact | tech4gov@piramalswasthya.org | Confirmed |
+| Contributor/issue contact | tech4gov@piramalswasthya.org | Confirmed |
+| Release approval contact | tech4gov@piramalswasthya.org | Confirmed |
 
 ## Release Approval Rules
 

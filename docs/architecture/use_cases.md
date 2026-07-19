@@ -17,6 +17,7 @@ This document explains the main practical use cases supported by SaQshi. It is i
 | District User | Monitors district-level assessment, CQI, performance, certification and facility progress. |
 | Division / Regional User | Reviews multiple districts and supports programme monitoring across a larger administrative area. |
 | State Admin / State User | Reviews statewide monitoring, certification, analytics, reports and user administration. |
+| External Assessor | Performs assessment for facilities mapped by state administration. |
 | System Admin / Maintainer | Configures framework JSON, deployment, database, integrations and release operations. |
 | Developer | Extends APIs, UI pages, services, reports, configuration formats and documentation. |
 
@@ -48,9 +49,12 @@ This document explains the main practical use cases supported by SaQshi. It is i
 | UC-22 | Drill down facility data | Monitoring Users | User navigates state to division to district to block to facility details. |
 | UC-23 | Manage users | State Admin | Users can be searched, activated, deactivated and managed. |
 | UC-24 | Download state reports | State Admin / Monitoring Users | Facility, assessment, CQI, performance and certification reports are exported. |
-| UC-25 | Configure framework JSON | Maintainer / Developer | New departments, concerns, checkpoints and frameworks are configured without rewriting UI logic. |
-| UC-26 | Configure performance indicators | Maintainer / Developer | KPI/outcome indicators, formulas and validation rules are managed from JSON. |
-| UC-27 | Use GitBook documentation | All users / Developers | User guide, developer guide, API docs, testing and deployment docs are available. |
+| UC-25 | Manage assessor profiles | State Admin | Assessor master profile is created/updated and linked to a login user. |
+| UC-26 | Map assessor to facilities | State Admin | One assessor is assigned to one or more facilities for assessment. |
+| UC-27 | Perform mapped facility assessment | External Assessor | Assessor selects an assigned facility and completes the normal assessment workflow. |
+| UC-28 | Configure framework JSON | Maintainer / Developer | New departments, concerns, checkpoints and frameworks are configured without rewriting UI logic. |
+| UC-29 | Configure performance indicators | Maintainer / Developer | KPI/outcome indicators, formulas and validation rules are managed from JSON. |
+| UC-30 | Use GitBook documentation | All users / Developers | User guide, developer guide, API docs, testing and deployment docs are available. |
 
 ## Core User Flows
 
@@ -111,6 +115,39 @@ flowchart LR
     Login --> Scope --> Dashboard --> Drill --> Review --> Export
 ```
 
+### State Admin Assessor Setup Flow
+
+```mermaid
+flowchart LR
+    Admin["State admin"]
+    Profile["Create assessor profile"]
+    Link["Link login user"]
+    Map["Map facilities"]
+
+    Admin --> Profile --> Link --> Map
+```
+
+### External Assessor Assessment Flow
+
+```mermaid
+flowchart LR
+    Login["External assessor login"]
+    Select["Select assigned facility"]
+    Summary["View facility summary"]
+    Start["Create / reuse assessment"]
+    Dept{"Department count"}
+    Auto["Auto activate single department"]
+    Manual["Activate departments"]
+    Info["Confirm assessor info"]
+    Checklist["Complete checklist"]
+    Report["View assessment report"]
+
+    Login --> Select --> Summary --> Start --> Dept
+    Dept -- Single --> Auto --> Info
+    Dept -- Multiple --> Manual --> Info
+    Info --> Checklist --> Report
+```
+
 ## Detailed Use Cases
 
 ### UC-01 Login and Role-Specific Dashboard
@@ -135,9 +172,10 @@ flowchart LR
 
 1. User opens Create Assessment.
 2. System checks active assessment availability.
-3. User enters assessment name, framework, start date and end date.
-4. API saves the assessment.
-5. User proceeds to department activation.
+3. System generates the assessment name from facility, framework and month.
+4. User confirms or edits the name, framework, start date and end date.
+5. API saves the assessment.
+6. User proceeds to department activation.
 
 **Alternative flow:** If an active assessment exists, user must complete or cancel it before creating another.
 
@@ -238,6 +276,53 @@ flowchart LR
 
 **Expected result:** User can monitor only permitted facilities without loading all records at once.
 
+### UC-25 Manage Assessor Profiles
+
+**Primary actor:** State Admin  
+**Precondition:** Assessor login user exists or will be created separately.  
+**Main flow:**
+
+1. State admin opens Assessor Management.
+2. State admin enters assessor code, name, designation, mobile and email.
+3. If linked user ID is blank, SaQshi creates a login user automatically.
+4. Username is the assessor code.
+5. SaQshi generates a temporary password, hashes it in the database and sends it through configured email/SMS service hooks.
+6. API encrypts assessor name, mobile and email before saving.
+7. Assessor profile becomes available for facility mapping.
+
+**Expected result:** Assessor master profile is stored securely and can be mapped to facilities.
+
+### UC-26 Map Assessor to Facilities
+
+**Primary actor:** State Admin  
+**Precondition:** Assessor profile exists and facility exists.  
+**Main flow:**
+
+1. State admin selects an assessor.
+2. State admin searches facility by facility name, NIN, district or block.
+3. State admin assigns one or more facilities to the assessor.
+4. System stores active facility mappings.
+
+**Expected result:** The assessor can see only mapped active facilities after login.
+
+### UC-27 Perform Mapped Facility Assessment
+
+**Primary actor:** External Assessor  
+**Precondition:** Assessor profile is active and mapped to at least one active facility.  
+**Main flow:**
+
+1. Assessor logs in.
+2. If the account has a temporary password, SaQshi requires password change in My Profile.
+3. Assessor dashboard shows mapped facilities.
+4. Assessor selects one facility.
+5. System validates the mapping.
+6. System creates a new active assessment or reuses the existing active assessment.
+7. If only one department applies, system auto-activates it.
+8. If multiple departments apply, system opens department activation.
+9. Assessor continues with assessor info, checklist entry and assessment reports. CQI/action-plan/closure information is view-only where shown.
+
+**Expected result:** State-led assessment is completed using the existing SaQshi assessment workflow while remaining limited to mapped facilities.
+
 ## Configuration Use Cases
 
 | Use Case | Configuration File / Area | Purpose |
@@ -263,7 +348,7 @@ flowchart LR
 
 ## Related Documents
 
-- [Complete User Guide](../user/user_guide.md)
+- [User Guide](../user/user_guide.md)
 - [Project Overview and NQAS Alignment](project_overview.md)
 - [Technical Architecture Overview](technical_architecture.md)
 - [Service Architecture and Map](service_map.md)

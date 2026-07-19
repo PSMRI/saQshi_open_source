@@ -1,0 +1,25 @@
+name: SaQshi Quality Gate
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mysqli, openssl, json, mbstring, fileinfo, zip
+
+      - name: Run quality gate
+        run: php tools/quality_gate.php

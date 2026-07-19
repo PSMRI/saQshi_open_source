@@ -2,7 +2,7 @@
 
 This directory is reserved for the public, sanitized SaQshi base database schema.
 
-Expected public release file:
+Public release base schema file:
 
 ```text
 api/sql/schema/001_base_schema.sql
@@ -15,4 +15,16 @@ Rules:
 - Use placeholder/sample values only when seed data is required.
 - Keep migrations under `api/sql/` and document each migration in `docs/database/database_setup_and_migration.md`.
 
-Until `001_base_schema.sql` is added and verified, the repository should be treated as install-documentation complete but not fully reproducible from source alone.
+Use `001_base_schema.sql` for a fresh database installation. It creates the
+database, core tables, indexes, compatibility view, and safe role seed values.
+It does not include real users, facility records, assessment records, uploads,
+logs or certification data.
+
+Clean-install validation:
+
+- The application has been checked on a newly created schema based on
+  `001_base_schema.sql`.
+- Deployment-specific seed data is still required: active users, facility types,
+  facility rows and approved JSON/master configuration.
+- Do not treat a local test database as public sample data unless it has been
+  separately sanitized and approved for redistribution.

@@ -75,6 +75,30 @@ function listCheckpointMaxScore(array $checkpoint): float
 }
 
 /**
+ * Checks if a database column exists.
+ */
+function listColumnExists(mysqli $con, string $table, string $column): bool
+{
+    $stmt = $con->prepare("
+        SELECT COUNT(*) AS column_count
+        FROM INFORMATION_SCHEMA.COLUMNS
+        WHERE TABLE_SCHEMA = DATABASE()
+          AND TABLE_NAME = ?
+          AND COLUMN_NAME = ?
+    ");
+
+    if (!$stmt) {
+        return false;
+    }
+
+    $stmt->bind_param('ss', $table, $column);
+    $stmt->execute();
+    $row = $stmt->get_result()->fetch_assoc();
+
+    return (int)($row['column_count'] ?? 0) > 0;
+}
+
+/**
  * Handles list framework total score processing for this API workflow.
  */
 function listFrameworkTotalScore(
@@ -138,6 +162,10 @@ try {
         Response::error('User session not found');
     }
 
+    $departmentStatusAssessmentColumn = listColumnExists($con, 'assessment_department_status', 'assessment_id')
+        ? 'assessment_id'
+        : 'ass_period_id';
+
     $sql = "
         SELECT
             a.assessment_id,
@@ -160,14 +188,14 @@ try {
         FROM assessment_master a
         LEFT JOIN (
             SELECT
-                ass_period_id,
+                {$departmentStatusAssessmentColumn} AS assessment_ref_id,
                 COUNT(DISTINCT dept_id) AS active_departments
             FROM assessment_department_status
             WHERE fac_id_fk = ?
               AND is_active = 1
-            GROUP BY ass_period_id
+            GROUP BY {$departmentStatusAssessmentColumn}
         ) ds
-            ON ds.ass_period_id = a.assessment_id
+            ON ds.assessment_ref_id = a.assessment_id
         LEFT JOIN (
             SELECT
                 assessment_id,
@@ -217,11 +245,11 @@ try {
         $placeholders = implode(',', array_fill(0, count($assessmentIds), '?'));
 
         $sqlActiveDept = "
-            SELECT ass_period_id, dept_id
+            SELECT {$departmentStatusAssessmentColumn} AS assessment_ref_id, dept_id
             FROM assessment_department_status
             WHERE fac_id_fk = ?
               AND is_active = 1
-              AND ass_period_id IN ($placeholders)
+              AND {$departmentStatusAssessmentColumn} IN ($placeholders)
         ";
 
         $stmtDept = $con->prepare($sqlActiveDept);
@@ -238,7 +266,7 @@ try {
         $deptResult = $stmtDept->get_result();
 
         while ($deptRow = $deptResult->fetch_assoc()) {
-            $assessmentId = (int)$deptRow['ass_period_id'];
+            $assessmentId = (int)$deptRow['assessment_ref_id'];
 
             if (!isset($activeDeptMap[$assessmentId])) {
                 $activeDeptMap[$assessmentId] = [];

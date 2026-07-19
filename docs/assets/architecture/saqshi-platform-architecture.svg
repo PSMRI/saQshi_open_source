@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1400" height="820" viewBox="0 0 1400 820" role="img" aria-labelledby="title desc">
   <title id="title">SaQshi Platform Architecture</title>
-  <desc id="desc">Presentation style architecture diagram showing users, frontend channels, API gateway, services, registries, queue, database, storage, reports and external integrations.</desc>
+  <desc id="desc">Presentation style architecture diagram showing facility users, external assessors, monitoring users, frontend channels, API gateway, services, registries, queue, database, storage, reports and external integrations.</desc>
   <defs>
     <style>
       .title { font: 700 30px Arial, sans-serif; fill: #0f2f57; }
@@ -30,6 +30,10 @@
   <text x="700" y="58" text-anchor="middle" class="subtitle">Healthcare Quality Assessment, CQI, Performance Monitoring, Certification and State Monitoring</text>
 
   <!-- Top channels -->
+  <rect x="145" y="86" width="145" height="64" rx="2" class="boxLight"/>
+  <text x="217" y="111" text-anchor="middle" class="label">External Assessor</text>
+  <text x="217" y="131" text-anchor="middle" class="small">Mapped Facilities</text>
+
   <rect x="330" y="86" width="140" height="64" rx="2" class="boxLight"/>
   <text x="400" y="111" text-anchor="middle" class="label">Facility User</text>
   <text x="400" y="131" text-anchor="middle" class="small">Dashboard</text>
@@ -122,6 +126,10 @@
   <text x="1205" y="387" text-anchor="middle" class="white label">File Upload</text>
   <text x="1205" y="409" text-anchor="middle" class="white small">Service</text>
 
+  <rect x="1075" y="470" width="150" height="62" rx="2" class="boxBlue"/>
+  <text x="1150" y="494" text-anchor="middle" class="white label">Assessor</text>
+  <text x="1150" y="514" text-anchor="middle" class="white small">Assignment</text>
+
   <!-- Registry and queue -->
   <rect x="270" y="486" width="150" height="68" rx="2" class="boxLight"/>
   <text x="345" y="513" text-anchor="middle" class="label">Assessment</text>
@@ -177,10 +185,12 @@
   <text x="1315" y="488" text-anchor="middle" class="tiny">S3 / Backups</text>
 
   <!-- Flow arrows -->
+  <path d="M217 150 L285 190" class="line"/>
   <path d="M400 150 L400 190" class="line"/>
   <path d="M615 150 L897 190" class="line"/>
   <path d="M835 150 L1192 190" class="line"/>
   <path d="M1105 150 L1047 190" class="line"/>
+  <path d="M1105 150 L1150 470" class="line"/>
 
   <path d="M285 248 L285 270" class="line"/>
   <path d="M430 248 L430 270" class="line"/>
@@ -205,6 +215,7 @@
   <path d="M912 430 L1065 608" class="line"/>
   <path d="M1055 430 L1065 608" class="line"/>
   <path d="M1205 430 L830 608" class="line"/>
+  <path d="M1150 532 L345 486" class="line"/>
 
   <path d="M345 554 L360 620" class="line"/>
   <path d="M520 554 L595 608" class="line"/>

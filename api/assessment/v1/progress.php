@@ -25,12 +25,11 @@
 /**
  * progress.php
  * -------------------------------------------------------
- 
- * -------------------------------------------------------
  */
 
 require_once __DIR__ . '/../../auth_api.php';
 require_once __DIR__ . '/../../core/FrameworkEngine.php';
+require_once __DIR__ . '/../../core/Crypto.php';
 require_once __DIR__ . '/../../assets/conn/db.php';
 
 Security::requireMethod('GET');
@@ -288,7 +287,7 @@ try {
      */
     $sqlDepartments = "
         SELECT
-            d.id,
+            d.assessment_dept_id AS id,
             d.assessment_id,
             d.dept_id,
             d.is_active,
@@ -297,9 +296,8 @@ try {
             d.completed_on,
             d.current_checkpoint_id,
             d.activated_by,
-            d.activated_on,
 
-            ai.id AS assessor_info_id,
+            ai.info_id AS assessor_info_id,
             ai.assessment_date,
             ai.assessment_type,
             ai.assessor_name,
@@ -364,7 +362,7 @@ try {
           AND d.fac_id_fk = ?
 
         GROUP BY
-            d.id,
+            d.assessment_dept_id,
             d.assessment_id,
             d.dept_id,
             d.is_active,
@@ -373,8 +371,7 @@ try {
             d.completed_on,
             d.current_checkpoint_id,
             d.activated_by,
-            d.activated_on,
-            ai.id,
+            ai.info_id,
             ai.assessment_date,
             ai.assessment_type,
             ai.assessor_name,
@@ -404,6 +401,10 @@ try {
     $totalPossibleScore = 0;
 
     while ($row = $res->fetch_assoc()) {
+        $row = Crypto::decryptFields($row, [
+            'assessor_name',
+            'assessee_name'
+        ]);
 
         $savedResponses = (int)($row['saved_responses'] ?? 0);
         $revisedCheckpoints = (int)($row['revised_checkpoints'] ?? 0);
@@ -459,7 +460,6 @@ try {
                     : null,
 
             'activated_by' => (int)$row['activated_by'],
-            'activated_on' => $row['activated_on'],
 
             'assessor_info' => [
                 'has_info' => $row['assessor_info_id'] !== null,

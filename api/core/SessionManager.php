@@ -78,6 +78,7 @@ class SessionManager
         $_SESSION['u_id'] = (int)($user['u_id'] ?? 0);
         $_SESSION['u_name'] = (string)($user['u_name'] ?? '');
         $_SESSION['role_id'] = (int)($user['role_id_fk'] ?? $user['role_id'] ?? 0);
+        $_SESSION['role_name'] = (string)($user['role_name'] ?? '');
         $_SESSION['fac_id'] = (int)($user['fac_id_fk'] ?? $user['fac_id'] ?? 0);
         $_SESSION['dept_id'] = (int)($user['dept_id'] ?? 0);
 
@@ -90,6 +91,7 @@ class SessionManager
         $_SESSION['mail_id'] = (string)($user['mail_id'] ?? '');
         $_SESSION['mob_no'] = (string)($user['mob_no'] ?? '');
         $_SESSION['user_type'] = (string)($user['user_type'] ?? '');
+        $_SESSION['password_must_change'] = !empty($user['password_must_change']);
 
         $_SESSION['dist_id'] = (int)($user['dist_id'] ?? 0);
         $_SESSION['block_id'] = (int)($user['block_id'] ?? 0);
@@ -215,12 +217,14 @@ class SessionManager
             'u_id'        => self::userId(),
             'u_name'      => self::username(),
             'role_id'     => self::roleId(),
+            'role_name'   => $_SESSION['role_name'] ?? '',
             'fac_id'      => self::facilityId(),
             'dept_id'     => self::departmentId(),
             'full_name'   => $_SESSION['full_name'] ?? '',
             'mail_id'     => $_SESSION['mail_id'] ?? '',
             'mob_no'      => $_SESSION['mob_no'] ?? '',
             'user_type'   => $_SESSION['user_type'] ?? '',
+            'password_must_change' => !empty($_SESSION['password_must_change']),
             'dist_id'     => (int)($_SESSION['dist_id'] ?? 0),
             'block_id'    => (int)($_SESSION['block_id'] ?? 0),
             'division_id' => (int)($_SESSION['division_id'] ?? 0)

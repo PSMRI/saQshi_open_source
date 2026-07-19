@@ -93,13 +93,21 @@ The values have defaults, but name and framework must be non-empty. Dates must b
   "dept_id": 25,
   "checkpoint_id": 21070,
   "response_value": "2",
-  "score": 2,
+  "response_json": { "value": "2" },
   "remarks": "Optional assessor notes",
   "evidence_url": "https://example.org/evidence.pdf"
 }
 ```
 
-`assessment_id`, `dept_id`, `checkpoint_id`, and `response_value` are required. If `score` is omitted, a numeric `response_value` becomes the score.
+`assessment_id`, `dept_id`, `checkpoint_id`, and a valid response are required. The browser should not decide the score. `save-response.php` loads the checkpoint response definition from framework JSON and calculates `score`, `max_score` and `score_status` on the server.
+
+Supported response styles:
+
+| Type | Payload |
+|---|---|
+| `radio`, `yes_no`, `dropdown` | `response_value` plus optional `response_json.value`. |
+| `number`, `text` | `response_value` and `response_json.value`. |
+| `form` | `response_json.fields` containing key/value pairs. |
 
 ### How it works
 
@@ -107,13 +115,17 @@ The values have defaults, but name and framework must be non-empty. Dates must b
 2. Confirms that the assessment is `ACTIVE` and owned by the current facility.
 3. Confirms the department is active, not completed and `IN_PROGRESS`.
 4. Requires saved assessor information for the assessment, facility and department.
-5. Upserts `assessment_response` on `(assessment_id, dept_id, checkpoint_id)`.
-6. Updates `assessment_department.current_checkpoint_id`.
-7. Counts saved responses, dispatches `checklist.response.saved`, and returns progress.
+5. Loads the checkpoint response type from framework JSON.
+6. Validates the submitted value and calculates server-owned scoring metadata.
+7. Upserts `assessment_response` on `(assessment_id, dept_id, checkpoint_id)`.
+8. Indexes structured/non-scored fields in `assessment_response_field_index`.
+9. Updates `assessment_department.current_checkpoint_id`.
+10. Counts saved responses, dispatches `checklist.response.saved`, and returns progress.
 
 | Table | Effect |
 |---|---|
-| `assessment_response` | Inserts or updates response, score, remarks, evidence and actor. |
+| `assessment_response` | Inserts or updates response, response type, structured JSON, score, max score, score status, remarks, evidence and actor. |
+| `assessment_response_field_index` | Stores searchable field values for text/number/form analytics. |
 | `assessment_department` | Sets `current_checkpoint_id`. |
 
 **Extension note:** Preserve every ownership/state check before a write. If evidence becomes a managed upload, store a file identifier from the files API instead of accepting an unverified URL.

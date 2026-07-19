@@ -118,6 +118,7 @@
         const target = document.getElementById(targetId);
         if (!target) return;
         const style = document.getElementById("perfChartStyle")?.value || "line";
+        const summaryTarget = document.getElementById(targetId === "perfOutcomeCharts" ? "perfOutcomeChartSummary" : "perfKpiChartSummary");
 
         target.innerHTML = series.length
             ? series.map(item => {
@@ -140,6 +141,20 @@
                 `;
             }).join("")
             : `<div class="sq-performance-empty">No trend data available.</div>`;
+
+        if (summaryTarget) {
+            summaryTarget.textContent = series.length
+                ? series.map(item => {
+                    const points = item.points || [];
+                    const latest = points[points.length - 1] || {};
+                    return `${item.indicator_name || "Indicator"} has ${points.length} month${points.length === 1 ? "" : "s"} of trend data. Latest ${shortMonth(latest.period)} result is ${fmt(latest.result)}.`;
+                }).join(" ")
+                : "No trend data available.";
+        }
+
+        if (SQ.a11y) {
+            SQ.a11y.enhance(target);
+        }
     }
 
     function renderTrendSections() {

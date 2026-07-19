@@ -1,0 +1,61 @@
+{
+  "domain": "education",
+  "description": "Education/school deployment modules. Enables school assessment/questionnaire, reports, field analytics and map; disables healthcare-specific CQI, KPI, outcome and certification.",
+  "modules": {
+    "assessment": {
+      "enabled": true,
+      "label": "School Assessment"
+    },
+    "cqi": {
+      "enabled": false,
+      "label": "CQI / Gap Closure"
+    },
+    "performance": {
+      "enabled": false,
+      "label": "Performance Monitoring"
+    },
+    "kpi": {
+      "enabled": false,
+      "label": "KPI"
+    },
+    "outcome": {
+      "enabled": false,
+      "label": "Outcome"
+    },
+    "certification": {
+      "enabled": false,
+      "label": "Certification"
+    },
+    "reports": {
+      "enabled": true,
+      "label": "Reports"
+    },
+    "field_analytics": {
+      "enabled": true,
+      "label": "Field Analytics"
+    },
+    "map": {
+      "enabled": true,
+      "label": "School Map"
+    }
+  },
+  "role_visibility": {
+    "assessor": [
+      "assessment"
+    ],
+    "facility": [
+      "assessment",
+      "reports",
+      "field_analytics",
+      "map"
+    ],
+    "state": [
+      "assessment",
+      "reports",
+      "field_analytics",
+      "map"
+    ]
+  },
+  "active_profile": "education",
+  "default_framework": "education-school"
+}

@@ -25,6 +25,7 @@
         departments: [],
         selectedDeptId: 0,
         currentInfo: null,
+        currentAssessor: null,
         isLoading: false
     };
 
@@ -202,10 +203,39 @@
             form.reset();
         }
 
+        applyAssessorContext();
+
         const date = $("assessment_date");
 
         if (date && !date.value) {
             date.value = new Date().toISOString().slice(0, 10);
+        }
+    }
+
+    function applyAssessorContext() {
+        const assessor = state.currentAssessor || null;
+        const name = $("assessor_name");
+        const hint = $("assessorNameHint");
+
+        if (!name) {
+            return;
+        }
+
+        if (assessor && assessor.assessor_name) {
+            name.value = assessor.assessor_name;
+            name.readOnly = true;
+            name.classList.add("sq-readonly");
+            if (hint) {
+                hint.textContent = `Using logged-in assessor profile${assessor.assessor_code ? " (" + assessor.assessor_code + ")" : ""}.`;
+                hint.classList.remove("sq-hidden");
+            }
+            return;
+        }
+
+        name.readOnly = false;
+        name.classList.remove("sq-readonly");
+        if (hint) {
+            hint.classList.add("sq-hidden");
         }
     }
 
@@ -214,6 +244,50 @@
         show($("assessorInfoState"), false);
         show($("assessorInfoDetails"), false);
         show($("assessorInfoForm"), true);
+    }
+
+    function editCurrentInfo() {
+        const info = state.currentInfo || {};
+
+        showForm();
+
+        if ($("assessor_name")) {
+            $("assessor_name").value = state.currentAssessor?.assessor_name || info.assessor_name || "";
+        }
+
+        if ($("assessee_name")) {
+            $("assessee_name").value = info.assessee_name || "";
+        }
+
+        if ($("assessment_date")) {
+            $("assessment_date").value = info.assessment_date || new Date().toISOString().slice(0, 10);
+        }
+
+        if ($("assessment_type")) {
+            $("assessment_type").value = info.assessment_type || "INTERNAL";
+        }
+
+        applyAssessorContext();
+    }
+
+    function goToChecklist() {
+        if (!state.assessment || !state.selectedDeptId) {
+            notify("warning", "Please select department first.");
+            return;
+        }
+
+        if (SQ.router && typeof SQ.router.navigate === "function") {
+            SQ.router.navigate("assessment/checklist", {
+                assessment_id: state.assessment.assessment_id,
+                dept_id: state.selectedDeptId
+            });
+            return;
+        }
+
+        window.location.href = "/ui/dashboard.html?route=assessment/checklist&assessment_id=" +
+            encodeURIComponent(state.assessment.assessment_id) +
+            "&dept_id=" +
+            encodeURIComponent(state.selectedDeptId);
     }
 
     function showDetails(info) {
@@ -252,7 +326,7 @@
 
         const statusResponse = await apiGet(API.status, {
             fac_id: assessment.fac_id,
-            ass_period: assessment.assessment_id
+            assessment_id: assessment.assessment_id
         });
 
         const activeMap = {};
@@ -298,6 +372,7 @@
             });
 
             state.currentInfo = response?.data?.info || null;
+            state.currentAssessor = response?.data?.current_assessor || null;
 
             if (response?.data?.has_info && state.currentInfo) {
                 showDetails(state.currentInfo);
@@ -324,9 +399,9 @@
             assessee_name: String(data.get("assessee_name") || "").trim(),
             assessment_date: String(data.get("assessment_date") || "").trim(),
             assessment_type: String(data.get("assessment_type") || "INTERNAL").trim().toUpperCase(),
-            assessor_designation: "",
-            assessor_mobile: "",
-            assessor_email: "",
+            assessor_designation: String(state.currentAssessor?.assessor_designation || "").trim(),
+            assessor_mobile: String(state.currentAssessor?.assessor_mobile || "").trim(),
+            assessor_email: String(state.currentAssessor?.assessor_email || "").trim(),
             assessee_designation: "",
             assessee_mobile: "",
             assessee_email: "",
@@ -409,6 +484,20 @@
                     window.location.href = "/ui/dashboard.html";
                 }
             });
+        }
+
+        const checklist = $("btnStartChecklist");
+
+        if (checklist && checklist.dataset.bound !== "1") {
+            checklist.dataset.bound = "1";
+            checklist.addEventListener("click", goToChecklist);
+        }
+
+        const edit = $("btnEditAssessorInfo");
+
+        if (edit && edit.dataset.bound !== "1") {
+            edit.dataset.bound = "1";
+            edit.addEventListener("click", editCurrentInfo);
         }
     }
 

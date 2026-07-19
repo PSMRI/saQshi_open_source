@@ -152,6 +152,18 @@ body:has(.sq-checklist-page) .sq-content{
     line-height:1.3;
 }
 
+.sq-response-control{
+    display:flex;
+    flex-direction:column;
+    gap:.45rem;
+}
+
+.sq-response-title{
+    font-size:.7rem;
+    color:var(--sq-text-muted);
+    text-transform:uppercase;
+}
+
 .sq-score-options{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
@@ -167,6 +179,22 @@ body:has(.sq-checklist-page) .sq-content{
     color:var(--sq-text-muted);
     text-transform:uppercase;
     margin-bottom:.25rem;
+}
+
+.sq-response-inline-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:.45rem;
+}
+
+.sq-response-control textarea.sq-form-control{
+    min-height:64px;
+    resize:vertical;
+}
+
+.sq-response-help{
+    color:var(--sq-text-muted);
+    font-size:.68rem;
 }
 
 .sq-score-option{

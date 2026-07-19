@@ -7,7 +7,7 @@
  * active/inactive status for a facility + assessment period.
  *
  * URL:
- * /api/framework/v1/departments.php?framework=sample-framework&facility_type=DH&fac_id=1&ass_period=1
+ * /api/framework/v1/departments.php?framework=sample-framework&facility_type=DH&fac_id=1&assessment_id=1
  * -------------------------------------------------------
  */
 
@@ -21,7 +21,9 @@ try {
     $frameworkCode = $_GET['framework'] ?? 'sample-framework';
     $facilityType  = $_GET['facility_type'] ?? '';
     $facId         = isset($_GET['fac_id']) ? (int)$_GET['fac_id'] : 0;
-    $assPeriod     = isset($_GET['ass_period']) ? (int)$_GET['ass_period'] : 0;
+    $assPeriod     = isset($_GET['assessment_id'])
+        ? (int)$_GET['assessment_id']
+        : (int)($_GET['ass_period'] ?? 0);
 
     if (trim($frameworkCode) === '') {
         Response::validation([
@@ -43,7 +45,7 @@ try {
 
     if ($assPeriod <= 0) {
         Response::validation([
-            'ass_period' => 'Assessment period is required'
+            'assessment_id' => 'Assessment ID is required'
         ]);
     }
 
@@ -107,6 +109,7 @@ try {
             ],
         'facility_type' => strtoupper($facilityType),
         'fac_id'        => $facId,
+        'assessment_id' => $assPeriod,
         'ass_period'    => $assPeriod,
         'total'         => count($departments),
         'departments'   => $departments

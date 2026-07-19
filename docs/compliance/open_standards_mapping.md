@@ -35,8 +35,8 @@ SaQshi uses JSON configuration for:
 
 ## Best Practice Gaps to Keep Reviewing
 
-- Resolve or vendor the missing Leaflet map reference and keep the third-party dependency inventory current.
-- Add stable non-PII export schemas.
+- Keep the pinned Leaflet map dependency documented, or vendor the exact same files for offline releases.
+- Keep stable non-PII export schemas in `docs/compliance/sample_exports/` synchronized with report schema changes.
 - Keep OpenAPI synchronized with API changes.
 - Keep role access matrix synchronized with new roles/pages.
 - Continue accessibility and security testing before each release.

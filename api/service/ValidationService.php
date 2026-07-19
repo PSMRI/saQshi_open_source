@@ -27,9 +27,6 @@ class ValidationService
         $month = (int)($payload['month'] ?? 0);
         $year = (int)($payload['year'] ?? 0);
         $indicatorId = (int)($payload['indicator_id'] ?? 0);
-        $denominator = (float)($payload['denominator'] ?? $payload['denominator_value'] ?? 0);
-        $denominatorNA = !empty($payload['denominator_na']) || !empty($payload['denominator_not_applicable']);
-
         if ($indicatorId <= 0) {
             $errors['indicator_id'] = 'Indicator is required';
         }
@@ -40,10 +37,6 @@ class ValidationService
 
         if ($year < 2000 || $year > 2100) {
             $errors['year'] = 'Valid year is required';
-        }
-
-        if (!$denominatorNA && $denominator == 0.0) {
-            $errors['denominator'] = 'Denominator cannot be zero';
         }
 
         return $errors;

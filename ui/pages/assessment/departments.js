@@ -231,7 +231,7 @@
                                         type="button"
                                         class="sq-btn sq-btn-primary"
                                         data-sq-assessor-info="${Number(dept.dept_id || 0)}">
-                                        Details
+                                        Assessor Info
                                     </button>
                                 ` : ""}
                             </div>
@@ -270,8 +270,8 @@
         });
 
         const statusResponse = await apiGet(API.status, {
-            fac_id: assessment.fac_id,
-            ass_period: assessment.assessment_id
+            fac_id: assessment.fac_id || assessment.fac_id_fk,
+            assessment_id: assessment.assessment_id
         });
 
         state.statusMap = {};
@@ -303,7 +303,7 @@
 
         try {
             const response = await apiPost(API.save, {
-                ass_period: state.assessment.assessment_id,
+                assessment_id: state.assessment.assessment_id,
                 dept_id: deptId,
                 is_active: 1
             });

@@ -1,0 +1,12 @@
+{
+  "max_message_length": 2000,
+  "fallback_answer_key": "fallback",
+  "blocked_terms": [
+    "password",
+    "secret",
+    "private key",
+    "database password",
+    "patient name",
+    "patient id"
+  ]
+}

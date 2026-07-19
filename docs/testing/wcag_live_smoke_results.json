@@ -1,0 +1,61 @@
+{
+  "checked_at": "2026-07-17T07:13:37.796Z",
+  "base_url": "{main_url}",
+  "checks": [
+    {
+      "name": "Login shell reachable",
+      "status": "pass",
+      "details": "HTTP 200"
+    },
+    {
+      "name": "Login shell has language",
+      "status": "pass",
+      "details": "Expected html lang=en"
+    },
+    {
+      "name": "Login shell loads runtime a11y helper",
+      "status": "pass",
+      "details": "Expected a11y.js script"
+    },
+    {
+      "name": "Login fragment reachable",
+      "status": "pass",
+      "details": "HTTP 200"
+    },
+    {
+      "name": "Login captcha has accessible help",
+      "status": "pass",
+      "details": "Expected captcha help text, aria-describedby and aria-live"
+    },
+    {
+      "name": "Dashboard shell reachable",
+      "status": "pass",
+      "details": "HTTP 200"
+    },
+    {
+      "name": "Dashboard shell has language",
+      "status": "pass",
+      "details": "Expected html lang=en"
+    },
+    {
+      "name": "Dashboard shell loads runtime a11y helper",
+      "status": "pass",
+      "details": "Expected a11y.js script"
+    },
+    {
+      "name": "Captcha API reachable",
+      "status": "pass",
+      "details": "HTTP 200"
+    },
+    {
+      "name": "Captcha API returns text math question",
+      "status": "pass",
+      "details": "8 + 5 = ?"
+    }
+  ],
+  "summary": {
+    "total": 10,
+    "passed": 10,
+    "failed": 0
+  }
+}

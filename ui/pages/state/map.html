@@ -2,8 +2,8 @@
 <section class="sq-state-page sq-state-map-page">
     <div class="sq-state-toolbar">
         <div>
-            <h3>Certification Map</h3>
-            <p>Certified facilities with geo coordinates.</p>
+            <h3 data-domain-label="map">Certification Map</h3>
+            <p data-domain-label="map_summary">Certified facilities with geo coordinates.</p>
         </div>
         <div class="sq-state-filters">
             <input type="search" class="sq-form-control" id="stateMapSearch" placeholder="Search facility or NIN" aria-label="Search Facility Or NIN">
@@ -13,11 +13,14 @@
 
     <div class="sq-card">
         <div class="sq-card-header"><h3>Map View</h3></div>
-        <div class="sq-card-body"><div id="stateMapCanvas" class="sq-state-map"></div></div>
+        <div class="sq-card-body">
+            <p id="stateMapSummary" class="sq-help-text" aria-live="polite">Map data summary will appear after loading.</p>
+            <div id="stateMapCanvas" class="sq-state-map" role="img" aria-label="Certification map showing certified facilities by location" aria-describedby="stateMapSummary"></div>
+        </div>
     </div>
 
     <div class="sq-card">
-        <div class="sq-card-header"><h3>Certification Categorisation</h3></div>
+        <div class="sq-card-header"><h3 data-domain-label="map_categories">Certification Categorisation</h3></div>
         <div class="sq-card-body">
             <div class="sq-state-map-categories" id="stateMapCategories"></div>
             <div class="sq-state-map-status" id="stateMapStatus"></div>
@@ -25,7 +28,7 @@
     </div>
 
     <div class="sq-card">
-        <div class="sq-card-header"><h3>Mapped Facilities</h3></div>
+        <div class="sq-card-header"><h3 data-domain-label="mapped_facilities">Mapped Facilities</h3></div>
         <div class="sq-card-body" id="stateMapList"></div>
     </div>
 </section>

@@ -137,7 +137,7 @@
 
     function selectedScope() {
         return {
-            ass_period: state.assessment?.assessment_id || 0,
+            assessment_id: state.assessment?.assessment_id || 0,
             dept_id: state.selected.deptId,
             concern_id: state.selected.concernId,
             subtype_id: state.selected.subtypeId
@@ -162,6 +162,19 @@
         const total = state.scopeCheckpoints.length;
 
         return total > 0 && state.answered.size >= total;
+    }
+
+    function checkpointId(checkpoint) {
+        return Number(checkpoint?.csqa_id || checkpoint?.checkpoint_id || 0);
+    }
+
+    function firstUnansweredIndex() {
+        const index = state.scopeCheckpoints.findIndex(function (checkpoint) {
+            const id = checkpointId(checkpoint);
+            return id > 0 && !state.answered.has(id);
+        });
+
+        return index >= 0 ? index : 0;
     }
 
     function renderCompletedScopeMessage() {
@@ -261,7 +274,7 @@
 
         const statusResponse = await apiGet(API.status, {
             fac_id: assessment.fac_id,
-            ass_period: assessment.assessment_id
+            assessment_id: assessment.assessment_id
         });
 
         const activeMap = {};
@@ -288,6 +301,15 @@
             function (dept) { return dept.dept_id; },
             function (dept) { return dept.dept_name || "Department"; }
         );
+
+        const queryDeptId = Number(new URLSearchParams(window.location.search).get("dept_id") || 0);
+
+        if (queryDeptId && state.departments.some(function (dept) {
+            return Number(dept.dept_id) === queryDeptId;
+        })) {
+            $("deptSelect").value = String(queryDeptId);
+            await loadConcerns();
+        }
     }
 
     async function loadConcerns() {
@@ -396,15 +418,228 @@
         setStateMessage("Load checkpoint to begin.");
     }
 
-    function selectedScore() {
-        const checked = document.querySelector('input[name="response_value"]:checked');
-        return checked ? Number(checked.value) : null;
+    function responseDefinition(checkpoint) {
+        const definition = checkpoint?.response && typeof checkpoint.response === "object"
+            ? checkpoint.response
+            : {};
+
+        return Object.assign({
+            type: "radio",
+            mandatory: true,
+            label: "Compliance Score"
+        }, definition, {
+            type: String(definition.type || "radio").toLowerCase()
+        });
     }
 
-    function setSelectedScore(value) {
-        document.querySelectorAll('input[name="response_value"]').forEach(function (input) {
-            input.checked = String(input.value) === String(value);
-        });
+    function responseOptions(definition) {
+        if (Array.isArray(definition.options) && definition.options.length) {
+            return definition.options;
+        }
+
+        if (definition.type === "yes_no") {
+            return [
+                { label: "No", value: "0", score: 0 },
+                { label: "Yes", value: "1", score: 1 }
+            ];
+        }
+
+        return [
+            { label: "Non Compliance", value: "0", score: 0 },
+            { label: "Partial Compliance", value: "1", score: 1 },
+            { label: "Fully Compliance", value: "2", score: 2 }
+        ];
+    }
+
+    function savedJson(saved) {
+        if (!saved || !saved.response_json) {
+            return {};
+        }
+
+        if (typeof saved.response_json === "object") {
+            return saved.response_json || {};
+        }
+
+        try {
+            return JSON.parse(saved.response_json) || {};
+        } catch (error) {
+            return {};
+        }
+    }
+
+    function renderChoiceControl(definition, saved) {
+        const savedValue = saved?.response_value ?? "";
+        const options = responseOptions(definition);
+        const legend = escapeHtml(definition.label || "Response");
+
+        return `
+            <fieldset class="sq-score-options" data-response-type="${escapeHtml(definition.type)}">
+                <legend>${legend}</legend>
+                ${options.map(function (option) {
+                    const value = String(option.value ?? "");
+                    const checked = String(savedValue) === value ? " checked" : "";
+                    const scoreLabel = option.score !== undefined && option.score !== null
+                        ? `<strong>${escapeHtml(option.score)}</strong>`
+                        : "";
+
+                    return `
+                        <label class="sq-score-option">
+                            <input type="radio" name="response_value" value="${escapeHtml(value)}"${checked}
+                                aria-label="${escapeHtml(option.label || value)}">
+                            <span>
+                                ${scoreLabel}
+                                ${escapeHtml(option.label || value)}
+                            </span>
+                        </label>
+                    `;
+                }).join("")}
+            </fieldset>
+        `;
+    }
+
+    function renderDropdownControl(definition, saved) {
+        const savedValue = saved?.response_value ?? "";
+        const options = responseOptions(definition);
+
+        return `
+            <div class="sq-form-group" data-response-type="dropdown">
+                <label for="checkpointResponseValue">${escapeHtml(definition.label || "Response")}</label>
+                <select id="checkpointResponseValue" class="sq-form-control" data-response-value>
+                    <option value="">Select response</option>
+                    ${options.map(function (option) {
+                        const value = String(option.value ?? "");
+                        const selected = String(savedValue) === value ? " selected" : "";
+                        return `<option value="${escapeHtml(value)}"${selected}>${escapeHtml(option.label || value)}</option>`;
+                    }).join("")}
+                </select>
+            </div>
+        `;
+    }
+
+    function renderSimpleInputControl(definition, saved) {
+        const json = savedJson(saved);
+        const savedValue = saved?.response_value ?? json.value ?? "";
+        const type = definition.type === "number" ? "number" : "text";
+
+        if (definition.type === "text" && definition.multiline) {
+            return `
+                <div class="sq-form-group" data-response-type="text">
+                    <label for="checkpointResponseValue">${escapeHtml(definition.label || "Text Response")}</label>
+                    <textarea id="checkpointResponseValue" class="sq-form-control" data-response-value>${escapeHtml(savedValue)}</textarea>
+                </div>
+            `;
+        }
+
+        return `
+            <div class="sq-form-group" data-response-type="${escapeHtml(definition.type)}">
+                <label for="checkpointResponseValue">${escapeHtml(definition.label || "Response")}</label>
+                <input id="checkpointResponseValue" type="${type}" class="sq-form-control"
+                    value="${escapeHtml(savedValue)}" data-response-value>
+            </div>
+        `;
+    }
+
+    function renderFormControl(definition, saved) {
+        const json = savedJson(saved);
+        const values = json.fields || json || {};
+        const fields = Array.isArray(definition.fields) ? definition.fields : [];
+
+        return `
+            <div data-response-type="form">
+                <div class="sq-response-title">${escapeHtml(definition.label || "Response Details")}</div>
+                <div class="sq-response-inline-grid">
+                    ${fields.map(function (field) {
+                        const key = String(field.key || "");
+                        const fieldType = String(field.type || "text").toLowerCase();
+                        const inputType = fieldType === "number" ? "number" : fieldType === "date" ? "date" : "text";
+                        const value = values[key] ?? "";
+                        return `
+                            <div class="sq-form-group">
+                                <label for="field_${escapeHtml(key)}">${escapeHtml(field.label || key)}</label>
+                                <input id="field_${escapeHtml(key)}" type="${inputType}" class="sq-form-control"
+                                    value="${escapeHtml(value)}" data-response-field="${escapeHtml(key)}">
+                            </div>
+                        `;
+                    }).join("")}
+                </div>
+            </div>
+        `;
+    }
+
+    function renderResponseControl(checkpoint, saved) {
+        const target = $("responseControl");
+        const definition = responseDefinition(checkpoint);
+
+        if (!target) {
+            return;
+        }
+
+        if (definition.type === "dropdown") {
+            target.innerHTML = renderDropdownControl(definition, saved);
+            return;
+        }
+
+        if (definition.type === "number" || definition.type === "text") {
+            target.innerHTML = renderSimpleInputControl(definition, saved);
+            return;
+        }
+
+        if (definition.type === "form") {
+            target.innerHTML = renderFormControl(definition, saved);
+            return;
+        }
+
+        target.innerHTML = renderChoiceControl(definition, saved);
+    }
+
+    function currentResponsePayload() {
+        const definition = responseDefinition(state.current?.checkpoint || {});
+        const type = definition.type;
+
+        if (type === "radio" || type === "yes_no") {
+            const checked = document.querySelector('input[name="response_value"]:checked');
+
+            return checked
+                ? { ok: true, value: checked.value, json: { value: checked.value } }
+                : { ok: false, message: "Please select response." };
+        }
+
+        if (type === "dropdown") {
+            const input = document.querySelector("[data-response-value]");
+
+            return input && input.value !== ""
+                ? { ok: true, value: input.value, json: { value: input.value } }
+                : { ok: false, message: "Please select response." };
+        }
+
+        if (type === "number" || type === "text") {
+            const input = document.querySelector("[data-response-value]");
+            const value = input ? String(input.value || "").trim() : "";
+
+            if (definition.mandatory !== false && value === "") {
+                return { ok: false, message: "Please enter response." };
+            }
+
+            return { ok: true, value, json: { value } };
+        }
+
+        if (type === "form") {
+            const fields = {};
+
+            document.querySelectorAll("[data-response-field]").forEach(function (input) {
+                fields[input.dataset.responseField] = input.value;
+            });
+
+            return {
+                ok: true,
+                value: Object.values(fields).find(function (value) {
+                    return String(value || "").trim() !== "";
+                }) || "",
+                json: { fields }
+            };
+        }
+
+        return { ok: false, message: "Unsupported response type." };
     }
 
     async function startDepartment() {
@@ -465,7 +700,7 @@
                 return true;
             }
 
-            renderCheckpointAt(0);
+            renderCheckpointAt(firstUnansweredIndex());
             return true;
 
         } catch (error) {
@@ -517,7 +752,7 @@
             return;
         }
 
-        renderCheckpointAt(0);
+        renderCheckpointAt(firstUnansweredIndex());
     }
 
     function renderProgress(position) {
@@ -553,7 +788,7 @@
         $("checkpointText").textContent = checkpoint.Checkpoint || checkpoint.Measurable_Element || "-";
         $("checkpointVerification").textContent = checkpoint.Means_of_Verification || "";
 
-        setSelectedScore(saved ? saved.response_value : "");
+        renderResponseControl(checkpoint, saved);
         renderProgress(position);
 
         $("btnPreviousCheckpoint").disabled = Boolean(position.is_first);
@@ -569,10 +804,10 @@
             return false;
         }
 
-        const score = selectedScore();
+        const payload = currentResponsePayload();
 
-        if (score === null) {
-            notify("warning", "Please select compliance score.");
+        if (!payload.ok) {
+            notify("warning", payload.message || "Please enter response.");
             return false;
         }
 
@@ -580,8 +815,8 @@
             assessment_id: state.assessment.assessment_id,
             dept_id: state.selected.deptId,
             checkpoint_id: state.selected.checkpointId,
-            response_value: score,
-            score: score,
+            response_value: payload.value,
+            response_json: payload.json,
             remarks: "",
             evidence_url: ""
         });
@@ -589,8 +824,12 @@
         state.answered.add(state.selected.checkpointId);
         if (state.scopeCheckpoints[state.currentIndex]) {
             state.scopeCheckpoints[state.currentIndex].saved_response = {
-                response_value: score,
-                score: score
+                response_type: response?.data?.response_type || responseDefinition(state.current.checkpoint).type,
+                response_value: response?.data?.response_value ?? payload.value,
+                response_json: response?.data?.response_json || payload.json,
+                score: response?.data?.score ?? null,
+                max_score: response?.data?.max_score ?? 0,
+                score_status: response?.data?.score_status || "SCORED"
             };
         }
         notify("success", response.message || "Response saved.");

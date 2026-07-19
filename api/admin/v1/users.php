@@ -86,6 +86,45 @@ function adminUsersRow(array $row): array
 }
 
 /**
+ * Encrypts profile identity fields before any s_user profile write.
+ */
+function adminUsersEncryptedProfilePayload(
+    string $firstName,
+    string $middleName,
+    string $lastName,
+    string $email,
+    string $mobile
+): array {
+    return [
+        'f_name' => Crypto::encrypt($firstName),
+        'm_name' => Crypto::encrypt($middleName),
+        'l_name' => Crypto::encrypt($lastName),
+        'mail_id' => Crypto::encrypt($email),
+        'mob_no' => Crypto::encrypt($mobile)
+    ];
+}
+
+/**
+ * Checks whether the current schema has a requested table column.
+ */
+function adminUsersColumnExists(mysqli $con, string $table, string $column): bool
+{
+    $stmt = $con->prepare(
+        "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS
+         WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ? AND COLUMN_NAME = ?"
+    );
+
+    if (!$stmt) {
+        return false;
+    }
+
+    $stmt->bind_param('ss', $table, $column);
+    $stmt->execute();
+
+    return (bool)$stmt->get_result()->fetch_assoc();
+}
+
+/**
  * Handles admin users find processing for this API workflow.
  */
 function adminUsersFind(mysqli $con, int $userId): ?array
@@ -122,7 +161,23 @@ function adminUsersFind(mysqli $con, int $userId): ?array
     $stmt->execute();
     $row = $stmt->get_result()->fetch_assoc();
 
-    return $row ? adminUsersRow($row) : null;
+    if (!$row) {
+        return null;
+    }
+
+    $user = adminUsersRow($row);
+
+    if (adminUsersColumnExists($con, 's_user', 'password_must_change')) {
+        $flagStmt = $con->prepare("SELECT password_must_change FROM s_user WHERE u_id = ? LIMIT 1");
+        if ($flagStmt) {
+            $flagStmt->bind_param('i', $userId);
+            $flagStmt->execute();
+            $flag = $flagStmt->get_result()->fetch_assoc();
+            $user['password_must_change'] = (int)($flag['password_must_change'] ?? 0) === 1;
+        }
+    }
+
+    return $user;
 }
 
 try {
@@ -197,14 +252,22 @@ try {
         Response::validation($errors);
     }
 
-    $encryptedFirstName = Crypto::encrypt($firstName);
-    $encryptedMiddleName = Crypto::encrypt($middleName);
-    $encryptedLastName = Crypto::encrypt($lastName);
-    $encryptedEmail = Crypto::encrypt($email);
-    $encryptedMobile = Crypto::encrypt($mobile);
+    $encryptedProfile = adminUsersEncryptedProfilePayload(
+        $firstName,
+        $middleName,
+        $lastName,
+        $email,
+        $mobile
+    );
 
     if ($password !== '') {
         $hash = Auth::hashPassword($password);
+        $passwordResetSql = adminUsersColumnExists($con, 's_user', 'password_must_change')
+            ? ",
+                password_must_change = 0,
+                password_changed_on = CURRENT_TIMESTAMP"
+            : "";
+
         $sql = "
             UPDATE s_user
             SET
@@ -214,6 +277,7 @@ try {
                 mail_id = ?,
                 mob_no = ?,
                 u_password = ?
+                {$passwordResetSql}
             WHERE u_id = ?
             LIMIT 1
         ";
@@ -226,11 +290,11 @@ try {
 
         $stmt->bind_param(
             'ssssssi',
-            $encryptedFirstName,
-            $encryptedMiddleName,
-            $encryptedLastName,
-            $encryptedEmail,
-            $encryptedMobile,
+            $encryptedProfile['f_name'],
+            $encryptedProfile['m_name'],
+            $encryptedProfile['l_name'],
+            $encryptedProfile['mail_id'],
+            $encryptedProfile['mob_no'],
             $hash,
             $userId
         );
@@ -255,11 +319,11 @@ try {
 
         $stmt->bind_param(
             'sssssi',
-            $encryptedFirstName,
-            $encryptedMiddleName,
-            $encryptedLastName,
-            $encryptedEmail,
-            $encryptedMobile,
+            $encryptedProfile['f_name'],
+            $encryptedProfile['m_name'],
+            $encryptedProfile['l_name'],
+            $encryptedProfile['mail_id'],
+            $encryptedProfile['mob_no'],
             $userId
         );
     }
@@ -271,6 +335,7 @@ try {
     $_SESSION['full_name'] = trim($firstName . ' ' . $middleName . ' ' . $lastName);
     $_SESSION['mail_id'] = $email;
     $_SESSION['mob_no'] = $mobile;
+    $_SESSION['password_must_change'] = false;
 
     Response::success('Profile updated successfully', [
         'user' => adminUsersFind($con, $userId),

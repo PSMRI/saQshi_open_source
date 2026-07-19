@@ -55,8 +55,8 @@ class Event
 
         $event = [
             'event' => $eventName,
-            'payload' => $payload,
-            'meta' => array_merge(self::defaultMeta(), $meta),
+            'payload' => self::redact($payload),
+            'meta' => self::redact(array_merge(self::defaultMeta(), $meta)),
             'occurred_at' => date('c')
         ];
 
@@ -91,7 +91,7 @@ class Event
         self::dispatch('api.request.started', [
             'method' => $_SERVER['REQUEST_METHOD'] ?? null,
             'path' => $_SERVER['REQUEST_URI'] ?? null,
-            'query' => $_SERVER['QUERY_STRING'] ?? null
+            'query' => self::redactQueryString($_SERVER['QUERY_STRING'] ?? '')
         ]);
 
         register_shutdown_function(static function (): void {
@@ -108,8 +108,8 @@ class Event
                 'fatal_error' => $error && in_array((int)$error['type'], [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR], true)
                     ? [
                         'type' => (int)$error['type'],
-                        'message' => $error['message'] ?? '',
-                        'file' => $error['file'] ?? '',
+                        'message' => self::redactString((string)($error['message'] ?? '')),
+                        'file' => basename((string)($error['file'] ?? '')),
                         'line' => $error['line'] ?? 0
                     ]
                     : null
@@ -129,6 +129,68 @@ class Event
             'user_id' => self::safeSessionValue('userId'),
             'facility_id' => self::safeSessionValue('facilityId')
         ];
+    }
+
+    /**
+     * Redact sensitive values before an event is written to disk.
+     */
+    private static function redact(mixed $value): mixed
+    {
+        if (is_array($value)) {
+            $redacted = [];
+            foreach ($value as $key => $item) {
+                $keyString = is_string($key) ? $key : (string)$key;
+                $redacted[$key] = self::isSensitiveKey($keyString)
+                    ? '[REDACTED]'
+                    : self::redact($item);
+            }
+            return $redacted;
+        }
+
+        if (is_string($value)) {
+            return self::redactString($value);
+        }
+
+        return $value;
+    }
+
+    /**
+     * Redact sensitive query parameters while keeping non-sensitive trace context.
+     */
+    private static function redactQueryString(string $query): string
+    {
+        if ($query === '') {
+            return '';
+        }
+
+        parse_str($query, $params);
+        $params = self::redact($params);
+        return http_build_query($params);
+    }
+
+    /**
+     * Handles sensitive key detection for event/log redaction.
+     */
+    private static function isSensitiveKey(string $key): bool
+    {
+        return (bool)preg_match(
+            '/password|passwd|pwd|password_enc|token|csrf|captcha|secret|api[_-]?key|private[_-]?key|authorization|cookie|session/i',
+            $key
+        );
+    }
+
+    /**
+     * Redact common inline secret patterns from free-form error messages.
+     */
+    private static function redactString(string $value): string
+    {
+        $value = preg_replace(
+            '/(password|passwd|pwd|password_enc|token|csrf|captcha|secret|api[_-]?key|authorization|cookie|session)(\s*[=:]\s*)([^,\s&]+)/i',
+            '$1$2[REDACTED]',
+            $value
+        );
+
+        return is_string($value) ? $value : '';
     }
 
     /**

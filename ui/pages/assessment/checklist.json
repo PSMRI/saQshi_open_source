@@ -16,10 +16,10 @@
 
     "assets": {
         "css": [
-            "/ui/pages/assessment/checklist.css?v=20260702-10"
+            "/ui/pages/assessment/checklist.css?v=20260718-3"
         ],
         "js": [
-            "/ui/pages/assessment/checklist.js?v=20260702-10"
+            "/ui/pages/assessment/checklist.js?v=20260718-4"
         ]
     },
 

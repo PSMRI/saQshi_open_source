@@ -23,7 +23,7 @@ License : GPL-3.0
 
                 <div>
                     <h1>SaQshi</h1>
-                    <p>Open Source Digital Quality Assessment</p>
+                    <p>Digital Quality Assessment Platform</p>
                 </div>
             </div>
 
@@ -34,21 +34,6 @@ License : GPL-3.0
                     Manage NQAS, MusQan and LaQshya assessment workflows with
                     department activation, checkpoint scoring and CQI tracking.
                 </p>
-            </div>
-
-            <div class="sq-login-meta-grid">
-                <div>
-                    <strong>GPL-3.0</strong>
-                    <span>Open source license</span>
-                </div>
-                <div>
-                    <strong>NQAS</strong>
-                    <span>Framework ready</span>
-                </div>
-                <div>
-                    <strong>CQI</strong>
-                    <span>Gap to closure flow</span>
-                </div>
             </div>
 
         </aside>
@@ -119,8 +104,12 @@ License : GPL-3.0
                         </div>
 
                         <div class="sq-captcha-box">
-                            <span id="captchaQuestion">Loading...</span>
+                            <span id="captchaQuestion" aria-live="polite">Loading...</span>
                         </div>
+
+                        <p class="sq-help-text" id="captchaHelp">
+                            This is a text math question for screen readers. Type the numeric answer. If you cannot complete this challenge, contact your administrator for assisted login or password reset.
+                        </p>
 
                         <input
                             id="captcha"
@@ -129,7 +118,9 @@ License : GPL-3.0
                             inputmode="numeric"
                             class="sq-form-control"
                             placeholder="Enter captcha answer"
-                            required aria-label="Enter Captcha Answer">
+                            required
+                            aria-label="Enter captcha answer"
+                            aria-describedby="captchaHelp captchaQuestion">
                     </div>
 
                     <div class="sq-login-options">
@@ -159,7 +150,7 @@ License : GPL-3.0
 
                 <div class="sq-login-card-footer">
                     <span>Version 1.0.0</span>
-                    <span>SaQshi Open Source</span>
+                    <span>GPL-3.0</span>
                 </div>
 
             </div>

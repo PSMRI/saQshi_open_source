@@ -60,13 +60,59 @@
             margin-top: 12px;
         }
 
-        .book-nav-group h3 {
+        .book-nav-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
             margin: 0 0 6px;
+            padding: 6px 4px;
+            border: 0;
+            border-bottom: 1px solid transparent;
+            background: transparent;
             color: var(--sq-dev-muted);
             font-size: 0.66rem;
+            font-weight: 800;
             letter-spacing: 0.09em;
             line-height: 1.2;
+            text-align: left;
             text-transform: uppercase;
+            cursor: pointer;
+        }
+
+        .book-nav-toggle:hover,
+        .book-nav-toggle:focus {
+            color: var(--sq-dev-primary);
+            border-bottom-color: var(--sq-dev-border);
+            outline: none;
+        }
+
+        .book-nav-toggle-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            height: 18px;
+            border: 1px solid var(--sq-dev-border);
+            border-radius: 6px;
+            background: #fff;
+            color: var(--sq-dev-primary);
+            font-size: 0.9rem;
+            font-weight: 900;
+            line-height: 1;
+        }
+
+        .book-nav-group.open .book-nav-toggle-icon {
+            background: var(--sq-dev-primary);
+            color: #fff;
+        }
+
+        .book-nav-links {
+            display: none;
+        }
+
+        .book-nav-group.open .book-nav-links {
+            display: block;
         }
 
         .book-link {
@@ -135,12 +181,17 @@
             border-radius: 6px;
             background: var(--sq-dev-soft);
             color: var(--sq-dev-primary-dark);
+            white-space: normal;
+            overflow-wrap: anywhere;
         }
 
         .book-content pre code {
+            display: block;
             padding: 0;
             background: transparent;
             color: inherit;
+            white-space: pre-wrap;
+            overflow-wrap: normal;
         }
 
         .book-content img {
@@ -216,6 +267,21 @@
             margin: 16px 0;
             border-collapse: collapse;
             font-size: 0.95rem;
+            table-layout: fixed;
+        }
+
+        .book-table-wrap {
+            width: 100%;
+            overflow-x: auto;
+            margin: 16px 0;
+            border: 1px solid var(--sq-dev-border);
+            border-radius: 10px;
+        }
+
+        .book-table-wrap table {
+            min-width: 860px;
+            margin: 0;
+            table-layout: auto;
         }
 
         .book-content details {
@@ -248,6 +314,7 @@
             border: 1px solid var(--sq-dev-border);
             text-align: left;
             vertical-align: top;
+            overflow-wrap: anywhere;
         }
 
         .book-content th {
@@ -315,17 +382,13 @@
         {
             title: "Start Here",
             items: [
-                ["SaQshi Overview", "README.md"],
-                ["Project Overview and NQAS Alignment", "docs/architecture/project_overview.md"],
-                ["Version Matrix", "docs/architecture/version_matrix.md"],
-                ["Complete User Guide", "docs/user/user_guide.md"],
-                ["Contributing", "CONTRIBUTING.md"],
-                ["Security Policy", "SECURITY.md"],
-                ["Changelog", "CHANGELOG.md"],
-                ["Code of Conduct", "CODE_OF_CONDUCT.md"],
-                ["Maintainers and Release Contacts", "MAINTAINERS.md"],
-                ["License", "LICENSE.txt"],
-                ["Notice", "NOTICE.txt"]
+                ["SaQshi Overview", "README.md"]
+            ]
+        },
+        {
+            title: "User Guide",
+            items: [
+                ["User Guide", "docs/user/user_guide.md"]
             ]
         },
         {
@@ -336,20 +399,32 @@
                 ["Version Matrix", "docs/architecture/version_matrix.md"],
                 ["Technical Architecture Overview", "docs/architecture/technical_architecture.md"],
                 ["Service Architecture and Map", "docs/architecture/service_map.md"],
+                ["AI Chat Assistant Architecture", "docs/architecture/ai_chat_assistant_architecture.md"],
                 ["HLD and LLD Architecture Design", "docs/architecture/hld_lld_design.md"],
                 ["Configuration JSON Formats", "docs/architecture/configuration_formats.md"],
+                ["Coding Standards and Conventions", "docs/architecture/coding_standards_and_conventions.md"],
+                ["Legacy Naming Migration Policy", "docs/architecture/legacy_naming_migration.md"],
                 ["Data Dictionary and ER Diagram", "docs/database/data_dictionary_erd.md"],
                 ["Database Setup and Migration", "docs/database/database_setup_and_migration.md"],
+                ["SQL Query Inventory", "docs/database/sql_query_inventory.md"],
+                ["UI Developer and Deployment Guide", "docs/deployment/ui_deployment_guide.md"],
+                ["Healthcare Deployment Configuration", "docs/deployment/deployment_profiles.md"],
                 ["API Developer Documentation", "docs/api/README.md"],
                 ["Endpoint Inventory", "docs/api/endpoint-inventory.md"],
                 ["API Source Reference", "docs/api/source-reference.md"],
-                ["Assessment API Guide", "docs/api/assessment.md"]
+                ["Assessment API Guide", "docs/api/assessment.md"],
+                ["Assessor API Guide", "docs/api/assessor.md"],
+                ["Changelog", "CHANGELOG.md"],
+                ["GitBook Publishing Guide", "docs/gitbook.md"]
             ]
         },
         {
             title: "Deployment and Operations",
             items: [
                 ["Deployment Guide", "docs/deployment/deployment_guide.md"],
+                ["System Requirements for UAT and Production", "docs/deployment/system_requirements.md"],
+                ["UI Deployment Guide", "docs/deployment/ui_deployment_guide.md"],
+                ["Healthcare Deployment Configuration", "docs/deployment/deployment_profiles.md"],
                 ["Backup and Restore Guide", "docs/deployment/backup_restore_guide.md"],
                 ["Upgrade and Migration Guide", "docs/deployment/upgrade_migration_guide.md"],
                 ["Troubleshooting and FAQ", "docs/deployment/troubleshooting_faq.md"]
@@ -380,14 +455,19 @@
                 ["Load Testing Guide", "docs/testing/saqshi_load_testing_guide.md"],
                 ["Non-functional Test Cases", "docs/testing/saqshi_non_functional_test_cases.csv"],
                 ["WCAG and Web Platform Compliance", "docs/testing/saqshi_wcag_web_platform_compliance.md"],
+                ["Accessibility Test Execution Report 2026-07-17", "docs/testing/accessibility_test_execution_report_2026_07_17.md"],
                 ["WCAG Page Audit", "docs/testing/wcag_page_by_page_audit.csv"]
             ]
         },
         {
-            title: "Open Source and Release",
+            title: "Legal and Governance",
             items: [
-                ["Open Source and DPG Release Status", "docs/compliance/open_source_dpg_release_status.md"],
-                ["Open Source Readiness Checklist", "docs/compliance/open_source_readiness_checklist.md"],
+                ["License", "LICENSE.txt"],
+                ["Notice", "NOTICE.txt"],
+                ["Security Policy", "SECURITY.md"],
+                ["Code of Conduct", "CODE_OF_CONDUCT.md"],
+                ["Contributing", "CONTRIBUTING.md"],
+                ["Maintainers and Release Contacts", "MAINTAINERS.md"],
                 ["License Before and After", "docs/compliance/license_consistency_before_after.md"],
                 ["Third-party Licenses", "docs/compliance/third_party_licenses.md"],
                 ["Privacy and Data Protection", "docs/compliance/privacy_data_protection.md"],
@@ -395,19 +475,28 @@
                 ["Legal and Privacy Confirmation", "docs/compliance/legal_privacy_confirmation.md"],
                 ["Public Data Audit", "docs/compliance/public_data_audit.md"],
                 ["Data Redistribution Approval", "docs/compliance/data_redistribution_approval.md"],
+                ["Governance and Ownership", "docs/compliance/governance_and_ownership.md"]
+            ]
+        },
+        {
+            title: "Open Source and DPG",
+            items: [
+                ["Open Source and DPG Release Status", "docs/compliance/open_source_dpg_release_status.md"],
+                ["Open Source Readiness Checklist", "docs/compliance/open_source_readiness_checklist.md"],
+                ["DPG Readiness Assessment", "docs/compliance/dpg_readiness_assessment.md"],
                 ["SDG Mapping", "docs/compliance/sdg_mapping.md"],
                 ["Non-PII Export and Import", "docs/compliance/non_pii_data_export_import.md"],
-                ["Governance and Ownership", "docs/compliance/governance_and_ownership.md"],
+                ["Non-PII Sample Exports", "docs/compliance/sample_exports/README.md"],
                 ["Open Standards Mapping", "docs/compliance/open_standards_mapping.md"],
-                ["Release Checklist", "docs/compliance/release_checklist.md"],
-                ["DPG Readiness Assessment", "docs/compliance/dpg_readiness_assessment.md"],
-                ["GitBook Publishing Guide", "docs/gitbook.md"]
+                ["Release and Versioning Policy", "docs/compliance/release_versioning_policy.md"],
+                ["Release Checklist", "docs/compliance/release_checklist.md"]
             ]
         }
     ];
 
     const content = document.getElementById("bookContent");
     const nav = document.getElementById("bookNav");
+    let activeDoc = normalizeDoc(new URLSearchParams(window.location.search).get("doc") || "README.md");
 
     function escapeHtml(value) {
         return String(value)
@@ -416,6 +505,13 @@
             .replace(/>/g, "&gt;")
             .replace(/"/g, "&quot;")
             .replace(/'/g, "&#039;");
+    }
+
+    function escapeSelector(value) {
+        if (window.CSS && typeof window.CSS.escape === "function") {
+            return window.CSS.escape(value);
+        }
+        return String(value).replace(/["\\]/g, "\\$&");
     }
 
     function normalizeDoc(doc) {
@@ -436,7 +532,68 @@
         return "gitbook.html?doc=" + encodeURIComponent(normalizeDoc(doc));
     }
 
+    function findDocByBasename(doc) {
+        const basename = normalizeDoc(doc).split("/").pop();
+        for (const group of groups) {
+            for (const item of group.items) {
+                const candidate = normalizeDoc(item[1]);
+                if (candidate.split("/").pop() === basename) {
+                    return candidate;
+                }
+            }
+        }
+        return null;
+    }
+
+    function resolveDocHref(href) {
+        const value = String(href || "").trim();
+        if (!value || /^(https?:|mailto:|tel:|#|\/)/i.test(value)) {
+            return value;
+        }
+        const rootFiles = [
+            "README.md",
+            "SUMMARY.md",
+            "CHANGELOG.md",
+            "CONTRIBUTING.md",
+            "SECURITY.md",
+            "CODE_OF_CONDUCT.md",
+            "MAINTAINERS.md",
+            "LICENSE",
+            "LICENSE.txt",
+            "NOTICE",
+            "NOTICE.txt"
+        ];
+        if (rootFiles.includes(value)) {
+            return value;
+        }
+        if (value.startsWith("docs/")) {
+            return value;
+        }
+
+        const baseParts = String(activeDoc || "README.md").split("/");
+        baseParts.pop();
+        const parts = baseParts.concat(value.split("/"));
+        const resolved = [];
+
+        parts.forEach(part => {
+            if (!part || part === ".") {
+                return;
+            }
+            if (part === "..") {
+                resolved.pop();
+                return;
+            }
+            resolved.push(part);
+        });
+
+        return resolved.join("/");
+    }
+
     function isReadableDoc(href) {
+        if (href && /[?&]download=1/i.test(href)) {
+            return false;
+        }
+
         return href && (
             /\.md($|#)/i.test(href) ||
             /\.txt($|#)/i.test(href) ||
@@ -444,6 +601,7 @@
             /\.yaml($|#)/i.test(href) ||
             /\.yml($|#)/i.test(href) ||
             /\.json($|#)/i.test(href) ||
+            /\.csv($|#)/i.test(href) ||
             href === "LICENSE" ||
             href === "NOTICE"
         );
@@ -459,8 +617,10 @@
         });
         html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, function (_, label, href) {
             const safeHref = escapeHtml(href);
-            const target = isReadableDoc(href) ? docUrl(href) : safeHref;
-            return `<a href="${target}" data-doc-link="${escapeHtml(href)}">${label}</a>`;
+            const resolvedHref = resolveDocHref(href);
+            const target = isReadableDoc(href) ? docUrl(resolvedHref) : safeHref;
+            const downloadAttr = /[?&]download=1/i.test(href) ? " download" : "";
+            return `<a href="${target}" data-doc-link="${escapeHtml(resolvedHref)}"${downloadAttr}>${label}</a>`;
         });
         return html;
     }
@@ -474,6 +634,73 @@
         return "<table><thead><tr>" + head.map(cell => `<th>${cell}</th>`).join("") +
             "</tr></thead><tbody>" + rows.map(row => "<tr>" + row.map(cell => `<td>${cell}</td>`).join("") + "</tr>").join("") +
             "</tbody></table>";
+    }
+
+    function parseCsv(text) {
+        const rows = [];
+        let row = [];
+        let value = "";
+        let inQuotes = false;
+
+        for (let i = 0; i < text.length; i += 1) {
+            const char = text[i];
+            const next = text[i + 1];
+
+            if (char === '"' && inQuotes && next === '"') {
+                value += '"';
+                i += 1;
+                continue;
+            }
+
+            if (char === '"') {
+                inQuotes = !inQuotes;
+                continue;
+            }
+
+            if (char === "," && !inQuotes) {
+                row.push(value);
+                value = "";
+                continue;
+            }
+
+            if ((char === "\n" || char === "\r") && !inQuotes) {
+                if (char === "\r" && next === "\n") {
+                    i += 1;
+                }
+                row.push(value);
+                if (row.some(cell => cell !== "")) {
+                    rows.push(row);
+                }
+                row = [];
+                value = "";
+                continue;
+            }
+
+            value += char;
+        }
+
+        if (value !== "" || row.length) {
+            row.push(value);
+            if (row.some(cell => cell !== "")) {
+                rows.push(row);
+            }
+        }
+
+        return rows;
+    }
+
+    function renderCsvTable(text) {
+        const rows = parseCsv(text);
+        const head = rows.shift() || [];
+
+        if (!head.length) {
+            return "<p>No CSV data available.</p>";
+        }
+
+        return `<div class="book-table-wrap"><table>
+            <thead><tr>${head.map(cell => `<th>${escapeHtml(cell)}</th>`).join("")}</tr></thead>
+            <tbody>${rows.map(row => `<tr>${head.map((_, index) => `<td>${escapeHtml(row[index] || "")}</td>`).join("")}</tr>`).join("")}</tbody>
+        </table></div>`;
     }
 
     function renderMarkdown(markdown) {
@@ -717,12 +944,14 @@
 
     async function loadDoc(doc) {
         const normalized = normalizeDoc(doc);
-        const activeUrl = docUrl(normalized);
+        activeDoc = normalized;
+        let activeUrl = docUrl(normalized);
         content.innerHTML = "<p>Loading documentation...</p>";
 
         document.querySelectorAll(".book-link").forEach(link => {
             link.classList.toggle("active", link.dataset.doc === normalized);
         });
+        expandGroupForDoc(normalized);
 
         try {
             const ext = normalized.split(".").pop().toLowerCase();
@@ -733,13 +962,29 @@
                 return;
             }
 
-            const response = await fetch(normalized, { cache: "no-store" });
+            let response = await fetch(normalized, { cache: "no-store" });
+            let fetchDoc = normalized;
+            if (!response.ok && normalized.indexOf("/") === -1) {
+                const fallbackDoc = findDocByBasename(normalized);
+                if (fallbackDoc && fallbackDoc !== normalized) {
+                    response = await fetch(fallbackDoc, { cache: "no-store" });
+                    fetchDoc = fallbackDoc;
+                    activeDoc = fallbackDoc;
+                    activeUrl = docUrl(fallbackDoc);
+                    document.querySelectorAll(".book-link").forEach(link => {
+                        link.classList.toggle("active", link.dataset.doc === fallbackDoc);
+                    });
+                    expandGroupForDoc(fallbackDoc);
+                }
+            }
             if (!response.ok) {
                 throw new Error("HTTP " + response.status);
             }
             const text = await response.text();
-            if (["json", "yaml", "yml"].includes(ext)) {
-                content.innerHTML = `<h1>${inlineMarkdown(normalized)}</h1><pre><code>${escapeHtml(text)}</code></pre>`;
+            if (ext === "csv") {
+                content.innerHTML = `<h1>${inlineMarkdown(fetchDoc)}</h1>${renderCsvTable(text)}`;
+            } else if (["json", "yaml", "yml"].includes(ext)) {
+                content.innerHTML = `<h1>${inlineMarkdown(fetchDoc)}</h1><pre><code>${escapeHtml(text)}</code></pre>`;
             } else {
                 content.innerHTML = renderMarkdown(text);
                 await renderMermaidDiagrams();
@@ -755,11 +1000,53 @@
     function renderNav() {
         nav.innerHTML = groups.map(group => {
             const links = group.items.map(([label, doc]) => `<a class="book-link" href="${docUrl(doc)}" data-doc="${normalizeDoc(doc)}">${escapeHtml(label)}</a>`).join("");
-            return `<div class="book-nav-group"><h3>${escapeHtml(group.title)}</h3>${links}</div>`;
+            const isOpen = group.items.some(([, doc]) => normalizeDoc(doc) === activeDoc);
+            const groupId = "book-nav-" + group.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+            return `
+                <div class="book-nav-group${isOpen ? " open" : ""}">
+                    <button class="book-nav-toggle" type="button" aria-expanded="${isOpen ? "true" : "false"}" aria-controls="${groupId}">
+                        <span>${escapeHtml(group.title)}</span>
+                        <span class="book-nav-toggle-icon" aria-hidden="true">${isOpen ? "-" : "+"}</span>
+                    </button>
+                    <div class="book-nav-links" id="${groupId}">
+                        ${links}
+                    </div>
+                </div>
+            `;
         }).join("");
     }
 
+    function setGroupOpen(group, open) {
+        const toggle = group.querySelector(".book-nav-toggle");
+        const icon = group.querySelector(".book-nav-toggle-icon");
+        group.classList.toggle("open", open);
+        if (toggle) {
+            toggle.setAttribute("aria-expanded", open ? "true" : "false");
+        }
+        if (icon) {
+            icon.textContent = open ? "-" : "+";
+        }
+    }
+
+    function expandGroupForDoc(doc) {
+        document.querySelectorAll(".book-nav-group").forEach(group => {
+            const hasActiveDoc = !!group.querySelector(`.book-link[data-doc="${escapeSelector(doc)}"]`);
+            if (hasActiveDoc) {
+                setGroupOpen(group, true);
+            }
+        });
+    }
+
     document.addEventListener("click", function (event) {
+        const toggle = event.target.closest(".book-nav-toggle");
+        if (toggle) {
+            const group = toggle.closest(".book-nav-group");
+            if (group) {
+                setGroupOpen(group, !group.classList.contains("open"));
+            }
+            return;
+        }
+
         const link = event.target.closest("a");
         if (!link) {
             return;

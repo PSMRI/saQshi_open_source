@@ -242,7 +242,7 @@ try {
                 r.updated_by,
                 r.updated_on,
 
-                ap.id AS action_plan_id,
+                ap.action_plan_id AS action_plan_id,
                 ap.revised_score,
                 ap.status AS action_plan_status,
                 ap.closure_remarks,
@@ -275,7 +275,7 @@ try {
                 r.updated_by,
                 r.updated_on,
 
-                ap.id AS action_plan_id,
+                ap.action_plan_id AS action_plan_id,
                 ap.revised_score,
                 ap.status AS action_plan_status,
                 ap.closure_remarks,

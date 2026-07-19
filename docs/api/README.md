@@ -13,6 +13,7 @@ the implementation path behind each endpoint.
 | `saqshi_postman_collection.json` | Importable Postman API testing collection. |
 | `saqshi_local_postman_environment.json` | Importable Postman local environment variables. |
 | `assessment.md` | Assessment lifecycle, assessment endpoints, validation, and data flow. |
+| `assessor.md` | State-led assessor profile, facility mapping, and assessor assessment start flow. |
 | `auth.md` | Authentication, session, CSRF, and access control endpoints. |
 | `framework.md` | Framework metadata endpoints. |
 | `performance.md` | Indicator, KPI, outcome, and performance dashboard endpoints. |

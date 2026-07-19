@@ -1,7 +1,7 @@
 # SaQshi Service Map
 
 Version: 1.0  
-Updated: 2026-07-15  
+Updated: 2026-07-18  
 License: GPL-3.0
 
 ## Purpose
@@ -12,7 +12,7 @@ that API flow.
 
 ## Service Architecture Diagram
 
-![SaQshi Service Architecture](docs/assets/architecture/saqshi-service-architecture.svg)
+![SaQshi Service Architecture](../assets/architecture/saqshi-service-architecture.svg)
 
 This diagram shows the current SaQshi service model. The application is not a
 distributed microservice platform today; it is a modular PHP application where
@@ -39,6 +39,7 @@ flowchart LR
     API --> CORE["Core Helpers<br/>Auth, Session, Security, Response"]
     API --> SERVICE["Service Class<br/>api/service/*.php"]
     SERVICE --> CONFIG["JSON Config<br/>api/config/..."]
+    SERVICE --> CHATCFG["Chat Config<br/>intents, knowledge,<br/>safety rules"]
     SERVICE --> DB[("MySQL / MariaDB")]
     SERVICE --> EVENT["Event::dispatch(...)"]
     SERVICE --> REPORT["Report / Download Output"]
@@ -52,7 +53,11 @@ flowchart LR
 | `ValidationService.php` | Common validation helpers for required fields and request payloads. | Shared by multiple API endpoints. | All forms that call APIs indirectly rely on it. |
 | `DashboardService.php` | Facility dashboard summary helper. | Dashboard APIs. | `ui/pages/dashboard`. |
 | `DynamicAssessmentService.php` | Reads framework JSON and manages assessment checklist structure: facility type, departments, concerns, subtypes, checkpoints and response flow. | `api/assessment/v1/*`, checklist/response APIs. | `ui/pages/assessment/checklist.*`, assessment reports. |
+| `ResponseTypeService.php` | Validates configurable checkpoint response types, calculates server-side score/max-score, stores structured response JSON and indexes non-scored fields for analytics. | `api/assessment/v1/save-response.php`, `api/framework/v1/checkpoints.php`. | `ui/pages/assessment/checklist.*`, future field analytics pages. |
 | `DepartmentStatusService.php` | Lists and saves activated/deactivated departments for an active assessment. | `api/assessment/v1/department-status/list.php`, `save.php`. | `ui/pages/assessment/departments.*`, sidebar assessment flow. |
+| `AssessorService.php` | State-led assessor profile, facility mapping and assessor facility selection/start workflow. | `api/assessor/v1/list.php`, `save.php`, `mapping_save.php`, `dashboard.php`, `start_assessment.php`. | `ui/pages/state/assessors.*`, `ui/pages/assessor/dashboard.*`, `ui/pages/assessor/facilities.*`. |
+| `EmailService.php` | Reusable email notification abstraction for temporary passwords and future alerts. | Used by `AssessorService.php`. | State assessor creation flow; future alert screens. |
+| `SmsService.php` | Reusable SMS notification abstraction for temporary passwords and future alerts. | Used by `AssessorService.php`. | State assessor creation flow; future alert screens. |
 | `CertificationService.php` | Certification create/update/list/history workflow and facility certification state. | `api/certification/*`, `api/state/v1/certification*`. | State certification status pages, certification map/status screens. |
 | `CertificationValidator.php` | Validates certification payloads such as status, dates, score and certification type. | Certification save/update APIs. | Certification update/add modal/page. |
 | `CertificationExpiryService.php` | Calculates certification validity, expiry and renewal status. | Certification APIs and state certification summaries. | Certification status pages and reports. |
@@ -72,7 +77,10 @@ flowchart LR
 | `StateIndicatorAnalyticsService.php` | Finds low-performing checklist indicators, counts facilities scoring zero, and prepares downloadable indicator analytics. | State indicator analytics API. | State indicator analytics/report sections. |
 | `StateReportService.php` | Builds state-level downloadable reports for facilities, assessment, CQI, performance and certification. | `api/state/v1/reports.php`. | `ui/pages/state/reports.*`. |
 | `StateUserAdminService.php` | State user administration support such as listing/searching and activate/deactivate actions. | State user administration API. | `ui/pages/state/user-administration.*`. |
-| `ChatAssistantService.php` | Provides contextual help/chat responses from configured app/document knowledge. | Chat assistant API. | Header/chat widget. |
+| `ChatAssistantService.php` | Orchestrates role-aware chat responses from help knowledge, intent matching and allowed scoped data tools. | `api/chat/v1/send.php`, `history.php`, `clear.php`. | `ui/components/chat-assistant`, header/chat widget. |
+| `ChatIntentService.php` | Planned intent matcher that maps user questions to configured intent keys and role rules. | Chat assistant API. | Chat assistant suggestions and user questions. |
+| `ChatKnowledgeService.php` | Planned knowledge loader for configured help answers, workflow explanations and error guidance. | Chat assistant API. | Chat assistant help responses. |
+| `ChatDataService.php` | Planned scoped-data service for facility reports, current month status, KPI/outcome status, pending action plans and gap closure summaries. | Chat assistant API. | Chat assistant monitoring/data responses. |
 
 ## Module-by-Module Service Relationships
 
@@ -113,6 +121,30 @@ Main responsibilities:
 - Save department activation state.
 - Load area of concern, subtype, method and checkpoint flow.
 - Save `0`, `1`, `2` checkpoint response and score.
+
+### State-Led Assessor Assignment
+
+```text
+ui/pages/state/assessors
+ui/pages/assessor/dashboard
+  -> api/assessor/v1/*
+    -> AssessorService
+    -> DepartmentStatusService
+    -> FrameworkEngine
+```
+
+Main responsibilities:
+
+- Create and update assessor profiles.
+- Encrypt assessor name, mobile and email at rest.
+- Auto-create assessor login user when linked user ID is blank.
+- Send generated temporary password through notification services.
+- Force password change on first login.
+- Map one assessor to multiple facilities.
+- Let an assessor select only assigned facilities.
+- Create or reuse the active assessment for the selected facility.
+- Auto-activate the department when the facility has only one applicable department.
+- Route multi-department facilities to department activation before checklist entry.
 
 ### CQI
 
@@ -218,15 +250,52 @@ Main responsibilities:
 ```text
 ui/components/header
 ui/assets/js/core/chat.js
+ui/components/chat-assistant
   -> chat API
     -> ChatAssistantService
+       -> ChatIntentService
+       -> ChatKnowledgeService
+       -> ChatDataService
+          -> StateDashboardService / StateReportService / monitoring scope logic
 ```
 
 Main responsibilities:
 
-- Provide user-facing help.
-- Explain application sections and documentation.
-- Keep chat behavior separate from core workflow APIs.
+- Provide user-facing help for assessment, checklist, CQI, performance, certification, reports and accessibility.
+- Classify questions using configured intents and role rules.
+- Answer help questions from configured knowledge JSON instead of hardcoded page text.
+- Answer monitoring questions from live data only after applying role/facility/geography scope.
+- Support state/division/district/block questions such as current month status, KPI/outcome filled status, facility report lookup, action plan not started and gap closure pending.
+- Support external assessor questions using mapped-facility scope only.
+- Keep chat behavior separate from core workflow APIs while reusing existing services for safe summaries.
+
+Suggested chat configuration:
+
+```text
+api/config/chat/
++-- intents.json
++-- knowledge.json
++-- prompts.json
++-- safety.json
+```
+
+Suggested data tool methods:
+
+```php
+ChatDataService::facilityReport($filters);
+ChatDataService::currentMonthStatus($filters);
+ChatDataService::performanceStatus($filters);
+ChatDataService::pendingCqiStatus($filters);
+ChatDataService::assessmentProgress($filters);
+```
+
+Chat service safety rules:
+
+- Never bypass role scope.
+- Do not expose passwords, secrets, raw SQL, server paths or PHP warnings.
+- Return summary counts first for large monitoring queries.
+- Point users to report downloads for long facility lists.
+- Store chat history for audit without storing sensitive secrets.
 
 ## Wrapper Services
 
@@ -265,5 +334,6 @@ to Kafka without changing API endpoint or UI page code.
 
 - [Technical Architecture Overview](technical_architecture.md)
 - [Configuration JSON Formats](configuration_formats.md)
+- [AI Chat Assistant Architecture](ai_chat_assistant_architecture.md)
 - [API Developer Documentation](../api/README.md)
 - [API Source Reference](../api/source-reference.md)

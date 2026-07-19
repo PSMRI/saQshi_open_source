@@ -1,0 +1,23 @@
+{
+  "id": "admin-deployment-profiles",
+  "name": "Deployment Profiles",
+  "title": "Deployment Profiles",
+  "layout": "dashboard",
+  "pageHeader": {
+    "title": "Deployment Profiles",
+    "subtitle": "Configure domain labels and optional modules."
+  },
+  "authentication": {
+    "required": true
+  },
+  "assets": {
+    "css": ["/ui/pages/admin/deployment-profiles.css?v=20260718-1"],
+    "js": ["/ui/pages/admin/deployment-profiles.js?v=20260718-1"]
+  },
+  "breadcrumb": [
+    {"label": "Dashboard", "url": "/ui/dashboard.html"},
+    {"label": "Administration"},
+    {"label": "Deployment Profiles"}
+  ],
+  "moduleName": "deploymentProfiles"
+}

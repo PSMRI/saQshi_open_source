@@ -83,6 +83,8 @@ class Auth
 
         unset($user['u_password']);
 
+        $user['password_must_change'] = $this->passwordMustChange((int)$user['u_id']);
+
         SessionManager::login($user);
 
         return $this->success('Login successful', [
@@ -144,7 +146,7 @@ class Auth
             LEFT JOIN u_role r
                 ON r.role_id = u.role_id_fk
             WHERE
-                u.u_name = ?                
+                u.u_name = ?
             LIMIT 1
         ";
 
@@ -159,7 +161,6 @@ class Auth
         $stmt->bind_param(
             's',
             $username
-           
         );
 
         $stmt->execute();
@@ -239,6 +240,42 @@ class Auth
             'mail_id',
             'mob_no'
         ]);
+    }
+
+    private function passwordMustChange(int $userId): bool
+    {
+        if (!$this->columnExists('s_user', 'password_must_change')) {
+            return false;
+        }
+
+        $stmt = $this->db->prepare("SELECT password_must_change FROM s_user WHERE u_id = ? LIMIT 1");
+
+        if (!$stmt) {
+            return false;
+        }
+
+        $stmt->bind_param('i', $userId);
+        $stmt->execute();
+        $row = $stmt->get_result()->fetch_assoc();
+
+        return (int)($row['password_must_change'] ?? 0) === 1;
+    }
+
+    private function columnExists(string $table, string $column): bool
+    {
+        $stmt = $this->db->prepare(
+            "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS
+             WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ? AND COLUMN_NAME = ?"
+        );
+
+        if (!$stmt) {
+            return false;
+        }
+
+        $stmt->bind_param('ss', $table, $column);
+        $stmt->execute();
+
+        return (bool)$stmt->get_result()->fetch_assoc();
     }
 
     /**

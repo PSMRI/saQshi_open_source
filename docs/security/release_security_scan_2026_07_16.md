@@ -2,6 +2,7 @@
 
 Version: 1.0  
 Scan date: 2026-07-16  
+Documentation status reviewed: 2026-07-19  
 Scope: `open_source/api`, `open_source/ui`, `open_source/tools`, `open_source/scripts`
 
 ## Purpose
@@ -47,7 +48,7 @@ php tools\release_readiness_check.php
 | Delete path traversal | Reviewed | `api/files/v1/delete.php` restricts delete paths to the local `uploads/` tree using `realpath`. |
 | SQL execution sites | Reviewed | Most database operations use prepared statements. Static schema DDL remains for table/column creation. Dynamic schema identifier handling in `CertificationService::ensureColumn()` now validates identifiers. |
 | Friendly error handling | Improved | Server errors are returned through friendly JSON with request IDs. Legacy array-returning services now sanitize low-level database/system messages, and the release checker flags direct raw exception/database output patterns. |
-| Release readiness checker | Passed with review warnings | Remaining warnings are non-code release items: sanitized schema, data redistribution approvals, maintainer contacts and large asset review. |
+| Release readiness checker | Passed with review warnings | Remaining warnings are non-code release items: clean-install validation, final sign-offs, UAT VAPT and large asset review. |
 
 ## Code Changes Applied During Scan
 
@@ -68,9 +69,9 @@ php tools\release_readiness_check.php
 | Authenticated evidence download endpoint | Open | Uploaded evidence URLs still point under `/uploads`. For sensitive evidence, prefer a download endpoint that checks session/role/facility ownership. |
 | Antivirus/malware scanning | Open | Add production malware scanning for uploaded Office/PDF/image files. |
 | Final VAPT execution | Pending environment | The current pass is static/local. Run active VAPT test cases in a controlled UAT environment before public production release. |
-| Sanitized base schema | Open | Add `api/sql/schema/001_base_schema.sql`. |
-| Maintainer/security contacts | Open | Complete `MAINTAINERS.md`. |
-| Data redistribution approval | Open | Complete `docs/compliance/data_redistribution_approval.md`. |
+| Sanitized base schema | Added / clean-install validation recorded | `api/sql/schema/001_base_schema.sql` and the clean-install validation record are documented in `docs/database/database_setup_and_migration.md`. |
+| Maintainer/security contacts | Done for current public package | `MAINTAINERS.md` records Tech4Gov Team / Piramal Swasthya / `tech4gov@piramalswasthya.org`. |
+| Data redistribution approval | Done for current public source package | `docs/compliance/data_redistribution_approval.md` records facility-data, framework/checklist, outcome and map/boundary decisions. |
 
 ## Release Decision
 

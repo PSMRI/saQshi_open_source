@@ -162,6 +162,7 @@
 
             if (question) {
                 question.textContent = text || "Unable to load";
+                question.setAttribute("aria-label", text ? `Captcha question: ${text}` : "Captcha question unavailable");
             }
 
         } catch (error) {
@@ -169,6 +170,7 @@
 
             if (question) {
                 question.textContent = "Refresh captcha";
+                question.setAttribute("aria-label", "Captcha could not be loaded. Use refresh captcha or contact administrator for assisted login.");
             }
         }
     }
@@ -236,7 +238,9 @@
                 SQ.notification.success(response.message || "Login successful");
             }
 
-            window.location.href = Number(user && user.role_id) === 9
+            window.location.href = user && user.password_must_change
+                ? "/ui/dashboard.html?route=facilityusers/users&force_password=1"
+                : Number(user && user.role_id) === 9
                 ? "/ui/dashboard.html?route=state/dashboard"
                 : "/ui/dashboard.html";
 

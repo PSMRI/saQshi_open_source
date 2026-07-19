@@ -1,0 +1,23 @@
+{
+  "report_type": "state_monitoring_summary",
+  "report_month": "2026-07",
+  "state_name": "Sample State",
+  "totals": {
+    "facilities": 1,
+    "assessments_started": 1,
+    "assessments_in_progress": 1,
+    "assessments_completed": 0,
+    "kpi_months_filled": 1,
+    "outcome_months_filled": 1,
+    "certified_facilities": 0,
+    "conditional_certifications": 1
+  },
+  "facility_type_breakup": [
+    {
+      "facility_type": "AAM-SC",
+      "facility_count": 1,
+      "assessment_count": 1
+    }
+  ],
+  "privacy_note": "Sample data only. No real person, patient, credential, upload or private facility data is included."
+}

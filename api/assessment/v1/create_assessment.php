@@ -31,6 +31,53 @@ require_once __DIR__ . '/../../assets/conn/db.php';
 
 Security::requireMethod('POST');
 
+function createAssessmentFrameworkLabel(string $frameworkCode): string
+{
+    $code = strtolower($frameworkCode);
+
+    if (strpos($code, 'musqan') !== false) {
+        return 'MusQan';
+    }
+
+    if (strpos($code, 'laqshya') !== false) {
+        return 'LaQshya';
+    }
+
+    return 'NQAS';
+}
+
+function createAssessmentFacilityName(mysqli $con, int $facId): string
+{
+    $stmt = $con->prepare("
+        SELECT fac_name
+        FROM facilities
+        WHERE fac_id = ?
+        LIMIT 1
+    ");
+
+    if (!$stmt) {
+        return 'Facility';
+    }
+
+    $stmt->bind_param('i', $facId);
+    $stmt->execute();
+
+    $row = $stmt->get_result()->fetch_assoc();
+    $name = trim((string)($row['fac_name'] ?? ''));
+
+    return $name !== '' ? $name : 'Facility';
+}
+
+function createAssessmentAutoName(mysqli $con, int $facId, string $frameworkCode, string $startDate): string
+{
+    $facilityName = createAssessmentFacilityName($con, $facId);
+    $frameworkName = createAssessmentFrameworkLabel($frameworkCode);
+    $timestamp = strtotime($startDate) ?: time();
+    $period = date('F Y', $timestamp);
+
+    return $facilityName . ' - ' . $frameworkName . ' - ' . $period;
+}
+
 try {
 
     $request = Security::jsonInput();
@@ -47,7 +94,7 @@ try {
     }
 
     $assessmentName = trim(
-        $request['assessment_name'] ?? 'Internal Assessment'
+        (string)($request['assessment_name'] ?? '')
     );
 
     $frameworkCode = trim(
@@ -61,12 +108,6 @@ try {
     $endDate = trim(
         $request['end_date'] ?? date('Y-m-d', strtotime('+1 month'))
     );
-
-    if ($assessmentName === '') {
-        Response::validation([
-            'assessment_name' => 'Assessment name is required'
-        ]);
-    }
 
     if ($frameworkCode === '') {
         Response::validation([
@@ -90,6 +131,10 @@ try {
         Response::validation([
             'end_date' => 'End date cannot be before start date'
         ]);
+    }
+
+    if ($assessmentName === '') {
+        $assessmentName = createAssessmentAutoName($con, $facId, $frameworkCode, $startDate);
     }
 
     /*

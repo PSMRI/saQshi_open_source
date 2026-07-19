@@ -204,8 +204,10 @@
     }
 
     function renderList(points) {
+        setHtml("stateMapSummary", `${esc(points.length)} certified facilit${points.length === 1 ? "y is" : "ies are"} shown inside the configured map boundary. The same information is available in the mapped facilities table below.`);
         setHtml("stateMapList", points.length
             ? `<table class="sq-state-table">
+                <caption class="sq-sr-only">Certified facilities plotted on the map with status, district and coordinates.</caption>
                 <thead><tr><th>Facility</th><th>Status</th><th>District</th><th>Coordinates</th></tr></thead>
                 <tbody>${points.slice(0, 80).map(point => `
                     <tr>

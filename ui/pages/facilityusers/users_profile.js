@@ -53,16 +53,26 @@
 
     function passwordRules(password, confirmPassword) {
         const hasPassword = password.length > 0 || confirmPassword.length > 0;
+        const required = isPasswordForced();
 
         return {
-            length: !hasPassword || password.length >= 8,
-            upper: !hasPassword || /[A-Z]/.test(password),
-            lower: !hasPassword || /[a-z]/.test(password),
-            digit: !hasPassword || /[0-9]/.test(password),
-            special: !hasPassword || /[^A-Za-z0-9]/.test(password),
-            match: !hasPassword || (password !== "" && password === confirmPassword),
-            hasPassword
+            length: (!hasPassword && !required) || password.length >= 8,
+            upper: (!hasPassword && !required) || /[A-Z]/.test(password),
+            lower: (!hasPassword && !required) || /[a-z]/.test(password),
+            digit: (!hasPassword && !required) || /[0-9]/.test(password),
+            special: (!hasPassword && !required) || /[^A-Za-z0-9]/.test(password),
+            match: (!hasPassword && !required) || (password !== "" && password === confirmPassword),
+            hasPassword,
+            required
         };
+    }
+
+    function isPasswordForced() {
+        const query = SQ.router && SQ.router.query
+            ? SQ.router.query("force_password")
+            : new URLSearchParams(window.location.search).get("force_password");
+
+        return query === "1" || Boolean(state.user && state.user.password_must_change);
     }
 
     function passwordScore(rules) {
@@ -104,7 +114,7 @@
         const rules = renderPasswordRules();
 
         if (!rules.hasPassword) {
-            return true;
+            return !rules.required;
         }
 
         return ["length", "upper", "lower", "digit", "special", "match"]
@@ -164,6 +174,12 @@
         setText("adminFacilityText", user.fac_id_fk || "-");
         setText("adminStatusText", Number(user.is_active || 0) === 1 ? "Active" : "Inactive");
 
+        const notice = $("adminPasswordRequiredNotice");
+
+        if (notice) {
+            notice.hidden = !isPasswordForced();
+        }
+
         clearPasswordFields();
         setFormEnabled(true);
     }
@@ -190,7 +206,7 @@
         }
 
         if (!passwordIsValidIfEntered()) {
-            notify("warning", "Password does not meet the strength rules.");
+            notify("warning", isPasswordForced() ? "Please create a strong new password." : "Password does not meet the strength rules.");
             return;
         }
 

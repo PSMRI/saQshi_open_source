@@ -1,7 +1,7 @@
 # SaQshi SQL Injection and Security Review
 
-Version: 1.1  
-Updated: 2026-07-16
+Version: 1.2  
+Updated: 2026-07-19
 
 ## Purpose
 
@@ -16,6 +16,21 @@ Reviewed API PHP files for:
 - Dynamic `WHERE`, `IN`, `ORDER BY` and `LIMIT` clauses.
 - Endpoints using CSRF/session/authenticated access.
 - Upload and report endpoints with special handling.
+
+## API Page-by-page Query Coverage
+
+The SQL query inventory is now published page by page for GitBook reviewers:
+
+- [SQL Query Inventory](../database/sql_query_inventory.md)
+
+It identifies every current API page that executes database queries, including
+assessment lifecycle, checklist response, CQI, reports, framework and admin
+endpoints, plus the shared services called by those pages. For each page it
+records the query operation type, main records involved and source location.
+
+Use the inventory when reviewing a new endpoint or a changed query. This review
+records security findings and controls; the inventory records the full API
+query map, so the two pages should be maintained together.
 
 ## Summary
 
@@ -114,6 +129,8 @@ Expected result:
 - `.env` is used for sensitive environment configuration.
 - Login password transport uses encrypted `password_enc` instead of plain password.
 - Upload endpoints validate file type and support delete of wrong uploads.
+- The API page-by-page inventory makes query ownership traceable during code
+  and security review.
 
 ## Recommended Future Hardening
 
@@ -123,3 +140,5 @@ Expected result:
 - Add automated Semgrep or similar static checks for SQL injection patterns.
 - Add security test cases to Postman for invalid IDs, malicious strings and unauthorized scope access.
 - Keep production PHP configured with `display_errors = Off`.
+- Update `docs/database/sql_query_inventory.md` whenever an API page adds,
+  removes or materially changes a database query.

@@ -856,11 +856,13 @@ class StateDashboardService
         $types = str_repeat('i', count($assessmentIds));
 
         if (self::tableExists($con, 'assessment_department_status')) {
+            $departmentStatusColumn = self::departmentStatusAssessmentColumn($con);
+
             $rows = self::rows($con, "
-                SELECT ass_period_id AS assessment_id, dept_id
+                SELECT {$departmentStatusColumn} AS assessment_id, dept_id
                 FROM assessment_department_status
                 WHERE is_active = 1
-                  AND ass_period_id IN ({$placeholders})
+                  AND {$departmentStatusColumn} IN ({$placeholders})
             ", $types, $assessmentIds);
 
             foreach ($rows as $row) {
@@ -2695,6 +2697,16 @@ class StateDashboardService
         $result = $stmt->get_result();
         $row = $result ? $result->fetch_assoc() : null;
         return (int)($row['column_count'] ?? 0) > 0;
+    }
+
+    /**
+     * Returns department-status assessment reference column for the installed schema.
+     */
+    private static function departmentStatusAssessmentColumn(mysqli $con): string
+    {
+        return self::columnExists($con, 'assessment_department_status', 'assessment_id')
+            ? 'assessment_id'
+            : 'ass_period_id';
     }
 
     /**

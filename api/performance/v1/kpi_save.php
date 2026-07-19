@@ -16,6 +16,12 @@ require_once __DIR__ . '/../../service/KPIService.php';
 Security::requireMethod('POST');
 
 try {
+    $user = SessionManager::user();
+    $roleName = strtolower((string)($user['role_name'] ?? $user['user_type'] ?? ''));
+    if ((int)($user['role_id'] ?? 0) === 10 || str_contains($roleName, 'assessor')) {
+        Response::forbidden('Assessors can view KPI data but cannot save KPI entries.');
+    }
+
     $payload = json_decode(file_get_contents('php://input') ?: '{}', true);
     $payload = is_array($payload) ? $payload : [];
 

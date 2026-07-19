@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /**
  * my_departments.php
@@ -143,7 +143,7 @@ foreach ($departments as $department) {
         'concern_count' => count($department['concerns'] ?? [])
     ];
 }
-    
+
 
     Response::success(
         'Departments fetched successfully',

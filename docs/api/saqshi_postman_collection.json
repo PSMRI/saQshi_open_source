@@ -6,14 +6,94 @@
     "version": "1.0.0"
   },
   "variable": [
-    { "key": "main_url", "value": "{main_url}" },
-    { "key": "baseUrl", "value": "{{main_url}}/api" },
-    { "key": "csrfToken", "value": "" },
-    { "key": "assessmentId", "value": "1" },
-    { "key": "departmentId", "value": "1" },
-    { "key": "checkpointId", "value": "1" },
-    { "key": "entryMonth", "value": "7" },
-    { "key": "entryYear", "value": "2026" }
+    {
+      "key": "main_url",
+      "value": "{main_url}"
+    },
+    {
+      "key": "baseUrl",
+      "value": "{{main_url}}/api"
+    },
+    {
+      "key": "csrfToken",
+      "value": ""
+    },
+    {
+      "key": "assessmentId",
+      "value": "1"
+    },
+    {
+      "key": "departmentId",
+      "value": "1"
+    },
+    {
+      "key": "checkpointId",
+      "value": "1"
+    },
+    {
+      "key": "entryMonth",
+      "value": "7"
+    },
+    {
+      "key": "entryYear",
+      "value": "2026"
+    },
+    {
+      "key": "assessorId",
+      "value": "1"
+    },
+    {
+      "key": "facilityId",
+      "value": "1"
+    },
+    {
+      "key": "searchText",
+      "value": ""
+    },
+    {
+      "key": "username",
+      "value": "test-user"
+    },
+    {
+      "key": "passwordEncrypted",
+      "value": "BASE64_RSA_OAEP_ENCRYPTED_PASSWORD"
+    },
+    {
+      "key": "captchaCode",
+      "value": "1234"
+    },
+    {
+      "key": "facilityNin",
+      "value": "1625533227"
+    },
+    {
+      "key": "indicatorId",
+      "value": "1"
+    },
+    {
+      "key": "indicatorType",
+      "value": "OUTCOME"
+    },
+    {
+      "key": "page",
+      "value": "1"
+    },
+    {
+      "key": "perPage",
+      "value": "25"
+    },
+    {
+      "key": "search",
+      "value": ""
+    },
+    {
+      "key": "downloadType",
+      "value": "facilities"
+    },
+    {
+      "key": "evidenceUrl",
+      "value": "/uploads/sample.pdf"
+    }
   ],
   "auth": {
     "type": "noauth"
@@ -48,8 +128,14 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "X-CSRF-TOKEN", "value": "{{csrfToken}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-CSRF-TOKEN",
+                "value": "{{csrfToken}}"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -70,7 +156,10 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "X-CSRF-TOKEN", "value": "{{csrfToken}}" }
+              {
+                "key": "X-CSRF-TOKEN",
+                "value": "{{csrfToken}}"
+              }
             ],
             "url": "{{baseUrl}}/auth/v1/logout.php"
           }
@@ -99,8 +188,14 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "X-CSRF-TOKEN", "value": "{{csrfToken}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-CSRF-TOKEN",
+                "value": "{{csrfToken}}"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -114,8 +209,14 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "X-CSRF-TOKEN", "value": "{{csrfToken}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-CSRF-TOKEN",
+                "value": "{{csrfToken}}"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -129,8 +230,14 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "X-CSRF-TOKEN", "value": "{{csrfToken}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-CSRF-TOKEN",
+                "value": "{{csrfToken}}"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -151,8 +258,14 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "X-CSRF-TOKEN", "value": "{{csrfToken}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-CSRF-TOKEN",
+                "value": "{{csrfToken}}"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -173,8 +286,14 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "X-CSRF-TOKEN", "value": "{{csrfToken}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-CSRF-TOKEN",
+                "value": "{{csrfToken}}"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -195,8 +314,14 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "X-CSRF-TOKEN", "value": "{{csrfToken}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-CSRF-TOKEN",
+                "value": "{{csrfToken}}"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -236,8 +361,14 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "X-CSRF-TOKEN", "value": "{{csrfToken}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-CSRF-TOKEN",
+                "value": "{{csrfToken}}"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -251,8 +382,14 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "X-CSRF-TOKEN", "value": "{{csrfToken}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-CSRF-TOKEN",
+                "value": "{{csrfToken}}"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -271,13 +408,24 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "X-CSRF-TOKEN", "value": "{{csrfToken}}" }
+              {
+                "key": "X-CSRF-TOKEN",
+                "value": "{{csrfToken}}"
+              }
             ],
             "body": {
               "mode": "formdata",
               "formdata": [
-                { "key": "category", "value": "gap_closure", "type": "text" },
-                { "key": "file", "type": "file", "src": "" }
+                {
+                  "key": "category",
+                  "value": "gap_closure",
+                  "type": "text"
+                },
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": ""
+                }
               ]
             },
             "url": "{{baseUrl}}/files/v1/upload.php"
@@ -288,8 +436,14 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "X-CSRF-TOKEN", "value": "{{csrfToken}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-CSRF-TOKEN",
+                "value": "{{csrfToken}}"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -322,8 +476,14 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "X-CSRF-TOKEN", "value": "{{csrfToken}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-CSRF-TOKEN",
+                "value": "{{csrfToken}}"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -344,8 +504,14 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "X-CSRF-TOKEN", "value": "{{csrfToken}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-CSRF-TOKEN",
+                "value": "{{csrfToken}}"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -378,8 +544,14 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "X-CSRF-TOKEN", "value": "{{csrfToken}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-CSRF-TOKEN",
+                "value": "{{csrfToken}}"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -393,6 +565,116 @@
           "request": {
             "method": "GET",
             "url": "{{baseUrl}}/certification/v1/history.php"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Assessor Assignment",
+      "item": [
+        {
+          "name": "Assessor List",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/assessor/v1/list.php?search={{searchText}}&page=1&per_page=25"
+          }
+        },
+        {
+          "name": "Save Assessor Profile",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-CSRF-TOKEN",
+                "value": "{{csrfToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"assessor_id\": \"\",\n  \"assessor_code\": \"ASM001\",\n  \"assessor_name\": \"Sample Assessor\",\n  \"designation\": \"Quality Assessor\",\n  \"mobile_no\": \"9999999999\",\n  \"mail_id\": \"assessor@example.org\",\n  \"user_id\": \"\",\n  \"state_id\": null,\n  \"division_id\": null,\n  \"dist_id\": null,\n  \"block_id\": null,\n  \"is_active\": 1\n}"
+            },
+            "url": "{{baseUrl}}/assessor/v1/save.php"
+          }
+        },
+        {
+          "name": "Facility Search for Mapping",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/assessor/v1/facility_search.php?search={{searchText}}&page=1&per_page=25"
+          }
+        },
+        {
+          "name": "Assessor Mapping List",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/assessor/v1/mapping_list.php?assessor_id={{assessorId}}&page=1&per_page=25"
+          }
+        },
+        {
+          "name": "Save Assessor Facility Mapping",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-CSRF-TOKEN",
+                "value": "{{csrfToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"assessor_id\": \"{{assessorId}}\",\n  \"fac_id\": \"{{facilityId}}\",\n  \"assignment_status\": \"ACTIVE\",\n  \"assigned_from\": \"2026-07-18\",\n  \"assigned_to\": \"\",\n  \"remarks\": \"Mapped for state-led assessment\"\n}"
+            },
+            "url": "{{baseUrl}}/assessor/v1/mapping_save.php"
+          }
+        },
+        {
+          "name": "Assessor Dashboard",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/assessor/v1/dashboard.php"
+          }
+        },
+        {
+          "name": "Assessor My Facilities",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/assessor/v1/my_facilities.php?page=1&per_page=25"
+          }
+        },
+        {
+          "name": "Assessor Facility Summary",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/assessor/v1/facility_summary.php?fac_id={{facilityId}}"
+          }
+        },
+        {
+          "name": "Assessor Start Assessment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-CSRF-TOKEN",
+                "value": "{{csrfToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fac_id\": \"{{facilityId}}\",\n  \"framework_code\": \"saqshi-nqas\",\n  \"assessment_name\": \"State Assessment - Sample Facility\",\n  \"start_date\": \"2026-07-18\",\n  \"end_date\": \"2026-08-17\"\n}"
+            },
+            "url": "{{baseUrl}}/assessor/v1/start_assessment.php"
           }
         }
       ]

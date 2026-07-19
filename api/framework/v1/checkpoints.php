@@ -7,17 +7,17 @@
  *
  * Flow:
  * Logged-in user facility
- * → facility type
- * → department
- * → concern
- * → subtype
- * → assessment method
- * → checkpoints
+ * â†’ facility type
+ * â†’ department
+ * â†’ concern
+ * â†’ subtype
+ * â†’ assessment method
+ * â†’ checkpoints
  *
  * URL:
  * /api/framework/v1/checkpoints.php
  *   ?framework=saqshi-nqas
- *   &ass_period=1
+ *   &assessment_id=1
  *   &dept_id=1
  *   &concern_id=1
  *   &subtype_id=1
@@ -30,9 +30,12 @@ require_once __DIR__ . '/../../auth_api.php';
 require_once __DIR__ . '/../../core/Response.php';
 require_once __DIR__ . '/../../core/FrameworkEngine.php';
 require_once __DIR__ . '/../../service/DepartmentStatusService.php';
+require_once __DIR__ . '/../../service/ResponseTypeService.php';
 require_once __DIR__ . '/../../assets/conn/db.php';
 
 try {
+
+    ResponseTypeService::ensureSchema($con);
 
     if (!isset($_SESSION['fac_id']) || (int)$_SESSION['fac_id'] <= 0) {
         Response::error('Facility not assigned to logged-in user');
@@ -41,7 +44,9 @@ try {
     $facId = (int)$_SESSION['fac_id'];
 
     $frameworkCode = trim($_GET['framework'] ?? 'saqshi-nqas');
-    $assPeriod = isset($_GET['ass_period']) ? (int)$_GET['ass_period'] : 0;
+    $assPeriod = isset($_GET['assessment_id'])
+        ? (int)$_GET['assessment_id']
+        : (int)($_GET['ass_period'] ?? 0);
     $deptId = isset($_GET['dept_id']) ? (int)$_GET['dept_id'] : 0;
     $concernId = isset($_GET['concern_id']) ? (int)$_GET['concern_id'] : 0;
     $subtypeId = isset($_GET['subtype_id']) ? (int)$_GET['subtype_id'] : 0;
@@ -55,7 +60,7 @@ try {
 
     if ($assPeriod <= 0) {
         Response::validation([
-            'ass_period' => 'Assessment period is required'
+            'assessment_id' => 'Assessment ID is required'
         ]);
     }
 
@@ -164,6 +169,7 @@ try {
             [
                 'facility' => $facilityData,
                 'ass_period' => $assPeriod,
+                'assessment_id' => $assPeriod,
                 'dept_id' => $deptId,
                 'is_active' => false,
                 'checkpoints' => []
@@ -327,7 +333,11 @@ if (!empty($checkpointIds)) {
             response_id,
             checkpoint_id,
             response_value,
+            response_type,
+            response_json,
             score,
+            max_score,
+            score_status,
             remarks,
             evidence_url,
             updated_by,
@@ -355,7 +365,11 @@ if (!empty($checkpointIds)) {
         $savedMap[(int)$row['checkpoint_id']] = [
             'response_id' => (int)$row['response_id'],
             'response_value' => $row['response_value'],
-            'score' => (float)$row['score'],
+            'response_type' => $row['response_type'],
+            'response_json' => json_decode((string)($row['response_json'] ?? ''), true),
+            'score' => $row['score'] !== null ? (float)$row['score'] : null,
+            'max_score' => $row['max_score'] !== null ? (float)$row['max_score'] : 0,
+            'score_status' => $row['score_status'] ?? 'SCORED',
             'remarks' => $row['remarks'],
             'evidence_url' => $row['evidence_url'],
             'updated_by' => (int)$row['updated_by'],
@@ -373,7 +387,7 @@ unset($checkpoint);
     Response::success(
         'Checkpoints fetched successfully',
         [
-            
+
         'debug' => [
             'total_before_method_filter' => count($allCheckpoints),
             'total_after_method_filter' => count($filteredCheckpoints),
@@ -386,6 +400,7 @@ unset($checkpoint);
             'framework' => $frameworkCode,
             'facility' => $facilityData,
             'ass_period' => $assPeriod,
+            'assessment_id' => $assPeriod,
             'department' => [
                 'fac_dept_id' => (int)($department['fac_dept_id'] ?? 0),
                 'dept_name' => $department['dept_name'] ?? ''

@@ -24,6 +24,7 @@ require_once __DIR__ . '/FormulaEngine.php';
 class PerformanceService
 {
     private static ?array $departmentNameCache = null;
+    private static ?string $departmentStatusAssessmentColumn = null;
 
     /**
      * Handles table name processing for this API workflow.
@@ -301,11 +302,13 @@ class PerformanceService
         $row = $stmt->get_result()->fetch_assoc();
 
         if (!$row) {
+            $departmentStatusColumn = self::departmentStatusAssessmentColumn($con);
+
             $stmt = $con->prepare("
                 SELECT a.assessment_id, a.assessment_name, a.framework_code, a.status
                 FROM assessment_master a
                 INNER JOIN assessment_department_status ds
-                    ON ds.ass_period_id = a.assessment_id
+                    ON ds.{$departmentStatusColumn} = a.assessment_id
                    AND ds.fac_id_fk = a.fac_id_fk
                    AND ds.is_active = 1
                 WHERE a.fac_id_fk = ?
@@ -369,13 +372,15 @@ class PerformanceService
             return 0;
         }
 
+        $departmentStatusColumn = self::departmentStatusAssessmentColumn($con);
+
         $stmt = $con->prepare("
-            SELECT ass_period_id
+            SELECT {$departmentStatusColumn} AS assessment_id
             FROM assessment_department_status
             WHERE fac_id_fk = ?
               AND is_active = 1
-            GROUP BY ass_period_id
-            ORDER BY MAX(COALESCE(updated_on, activated_on)) DESC, ass_period_id DESC
+            GROUP BY {$departmentStatusColumn}
+            ORDER BY MAX(COALESCE(updated_on, activated_on)) DESC, {$departmentStatusColumn} DESC
             LIMIT 1
         ");
 
@@ -387,7 +392,7 @@ class PerformanceService
         $stmt->execute();
         $row = $stmt->get_result()->fetch_assoc();
 
-        return $row ? (int)$row['ass_period_id'] : 0;
+        return $row ? (int)$row['assessment_id'] : 0;
     }
 
     /**
@@ -406,7 +411,7 @@ class PerformanceService
             SELECT dept_id
             FROM assessment_department_status
             WHERE fac_id_fk = ?
-              AND ass_period_id = ?
+              AND " . self::departmentStatusAssessmentColumn($con) . " = ?
               AND is_active = 1
             ORDER BY dept_id
         ");
@@ -426,6 +431,31 @@ class PerformanceService
         }
 
         return array_values(array_unique(array_filter($ids)));
+    }
+
+    /**
+     * Returns department-status assessment reference column for the installed schema.
+     */
+    private static function departmentStatusAssessmentColumn(mysqli $con): string
+    {
+        if (self::$departmentStatusAssessmentColumn !== null) {
+            return self::$departmentStatusAssessmentColumn;
+        }
+
+        $result = $con->query("
+            SELECT 1
+            FROM INFORMATION_SCHEMA.COLUMNS
+            WHERE TABLE_SCHEMA = DATABASE()
+              AND TABLE_NAME = 'assessment_department_status'
+              AND COLUMN_NAME = 'assessment_id'
+            LIMIT 1
+        ");
+
+        self::$departmentStatusAssessmentColumn = ($result && $result->fetch_assoc())
+            ? 'assessment_id'
+            : 'ass_period_id';
+
+        return self::$departmentStatusAssessmentColumn;
     }
 
     /**

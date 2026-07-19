@@ -13,31 +13,41 @@ The goal is to ensure the public repository does not include live user data, pas
 
 | Area | Status | Notes |
 |---|---|---|
-| Local `.env` | Removed from public source folder | Use `.env.example` only. |
-| Upload files | Removed from public source folder | `uploads/README.md` now documents runtime-only usage. |
-| Event logs | Removed from public source folder | `api/storage/README.md` now documents runtime-only usage. |
-| Generated key files | Removed from public source folder | Deployments must generate keys locally. |
+| Local `.env` | Local runtime file; release-gated | Use `.env.example` publicly. Local `.env` may exist for testing/deployment but must remain untracked and unpublished. |
+| Upload files | Runtime-only; release-gated | `uploads/README.md` documents runtime-only usage. Uploads must not be published. |
+| Event logs | Runtime-only; release-gated | `api/storage/README.md` documents runtime-only usage. Event logs may exist locally and must not be published. |
+| Generated key files | Runtime-only; release-gated | Deployments generate keys locally. Generated keys may exist locally and must not be published. |
 | Database dumps | Not found in current scan | Sanitized schema is still pending separately. |
-| Certificates/private keys | Runtime key files removed | Future generated keys/certs must stay outside version control. |
-| Facility master data | Requires owner review | `api/config/masters/facilities.json` contains facility names and NIN numbers. Confirm redistribution permission before public release. |
-| Framework/checklist JSON | Requires owner review | `api/config/frameworks/saqshi-nqas.json` is large and should be verified for publication rights. |
-| Data approval record | Pending | `docs/compliance/data_redistribution_approval.md` records files requiring owner/legal confirmation. |
+| Certificates/private keys | Runtime-only; release-gated | Generated keys/certs must stay outside version control and public packages. |
+| Facility master data | Deployment/local data; not a readiness blocker | `api/config/masters/facilities.json` may contain authorized real facility data in local testing or live deployments. Public redistribution of real facility names, NIN numbers and hierarchy data still requires explicit data-owner approval or sample/template packaging. |
+| Framework/checklist JSON | Approved core configuration | `api/config/frameworks/saqshi-nqas.json` intentionally remains unchanged and is treated as approved NQAS-aligned core configuration. Source context: NHSRC/QPS NQAS standards, guidelines and assessment tools. |
+| Outcome indicator JSON | Approved core configuration | `api/config/performance/outcome.json` intentionally remains unchanged and is treated as approved project quality-monitoring configuration. |
+| Map/boundary configuration | Approved public source with attribution | `api/config/masters/map.json`, `biharmap.json` and `upmap.json` are recorded as DataMeet public boundary data. DataMeet maps are public and use CC BY 4.0 unless explicitly stated. |
+| Data approval record | Done for current public source package | `docs/compliance/data_redistribution_approval.md` records the current data source decisions and attribution requirements. |
 
 ## Facility Master Data Review
 
-`api/config/masters/facilities.json` appears to contain real facility master data, including facility names and NIN numbers.
+`api/config/masters/facilities.json` is treated as deployment/runtime data for review purposes.
 
-Before public release, the project owner should confirm one of the following:
+For real deployments, the project owner should choose one of the following:
 
-1. The facility master data is public/open government data and may be redistributed with SaQshi.
-2. The public repository should include a reduced sample file instead of the full facility master.
-3. The public repository should include only the JSON schema/template and instruct deployments to load their own facility master.
+1. Use authorized real facility master data locally for testing or deployment.
+2. For public distribution, include only sample/template data unless the data owner approves redistribution.
+3. Document the JSON schema/template and instruct deployments to load their own authorized facility master.
 
 Recommended safest release model:
 
-- Keep `api/config/masters/facilities.sample.json` as a small example.
-- Keep the full facility master outside the public repository unless redistribution rights are confirmed.
+- Keep sample/template facility data in the public release package unless redistribution is approved.
+- Keep full local facility masters controlled by the implementing organization/state.
 - Document the expected facility JSON format in the GitBook.
+
+## Report and Certification Export Review
+
+SaQshi reports and certification exports are not public data by default.
+
+- Certification status/history may be exported by authorized state/division/district/block/organization users for governance.
+- Assessment, CQI and performance reports may be exported by authorized users for monitoring and governance.
+- Public report publication requires explicit organization/data-owner approval and non-PII/aggregate review.
 
 ## Release Rule
 
@@ -54,4 +64,5 @@ Then manually confirm:
 - no generated keys/certificates exist,
 - no real credentials exist,
 - no database dumps exist,
-- all master/config data has redistribution permission.
+- all remaining master/config data has redistribution permission or has been replaced with samples,
+- any report intended for public publication has explicit organization/data-owner approval.

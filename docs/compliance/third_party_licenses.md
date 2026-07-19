@@ -34,14 +34,13 @@ No `package.json`, `composer.json`, `node_modules/` or Composer `vendor/` depend
 | Mermaid | `mermaid@10` from `cdn.jsdelivr.net` | `gitbook.html` for Mermaid diagram rendering | MIT | Detected and major-version pinned. Consider pinning an exact patch version before public release if strict reproducibility is required. |
 | Swagger UI | `swagger-ui-dist@5` from `unpkg.com` | `docs/api/swagger-ui.html` | Apache-2.0 | Detected and major-version pinned. Consider pinning an exact patch version or vendoring with license before public release. |
 | js-yaml | `js-yaml@4` from `cdn.jsdelivr.net` | `docs/api/swagger-ui.html` for loading OpenAPI YAML | MIT | Detected and major-version pinned. Consider pinning an exact patch version before public release. |
+| Leaflet | `leaflet@1.9.4` from `cdn.jsdelivr.net`; upstream source `https://github.com/Leaflet/Leaflet` | `ui/pages/state/map.json`, `ui/pages/state/map.js` for interactive certification maps | BSD-2-Clause | Version-pinned CDN dependency. Leaflet copyright/license notice is retained through this inventory. For offline/production releases, vendor the exact `leaflet.css` and `leaflet.js` files with the BSD-2-Clause license. |
 | OpenStreetMap tiles/data | Configured tile URL in `api/config/masters/map_config.json` | State certification map | OSM attribution required | Detected. UI must keep visible `OpenStreetMap contributors` attribution wherever OSM tiles are shown. |
 | Postman Collection schema | `https://schema.getpostman.com/json/collection/v2.1.0/collection.json` | API testing collections | Postman schema reference | Documentation/test artifact reference only. |
 
 ## Referenced But Missing From Public Source Package
 
-| Component | Reference Found | Issue | Required Action |
-|---|---|---|---|
-| Leaflet | `ui/pages/state/map.json` references `/assets/datatables/leaflet.css` and `/assets/datatables/leaflet.js`; `ui/pages/state/map.js` calls `L.map`, `L.tileLayer` and `L.geoJSON`. | The referenced Leaflet files were not found under `open_source/ui/assets/` during the current scan. | Add the exact Leaflet files with BSD-2-Clause license/notice, or change the page to load a documented CDN version, or remove the map dependency before release. |
+No active missing third-party UI assets are recorded after the current update. Leaflet is intentionally loaded as a pinned CDN dependency.
 
 ## Not Detected In Current Public Source Scan
 
@@ -82,12 +81,27 @@ api/config/masters/biharmap.json
 api/config/masters/upmap.json
 ```
 
-Facility master data, framework/checklist data and state boundary data are treated as data/configuration ownership items, not only software dependencies. Their redistribution approval is tracked separately in:
+Current boundary/map source:
+
+```text
+DataMeet maps repository: https://github.com/datameet/maps
+License/attribution: CC BY 4.0 unless explicitly stated by DataMeet.
+Suggested attribution: India boundaries by DataMeet India community (CC BY 4.0).
+```
+
+Facility master data, framework/checklist/action-plan data, outcome configuration and state boundary data are treated as data/configuration ownership items, not only software dependencies. Their redistribution approval is tracked separately in:
 
 ```text
 docs/compliance/data_redistribution_approval.md
 docs/compliance/public_data_audit.md
 ```
+
+Current data/configuration position:
+
+- Local facility master data is deployment/runtime data and may contain authorized real facility records for testing or live use. Public redistribution of real facility names, NINs and hierarchy data requires data-owner approval or sample/template packaging.
+- NQAS-aligned framework/checklist/action-plan configuration is retained as approved core configuration with NHSRC/QPS source context.
+- Outcome configuration is retained as approved core quality-monitoring configuration.
+- State boundary/map data is attributed to DataMeet where used.
 
 ## CDN Release Rule
 
@@ -108,5 +122,5 @@ Before publishing SaQshi:
 3. Do not rewrite third-party license headers.
 4. Update this document when adding/removing dependencies.
 5. Keep map/data attribution visible in the UI.
-6. Resolve the missing Leaflet reference or document the exact external source.
+6. Keep the pinned Leaflet source/license entry current, or vendor the exact files for offline releases.
 7. Re-run dependency and secret scans before tagging a release.

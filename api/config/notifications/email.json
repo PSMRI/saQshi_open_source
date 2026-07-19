@@ -1,0 +1,37 @@
+{
+  "enabled": false,
+  "transport": "log",
+  "from_email": "no-reply@example.org",
+  "from_name": "SaQshi",
+  "log_path": "api/storage/notifications/email.log",
+  "templates": {
+    "assessor_login": {
+      "subject": "SaQshi assessor login",
+      "body": "Dear {{assessor_name}},\n\nYour SaQshi assessor login has been created.\n\nUsername: {{username}}\nTemporary password: {{temporary_password}}\n\nPlease login at {{main_url}}/ui/login.html and change your password immediately.\n\nRegards,\nSaQshi Team"
+    }
+  },
+  "http": {
+    "url": "",
+    "method": "POST",
+    "content_type": "json",
+    "timeout_seconds": 10,
+    "auth": {
+      "type": "none",
+      "bearer_token_env": "SAQSHI_EMAIL_API_TOKEN",
+      "username_env": "SAQSHI_EMAIL_API_USERNAME",
+      "password_env": "SAQSHI_EMAIL_API_PASSWORD",
+      "api_key_header": "X-API-Key",
+      "api_key_env": "SAQSHI_EMAIL_API_KEY"
+    },
+    "headers": {
+      "Accept": "application/json"
+    },
+    "body": {
+      "from": "{{from_email}}",
+      "from_name": "{{from_name}}",
+      "to": "{{to}}",
+      "subject": "{{subject}}",
+      "message": "{{message}}"
+    }
+  }
+}

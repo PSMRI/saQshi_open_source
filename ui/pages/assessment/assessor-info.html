@@ -82,6 +82,11 @@ License : GPL-3.0
         <div class="sq-card-body">
             <div class="sq-detail-grid" id="savedInfoGrid"></div>
         </div>
+
+        <div class="sq-card-footer">
+            <button type="button" class="sq-btn sq-btn-light" id="btnEditAssessorInfo">Edit Details</button>
+            <button type="button" class="sq-btn sq-btn-primary" id="btnStartChecklist">Start Checklist</button>
+        </div>
     </div>
 
     <form id="assessorInfoForm" class="sq-card sq-hidden">
@@ -97,6 +102,7 @@ License : GPL-3.0
                 <div class="sq-form-group">
                     <label for="assessor_name">Assessor Name</label>
                     <input id="assessor_name" name="assessor_name" class="sq-form-control" type="text" required aria-label="Assessor Name">
+                    <small id="assessorNameHint" class="sq-form-hint sq-hidden">Using logged-in assessor profile.</small>
                 </div>
 
                 <div class="sq-form-group">

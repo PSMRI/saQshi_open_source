@@ -14,9 +14,9 @@ This document records the governance information expected for open-source and DP
 | --- | --- |
 | Source code | Confirm copyright holder and public repository owner. |
 | SaQshi name/branding | Define permitted use of name, logo and public references. |
-| Framework JSON | Confirm rights to publish checklist/framework configuration. |
-| Facility master data | Confirm source, license and redistribution permissions. |
-| Map boundary data | Confirm source, license and redistribution permissions. |
+| Framework JSON | Retain as approved NQAS-aligned core configuration; record NHSRC/QPS source/version when updated. |
+| Facility master data | Authorized local testing/deployment may use real facility JSON. Public redistribution of real facility names, NINs and hierarchy data requires data-owner approval or sample/template packaging. |
+| Map boundary data | Source recorded as DataMeet public maps data under CC BY 4.0 attribution. |
 | Documentation | Confirm docs are released under the project license or documented license. |
 
 ## Maintainer Roles
@@ -42,22 +42,24 @@ Recommended process:
 
 ## Public Release Requirements
 
-- Confirm official maintainers.
+- Confirm maintainer contact monitoring.
 - Confirm security contact.
 - Confirm third-party licenses.
 - Confirm no secrets or sensitive data are included.
 - Confirm database setup can be reproduced.
-- Confirm public data redistribution permissions.
+- Confirm any real facility master data included in a public release has data-owner redistribution approval; otherwise publish sample/template data only.
+- Confirm framework/checklist/action-plan and outcome configuration source/version is recorded.
+- Confirm any public report publication has explicit organization/data-owner approval.
 
 ## Official Contact Record
 
-Official maintainer, security, release, issue-triage, data-owner and legal/compliance contacts must be recorded in:
+Official maintainer, security, release, issue-triage, data-owner and legal/compliance contacts are recorded in:
 
 ```text
 MAINTAINERS.md
 ```
 
-Public release should remain blocked while any required row in `MAINTAINERS.md` is marked `Pending`.
+Before each public release, confirm the `MAINTAINERS.md` contacts are still current and the mailbox is monitored.
 
 ## Related Documents
 

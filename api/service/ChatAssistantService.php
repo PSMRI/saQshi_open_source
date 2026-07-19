@@ -1,5 +1,10 @@
 <?php
 
+require_once __DIR__ . '/../core/SessionManager.php';
+require_once __DIR__ . '/ChatIntentService.php';
+require_once __DIR__ . '/ChatKnowledgeService.php';
+require_once __DIR__ . '/ChatDataService.php';
+
 /**
  * Provides chat assistant service behavior for SaQshi API workflows.
  */
@@ -18,6 +23,8 @@ class ChatAssistantService
                 role VARCHAR(20) NOT NULL,
                 message_text TEXT NOT NULL,
                 context_page VARCHAR(120) NULL,
+                intent_key VARCHAR(80) NULL,
+                source_type VARCHAR(30) NULL,
                 created_on TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
                 PRIMARY KEY (message_id),
                 KEY idx_ai_chat_user (user_id, created_on),
@@ -28,6 +35,9 @@ class ChatAssistantService
         if (!$con->query($sql)) {
             throw new RuntimeException('Unable to create ai_chat_messages table: ' . $con->error);
         }
+
+        self::ensureColumn($con, 'intent_key', 'VARCHAR(80) NULL');
+        self::ensureColumn($con, 'source_type', 'VARCHAR(30) NULL');
     }
 
     /**
@@ -46,12 +56,18 @@ class ChatAssistantService
             throw new InvalidArgumentException('Message is too long. Please keep it under 2000 characters.');
         }
 
-        self::saveMessage($con, $userId, $facId, 'user', $message, $contextPage);
-        $reply = self::buildReply($message, $contextPage);
-        self::saveMessage($con, $userId, $facId, 'assistant', $reply, $contextPage);
+        $intent = ChatIntentService::match($message, (int)SessionManager::roleId(), $contextPage);
+        self::saveMessage($con, $userId, $facId, 'user', $message, $contextPage, (string)$intent['intent'], 'user');
+
+        $dataReply = ChatDataService::answer($con, $intent, $message, $userId, $facId);
+        $reply = $dataReply ?: ChatKnowledgeService::answer((string)($intent['answer_key'] ?? 'fallback'));
+        $source = $dataReply ? 'data' : 'knowledge';
+        self::saveMessage($con, $userId, $facId, 'assistant', $reply, $contextPage, (string)$intent['intent'], $source);
 
         return [
             'reply' => $reply,
+            'intent' => $intent['intent'] ?? 'fallback',
+            'source' => $source,
             'history' => self::history($con, $userId, $facId)
         ];
     }
@@ -64,7 +80,7 @@ class ChatAssistantService
         self::ensureTable($con);
         $limit = max(1, min(100, $limit));
         $stmt = $con->prepare("
-            SELECT message_id, role, message_text, context_page, created_on
+            SELECT message_id, role, message_text, context_page, intent_key, source_type, created_on
             FROM ai_chat_messages
             WHERE user_id = ? AND fac_id = ?
             ORDER BY message_id DESC
@@ -86,6 +102,8 @@ class ChatAssistantService
                 'role' => $row['role'],
                 'message' => $row['message_text'],
                 'context_page' => $row['context_page'],
+                'intent' => $row['intent_key'] ?? '',
+                'source' => $row['source_type'] ?? '',
                 'created_on' => $row['created_on']
             ];
         }
@@ -112,48 +130,35 @@ class ChatAssistantService
     /**
      * Handles save message processing for this API workflow.
      */
-    private static function saveMessage(mysqli $con, int $userId, int $facId, string $role, string $message, string $contextPage): void
+    private static function saveMessage(mysqli $con, int $userId, int $facId, string $role, string $message, string $contextPage, string $intentKey = '', string $sourceType = ''): void
     {
         $stmt = $con->prepare("
-            INSERT INTO ai_chat_messages (user_id, fac_id, role, message_text, context_page)
-            VALUES (?, ?, ?, ?, ?)
+            INSERT INTO ai_chat_messages (user_id, fac_id, role, message_text, context_page, intent_key, source_type)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
         ");
 
         if (!$stmt) {
             throw new RuntimeException('Chat save prepare failed: ' . $con->error);
         }
 
-        $stmt->bind_param('iisss', $userId, $facId, $role, $message, $contextPage);
+        $stmt->bind_param('iisssss', $userId, $facId, $role, $message, $contextPage, $intentKey, $sourceType);
 
         if (!$stmt->execute()) {
             throw new RuntimeException('Chat save failed: ' . $stmt->error);
         }
     }
 
-    /**
-     * Handles build reply processing for this API workflow.
-     */
-    private static function buildReply(string $message, string $contextPage): string
+    private static function ensureColumn(mysqli $con, string $column, string $definition): void
     {
-        $text = strtolower($message . ' ' . $contextPage);
+        $safeColumn = preg_replace('/[^a-zA-Z0-9_]/', '', $column);
+        $result = $con->query("SHOW COLUMNS FROM ai_chat_messages LIKE '{$safeColumn}'");
 
-        $topics = [
-            'certification' => "Certification: use Manage Certification to add STATE or NATIONAL records. Facility name and NIN come from the logged-in facility. Applied Date is optional but must be on or before Certification Date. Certification Date cannot be future dated. CONDITIONAL is valid for 1 year and CERTIFIED is valid for 3 years. NATIONAL requires an existing STATE certification.",
-            'gap' => "Gap Analysis: review non-compliant and partially compliant checkpoints, then move to Action Plan for owner, target date and facility action details. Gap Closure records revised score, closure status, remarks and optional evidence.",
-            'action' => "Action Plan: select department, area and subtype, review the suggested action, then save the facility action plan with responsible person and target date. Closure updates should be done after action completion.",
-            'checklist' => "Checklist: select department, area of concern, subtype and method, then score each checkpoint as 0, 1 or 2. Zero means non-compliance, one partial compliance and two full compliance.",
-            'assessment' => "Assessment: create an assessment only when no ACTIVE assessment exists. Activate applicable departments, fill assessor information, complete checklist responses, then use CQI and reports.",
-            'kpi' => "KPI and Outcome: enter monthly numerator, denominator, result and remarks for activated departments. Trend pages show month-wise charts and Excel download options.",
-            'outcome' => "KPI and Outcome: enter monthly numerator, denominator, result and remarks for activated departments. Trend pages show month-wise charts and Excel download options.",
-            'report' => "Reports: Report Dashboard links to Score Report, Progress Report, KPI Report, Outcome Report and Certification Report. Score and progress reports download assessment data in standard formats."
-        ];
-
-        foreach ($topics as $keyword => $reply) {
-            if (str_contains($text, $keyword)) {
-                return $reply;
-            }
+        if ($result && $result->num_rows > 0) {
+            return;
         }
 
-        return "I can help with SaQshi assessment, checklist scoring, CQI gap/action/closure, KPI and Outcome entry, reports, certification rules, and facility profile workflows. Please mention the page or task you are working on.";
+        if (!$con->query("ALTER TABLE ai_chat_messages ADD COLUMN {$safeColumn} {$definition}")) {
+            throw new RuntimeException('Unable to update ai_chat_messages table: ' . $con->error);
+        }
     }
 }

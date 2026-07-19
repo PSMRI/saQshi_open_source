@@ -12,6 +12,7 @@
 
 require_once __DIR__ . '/../../auth_api.php';
 require_once __DIR__ . '/../../core/FrameworkEngine.php';
+require_once __DIR__ . '/../../core/Crypto.php';
 require_once __DIR__ . '/../../assets/conn/db.php';
 
 Security::requireMethod('GET');
@@ -28,6 +29,23 @@ function scorecardNormalize(string $value): string
     return function_exists('mb_strtolower')
         ? mb_strtolower($value, 'UTF-8')
         : strtolower($value);
+}
+
+/**
+ * Returns the assessment reference column used by department status table.
+ */
+function scorecardDepartmentStatusColumn(mysqli $con): string
+{
+    $result = $con->query("
+        SELECT 1
+        FROM INFORMATION_SCHEMA.COLUMNS
+        WHERE TABLE_SCHEMA = DATABASE()
+          AND TABLE_NAME = 'assessment_department_status'
+          AND COLUMN_NAME = 'assessment_id'
+        LIMIT 1
+    ");
+
+    return ($result && $result->fetch_assoc()) ? 'assessment_id' : 'ass_period_id';
 }
 
 /**
@@ -453,11 +471,12 @@ try {
     $checklistRows = [];
 
     $activeDeptIds = [];
+    $departmentStatusColumn = scorecardDepartmentStatusColumn($con);
 
     $sqlActiveDept = "
         SELECT dept_id
         FROM assessment_department_status
-        WHERE ass_period_id = ?
+        WHERE {$departmentStatusColumn} = ?
           AND fac_id_fk = ?
           AND is_active = 1
     ";
@@ -671,7 +690,7 @@ try {
         FROM assessment_assessor_info
         WHERE assessment_id = ?
           AND fac_id_fk = ?
-        ORDER BY id ASC
+        ORDER BY info_id ASC
         LIMIT 1
     ";
 
@@ -683,7 +702,7 @@ try {
         $row = $stmt->get_result()->fetch_assoc();
 
         if ($row) {
-            $assessor = $row;
+            $assessor = Crypto::decryptFields($row, ['assessor_name', 'assessee_name']);
         }
     }
 
@@ -817,7 +836,7 @@ try {
     $metaLabelStyle = $fallbackStyles['B'] ?? ($fallbackStyles['A'] ?? null);
     $metaValueStyle = $fallbackStyles['C'] ?? ($fallbackStyles['B'] ?? null);
     $summaryStyle = $standardStyles['B'] ?? ($fallbackStyles['B'] ?? null);
-    $areaFillStyle = $areaStyles['C'] ?? ($areaStyles['B'] ?? ($fallbackStyles['B'] ?? null));
+    $areaFillStyle = $areaStyles['A'] ?? ($areaStyles['C'] ?? ($fallbackStyles['B'] ?? null));
     $separatorFillStyle = $separatorStyles['B'] ?? ($separatorStyles['A'] ?? null);
 
     foreach (['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'] as $column) {
@@ -873,7 +892,7 @@ try {
         scorecardSetStyledCell($dom, $xpath, $rowMap[8], 8, 'G', 'Revised Score', false, $headerStyles);
         scorecardSetStyledCell($dom, $xpath, $rowMap[8], 8, 'H', 'Action Plan', false, $headerStyles);
         scorecardSetStyledCell($dom, $xpath, $rowMap[8], 8, 'I', 'Responsible Person', false, $headerStyles);
-        scorecardSetStyledCell($dom, $xpath, $rowMap[8], 8, 'J', 'Remarks / Status', false, $headerStyles);
+        scorecardSetStyledCell($dom, $xpath, $rowMap[8], 8, 'J', 'Gap Status / Remarks', false, $headerStyles);
     }
 
     if ($worksheet instanceof DOMElement) {
@@ -894,7 +913,7 @@ try {
         }
     }
 
-    $standardFillStyle = $standardStyles['B'] ?? ($fallbackStyles['B'] ?? null);
+    $standardFillStyle = $standardStyles['B'] ?? '7';
 
     foreach (['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'] as $column) {
         $standardStyles[$column] = $standardFillStyle;
@@ -1001,23 +1020,32 @@ try {
             ? (float)$revisedScore
             : (float)($userScore ?? 0);
 
-        $remarks = $response ? (string)$response['remarks'] : '';
+        $remarks = $response ? trim((string)$response['remarks']) : '';
         $statusText = $actionPlan ? trim((string)$actionPlan['status']) : '';
         $closureRemarks = $actionPlan ? trim((string)$actionPlan['closure_remarks']) : '';
-
-        if ($closureRemarks !== '') {
-            $remarks = $remarks !== '' ? $remarks . ' | ' . $closureRemarks : $closureRemarks;
-        }
+        $gapStatusParts = [];
 
         if ($statusText !== '') {
-            $remarks = $remarks !== '' ? $remarks . ' | Status: ' . $statusText : 'Status: ' . $statusText;
+            $gapStatusParts[] = 'Status: ' . $statusText;
+        } elseif ($userScore !== null && (float)$userScore < 2) {
+            $gapStatusParts[] = 'Status: OPEN GAP';
+        } elseif ($userScore !== null) {
+            $gapStatusParts[] = 'Status: NO GAP';
+        }
+
+        if ($closureRemarks !== '') {
+            $gapStatusParts[] = 'Closure: ' . $closureRemarks;
         }
 
         if ($actionPlan && trim((string)$actionPlan['target_date']) !== '') {
-            $remarks = $remarks !== ''
-                ? $remarks . ' | Target: ' . $actionPlan['target_date']
-                : 'Target: ' . $actionPlan['target_date'];
+            $gapStatusParts[] = 'Target: ' . $actionPlan['target_date'];
         }
+
+        if ($remarks !== '') {
+            $gapStatusParts[] = 'Remarks: ' . $remarks;
+        }
+
+        $gapStatus = implode(' | ', $gapStatusParts);
 
         scorecardSetStyledCell($dom, $xpath, $row, $rowNo, 'A', $item['reference'], false, $dataStyles);
         scorecardSetStyledCell($dom, $xpath, $row, $rowNo, 'B', $item['measurable'], false, $dataStyles);
@@ -1028,7 +1056,7 @@ try {
         scorecardSetStyledCell($dom, $xpath, $row, $rowNo, 'G', $revisedScore, true, $dataStyles);
         scorecardSetStyledCell($dom, $xpath, $row, $rowNo, 'H', $actionPlan['action_plan'] ?? '', false, $dataStyles);
         scorecardSetStyledCell($dom, $xpath, $row, $rowNo, 'I', $actionPlan['responsible_person'] ?? '', false, $dataStyles);
-        scorecardSetStyledCell($dom, $xpath, $row, $rowNo, 'J', $remarks, false, $dataStyles);
+        scorecardSetStyledCell($dom, $xpath, $row, $rowNo, 'J', $gapStatus, false, $dataStyles);
 
         $rowNo++;
     }

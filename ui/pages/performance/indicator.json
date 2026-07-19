@@ -12,7 +12,7 @@
   },
   "assets": {
     "css": ["/ui/pages/performance/indicator.css?v=20260706-1"],
-    "js": ["/ui/pages/performance/indicator.js?v=20260713-1"]
+    "js": ["/ui/pages/performance/indicator.js?v=20260718-3"]
   },
   "breadcrumb": [
     {"label": "Dashboard", "url": "/ui/dashboard.html"},

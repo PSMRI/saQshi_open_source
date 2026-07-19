@@ -1,6 +1,6 @@
-.sq-ai-chat{position:fixed;right:18px;bottom:18px;z-index:1060;font-family:inherit}
-.sq-ai-chat-fab{display:grid;place-items:center;width:54px;height:54px;border:0;border-radius:50%;background:var(--sq-color-primary,#2563eb);color:#fff;box-shadow:0 12px 30px rgba(37,99,235,.28);cursor:pointer;font-size:1.25rem}
-.sq-ai-chat-panel{position:absolute;right:0;bottom:66px;width:min(380px,calc(100vw - 28px));height:min(560px,calc(100vh - 120px));display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--sq-border,#d9e2ef);border-radius:10px;background:var(--sq-bg-surface,#fff);box-shadow:0 18px 44px rgba(15,23,42,.18)}
+.sq-ai-chat{position:fixed;right:16px;bottom:86px;z-index:1060;font-family:inherit}
+.sq-ai-chat-fab{display:grid;place-items:center;width:44px;height:44px;border:0;border-radius:50%;background:var(--sq-color-primary,#2563eb);color:#fff;box-shadow:0 10px 24px rgba(37,99,235,.24);cursor:pointer;font-size:1rem}
+.sq-ai-chat-panel{position:absolute;right:0;bottom:54px;width:min(380px,calc(100vw - 28px));height:min(560px,calc(100vh - 150px));display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--sq-border,#d9e2ef);border-radius:10px;background:var(--sq-bg-surface,#fff);box-shadow:0 18px 44px rgba(15,23,42,.18)}
 .sq-ai-chat-header{display:flex;align-items:center;justify-content:space-between;gap:.75rem;padding:.75rem .85rem;border-bottom:1px solid var(--sq-border,#d9e2ef);background:var(--sq-color-primary,#2563eb);color:#fff}
 .sq-ai-chat-header h2{margin:0;font-size:.95rem;color:#fff}
 .sq-ai-chat-header p{margin:.1rem 0 0;font-size:.7rem;color:rgba(255,255,255,.82)}
@@ -15,4 +15,4 @@
 .sq-ai-chat-form{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.45rem;padding:.65rem;border-top:1px solid var(--sq-border,#d9e2ef);background:#fff}
 .sq-ai-chat-form textarea{width:100%;resize:none;border:1px solid var(--sq-border,#d9e2ef);border-radius:8px;padding:.5rem .55rem;font:inherit;font-size:.75rem}
 .sq-ai-chat-form button{border:0;border-radius:8px;background:var(--sq-color-primary,#2563eb);color:#fff;font-weight:700;padding:0 .8rem;cursor:pointer}
-@media(max-width:600px){.sq-ai-chat{right:12px;bottom:12px}.sq-ai-chat-panel{right:-4px;bottom:62px;width:calc(100vw - 24px);height:min(520px,calc(100vh - 96px))}}
+@media(max-width:600px){.sq-ai-chat{right:10px;bottom:88px}.sq-ai-chat-fab{width:42px;height:42px;font-size:.95rem}.sq-ai-chat-panel{right:-4px;bottom:52px;width:calc(100vw - 24px);height:min(520px,calc(100vh - 136px))}}
