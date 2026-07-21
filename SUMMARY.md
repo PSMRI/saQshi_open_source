@@ -40,6 +40,7 @@
 ## Deployment and Operations
 
 - [Deployment Guide](docs/deployment/deployment_guide.md)
+- [Local Docker Deployment](docs/deployment/docker_local_guide.md)
 - [System Requirements for UAT and Production](docs/deployment/system_requirements.md)
 - [UI Deployment Guide](docs/deployment/ui_deployment_guide.md)
 - [SMS and Email Notification Configuration](docs/deployment/notification_configuration.md)

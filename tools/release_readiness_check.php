@@ -226,14 +226,37 @@ $previousDirectory = getcwd();
 chdir($root);
 $fileList = [];
 $rgExitCode = 1;
-exec('rg --files', $fileList, $rgExitCode);
+$rgCommand = DIRECTORY_SEPARATOR === '\\' ? 'rg --files 2>NUL' : 'rg --files 2>/dev/null';
+exec($rgCommand, $fileList, $rgExitCode);
 if ($previousDirectory !== false) {
     chdir($previousDirectory);
 }
 
 if ($rgExitCode !== 0 || !$fileList) {
-    rr_warning($warnings, "Unable to run rg --files. Install ripgrep or review files manually.");
-    $fileList = $requiredFiles;
+    // GitHub-hosted runners and minimal production images may not include
+    // ripgrep. Use PHP's filesystem iterator so the release check remains
+    // self-contained and scans the full project tree.
+    $fileList = [];
+    $fallbackFiles = new RecursiveIteratorIterator(
+        new RecursiveDirectoryIterator($root, FilesystemIterator::SKIP_DOTS)
+    );
+    foreach ($fallbackFiles as $fallbackFile) {
+        if (!$fallbackFile->isFile()) {
+            continue;
+        }
+
+        $relativePath = str_replace('\\', '/', substr($fallbackFile->getPathname(), strlen($root) + 1));
+        if (str_starts_with($relativePath, '.git/')) {
+            continue;
+        }
+
+        $fileList[] = $relativePath;
+    }
+
+    if (!$fileList) {
+        rr_warning($warnings, "Unable to enumerate project files for secret and error-exposure checks.");
+        $fileList = $requiredFiles;
+    }
 }
 
 $secretPatterns = [

@@ -1,0 +1,16 @@
+.git/
+.env
+.env.*
+!.env.example
+node_modules/
+vendor/
+uploads/
+api/storage/events/
+api/storage/logs/
+api/storage/keys/
+*.docx
+*.xlsx
+*.xls
+*.zip
+*.rar
+*.7z

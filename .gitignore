@@ -19,7 +19,9 @@ uploads/
 *.backup
 *.dump
 *.sql.gz
-
+*.log
+*.email.log
+*.sms.log
 .codex_tmp/
 node_modules/
 vendor/

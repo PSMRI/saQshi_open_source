@@ -16,11 +16,7 @@ License : GPL-3.0
         <aside class="sq-login-intro">
 
             <div class="sq-login-brandmark">
-                <img
-                    src="/ui/assets/images/logo.png"
-                    alt="SaQshi Logo"
-                    class="sq-login-logo">
-
+                <img src="/ui/assets/images/logo.png" alt="SaQshi Logo" class="sq-login-logo">
                 <div>
                     <h1>SaQshi</h1>
                     <p>Digital Quality Assessment Platform</p>
@@ -30,133 +26,48 @@ License : GPL-3.0
             <div class="sq-login-copy">
                 <span class="sq-login-kicker">Healthcare Quality Platform</span>
                 <h2>Structured assessments for facility improvement.</h2>
-                <p>
-                    Manage NQAS, MusQan and LaQshya assessment workflows with
-                    department activation, checkpoint scoring and CQI tracking.
-                </p>
+                <p>Manage NQAS, MusQan and LaQshya assessment workflows with department activation, checkpoint scoring and CQI tracking.</p>
             </div>
 
         </aside>
 
         <main class="sq-login-panel" aria-label="Login form">
-
             <div class="sq-login-card">
-
                 <div class="sq-login-card-header">
-                    <span class="sq-login-chip">
-                        <i class="bi bi-shield-check"></i>
-                        Secure Access
-                    </span>
-
+                    <span class="sq-login-chip"><i class="bi bi-shield-check"></i> Secure Access</span>
                     <h2>Sign in</h2>
                     <p>Use your SaQshi account to continue.</p>
                 </div>
 
-                <form
-                    id="loginForm"
-                    class="sq-login-form"
-                    autocomplete="off">
-
+                <form id="loginForm" class="sq-login-form" autocomplete="off">
                     <div class="sq-form-group">
                         <label for="username">Username</label>
-                        <input
-                            id="username"
-                            name="username"
-                            type="text"
-                            class="sq-form-control"
-                            placeholder="Enter username"
-                            required aria-label="Enter Username">
+                        <input id="username" name="username" type="text" class="sq-form-control" placeholder="Enter username" required aria-label="Enter Username">
                     </div>
-
                     <div class="sq-form-group">
                         <label for="password">Password</label>
-
                         <div class="sq-password-group">
-                            <input
-                                id="password"
-                                name="password"
-                                type="password"
-                                class="sq-form-control"
-                                placeholder="Enter password"
-                                required aria-label="Enter Password">
-
-                            <button
-                                type="button"
-                                class="sq-password-toggle"
-                                id="togglePassword"
-                                aria-label="Show or hide password">
-                                <i class="bi bi-eye"></i>
-                            </button>
+                            <input id="password" name="password" type="password" class="sq-form-control" placeholder="Enter password" required aria-label="Enter Password">
+                            <button type="button" class="sq-password-toggle" id="togglePassword" aria-label="Show or hide password"><i class="bi bi-eye"></i></button>
                         </div>
                     </div>
-
                     <div class="sq-form-group">
                         <div class="sq-label-row">
                             <label for="captcha">Captcha</label>
-
-                            <button
-                                type="button"
-                                class="sq-captcha-refresh"
-                                id="refreshCaptcha">
-                                <i class="bi bi-arrow-clockwise"></i>
-                                Refresh
-                            </button>
+                            <button type="button" class="sq-captcha-refresh" id="refreshCaptcha"><i class="bi bi-arrow-clockwise"></i> Refresh</button>
                         </div>
-
-                        <div class="sq-captcha-box">
-                            <span id="captchaQuestion" aria-live="polite">Loading...</span>
-                        </div>
-
-                        <p class="sq-help-text" id="captchaHelp">
-                            This is a text math question for screen readers. Type the numeric answer. If you cannot complete this challenge, contact your administrator for assisted login or password reset.
-                        </p>
-
-                        <input
-                            id="captcha"
-                            name="captcha"
-                            type="text"
-                            inputmode="numeric"
-                            class="sq-form-control"
-                            placeholder="Enter captcha answer"
-                            required
-                            aria-label="Enter captcha answer"
-                            aria-describedby="captchaHelp captchaQuestion">
+                        <div class="sq-captcha-box"><span id="captchaQuestion" aria-live="polite">Loading...</span></div>
+                        <p class="sq-help-text" id="captchaHelp">This is a text math question for screen readers. Type the numeric answer. If you cannot complete this challenge, contact your administrator for assisted login or password reset.</p>
+                        <input id="captcha" name="captcha" type="text" inputmode="numeric" class="sq-form-control" placeholder="Enter captcha answer" required aria-label="Enter captcha answer" aria-describedby="captchaHelp captchaQuestion">
                     </div>
-
                     <div class="sq-login-options">
-                        <label class="sq-checkbox">
-                            <input
-                                type="checkbox"
-                                id="rememberMe" aria-label="Remember Me">
-                            <span>Remember me</span>
-                        </label>
-
-                        <a
-                            href="#"
-                            id="forgotPasswordLink">
-                            Forgot password?
-                        </a>
+                        <label class="sq-checkbox"><input type="checkbox" id="rememberMe" aria-label="Remember Me"><span>Remember me</span></label>
+                        <a href="#" id="forgotPasswordLink">Forgot password?</a>
                     </div>
-
-                    <button
-                        type="submit"
-                        class="sq-btn sq-btn-primary sq-btn-block"
-                        id="loginButton">
-                        <i class="bi bi-box-arrow-in-right"></i>
-                        Login
-                    </button>
-
+                    <button type="submit" class="sq-btn sq-btn-primary sq-btn-block" id="loginButton"><i class="bi bi-box-arrow-in-right"></i> Login</button>
                 </form>
-
-                <div class="sq-login-card-footer">
-                    <span>Version 1.0.0</span>
-                    <span>GPL-3.0</span>
-                </div>
-
+                <div class="sq-login-card-footer"><span>Version 1.0.0</span><span>GPL-3.0</span></div>
             </div>
-
         </main>
-
     </div>
-
 </section>
