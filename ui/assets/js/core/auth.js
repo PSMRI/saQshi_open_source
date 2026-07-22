@@ -199,10 +199,6 @@
                 SQ.form.clearErrors(form);
             }
 
-            const username = form.querySelector("[name='username']")?.value.trim();
-            const password = form.querySelector("[name='password']")?.value.trim();
-            const captcha = form.querySelector("[name='captcha']")?.value.trim() || "";
-
             try {
                 throw {
                     status: "error",
