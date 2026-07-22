@@ -209,14 +209,6 @@
                     message: "This login form must use encrypted password transport."
                 };
 
-                if (SQ.toast) {
-                    SQ.toast(response.message || "Login successful", "success");
-                }
-
-                setTimeout(function () {
-                    window.location.href = AUTH.dashboardPage;
-                }, 500);
-
             } catch (error) {
                 if (SQ.toast) {
                     SQ.toast(error.message || "Login failed", "danger");

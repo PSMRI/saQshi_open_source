@@ -41,10 +41,6 @@
        Elements
     ====================================================== */
 
-    function sidebar() {
-        return document.querySelector(".sq-sidebar");
-    }
-
     function overlay() {
         return document.querySelector(".sq-sidebar-overlay");
     }
