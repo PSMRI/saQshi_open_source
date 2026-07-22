@@ -627,9 +627,10 @@
     }
 
     function renderTable(lines) {
-        const rows = lines.map(line => line.trim().replace(/^\||\|$/g, "").split("|").map(cell => inlineMarkdown(cell.trim())));
+        const rawRows = lines.map(line => line.trim().replace(/^\||\|$/g, "").split("|").map(cell => cell.trim()));
+        const rows = rawRows.map(row => row.map(inlineMarkdown));
         const head = rows.shift() || [];
-        if (rows.length && rows[0].every(cell => /^:?-{3,}:?$/.test(cell.replace(/<[^>]+>/g, "")))) {
+        if (rawRows.length > 1 && rawRows[1].every(cell => /^:?-{3,}:?$/.test(cell))) {
             rows.shift();
         }
         return "<table><thead><tr>" + head.map(cell => `<th>${cell}</th>`).join("") +

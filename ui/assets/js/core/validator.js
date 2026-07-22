@@ -82,7 +82,9 @@
     }
 
     function getLabel(form, field) {
-        const input = form.querySelector("[name='" + field + "']");
+        const input = Array.from(form.querySelectorAll("[name]")).find(function (element) {
+            return element.getAttribute("name") === field;
+        });
 
         if (!input) {
             return field;

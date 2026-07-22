@@ -41,12 +41,53 @@ function attrs(tag) {
 }
 
 function stripTags(value) {
-    return String(value || "")
-        .replace(/<script[\s\S]*?<\/script>/gi, "")
-        .replace(/<style[\s\S]*?<\/style>/gi, "")
-        .replace(/<[^>]+>/g, "")
-        .replace(/\s+/g, " ")
-        .trim();
+    const input = String(value || "");
+    let output = "";
+    let index = 0;
+    let ignoredElement = "";
+
+    while (index < input.length) {
+        const tagStart = input.indexOf("<", index);
+        if (tagStart === -1) {
+            if (!ignoredElement) output += input.slice(index);
+            break;
+        }
+
+        if (!ignoredElement) output += input.slice(index, tagStart);
+
+        let tagEnd = tagStart + 1;
+        let quote = "";
+        while (tagEnd < input.length) {
+            const char = input[tagEnd];
+            if (quote) {
+                if (char === quote) quote = "";
+            } else if (char === "\"" || char === "'") {
+                quote = char;
+            } else if (char === ">") {
+                break;
+            }
+            tagEnd += 1;
+        }
+
+        if (tagEnd === input.length) {
+            if (!ignoredElement) output += input.slice(tagStart);
+            break;
+        }
+
+        const tag = input.slice(tagStart + 1, tagEnd).trim();
+        const closing = tag.startsWith("/");
+        const name = tag.slice(closing ? 1 : 0).trim().split(/[\s/>]/, 1)[0].toLowerCase();
+
+        if (ignoredElement) {
+            if (closing && name === ignoredElement) ignoredElement = "";
+        } else if (!closing && (name === "script" || name === "style")) {
+            ignoredElement = name;
+        }
+
+        index = tagEnd + 1;
+    }
+
+    return output.replace(/\s+/g, " ").trim();
 }
 
 function hasAccessibleName(tag, inner = "") {
@@ -75,9 +116,32 @@ function duplicateIds(content) {
     return Object.keys(ids).filter((id) => ids[id] > 1);
 }
 
+function stripHtmlComments(value) {
+    let content = String(value || "");
+    let start = content.indexOf("<!--");
+
+    while (start !== -1) {
+        const standardEnd = content.indexOf("-->", start + 4);
+        const permissiveEnd = content.indexOf("--!>", start + 4);
+        const end = standardEnd === -1
+            ? permissiveEnd
+            : (permissiveEnd === -1 ? standardEnd : Math.min(standardEnd, permissiveEnd));
+
+        if (end === -1) {
+            return content.slice(0, start);
+        }
+
+        const closingLength = content.startsWith("--!>", end) ? 4 : 3;
+        content = content.slice(0, start) + content.slice(end + closingLength);
+        start = content.indexOf("<!--");
+    }
+
+    return content;
+}
+
 function auditFile(file) {
     const rawContent = fs.readFileSync(file, "utf8");
-    const content = rawContent.replace(/<!--[\s\S]*?-->/g, "");
+    const content = stripHtmlComments(rawContent);
     const issues = [];
 
     const isFragment = !/<!doctype html|<html/i.test(content);
