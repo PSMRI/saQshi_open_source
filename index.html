@@ -5,22 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="SaQshi healthcare quality assessment platform.">
     <title>SaQshi | Healthcare Quality Improvement</title>
-    <link rel="icon" type="image/png" href="/ui/assets/images/favicon.png">
+    <link rel="icon" type="image/png" href="ui/assets/images/favicon.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="/ui/assets/css/landing.css?v=20260721-2">
+    <link rel="stylesheet" href="ui/assets/css/landing.css?v=20260722-1">
+    <style>
+        :root { --ink: #10213a; --muted: #52647f; --teal: #2563eb; --line: #d9e2ef; --sand: #eaf1ff; }
+        body { background: #f4f7fb; }
+        .sq-landing-visual, .sq-landing-cta .sq-landing-primary { background: #0f172a !important; }
+        .sq-landing-primary, .sq-landing-login { background: #2563eb !important; }
+        .sq-landing-photo figcaption { background: #0f172a; }
+        .sq-landing-photo figcaption span, .sq-landing-journey b, .sq-landing-journey .sq-landing-eyebrow, .sq-landing-evolution > span { color: #93c5fd; }
+        .sq-landing-copy h1 { font-size: clamp(2.15rem, 3.8vw, 3.65rem); line-height: 1.08; letter-spacing: -.045em; }
+        .sq-landing-photo { margin: 0; }
+        .sq-landing-photo img { display: block; width: 100%; height: 390px; object-fit: cover; }
+        .sq-landing-photo figcaption { display: grid; gap: 6px; padding: 18px 20px; background: #172f3b; color: #d7e6e2; font-size: .82rem; line-height: 1.5; }
+        .sq-landing-photo figcaption span { color: #9bd4c8; font-size: .68rem; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; }
+        .sq-landing-journey { width: min(1160px, calc(100% - 40px)); margin: 0 auto 100px; padding: 48px; background: #0f172a; color: #fff; }
+        .sq-landing-journey h2 { margin: 12px 0 34px; font-size: clamp(2rem, 3vw, 3rem); letter-spacing: -.04em; }
+        .sq-landing-journey ol { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; padding: 0; list-style: none; }
+        .sq-landing-journey li { display: grid; gap: 9px; border-top: 1px solid #ffffff44; padding-top: 16px; }
+        .sq-landing-journey b { color: #9bd4c8; font-size: .72rem; }.sq-landing-journey span { color: #c5d3d0; font-size: .82rem; line-height: 1.5; }
+        .sq-landing-evolution { margin-top: 42px; padding-top: 22px; border-top: 1px solid #ffffff44; max-width: 770px; }.sq-landing-evolution > span { color: #9bd4c8; font-size: .7rem; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; }.sq-landing-evolution p { color: #c5d3d0; line-height: 1.65; }.sq-landing-evolution strong { color: #fff; }
+        @media (max-width: 700px) { .sq-landing-journey { width: calc(100% - 28px); padding: 30px 24px; }.sq-landing-journey ol { grid-template-columns: 1fr; } }
+    </style>
 </head>
 <body>
 <header class="sq-landing-header">
-    <a class="sq-landing-brand" href="/"><img src="/ui/assets/images/logo.png" alt="SaQshi logo"><span><strong>SaQshi</strong><small>Quality Assessment Platform</small></span></a>
-    <div class="sq-landing-header-actions"><img class="sq-landing-mark" src="/ui/assets/images/partner-mark.png" alt="" aria-hidden="true"><a href="/developer.php">Developers</a><a class="sq-landing-login" href="/ui/login.html">Sign in <i class="bi bi-arrow-right"></i></a></div>
+    <a class="sq-landing-brand" href="index.html"><span><strong>SaQshi</strong><small>Digital quality improvement</small></span></a>
+    <div class="sq-landing-header-actions"><a href="gitbook.html">Learn &amp; Explore</a><a class="sq-landing-login" href="ui/login.html">Sign in <i class="bi bi-arrow-right"></i></a></div>
 </header>
 <main>
     <section class="sq-landing-hero">
-        <div class="sq-landing-copy"><span class="sq-landing-eyebrow"><i class="bi bi-heart-pulse-fill"></i> Healthcare quality, made actionable</span><h1>Better facility care starts with a clear quality journey.</h1><p>SaQshi brings assessment, continuous quality improvement, performance monitoring and certification tracking into one secure digital workspace.</p><div class="sq-landing-actions"><a class="sq-landing-primary" href="/ui/login.html">Access SaQshi <i class="bi bi-arrow-right"></i></a><a class="sq-landing-secondary" href="#overview">Explore platform</a></div><div class="sq-landing-trust"><span><i class="bi bi-shield-check"></i> Role-based access</span><span><i class="bi bi-check2-circle"></i> Structured workflows</span></div></div>
-        <aside class="sq-landing-visual" aria-label="Quality improvement overview"><div class="sq-landing-dash-top">Facility quality overview <i class="bi bi-three-dots"></i></div><p>Assessment progress</p><strong>82<small>%</small></strong><em>On track</em><div class="sq-landing-bars"><b></b><b></b><b></b><b></b><b></b><b></b></div><div class="sq-landing-dash-bottom"><i class="bi bi-clipboard2-check"></i><span><b>Checklist completed</b><small>36 of 44 checkpoints</small></span></div></aside>
+        <div class="sq-landing-copy"><span class="sq-landing-eyebrow">System for Assessing Quality Standards in Health Institutions</span><h1>Turning quality gaps into measurable healthcare improvements.</h1><p>SaQshi brings assessment, gap closure, evidence and performance reporting into one accountable quality system—from facility teams to district and state leadership.</p><div class="sq-landing-actions"><a class="sq-landing-primary" href="ui/login.html">Go to workspace <i class="bi bi-arrow-right"></i></a><a class="sq-landing-secondary" href="#how-it-works">See how SaQshi works</a></div><div class="sq-landing-trust"><span>NQAS, LaQshya and MusQan ready</span><span>Real-time quality visibility</span></div></div>
+        <figure class="sq-landing-photo"><img src="ui/assets/images/landing-facility-team.png" alt="Healthcare team reviewing a quality checklist at a facility"><figcaption><span>In practice</span> Quality improves when teams can see the work, own the next step and verify the result.</figcaption></figure>
     </section>
-    <section id="overview" class="sq-landing-overview"><div class="sq-landing-heading"><span>One connected platform</span><h2>From assessment to measurable improvement.</h2><p>Built for facility teams, assessors and health-system leaders who need consistent quality information and follow-through.</p></div><div class="sq-landing-grid"><article><i class="bi bi-clipboard2-pulse"></i><h3>Assess with confidence</h3><p>Guided checkpoints, scoring and evidence capture.</p></article><article><i class="bi bi-lightbulb"></i><h3>Close quality gaps</h3><p>Action plans, ownership and verified closure.</p></article><article><i class="bi bi-bar-chart-line"></i><h3>Monitor performance</h3><p>Indicators, trends and focused management views.</p></article><article><i class="bi bi-buildings"></i><h3>See the bigger picture</h3><p>Facility to state-level quality monitoring.</p></article></div></section>
-    <section class="sq-landing-cta"><div><span>Ready to continue?</span><h2>Sign in to your SaQshi workspace.</h2></div><a class="sq-landing-primary" href="/ui/login.html">Sign in securely <i class="bi bi-arrow-right"></i></a></section>
+    <section id="how-it-works" class="sq-landing-overview"><div class="sq-landing-heading"><span>One connected platform</span><h2>Assess. Act. Prove improvement.</h2><p>Built for public health systems that need quality data to become timely action, transparent accountability and better service delivery at scale.</p></div><div class="sq-landing-grid"><article><span class="sq-landing-number">01 · Assess in real time</span><h3>Make every standard measurable.</h3><p>Run NQAS, LaQshya, MusQan and state frameworks with structured indicators, automated scoring and evidence capture.</p></article><article><span class="sq-landing-number">02 · Close every gap</span><h3>Move from finding to follow-through.</h3><p>Convert non-compliance into owned action plans, track evidence and verify every closure.</p></article><article><span class="sq-landing-number">03 · Lead with visibility</span><h3>See what needs attention, anywhere.</h3><p>Use role-based dashboards and drill-down analytics across facilities, districts and states.</p></article></div></section>
+    <section class="sq-landing-journey"><div><span class="sq-landing-eyebrow">How it fits together</span><h2>A transparent quality journey.</h2></div><ol><li><b>01</b><strong>Configure</strong><span>Set up facility profiles, frameworks, departments and assessment periods.</span></li><li><b>02</b><strong>Assess</strong><span>Capture checklist responses, scores, assessor details and supporting evidence.</span></li><li><b>03</b><strong>Improve</strong><span>Prioritize gaps, manage action plans and verify closure.</span></li><li><b>04</b><strong>Learn</strong><span>Use dashboards, reports and trends to guide quality decisions.</span></li></ol><div class="sq-landing-evolution"><span>Evolution journey</span><p><strong>From manual assessment to a configurable quality platform.</strong> SaQshi has evolved from checklist digitisation into a modular platform covering assessment, CQI, performance monitoring, certification, state monitoring and reporting.</p></div></section>
+    <section class="sq-landing-cta"><div><span>SaQshi workspace</span><h2>Continue the work already in motion.</h2></div><a class="sq-landing-primary" href="/ui/login.html">Sign in securely <i class="bi bi-arrow-right"></i></a></section>
 </main>
 <footer class="sq-landing-footer"><span>SaQshi Digital Quality Assessment Platform</span><span><img class="sq-landing-mark" src="/ui/assets/images/partner-mark.png" alt="" aria-hidden="true"> Version 1.0.0 &middot; GPL-3.0</span></footer>
 </body>
