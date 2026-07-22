@@ -26,7 +26,8 @@
         userKey: "sq_user",
         csrfKey: "sq_csrf_token",
         loginPage: "/ui/login.html",
-        dashboardPage: "/ui/dashboard.html"
+        dashboardPage: "/ui/dashboard.html",
+        loginRequestTimeout: 60000
     };
 
     function saveUser(user) {
@@ -53,14 +54,15 @@
         return !!(user && user.u_id);
     }
 
-    async function loadCsrf() {
+    async function loadCsrf(options = {}) {
         const response = await SQ.api.get(
             "/auth/v1/csrf.php",
             {},
             {
                 loader: false,
                 showError: false,
-                redirectOnUnauthorized: false
+                redirectOnUnauthorized: false,
+                timeout: options.timeout
             }
         );
 
@@ -93,7 +95,7 @@
             };
         }
 
-        await loadCsrf();
+        await loadCsrf({ timeout: AUTH.loginRequestTimeout });
 
         const response = await SQ.api.post(
             "/auth/v1/login.php",
@@ -103,7 +105,8 @@
                 captcha: captcha
             },
             {
-                loaderText: "Signing in..."
+                loaderText: "Signing in...",
+                timeout: AUTH.loginRequestTimeout
             }
         );
 

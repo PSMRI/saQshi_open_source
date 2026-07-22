@@ -93,10 +93,12 @@
         const id = input.getAttribute("id");
 
         if (id) {
-            const label = form.querySelector("label[for='" + id + "']");
+            const label = Array.from(form.querySelectorAll("label[for]")).find(function (element) {
+                return element.getAttribute("for") === id;
+            });
 
             if (label) {
-                return label.textContent.replace("*", "").trim();
+                return label.textContent.replace(/\*/g, "").trim();
             }
         }
 

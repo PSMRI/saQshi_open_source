@@ -76,7 +76,8 @@
         const keyResponse = await SQ.api.get("/auth/v1/login_key.php", {}, {
             loader: false,
             showError: false,
-            redirectOnUnauthorized: false
+            redirectOnUnauthorized: false,
+            timeout: 60000
         });
 
         const publicKeyPem = keyResponse.data?.public_key || "";
