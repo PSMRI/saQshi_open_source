@@ -167,7 +167,7 @@ start a quality-improvement cycle</pre>
 <footer class="footer">
     <div class="container footer-row">
         <span>SaQshi - Open-source healthcare quality assessment and monitoring</span>
-        <span><a href="gitbook.html">GitBook</a> - <a href="gitbook.html?doc=LICENSE.txt">GPL-3.0</a> - <a href="gitbook.html?doc=SECURITY.md">Security</a> - <a href="gitbook.html?doc=CODE_OF_CONDUCT.md">Code of conduct</a></span>
+        <span><a href="gitbook.html">GitBook</a> - <a href="gitbook.html?doc=LICENSE">GPL-3.0</a> - <a href="gitbook.html?doc=SECURITY.md">Security</a> - <a href="gitbook.html?doc=CODE_OF_CONDUCT.md">Code of conduct</a></span>
     </div>
 </footer>
 </body>

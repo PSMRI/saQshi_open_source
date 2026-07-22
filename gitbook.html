@@ -463,7 +463,7 @@
         {
             title: "Legal and Governance",
             items: [
-                ["License", "LICENSE.txt"],
+                ["License", "LICENSE"],
                 ["Notice", "NOTICE.txt"],
                 ["Security Policy", "SECURITY.md"],
                 ["Code of Conduct", "CODE_OF_CONDUCT.md"],
@@ -518,7 +518,7 @@
     function normalizeDoc(doc) {
         let clean = String(doc || "README.md").replace(/\\/g, "/").replace(/^\/+/, "");
         if (clean === "LICENSE") {
-            clean = "LICENSE.txt";
+            clean = "LICENSE";
         }
         if (clean === "NOTICE") {
             clean = "NOTICE.txt";
@@ -560,7 +560,7 @@
             "CODE_OF_CONDUCT.md",
             "MAINTAINERS.md",
             "LICENSE",
-            "LICENSE.txt",
+            "LICENSE",
             "NOTICE",
             "NOTICE.txt"
         ];

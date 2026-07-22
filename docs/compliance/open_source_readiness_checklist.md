@@ -89,7 +89,7 @@ Data-source status now recorded as complete for the current public package:
 
 | Item | Status | Evidence | Required Action |
 |---|---|---|---|
-| Root license file | Done | `LICENSE` exists. `LICENSE.txt` is kept as a compatibility copy. | Confirm final license choice before release tagging. |
+| Root license file | Done | `LICENSE` contains the canonical GPL-3.0 text. | Confirm final license choice before release tagging. |
 | License consistency | Done | Root license is GPL-3.0; SaQshi-owned UI/config headers and visible footer/login metadata now use GPL-3.0. | Continue to avoid changing third-party/vendor license notices. |
 | README | Done | `README.md` now includes overview, modules, setup, environment, database, API, testing, release docs and license details. | Keep synchronized with major architecture changes. |
 | Contribution guide | Done | `CONTRIBUTING.md` includes branch workflow, coding standards, testing expectations, documentation expectations, review expectations and PR checklist. | Keep synchronized with project workflow changes. |
