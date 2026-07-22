@@ -50,8 +50,6 @@
         window.SQ = {};
     }
 
-    const SQ = window.SQ;
-
     const Validator = {};
 
     /* ======================================================

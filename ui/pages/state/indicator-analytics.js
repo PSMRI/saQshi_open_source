@@ -29,12 +29,6 @@
         });
     }
 
-    function badge(label) {
-        const value = String(label || "Watch").toLowerCase();
-        const cls = value === "critical" ? "sq-state-danger" : (value === "high" ? "sq-state-warning" : "sq-state-latest");
-        return `<span class="sq-state-badge ${cls}">${esc(label)}</span>`;
-    }
-
     function createPager() {
         if (SQ.pagination && typeof SQ.pagination.create === "function") {
             return SQ.pagination.create({ page: 1, perPage: 25, onChange: load });
