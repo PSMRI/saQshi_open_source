@@ -37,6 +37,7 @@
 require_once __DIR__ . '/../../../auth_api.php';
 require_once __DIR__ . '/../../../service/DepartmentStatusService.php';
 require_once __DIR__ . '/../../../assets/conn/db.php';
+require_once __DIR__ . '/../../../core/AssessmentAccess.php';
 
 Security::requireMethod('POST');
 
@@ -73,6 +74,8 @@ try {
             'assessment_id' => 'Invalid assessment ID'
         ]);
     }
+
+    AssessmentAccess::requireEditableByCurrentUser($con, $assPeriod, $facId);
 
     $service = new DepartmentStatusService($con);
 

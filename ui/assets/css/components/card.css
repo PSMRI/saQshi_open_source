@@ -15,9 +15,10 @@
 
 .sq-card {
     background: var(--sq-bg-surface);
-    border: 1px solid var(--sq-border);
+    border: 1px solid #d7e2f0;
+    border-top: 3px solid var(--sq-card-accent, var(--sq-color-primary));
     border-radius: var(--sq-radius-default);
-    box-shadow: var(--sq-shadow-sm);
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.07);
     color: var(--sq-text-primary);
     overflow: hidden;
 }
@@ -46,7 +47,7 @@
     align-items: center;
     justify-content: space-between;
     gap: var(--sq-space-3);
-    background: var(--sq-bg-surface);
+    background: linear-gradient(100deg, var(--sq-card-soft, #f4f8ff), var(--sq-bg-surface) 72%);
 }
 
 .sq-card-body {
@@ -120,27 +121,32 @@
 ========================================================== */
 
 .sq-card-accent {
-    border-left: 4px solid var(--sq-color-primary);
+    border-left: 4px solid var(--sq-card-accent, var(--sq-color-primary));
 }
 
 .sq-card-accent-primary {
-    border-left-color: var(--sq-color-primary);
+    --sq-card-accent: var(--sq-color-primary);
+    --sq-card-soft: #eff6ff;
 }
 
 .sq-card-accent-success {
-    border-left-color: var(--sq-color-success);
+    --sq-card-accent: var(--sq-color-success);
+    --sq-card-soft: #ecfdf5;
 }
 
 .sq-card-accent-warning {
-    border-left-color: var(--sq-color-warning);
+    --sq-card-accent: #b45309;
+    --sq-card-soft: #fffbeb;
 }
 
 .sq-card-accent-danger {
-    border-left-color: var(--sq-color-danger);
+    --sq-card-accent: var(--sq-color-danger);
+    --sq-card-soft: #fef2f2;
 }
 
 .sq-card-accent-info {
-    border-left-color: var(--sq-color-info);
+    --sq-card-accent: var(--sq-color-info);
+    --sq-card-soft: #ecfeff;
 }
 
 /* ==========================================================

@@ -291,6 +291,12 @@
 
         state.assessment = assessment;
         renderAssessment();
+
+        if (assessment.is_assessor_led) {
+            setStateMessage("This assessor-led assessment is read-only for facility users. Use Assessment Progress or Reports to view it.");
+            return false;
+        }
+
         return response;
     }
 

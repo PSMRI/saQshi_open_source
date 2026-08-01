@@ -124,6 +124,11 @@
     }
 
     function actionButton(assessment) {
+        if (assessment.is_assessor_led) {
+            return `<button type="button" class="sq-btn sq-btn-outline-primary sq-btn-sm" data-sq-route="reports/progress">View Progress</button>
+                <button type="button" class="sq-btn sq-btn-light sq-btn-sm" data-sq-route="reports/dashboard">Reports</button>`;
+        }
+
         if (assessment.status === "ACTIVE") {
             return `
                 <button type="button" class="sq-btn sq-btn-primary sq-btn-sm" data-sq-route="assessment/checklist">

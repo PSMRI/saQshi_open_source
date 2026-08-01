@@ -221,15 +221,11 @@
                 </div>
 
                 <div class="sq-assessment-footer">
-                    <a href="#" data-sq-route="assessment/departments"
-                       class="sq-btn sq-btn-outline-primary sq-btn-sm">
-                        View Progress
-                    </a>
-
-                    <a href="#" data-sq-route="assessment/checklist"
-                       class="sq-btn sq-btn-primary sq-btn-sm">
-                        Continue Assessment
-                    </a>
+                    ${assessment.is_assessor_led ? `
+                        <a href="#" data-sq-route="reports/progress" class="sq-btn sq-btn-outline-primary sq-btn-sm">View Progress</a>
+                        <a href="#" data-sq-route="reports/dashboard" class="sq-btn sq-btn-light sq-btn-sm">Reports</a>` : `
+                        <a href="#" data-sq-route="assessment/departments" class="sq-btn sq-btn-outline-primary sq-btn-sm">View Progress</a>
+                        <a href="#" data-sq-route="assessment/checklist" class="sq-btn sq-btn-primary sq-btn-sm">Continue Assessment</a>`}
                 </div>
             </div>
         `;
