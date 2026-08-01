@@ -52,6 +52,10 @@
         };
     }
 
+    function moduleEnabled(key) {
+        return !SQ.deployment || typeof SQ.deployment.moduleEnabled !== "function" || SQ.deployment.moduleEnabled(key);
+    }
+
     function applyMonitoringTitle() {
         const user = SQ.auth && typeof SQ.auth.getUser === "function" ? SQ.auth.getUser() : null;
         const roleId = Number(user && user.role_id);
@@ -95,14 +99,10 @@
                         <span>Assessment in progress</span>
                         <b>${esc(assessmentMonth.in_progress || 0)}</b>
                     </div>
-                    <div class="sq-state-row">
-                        <span>KPI filled</span>
-                        <b>${esc(performanceMonth.kpi_filled || 0)}</b>
-                    </div>
-                    <div class="sq-state-row">
-                        <span>Outcome filled</span>
-                        <b>${esc(performanceMonth.outcome_filled || 0)}</b>
-                    </div>
+                    ${moduleEnabled("performance") ? `<div class="sq-state-row">
+                        <span>Performance entries</span>
+                        <b>${esc((performanceMonth.kpi_filled || 0) + (performanceMonth.outcome_filled || 0))}</b>
+                    </div>` : ""}
                 </div>`);
         } catch (error) {
             console.error("[State Dashboard]", error);
@@ -114,6 +114,10 @@
     }
 
     async function init() {
+        if (SQ.deployment && typeof SQ.deployment.load === "function") {
+            await SQ.deployment.load();
+            SQ.deployment.applyLabels(document);
+        }
         applyMonitoringTitle();
         document.getElementById("stateRefresh")?.addEventListener("click", load);
         let searchTimer = null;

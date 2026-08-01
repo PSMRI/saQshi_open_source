@@ -3,6 +3,18 @@
   "profile_name": "Generic Inspection / Audit",
   "recommended_for": "Any checklist-based inspection where KPI, outcome, CQI and certification are not required.",
   "default_framework": "sample-framework",
+  "branding": {
+    "login_app_name": "SaQshi",
+    "login_app_tagline": "Digital Inspection Quality Platform",
+    "login_kicker": "Inspection Quality Platform",
+    "login_title": "Structured inspections for continuous improvement.",
+    "login_description": "Manage inspection workflows with section activation, checklist scoring and improvement tracking."
+  },
+  "content": {
+    "assessor_dashboard_overview": "{assessment} overview across your assigned {facilities}.",
+    "assessor_choose_item": "Choose the {facility} where you will perform {assessment}.",
+    "assessor_no_mapped_items": "No {facilities} are mapped to this {assessor} profile."
+  },
   "modules": {
     "assessment": true,
     "cqi": false,
@@ -24,6 +36,8 @@
     "assigned_facilities": "Assigned Units",
     "department": "Section",
     "departments": "Sections",
+    "area_of_concern": "Inspection Area",
+    "areas_of_concern": "Inspection Areas",
     "assessment": "Inspection",
     "assessments": "Inspections",
     "assessment_list": "Inspection List",

@@ -145,6 +145,10 @@
     }
 
     async function init() {
+        if (SQ.deployment && typeof SQ.deployment.load === "function") {
+            await SQ.deployment.load();
+            SQ.deployment.applyLabels(document);
+        }
         state.pager = SQ.pagination.create({ page: 1, perPage: 50, onChange: load });
         bindToggle();
         document.getElementById("statePerfRefresh")?.addEventListener("click", function () {

@@ -260,6 +260,10 @@
         }
 
         state.isLoading = true;
+        if (SQ.deployment?.load) {
+            await SQ.deployment.load();
+            SQ.deployment.applyLabels(document);
+        }
         bindEvents();
 
         try {

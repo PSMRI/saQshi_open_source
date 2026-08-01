@@ -1,5 +1,5 @@
 {
-  "default_state": "UTTAR_PRADESH",
+  "default_state": "Bihar",
   "settings": {
     "tile_url": "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
     "attribution": "&copy; OpenStreetMap contributors",

@@ -1,0 +1,320 @@
+[
+  {
+    "fac_dept_id": 1,
+    "dept_name": "Accident & Emergency",
+    "active_status": 1,
+    "program_tag": "NQAS"
+  },
+  {
+    "fac_dept_id": 2,
+    "dept_name": "OPD",
+    "active_status": 1,
+    "program_tag": "NQAS"
+  },
+  {
+    "fac_dept_id": 3,
+    "dept_name": "LabourRoom (NQAS)",
+    "active_status": 1,
+    "program_tag": "NQAS"
+  },
+  {
+    "fac_dept_id": 4,
+    "dept_name": "Maternity Ward",
+    "active_status": 1,
+    "program_tag": "NQAS"
+  },
+  {
+    "fac_dept_id": 5,
+    "dept_name": "Paediateric OPD MusQan",
+    "active_status": 1,
+    "program_tag": "MusQan"
+  },
+  {
+    "fac_dept_id": 6,
+    "dept_name": "Paediateric Ward MusQan",
+    "active_status": 1,
+    "program_tag": "MusQan"
+  },
+  {
+    "fac_dept_id": 7,
+    "dept_name": "SNCU MusQan",
+    "active_status": 1,
+    "program_tag": "MusQan"
+  },
+  {
+    "fac_dept_id": 8,
+    "dept_name": "OT",
+    "active_status": 1,
+    "program_tag": "NQAS"
+  },
+  {
+    "fac_dept_id": 9,
+    "dept_name": "M-OT (NQAS/LaQshya)",
+    "active_status": 1,
+    "program_tag": "LaQshya"
+  },
+  {
+    "fac_dept_id": 10,
+    "dept_name": "PP Unit",
+    "active_status": 1,
+    "program_tag": "NQAS"
+  },
+  {
+    "fac_dept_id": 11,
+    "dept_name": "ICU",
+    "active_status": 1,
+    "program_tag": "NQAS"
+  },
+  {
+    "fac_dept_id": 12,
+    "dept_name": "IPD",
+    "active_status": 1,
+    "program_tag": "NQAS"
+  },
+  {
+    "fac_dept_id": 13,
+    "dept_name": "Blood Bank",
+    "active_status": 1,
+    "program_tag": "NQAS"
+  },
+  {
+    "fac_dept_id": 14,
+    "dept_name": "Laboratory",
+    "active_status": 1,
+    "program_tag": "NQAS"
+  },
+  {
+    "fac_dept_id": 15,
+    "dept_name": "Radiology",
+    "active_status": 1,
+    "program_tag": "NQAS"
+  },
+  {
+    "fac_dept_id": 16,
+    "dept_name": "Pharmacy",
+    "active_status": 1,
+    "program_tag": "NQAS"
+  },
+  {
+    "fac_dept_id": 17,
+    "dept_name": "Auxillary services",
+    "active_status": 1,
+    "program_tag": "NQAS"
+  },
+  {
+    "fac_dept_id": 18,
+    "dept_name": "Mortuary",
+    "active_status": 1,
+    "program_tag": "NQAS"
+  },
+  {
+    "fac_dept_id": 19,
+    "dept_name": "Admin",
+    "active_status": 1,
+    "program_tag": "NQAS"
+  },
+  {
+    "fac_dept_id": 20,
+    "dept_name": "NBSU",
+    "active_status": 1,
+    "program_tag": "NQAS"
+  },
+  {
+    "fac_dept_id": 21,
+    "dept_name": "BSU",
+    "active_status": 1,
+    "program_tag": "NQAS"
+  },
+  {
+    "fac_dept_id": 22,
+    "dept_name": "General Administration",
+    "active_status": 1,
+    "program_tag": "NQAS"
+  },
+  {
+    "fac_dept_id": 23,
+    "dept_name": "NRC MusQan",
+    "active_status": 1,
+    "program_tag": "MusQan"
+  },
+  {
+    "fac_dept_id": 24,
+    "dept_name": "Laborotory",
+    "active_status": 1,
+    "program_tag": "NQAS"
+  },
+  {
+    "fac_dept_id": 25,
+    "dept_name": "AAM 12 package Type B",
+    "active_status": 1,
+    "program_tag": "NQAS"
+  },
+  {
+    "fac_dept_id": 26,
+    "dept_name": "NHP",
+    "active_status": 1,
+    "program_tag": "NQAS"
+  },
+  {
+    "fac_dept_id": 27,
+    "dept_name": "General",
+    "active_status": 1,
+    "program_tag": "NQAS"
+  },
+  {
+    "fac_dept_id": 30,
+    "dept_name": "AAM 7 package Type Virtual",
+    "active_status": 1,
+    "program_tag": "NQAS"
+  },
+  {
+    "fac_dept_id": 31,
+    "dept_name": "AAM 7 package Type B",
+    "active_status": 1,
+    "program_tag": "NQAS"
+  },
+  {
+    "fac_dept_id": 32,
+    "dept_name": "AAM 7package Type A",
+    "active_status": 1,
+    "program_tag": "NQAS"
+  },
+  {
+    "fac_dept_id": 33,
+    "dept_name": "LabourRoom (LaQshya)",
+    "active_status": 1,
+    "program_tag": "LaQshya"
+  },
+  {
+    "fac_dept_id": 34,
+    "dept_name": "OPD",
+    "active_status": 1,
+    "program_tag": "NQAS"
+  },
+  {
+    "fac_dept_id": 35,
+    "dept_name": "Laborotory",
+    "active_status": 1,
+    "program_tag": "NQAS"
+  },
+  {
+    "fac_dept_id": 36,
+    "dept_name": "NHP",
+    "active_status": 1,
+    "program_tag": "NQAS"
+  },
+  {
+    "fac_dept_id": 37,
+    "dept_name": "General Adminstration",
+    "active_status": 1,
+    "program_tag": "NQAS"
+  },
+  {
+    "fac_dept_id": 38,
+    "dept_name": "Lr (LaQshya)",
+    "active_status": 1,
+    "program_tag": "LaQshya"
+  },
+  {
+    "fac_dept_id": 39,
+    "dept_name": "M-OT (LaQshya)",
+    "active_status": 1,
+    "program_tag": "LaQshya"
+  },
+  {
+    "fac_dept_id": 40,
+    "dept_name": "Hemodialysis",
+    "active_status": 1,
+    "program_tag": "NQAS"
+  },
+  {
+    "fac_dept_id": 41,
+    "dept_name": "AAM 12 package Type A",
+    "active_status": 1,
+    "program_tag": "NQAS"
+  },
+  {
+    "fac_dept_id": 42,
+    "dept_name": "Kayakalp",
+    "active_status": 1,
+    "program_tag": "Kayakalp"
+  },
+  {
+    "fac_dept_id": 43,
+    "dept_name": "General Clinic",
+    "active_status": 1,
+    "program_tag": "NQAS"
+  },
+  {
+    "fac_dept_id": 44,
+    "dept_name": "Maternity Health",
+    "active_status": 1,
+    "program_tag": "NQAS"
+  },
+  {
+    "fac_dept_id": 45,
+    "dept_name": "New Born & Child Health",
+    "active_status": 1,
+    "program_tag": "NQAS"
+  },
+  {
+    "fac_dept_id": 46,
+    "dept_name": "Pharmacy",
+    "active_status": 1,
+    "program_tag": "NQAS"
+  },
+  {
+    "fac_dept_id": 47,
+    "dept_name": "G.Admin",
+    "active_status": 1,
+    "program_tag": "NQAS"
+  },
+  {
+    "fac_dept_id": 48,
+    "dept_name": "Immunization",
+    "active_status": 1,
+    "program_tag": "NQAS"
+  },
+  {
+    "fac_dept_id": 49,
+    "dept_name": "Family Planning",
+    "active_status": 1,
+    "program_tag": "NQAS"
+  },
+  {
+    "fac_dept_id": 50,
+    "dept_name": "Communicable Diseases",
+    "active_status": 1,
+    "program_tag": "NQAS"
+  },
+  {
+    "fac_dept_id": 51,
+    "dept_name": "NCD",
+    "active_status": 1,
+    "program_tag": "NQAS"
+  },
+  {
+    "fac_dept_id": 52,
+    "dept_name": "Dressing Room & Emergency",
+    "active_status": 1,
+    "program_tag": "NQAS"
+  },
+  {
+    "fac_dept_id": 53,
+    "dept_name": "Lab",
+    "active_status": 1,
+    "program_tag": "NQAS"
+  },
+  {
+    "fac_dept_id": 54,
+    "dept_name": "Outreach",
+    "active_status": 1,
+    "program_tag": "NQAS"
+  },
+  {
+    "fac_dept_id": 55,
+    "dept_name": "Kayakalp",
+    "active_status": 1,
+    "program_tag": "Kayakalp"
+  }
+]

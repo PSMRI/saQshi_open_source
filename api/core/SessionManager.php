@@ -17,7 +17,8 @@
 
 class SessionManager
 {
-    private const SESSION_NAME = 'SAQSHI_SESSION';
+    private const DEFAULT_SESSION_NAME = 'SAQSHI_SESSION';
+    private static ?array $sessionConfig = null;
 
     /**
      * Session lifetime in seconds.
@@ -44,7 +45,8 @@ class SessionManager
             || (isset($_SERVER['SERVER_PORT']) && (int)$_SERVER['SERVER_PORT'] === 443)
         );
 
-        session_name(self::SESSION_NAME);
+        self::configureStorage();
+        session_name(self::sessionName());
 
         session_set_cookie_params([
             'lifetime' => 0,
@@ -63,6 +65,51 @@ class SessionManager
 
         self::checkTimeout();
         self::regeneratePeriodically();
+    }
+
+    /** Loads application-owned session storage settings before session_start(). */
+    private static function configureStorage(): void
+    {
+        $config = self::config();
+        $driver = strtolower((string)($config['driver'] ?? ''));
+
+        if ($driver === 'redis' && extension_loaded('redis')) {
+            $redis = is_array($config['redis'] ?? null) ? $config['redis'] : [];
+            $host = (string)($redis['host'] ?? '127.0.0.1');
+            $port = max(1, (int)($redis['port'] ?? 6379));
+            $database = max(0, (int)($redis['database'] ?? 0));
+            $prefix = rawurlencode((string)($redis['prefix'] ?? 'saqshi_sess_'));
+            $timeout = max(1, (int)($redis['timeout_seconds'] ?? 1));
+            $readTimeout = max(1, (int)($redis['read_timeout_seconds'] ?? 1));
+            $persistent = !empty($redis['persistent']) ? '&persistent=1' : '';
+            $passwordEnv = (string)($redis['password_env'] ?? '');
+            $password = $passwordEnv !== '' ? getenv($passwordEnv) : false;
+            $auth = is_string($password) && $password !== '' ? '&auth=' . rawurlencode($password) : '';
+
+            ini_set('session.save_handler', 'redis');
+            ini_set('session.save_path', "tcp://{$host}:{$port}?database={$database}&prefix={$prefix}&timeout={$timeout}&read_timeout={$readTimeout}{$persistent}{$auth}");
+            return;
+        }
+
+        if ($driver === 'files') {
+            $path = trim((string)($config['files']['path'] ?? ''));
+            ini_set('session.save_handler', 'files');
+            if ($path !== '') ini_set('session.save_path', $path);
+        }
+    }
+
+    private static function sessionName(): string
+    {
+        $name = strtoupper((string)(self::config()['cookie_name'] ?? self::DEFAULT_SESSION_NAME));
+        return preg_match('/^[A-Z0-9_]{3,64}$/', $name) ? $name : self::DEFAULT_SESSION_NAME;
+    }
+
+    private static function config(): array
+    {
+        if (self::$sessionConfig !== null) return self::$sessionConfig;
+        $path = dirname(__DIR__) . '/config/session.json';
+        $data = is_file($path) ? json_decode((string)file_get_contents($path), true) : [];
+        return self::$sessionConfig = is_array($data) ? $data : [];
     }
 
     /**

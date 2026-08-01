@@ -12,6 +12,10 @@
     window.SQ = window.SQ || {};
     const SQ = window.SQ;
 
+    function label(key, fallback) {
+        return SQ.deployment?.label ? SQ.deployment.label(key, fallback) : fallback;
+    }
+
     const API = {
         assessment: "/assessment/v1/active_assessment.php",
         departments: "/framework/v1/my_departments.php",
@@ -146,17 +150,17 @@
         }
 
         if (!state.departments.length) {
-            select.innerHTML = `<option value="">No activated departments</option>`;
-            setStateMessage("No activated departments found. Activate a department first.");
+            select.innerHTML = `<option value="">No activated ${escapeHtml(label("departments", "departments").toLowerCase())}</option>`;
+            setStateMessage(`No activated ${label("departments", "departments").toLowerCase()} found. Activate a ${label("department", "department").toLowerCase()} first.`);
             return;
         }
 
-        select.innerHTML = `<option value="">Select department</option>`;
+        select.innerHTML = `<option value="">Select ${escapeHtml(label("department", "department").toLowerCase())}</option>`;
 
         state.departments.forEach(function (dept) {
             select.insertAdjacentHTML(
                 "beforeend",
-                `<option value="${Number(dept.dept_id)}">${escapeHtml(dept.dept_name || "Department")}</option>`
+                `<option value="${Number(dept.dept_id)}">${escapeHtml(dept.dept_name || label("department", "Department"))}</option>`
             );
         });
 
@@ -507,6 +511,10 @@
         }
 
         state.isLoading = true;
+        if (SQ.deployment?.load) {
+            await SQ.deployment.load();
+            SQ.deployment.applyLabels(document);
+        }
         bindEvents();
         setStateMessage("Loading assessor information...");
 

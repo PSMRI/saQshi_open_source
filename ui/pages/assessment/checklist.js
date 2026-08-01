@@ -27,6 +27,10 @@
     const state = {
         assessment: null,
         departments: [],
+        concerns: [],
+        checklistView: "detailed",
+        concernChecklist: [],
+        activeConcernId: 0,
         current: null,
         scopeCheckpoints: [],
         currentIndex: 0,
@@ -209,6 +213,31 @@
         show(target, true);
     }
 
+    function renderLifecycleCompleted(lifecycle) {
+        const target = $("checklistState");
+        const assessmentCompleted = Boolean(lifecycle?.assessment_completed);
+
+        if (!target) return;
+
+        target.innerHTML = `
+            <div class="sq-card-body">
+                <div class="sq-completed-state">
+                    <div>
+                        <div class="sq-completed-title">${assessmentCompleted ? "Assessment completed." : "Department completed."}</div>
+                        <p>${assessmentCompleted
+                            ? "All active departments and checklist checkpoints are complete. You can start a reassessment from your dashboard when required."
+                            : "All checkpoints in this department are complete. Return to the dashboard to continue the next active department."}</p>
+                    </div>
+                    <div class="sq-completed-actions">
+                        <button type="button" class="sq-btn sq-btn-primary" data-sq-back-dashboard>Back to Dashboard</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        show($("checkpointPanel"), false);
+        show(target, true);
+    }
+
     function renderAssessment() {
         const assessment = state.assessment || {};
 
@@ -262,7 +291,7 @@
 
         state.assessment = assessment;
         renderAssessment();
-        return true;
+        return response;
     }
 
     async function loadDepartments() {
@@ -333,6 +362,7 @@
         });
 
         const concerns = response?.data?.concerns || [];
+        state.concerns = concerns;
         const select = $("concernSelect");
 
         setOptions(
@@ -345,6 +375,10 @@
 
         select.disabled = concerns.length === 0;
         setStateMessage("Select area of concern.");
+
+        if (state.checklistView === "concern") {
+            await loadConcernChecklist();
+        }
     }
 
     async function loadSubtypes() {
@@ -854,6 +888,13 @@
                 return;
             }
 
+            const lifecycle = saved?.data?.lifecycle || {};
+            if (lifecycle.department_completed || lifecycle.assessment_completed) {
+                renderLifecycleCompleted(lifecycle);
+                notify("success", lifecycle.assessment_completed ? "Assessment completed successfully." : "Department completed successfully.");
+                return;
+            }
+
             if (state.currentIndex >= state.scopeCheckpoints.length - 1) {
                 renderCompletedScopeMessage();
                 notify("success", "All checkpoints in this scope are completed.");
@@ -876,7 +917,206 @@
         renderCheckpointAt(state.currentIndex - 1);
     }
 
+    function setChecklistView(view) {
+        state.checklistView = view === "concern" ? "concern" : "detailed";
+        const concernView = state.checklistView === "concern";
+
+        $("checklistScopeCard")?.classList.toggle("is-aoc-mode", concernView);
+        document.querySelectorAll("[data-checklist-view]").forEach(function (button) {
+            const active = button.dataset.checklistView === state.checklistView;
+            button.classList.toggle("is-active", active);
+            button.setAttribute("aria-selected", String(active));
+        });
+        show($("concernChecklistPanel"), concernView);
+        show($("checkpointPanel"), !concernView && Boolean(state.current));
+        show($("checklistState"), !concernView);
+
+        if (concernView) {
+            if (state.selected.deptId) {
+                loadConcernChecklist();
+            } else {
+                renderConcernMessage("Select a department to view its Areas of Concern.");
+            }
+        }
+    }
+
+    function renderConcernMessage(message) {
+        const target = $("concernChecklistContent");
+        if (target) target.innerHTML = `<div class="sq-empty-state">${escapeHtml(message)}</div>`;
+        if ($("concernTabs")) $("concernTabs").innerHTML = "";
+    }
+
+    async function loadConcernChecklist() {
+        if (!state.selected.deptId || !state.assessment) return;
+
+        const target = $("concernChecklistContent");
+        if (target) target.innerHTML = '<div class="sq-empty-state">Loading areas of concern...</div>';
+
+        try {
+            await startDepartment();
+            const concerns = state.concerns.length ? state.concerns : (await apiGet(API.concerns, {
+                framework: state.assessment.framework_code || "saqshi-nqas",
+                dept_id: state.selected.deptId
+            }))?.data?.concerns || [];
+            state.concerns = concerns;
+
+            state.concernChecklist = await Promise.all(concerns.map(async function (concern) {
+                const subtypeResponse = await apiGet(API.subtypes, {
+                    framework: state.assessment.framework_code || "saqshi-nqas",
+                    dept_id: state.selected.deptId,
+                    concern_id: concern.concern_id
+                });
+                const subtypes = subtypeResponse?.data?.subtypes || [];
+                const groups = await Promise.all(subtypes.map(async function (subtype) {
+                    const response = await apiGet(API.checkpoints, {
+                        assessment_id: state.assessment.assessment_id,
+                        framework: state.assessment.framework_code || "saqshi-nqas",
+                        dept_id: state.selected.deptId,
+                        concern_id: concern.concern_id,
+                        subtype_id: subtype.c_subtype_id
+                    });
+                    return { subtype: subtype, checkpoints: response?.data?.checkpoints || [] };
+                }));
+                return { concern: concern, groups: groups };
+            }));
+
+            state.activeConcernId = state.concernChecklist[0]?.concern?.concern_id || 0;
+            renderConcernTabs();
+        } catch (error) {
+            console.error(error);
+            renderConcernMessage(error.message || "Unable to load Areas of Concern.");
+            notify("error", error.message || "Unable to load Areas of Concern.");
+        }
+    }
+
+    function concernProgress(item) {
+        const checkpoints = item.groups.flatMap(function (group) { return group.checkpoints; });
+        const answered = checkpoints.filter(function (checkpoint) {
+            const saved = checkpoint.saved_response;
+            return saved && saved.response_value !== null && saved.response_value !== undefined && saved.response_value !== "";
+        }).length;
+        return { total: checkpoints.length, answered: answered };
+    }
+
+    function renderConcernTabs() {
+        const tabs = $("concernTabs");
+        if (!tabs) return;
+        if (!state.concernChecklist.length) {
+            renderConcernMessage("No Areas of Concern found for this department.");
+            return;
+        }
+        tabs.innerHTML = state.concernChecklist.map(function (item) {
+            const concern = item.concern || {};
+            const progress = concernProgress(item);
+            const active = Number(concern.concern_id) === Number(state.activeConcernId);
+            return `<button type="button" class="sq-concern-tab${active ? " is-active" : ""}" data-concern-tab="${escapeHtml(concern.concern_id)}">
+                <span>${escapeHtml(concern.concern_name || concern.concern_des || "Area of Concern")}</span>
+                <small>${progress.answered}/${progress.total}${progress.total && progress.answered === progress.total ? " Complete" : ""}</small>
+            </button>`;
+        }).join("");
+        renderActiveConcern();
+    }
+
+    function renderConcernResponse(checkpoint) {
+        const definition = responseDefinition(checkpoint);
+        const saved = checkpoint.saved_response || {};
+        const id = checkpointId(checkpoint);
+        const value = saved.response_value ?? "";
+        if (definition.type === "radio" || definition.type === "yes_no") {
+            return `<div class="sq-aoc-response">${responseOptions(definition).map(function (option) {
+                const optionValue = String(option.value ?? "");
+                return `<label class="sq-score-option"><input type="radio" name="aoc_${id}" value="${escapeHtml(optionValue)}"${String(value) === optionValue ? " checked" : ""}><span>${escapeHtml(option.label || optionValue)}</span></label>`;
+            }).join("")}</div>`;
+        }
+        if (definition.type === "dropdown") {
+            return `<select class="sq-form-control" data-aoc-value><option value="">Select response</option>${responseOptions(definition).map(function (option) {
+                const optionValue = String(option.value ?? "");
+                return `<option value="${escapeHtml(optionValue)}"${String(value) === optionValue ? " selected" : ""}>${escapeHtml(option.label || optionValue)}</option>`;
+            }).join("")}</select>`;
+        }
+        const json = savedJson(saved);
+        if (definition.type === "form") {
+            const values = json.fields || json || {};
+            return `<div class="sq-response-inline-grid">${(definition.fields || []).map(function (field) {
+                const fieldValue = values[field.key] ?? "";
+                return `<div class="sq-form-group"><label>${escapeHtml(field.label || field.key)}</label><input class="sq-form-control" type="${field.type === "number" ? "number" : "text"}" value="${escapeHtml(fieldValue)}" data-aoc-field="${escapeHtml(field.key)}"></div>`;
+            }).join("")}</div>`;
+        }
+        const tag = definition.multiline ? "textarea" : "input";
+        const inputType = definition.type === "number" ? "number" : "text";
+        const content = value ?? json.value ?? "";
+        return tag === "textarea"
+            ? `<textarea class="sq-form-control" data-aoc-value>${escapeHtml(content)}</textarea>`
+            : `<input class="sq-form-control" type="${inputType}" value="${escapeHtml(content)}" data-aoc-value>`;
+    }
+
+    function renderActiveConcern() {
+        const item = state.concernChecklist.find(function (row) { return Number(row.concern.concern_id) === Number(state.activeConcernId); });
+        const target = $("concernChecklistContent");
+        if (!target || !item) return;
+        const progress = concernProgress(item);
+        target.innerHTML = `<div class="sq-aoc-heading"><strong>${escapeHtml(item.concern.concern_name || item.concern.concern_des || "Area of Concern")}</strong><span>${progress.answered} of ${progress.total} answered</span></div>${item.groups.map(function (group) {
+            const subtype = group.subtype || {};
+            return `<section class="sq-aoc-subtype"><h4>${escapeHtml([subtype.Reference_No, subtype.area_of_con_subtypedeatils].filter(Boolean).join(" - ") || "Checklist")}</h4>${group.checkpoints.map(function (checkpoint, index) {
+                const id = checkpointId(checkpoint);
+                return `<article class="sq-aoc-checkpoint" data-aoc-checkpoint="${id}"><div class="sq-checkpoint-reference">${escapeHtml(checkpoint.csqa_reference_id || id || "-")}</div><div class="sq-checkpoint-text">${escapeHtml(checkpoint.Checkpoint || checkpoint.Measurable_Element || "-")}</div>${checkpoint.Means_of_Verification ? `<div class="sq-checkpoint-verification">${escapeHtml(checkpoint.Means_of_Verification)}</div>` : ""}<div class="sq-aoc-control">${renderConcernResponse(checkpoint)}</div></article>`;
+            }).join("")}</section>`;
+        }).join("")}`;
+    }
+
+    function concernPayload(card, checkpoint) {
+        const definition = responseDefinition(checkpoint);
+        if (definition.type === "radio" || definition.type === "yes_no") {
+            const input = card.querySelector("input:checked");
+            return input ? { value: input.value, json: { value: input.value } } : null;
+        }
+        if (definition.type === "form") {
+            const fields = {};
+            card.querySelectorAll("[data-aoc-field]").forEach(function (input) { fields[input.dataset.aocField] = input.value; });
+            const value = Object.values(fields).find(function (fieldValue) { return String(fieldValue || "").trim() !== ""; }) || "";
+            return value || definition.mandatory === false ? { value: value, json: { fields: fields } } : null;
+        }
+        const input = card.querySelector("[data-aoc-value]");
+        const value = String(input?.value || "").trim();
+        return value || definition.mandatory === false ? { value: value, json: { value: value } } : null;
+    }
+
+    async function saveActiveConcern(submit) {
+        const item = state.concernChecklist.find(function (row) { return Number(row.concern.concern_id) === Number(state.activeConcernId); });
+        if (!item) return;
+        const entries = item.groups.flatMap(function (group) { return group.checkpoints; }).map(function (checkpoint) {
+            return { checkpoint: checkpoint, card: document.querySelector(`[data-aoc-checkpoint="${checkpointId(checkpoint)}"]`) };
+        });
+        const incomplete = entries.filter(function (entry) { return !concernPayload(entry.card, entry.checkpoint) && responseDefinition(entry.checkpoint).mandatory !== false; });
+        if (submit && incomplete.length) {
+            notify("warning", `Please answer all mandatory checkpoints before submitting. ${incomplete.length} remaining.`);
+            incomplete[0].card?.scrollIntoView({ behavior: "smooth", block: "center" });
+            return;
+        }
+        try {
+            await startDepartment();
+            let savedCount = 0;
+            for (const entry of entries) {
+                const payload = concernPayload(entry.card, entry.checkpoint);
+                if (!payload) continue;
+                const saved = entry.checkpoint.saved_response;
+                if (saved && String(saved.response_value ?? "") === String(payload.value)) continue;
+                const response = await apiPost(API.saveResponse, { assessment_id: state.assessment.assessment_id, dept_id: state.selected.deptId, checkpoint_id: checkpointId(entry.checkpoint), response_value: payload.value, response_json: payload.json, remarks: "", evidence_url: "" });
+                entry.checkpoint.saved_response = { response_value: response?.data?.response_value ?? payload.value, response_json: response?.data?.response_json || payload.json };
+                savedCount++;
+            }
+            renderConcernTabs();
+            notify("success", submit ? "Area of Concern submitted successfully." : (savedCount ? "Draft saved." : "No changes to save."));
+        } catch (error) {
+            console.error(error);
+            notify("error", error.message || "Unable to save Area of Concern.");
+        }
+    }
+
     function bindEvents() {
+        document.querySelectorAll("[data-checklist-view]").forEach(function (button) {
+            button.addEventListener("click", function () { setChecklistView(button.dataset.checklistView); });
+        });
         $("deptSelect")?.addEventListener("change", loadConcerns);
         $("concernSelect")?.addEventListener("change", loadSubtypes);
         $("subtypeSelect")?.addEventListener("change", loadMethods);
@@ -895,6 +1135,12 @@
         $("checklistState")?.addEventListener("click", function (event) {
             const editButton = event.target.closest("[data-sq-edit-completed]");
             const reloadButton = event.target.closest("[data-sq-reload-scope]");
+            const dashboardButton = event.target.closest("[data-sq-back-dashboard]");
+
+            if (dashboardButton) {
+                if (SQ.router) SQ.router.navigate("assessor/dashboard");
+                return;
+            }
 
             if (editButton) {
                 if (state.scopeCheckpoints.length) {
@@ -913,6 +1159,14 @@
         $("btnSaveCheckpoint")?.addEventListener("click", handleSave);
         $("btnNextCheckpoint")?.addEventListener("click", handleNext);
         $("btnPreviousCheckpoint")?.addEventListener("click", handlePrevious);
+        $("concernTabs")?.addEventListener("click", function (event) {
+            const tab = event.target.closest("[data-concern-tab]");
+            if (!tab) return;
+            state.activeConcernId = Number(tab.dataset.concernTab || 0);
+            renderConcernTabs();
+        });
+        $("btnSaveConcernDraft")?.addEventListener("click", function () { saveActiveConcern(false); });
+        $("btnSubmitConcern")?.addEventListener("click", function () { saveActiveConcern(true); });
     }
 
     async function init() {
@@ -921,6 +1175,10 @@
         }
 
         state.isLoading = true;
+        if (SQ.deployment?.load) {
+            await SQ.deployment.load();
+            SQ.deployment.applyLabels(document);
+        }
         bindEvents();
         setStateMessage("Loading checklist page...");
 

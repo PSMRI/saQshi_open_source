@@ -21,14 +21,14 @@
    Layout
 ========================================================== */
 
-@import url("../css/layout/layout.css");
+@import url("../css/layout/layout.css?v=20260730-2");
 
 /* ==========================================================
    Components
 ========================================================== */
 
-@import url("components/button.css");
-@import url("components/card.css");
+@import url("components/button.css?v=20260802-1");
+@import url("components/card.css?v=20260802-1");
 @import url("components/badge.css");
 @import url("components/alert.css");
 @import url("components/progress.css");

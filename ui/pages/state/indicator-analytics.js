@@ -14,6 +14,12 @@
     const SQ = window.SQ;
     const state = { pager: null };
 
+    function domainLabel(key, fallback) {
+        return SQ.deployment && typeof SQ.deployment.label === "function"
+            ? SQ.deployment.label(key, fallback)
+            : fallback;
+    }
+
     function esc(value) {
         return String(value ?? "")
             .replace(/&/g, "&amp;")
@@ -59,9 +65,9 @@
         const a = data.assessment?.summary || {};
         document.getElementById("stateIndicatorSummary").innerHTML = `
             <div><span>Assessment Indicators</span><strong>${esc(a.indicators || 0)}</strong></div>
-            <div><span>Assessment Facilities</span><strong>${esc(a.facilities || 0)}</strong></div>
+            <div><span>Assessment ${esc(domainLabel("facilities", "Facilities"))}</span><strong>${esc(a.facilities || 0)}</strong></div>
             <div><span>Total Responses</span><strong>${esc(a.responses || 0)}</strong></div>
-            <div><span>Minimum Facilities</span><strong>${esc(document.getElementById("stateIndicatorMinFacilities")?.value || 1)}</strong></div>
+            <div><span>Minimum ${esc(domainLabel("facilities", "Facilities"))}</span><strong>${esc(document.getElementById("stateIndicatorMinFacilities")?.value || 1)}</strong></div>
         `;
     }
 
@@ -78,7 +84,7 @@
                         <th>Checkpoint</th>
                         <th>Department</th>
                         <th>Standard</th>
-                        <th>Facilities Scored 0</th>
+                        <th>${esc(domainLabel("facilities", "Facilities"))} Scored 0</th>
                         <th>Zero Responses</th>
                         <th>Download</th>
                     </tr>
@@ -94,7 +100,7 @@
                                 <td>${esc(row.zero_count || 0)}</td>
                                 <td>
                                     <button class="sq-btn sq-btn-primary" type="button" data-zero-download="${esc(row.download_key || row.checkpoint_id)}">
-                                        Facilities
+                                        ${esc(domainLabel("facilities", "Facilities"))}
                                     </button>
                                 </td>
                             </tr>
@@ -124,6 +130,10 @@
     }
 
     async function init() {
+        if (SQ.deployment && typeof SQ.deployment.load === "function") {
+            await SQ.deployment.load();
+            SQ.deployment.applyLabels(document);
+        }
         state.pager = createPager();
         document.getElementById("stateIndicatorRefresh")?.addEventListener("click", function () {
             state.pager.reset();

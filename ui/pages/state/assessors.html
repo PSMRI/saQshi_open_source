@@ -3,10 +3,10 @@
     <div class="sq-state-toolbar">
         <div>
             <h3 data-domain-label="assessor_management">Assessor Management</h3>
-            <p>Create assessor profiles and map facilities for state assessments.</p>
+            <p data-domain-template="Create assessor profiles and map {facilities} for state assessments.">Create assessor profiles and map facilities for state assessments.</p>
         </div>
         <div class="sq-state-filters">
-            <input type="search" class="sq-form-control" id="assessorSearch" placeholder="Search assessor code or user ID" aria-label="Search assessor">
+            <input type="search" class="sq-form-control" id="assessorSearch" placeholder="Search DPO code, login user or user ID" aria-label="Search DPO">
             <button class="sq-btn sq-btn-primary" id="assessorRefresh" type="button">Refresh</button>
         </div>
     </div>
@@ -62,7 +62,7 @@
         <div class="sq-card">
             <div class="sq-card-header">
                 <h3 data-domain-label="assessor_mapping">Facility Mapping</h3>
-                <p>Select an assessor from the list, search a facility, then assign it.</p>
+                <p data-domain-template="Select an assessor from the list, search a {facility}, then assign it.">Select an assessor from the list, search a facility, then assign it.</p>
             </div>
             <div class="sq-card-body">
                 <div class="sq-assessor-map-tools">
@@ -70,9 +70,10 @@
                         <span>Selected Assessor</span>
                         <strong id="mappingAssessorName">None selected</strong>
                     </div>
-                    <input type="search" class="sq-form-control" id="facilitySearch" placeholder="Search facility name, NIN, district or block" aria-label="Search facility">
+                    <input type="search" class="sq-form-control" id="facilitySearch" placeholder="Search facility name, NIN, district or block" aria-label="Search facility" data-domain-placeholder="Search {facility} name, {facility_code}, district or block" data-domain-aria-label="Search {facility}">
                 </div>
                 <div id="facilitySearchRows" class="sq-assessor-search"></div>
+                <div id="selectedFacilityRows" class="sq-assessor-search"></div>
                 <div id="mappingRows" class="sq-assessor-mappings"></div>
             </div>
         </div>
@@ -81,6 +82,7 @@
     <div class="sq-card">
         <div class="sq-card-header">
             <h3>Assessors</h3>
+            <input type="search" class="sq-form-control" id="assessorTableSearch" placeholder="Search DPO code, login user or user ID" aria-label="Search DPO list">
             <div id="assessorPager"></div>
         </div>
         <div class="sq-card-body" id="assessorRows"></div>

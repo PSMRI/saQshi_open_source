@@ -13,6 +13,16 @@
     window.SQ = window.SQ || {};
     const SQ = window.SQ;
 
+    function domainLabel(key, fallback) {
+        return SQ.deployment && typeof SQ.deployment.label === "function"
+            ? SQ.deployment.label(key, fallback)
+            : fallback;
+    }
+
+    function moduleEnabled(key) {
+        return !SQ.deployment || typeof SQ.deployment.moduleEnabled !== "function" || SQ.deployment.moduleEnabled(key);
+    }
+
     function esc(value) {
         return String(value ?? "")
             .replace(/&/g, "&amp;")
@@ -34,11 +44,12 @@
     function renderExports(exports) {
         const list = Array.isArray(exports) && exports.length ? exports : [
             { key: "summary", title: "State Summary", description: "Summary counts for all state monitoring sections." },
-            { key: "facilities", title: "All Facility List", description: "Facility master details." },
+            { key: "facilities", title: `All ${domainLabel("facility", "Facility")} List`, description: `${domainLabel("facility", "Facility")} master details.` },
             { key: "assessments", title: "Assessment Details", description: "Assessment status, score and action plan summary." },
+            { key: "assessor_activity", title: `${domainLabel("assessor", "Assessor")} Activity`, description: `Completed assessments and assessment details by ${domainLabel("assessor", "Assessor")}.` },
             { key: "cqi", title: "CQI Details", description: "Action plan and gap closure details." },
-            { key: "performance", title: "Performance Details", description: "KPI and Outcome entries." },
-            { key: "certification", title: "Certification History", description: "Facility certification history." }
+            ...(moduleEnabled("performance") ? [{ key: "performance", title: "Performance Details", description: "Performance entries." }] : []),
+            { key: "certification", title: "Certification History", description: `${domainLabel("facility", "Facility")} certification history.` }
         ];
 
         document.getElementById("stateReportExports").innerHTML = list.map(function (item) {
@@ -65,10 +76,10 @@
 
         document.getElementById("stateReportSummary").innerHTML = `
             <div class="sq-state-list">
-                <div class="sq-state-row"><span>Total Facilities</span><b>${esc(data.facility_category?.total_facilities || 0)}</b></div>
+                <div class="sq-state-row"><span>Total ${esc(domainLabel("facilities", "Facilities"))}</span><b>${esc(data.facility_category?.total_facilities || 0)}</b></div>
                 <div class="sq-state-row"><span>Assessment Records</span><b>${esc(data.assessment_progress?.summary?.total || 0)}</b></div>
                 <div class="sq-state-row"><span>CQI Pending</span><b>${esc(data.cqi_summary?.pending || 0)}</b></div>
-                <div class="sq-state-row"><span>Performance Months</span><b>${esc((data.performance_summary?.months || []).length)}</b></div>
+                ${moduleEnabled("performance") ? `<div class="sq-state-row"><span>Performance Months</span><b>${esc((data.performance_summary?.months || []).length)}</b></div>` : ""}
                 <div class="sq-state-row"><span>Certification Records</span><b>${esc(data.certification_summary?.total || 0)}</b></div>
             </div>
         `;
@@ -89,6 +100,10 @@
     }
 
     async function init() {
+        if (SQ.deployment && typeof SQ.deployment.load === "function") {
+            await SQ.deployment.load();
+            SQ.deployment.applyLabels(document);
+        }
         document.getElementById("stateReportsRefresh")?.addEventListener("click", load);
         let searchTimer = null;
         document.getElementById("stateReportsSearch")?.addEventListener("input", function () {

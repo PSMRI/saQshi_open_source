@@ -297,6 +297,10 @@
     }
 
     async function init() {
+        if (SQ.deployment && typeof SQ.deployment.load === "function") {
+            await SQ.deployment.load();
+            SQ.deployment.applyLabels(document);
+        }
         resetMap();
         document.getElementById("stateMapRefresh")?.addEventListener("click", load);
         let searchTimer = null;

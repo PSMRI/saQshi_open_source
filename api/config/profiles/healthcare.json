@@ -3,6 +3,18 @@
   "profile_name": "Healthcare Quality Assessment",
   "recommended_for": "Hospitals, AAM, HWC, CHC, PHC and NQAS-style quality assessment.",
   "default_framework": "saqshi-nqas",
+  "branding": {
+    "login_app_name": "SaQshi",
+    "login_app_tagline": "Digital Healthcare Quality Assessment Platform",
+    "login_kicker": "Healthcare Quality Platform",
+    "login_title": "Structured assessments for facility improvement.",
+    "login_description": "Manage NQAS, MusQan and LaQshya assessment workflows with department activation, checkpoint scoring and CQI tracking."
+  },
+  "content": {
+    "assessor_dashboard_overview": "{assessment} overview across your assigned {facilities}.",
+    "assessor_choose_item": "Choose the {facility} where you will perform {assessment}.",
+    "assessor_no_mapped_items": "No {facilities} are mapped to this {assessor} profile."
+  },
   "modules": {
     "assessment": true,
     "cqi": true,
@@ -24,6 +36,8 @@
     "assigned_facilities": "Assigned Facilities",
     "department": "Department",
     "departments": "Departments",
+    "area_of_concern": "Area of Concern",
+    "areas_of_concern": "Areas of Concern",
     "assessment": "Assessment",
     "assessments": "Assessments",
     "assessment_list": "Assessment List",

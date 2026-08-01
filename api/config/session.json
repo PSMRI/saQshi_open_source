@@ -1,0 +1,17 @@
+{
+  "cookie_name": "SAQSHI_SESSION",
+  "driver": "redis",
+  "redis": {
+    "host": "127.0.0.1",
+    "port": 6379,
+    "database": 2,
+    "prefix": "saqshi_sess_",
+    "timeout_seconds": 1,
+    "read_timeout_seconds": 1,
+    "persistent": true,
+    "password_env": "SAQSHI_REDIS_PASSWORD"
+  },
+  "files": {
+    "path": ""
+  }
+}

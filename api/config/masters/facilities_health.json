@@ -1,0 +1,1577 @@
+[
+  {
+    "state_id": 10,
+    "state_name": "UP",
+    "divisions": [
+      {
+        "division_id": 1,
+        "division_name": "Varanasi",
+        "districts": [
+          {
+            "dist_id": 1,
+            "dist_name": "Varanasi",
+            "blocks": [
+              {
+                "block_id": 1,
+                "block_name": "Arajiline",
+                "facilities": [
+                  {
+                    "nin_no": 2642768820,
+                    "fac_id": 5,
+                    "fac_name": "Bhikhipur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 3761838451,
+                    "fac_id": 8,
+                    "fac_name": "Hardattpur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 5148837544,
+                    "fac_id": 9,
+                    "fac_name": "BHAWANIPUR",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 7618464247,
+                    "fac_id": 15,
+                    "fac_name": "kachnar",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 7377147330,
+                    "fac_id": 16,
+                    "fac_name": "Gangapur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 1552618520,
+                    "fac_id": 17,
+                    "fac_name": "KRISHANDATPUR",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 8713825688,
+                    "fac_id": 23,
+                    "fac_name": "MAROI",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 7673347568,
+                    "fac_id": 24,
+                    "fac_name": "PANIYARA",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 5688423275,
+                    "fac_id": 27,
+                    "fac_name": "SAJOI",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 6678183663,
+                    "fac_id": 28,
+                    "fac_name": "Benipur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 4862364728,
+                    "fac_id": 29,
+                    "fac_name": "MEHADIGANJ",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 8652877260,
+                    "fac_id": 31,
+                    "fac_name": "KHEWALI",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 3733824753,
+                    "fac_id": 35,
+                    "fac_name": "Arajiline",
+                    "fac_type_id": 1,
+                    "facilities_type": "CHC"
+                  },
+                  {
+                    "nin_no": 1625533227,
+                    "fac_id": 39,
+                    "fac_name": "Kashipur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 6161522575,
+                    "fac_id": 41,
+                    "fac_name": "Ghamhapur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 8416875725,
+                    "fac_id": 67,
+                    "fac_name": "Rupapur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 8737717234,
+                    "fac_id": 69,
+                    "fac_name": "Basnt Patti",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 8335338276,
+                    "fac_id": 96,
+                    "fac_name": "Mohansarai",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 3576116218,
+                    "fac_id": 97,
+                    "fac_name": "ASWARI",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 8614776543,
+                    "fac_id": 98,
+                    "fac_name": "BHADAINI KHURD",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 2738157789,
+                    "fac_id": 99,
+                    "fac_name": "BHIKHAMPUR",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 4432346288,
+                    "fac_id": 100,
+                    "fac_name": "Bhikharipur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 3743485413,
+                    "fac_id": 101,
+                    "fac_name": "Jayapur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 6574128846,
+                    "fac_id": 102,
+                    "fac_name": "DAREKHU",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 3287746170,
+                    "fac_id": 103,
+                    "fac_name": "GURUDASPUR",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 2786642674,
+                    "fac_id": 104,
+                    "fac_name": "HARASOS",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 1112616865,
+                    "fac_id": 105,
+                    "fac_name": "KALLIPUR",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 5525868484,
+                    "fac_id": 106,
+                    "fac_name": "KURAUNA",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 8257178858,
+                    "fac_id": 107,
+                    "fac_name": "Mahagaon",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 5312661563,
+                    "fac_id": 108,
+                    "fac_name": "NARAICHA",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 4441288232,
+                    "fac_id": 109,
+                    "fac_name": "PARMANDAPUR",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 3415577885,
+                    "fac_id": 110,
+                    "fac_name": "SAHANSAHPUR",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 1763486436,
+                    "fac_id": 111,
+                    "fac_name": "Bhanpur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 8334432187,
+                    "fac_id": 112,
+                    "fac_name": "BHATSAR",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 4887436113,
+                    "fac_id": 113,
+                    "fac_name": "Janasa",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 6687424264,
+                    "fac_id": 114,
+                    "fac_name": "KAPARFORWA",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 7448831169,
+                    "fac_id": 115,
+                    "fac_name": "KORAUTI",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 8573185835,
+                    "fac_id": 116,
+                    "fac_name": "KUNDARIYA",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 7657583436,
+                    "fac_id": 117,
+                    "fac_name": "LAHIYA",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 2484821372,
+                    "fac_id": 118,
+                    "fac_name": "Todarpur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  }
+                ]
+              },
+              {
+                "block_id": 2,
+                "block_name": "Baragaon",
+                "facilities": [
+                  {
+                    "nin_no": 6883237239,
+                    "fac_id": 42,
+                    "fac_name": "Baragaon",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 1886746534,
+                    "fac_id": 43,
+                    "fac_name": "Kuri",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 8272637763,
+                    "fac_id": 44,
+                    "fac_name": "Balua",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 3438545737,
+                    "fac_id": 45,
+                    "fac_name": "MADHUMAKHIYA",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 6844168655,
+                    "fac_id": 119,
+                    "fac_name": "Bashni",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 6757575482,
+                    "fac_id": 120,
+                    "fac_name": "Belvan",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 1477335846,
+                    "fac_id": 121,
+                    "fac_name": "Devchandpur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 4257363871,
+                    "fac_id": 122,
+                    "fac_name": "Kabirampur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 4742343272,
+                    "fac_id": 123,
+                    "fac_name": "kushai",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 2127112437,
+                    "fac_id": 124,
+                    "fac_name": "Raghunathpur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 3261132264,
+                    "fac_id": 125,
+                    "fac_name": "Sadho Ganj",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 6573528483,
+                    "fac_id": 126,
+                    "fac_name": "Nadhai Pur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 8822731744,
+                    "fac_id": 127,
+                    "fac_name": "Chilbila",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 7164578820,
+                    "fac_id": 128,
+                    "fac_name": "Kushumara",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 2788723266,
+                    "fac_id": 129,
+                    "fac_name": "Chagvar",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 4677622773,
+                    "fac_id": 130,
+                    "fac_name": "Kuru",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 1642711228,
+                    "fac_id": 131,
+                    "fac_name": "Sarva",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 4683347225,
+                    "fac_id": 138,
+                    "fac_name": "CHHITAUNI",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 1527132623,
+                    "fac_id": 140,
+                    "fac_name": "Jairam pur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  }
+                ]
+              },
+              {
+                "block_id": 3,
+                "block_name": "Chiraigaon",
+                "facilities": [
+                  {
+                    "nin_no": 5783853459,
+                    "fac_id": 19,
+                    "fac_name": "PHC CHIRAIGAUON",
+                    "fac_type_id": 3,
+                    "facilities_type": "PHC"
+                  },
+                  {
+                    "nin_no": 8423342644,
+                    "fac_id": 46,
+                    "fac_name": "Paterawan",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 1327274880,
+                    "fac_id": 47,
+                    "fac_name": "Amba",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 8363183586,
+                    "fac_id": 48,
+                    "fac_name": "lmlia",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 1154572257,
+                    "fac_id": 49,
+                    "fac_name": "Kamauli",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 2118684840,
+                    "fac_id": 132,
+                    "fac_name": "BARAI",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 8657247337,
+                    "fac_id": 133,
+                    "fac_name": "KODOPUR",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 4853737569,
+                    "fac_id": 134,
+                    "fac_name": "SANKARPUR",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 8555222127,
+                    "fac_id": 135,
+                    "fac_name": "SIYO",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 8245282440,
+                    "fac_id": 136,
+                    "fac_name": "UMARAHA",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 4342738178,
+                    "fac_id": 137,
+                    "fac_name": "BHAGTUA",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 8744117857,
+                    "fac_id": 139,
+                    "fac_name": "JALHUPUR",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 8818246624,
+                    "fac_id": 141,
+                    "fac_name": "MUSTAFABAD",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 8838867888,
+                    "fac_id": 142,
+                    "fac_name": "Chhahi",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 1282377488,
+                    "fac_id": 143,
+                    "fac_name": "Goppur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 4162521142,
+                    "fac_id": 144,
+                    "fac_name": "Narayanpur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 1632251334,
+                    "fac_id": 145,
+                    "fac_name": "Pitari",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 7278625384,
+                    "fac_id": 146,
+                    "fac_name": "Puranpatti",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 8186463249,
+                    "fac_id": 147,
+                    "fac_name": "Bartharakala",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 1355652650,
+                    "fac_id": 227,
+                    "fac_name": "Chitouni",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  }
+                ]
+              },
+              {
+                "block_id": 5,
+                "block_name": "Harauan",
+                "facilities": [
+                  {
+                    "nin_no": 6844736311,
+                    "fac_id": 10,
+                    "fac_name": "Shivram pur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 8325151556,
+                    "fac_id": 20,
+                    "fac_name": "Haruhua",
+                    "fac_type_id": 3,
+                    "facilities_type": "PHC"
+                  },
+                  {
+                    "nin_no": 1574488357,
+                    "fac_id": 53,
+                    "fac_name": "Badi",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 6836782653,
+                    "fac_id": 54,
+                    "fac_name": "Dulahipur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 1755236120,
+                    "fac_id": 55,
+                    "fac_name": "Bhagawanpur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 1215534536,
+                    "fac_id": 163,
+                    "fac_name": "Raja pur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 2374472583,
+                    "fac_id": 164,
+                    "fac_name": "Adampur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 2588361846,
+                    "fac_id": 165,
+                    "fac_name": "Atesua",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 6662488326,
+                    "fac_id": 166,
+                    "fac_name": "Belwariya",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 5743462383,
+                    "fac_id": 167,
+                    "fac_name": "Bhathauli",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 1183877735,
+                    "fac_id": 168,
+                    "fac_name": "Bhatpurva",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 3285466680,
+                    "fac_id": 169,
+                    "fac_name": "Chamauv",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 2387243377,
+                    "fac_id": 170,
+                    "fac_name": "Gosaipur Mohav",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 8584318177,
+                    "fac_id": 171,
+                    "fac_name": "Gurvat",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 8452871463,
+                    "fac_id": 172,
+                    "fac_name": "Lodhan",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 5833886228,
+                    "fac_id": 173,
+                    "fac_name": "Mohanpur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 2531616650,
+                    "fac_id": 174,
+                    "fac_name": "Palahi Patti",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 8211448777,
+                    "fac_id": 175,
+                    "fac_name": "Pisaur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 7648534563,
+                    "fac_id": 176,
+                    "fac_name": "Puwaikala",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 6881754243,
+                    "fac_id": 177,
+                    "fac_name": "Sabhaipur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 5824557879,
+                    "fac_id": 178,
+                    "fac_name": "Sarayakaji",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 6838462148,
+                    "fac_id": 179,
+                    "fac_name": "Uday Pur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 5831544845,
+                    "fac_id": 180,
+                    "fac_name": "Undi",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 3377681642,
+                    "fac_id": 181,
+                    "fac_name": "Gauhura",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 8168457243,
+                    "fac_id": 182,
+                    "fac_name": "Lamahi",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 4675772281,
+                    "fac_id": 184,
+                    "fac_name": "Bakhariya",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 7384423419,
+                    "fac_id": 185,
+                    "fac_name": "Bandey Pur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 3473667750,
+                    "fac_id": 186,
+                    "fac_name": "Bhatti",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 8276441824,
+                    "fac_id": 187,
+                    "fac_name": "Bhiti",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 6874367318,
+                    "fac_id": 188,
+                    "fac_name": "Dafi",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 6264148740,
+                    "fac_id": 225,
+                    "fac_name": "Badi",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 1211265861,
+                    "fac_id": 226,
+                    "fac_name": "Tewar",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  }
+                ]
+              },
+              {
+                "block_id": 6,
+                "block_name": "Kashi Vidyapeeth",
+                "facilities": [
+                  {
+                    "nin_no": 1131154674,
+                    "fac_id": 4,
+                    "fac_name": "Mahmoodpur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 1851575157,
+                    "fac_id": 30,
+                    "fac_name": "Khannaw",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 1113723322,
+                    "fac_id": 38,
+                    "fac_name": "misirpur",
+                    "fac_type_id": 1,
+                    "facilities_type": "CHC"
+                  },
+                  {
+                    "nin_no": 8514383374,
+                    "fac_id": 56,
+                    "fac_name": "Misirpur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 8347631460,
+                    "fac_id": 57,
+                    "fac_name": "Kakarmatta",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 7838172240,
+                    "fac_id": 58,
+                    "fac_name": "BANKAT",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 1131155674,
+                    "fac_id": 59,
+                    "fac_name": "Mahmoodpur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 5633875835,
+                    "fac_id": 60,
+                    "fac_name": "Amra Khaira",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 2382473466,
+                    "fac_id": 183,
+                    "fac_name": "Bachav",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 1844168375,
+                    "fac_id": 189,
+                    "fac_name": "Fulwariya",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 6167824470,
+                    "fac_id": 190,
+                    "fac_name": "Govindpur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 5811126357,
+                    "fac_id": 191,
+                    "fac_name": "KANDAWA",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 2824858233,
+                    "fac_id": 192,
+                    "fac_name": "Karsara",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 8573278655,
+                    "fac_id": 193,
+                    "fac_name": "Kerakat pur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 4368345429,
+                    "fac_id": 194,
+                    "fac_name": "KHULASPUR",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 8882625422,
+                    "fac_id": 195,
+                    "fac_name": "Madhopur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 4323576878,
+                    "fac_id": 196,
+                    "fac_name": "Naipur Kala",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 7627374361,
+                    "fac_id": 197,
+                    "fac_name": "Panditpur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 3553124219,
+                    "fac_id": 198,
+                    "fac_name": "Sarahari",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 4437665435,
+                    "fac_id": 199,
+                    "fac_name": "Tarapur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 5484743553,
+                    "fac_id": 200,
+                    "fac_name": "Tikari",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 2781783275,
+                    "fac_id": 201,
+                    "fac_name": "Korautai",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  }
+                ]
+              },
+              {
+                "block_id": 7,
+                "block_name": "Pindra",
+                "facilities": [
+                  {
+                    "nin_no": 7181841847,
+                    "fac_id": 2,
+                    "fac_name": "Aharakh",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 5745441781,
+                    "fac_id": 21,
+                    "fac_name": "Pindra",
+                    "fac_type_id": 3,
+                    "facilities_type": "PHC"
+                  },
+                  {
+                    "nin_no": 1113723413,
+                    "fac_id": 22,
+                    "fac_name": "GANGA PUR",
+                    "fac_type_id": 1,
+                    "facilities_type": "CHC"
+                  },
+                  {
+                    "nin_no": 4662435876,
+                    "fac_id": 61,
+                    "fac_name": "Garthama",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 8178717420,
+                    "fac_id": 202,
+                    "fac_name": "Belari",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 2278441833,
+                    "fac_id": 203,
+                    "fac_name": "Gadhkhara",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 8162445483,
+                    "fac_id": 204,
+                    "fac_name": "Surhi",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 2711353165,
+                    "fac_id": 205,
+                    "fac_name": "Jagidishpur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 7331737770,
+                    "fac_id": 206,
+                    "fac_name": "Jhanjhour",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 1736446681,
+                    "fac_id": 207,
+                    "fac_name": "Kashipur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 3866618675,
+                    "fac_id": 208,
+                    "fac_name": "Khalispur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 6281877248,
+                    "fac_id": 209,
+                    "fac_name": "Mangari",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 2152236358,
+                    "fac_id": 210,
+                    "fac_name": "Shahapur II",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 5357348589,
+                    "fac_id": 211,
+                    "fac_name": "Sindhora",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 3174357842,
+                    "fac_id": 212,
+                    "fac_name": "Tikirikala",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 4428437315,
+                    "fac_id": 213,
+                    "fac_name": "Jamapur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 1361565565,
+                    "fac_id": 214,
+                    "fac_name": "Phoolpur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 4838335620,
+                    "fac_id": 215,
+                    "fac_name": "Sarai",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 4467641850,
+                    "fac_id": 222,
+                    "fac_name": "Hiramanpur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 3226445884,
+                    "fac_id": 223,
+                    "fac_name": "Rajpur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  }
+                ]
+              },
+              {
+                "block_id": 8,
+                "block_name": "Sevapuri",
+                "facilities": [
+                  {
+                    "nin_no": 7681348418,
+                    "fac_id": 14,
+                    "fac_name": "Hathi Bazaar",
+                    "fac_type_id": 1,
+                    "facilities_type": "CHC"
+                  },
+                  {
+                    "nin_no": 5133477843,
+                    "fac_id": 18,
+                    "fac_name": "Sevapuri",
+                    "fac_type_id": 3,
+                    "facilities_type": "PHC"
+                  },
+                  {
+                    "nin_no": 8712884165,
+                    "fac_id": 33,
+                    "fac_name": "BHITKURI",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 7473455439,
+                    "fac_id": 62,
+                    "fac_name": "Maharajpur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 1267777777,
+                    "fac_id": 63,
+                    "fac_name": "Domaila",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 1817667486,
+                    "fac_id": 64,
+                    "fac_name": "Kardhana 1",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 8346615441,
+                    "fac_id": 65,
+                    "fac_name": "Bhorkala",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 6282561114,
+                    "fac_id": 66,
+                    "fac_name": "Khagarampur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 6331613510,
+                    "fac_id": 70,
+                    "fac_name": "Barema",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 5467431879,
+                    "fac_id": 71,
+                    "fac_name": "Barki",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 7154652114,
+                    "fac_id": 72,
+                    "fac_name": "Hathi",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 6564832688,
+                    "fac_id": 73,
+                    "fac_name": "Manyari Pur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 2833853340,
+                    "fac_id": 74,
+                    "fac_name": "Pachavar",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 4718831342,
+                    "fac_id": 75,
+                    "fac_name": "Pure",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 6816364381,
+                    "fac_id": 76,
+                    "fac_name": "Rameshawar One",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 6158251618,
+                    "fac_id": 77,
+                    "fac_name": "Sattanpur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 2586431880,
+                    "fac_id": 78,
+                    "fac_name": "Sikhari",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 8147753589,
+                    "fac_id": 79,
+                    "fac_name": "Tendui",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 4382241489,
+                    "fac_id": 80,
+                    "fac_name": "Thathara II",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 5761451219,
+                    "fac_id": 81,
+                    "fac_name": "Thathara I",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 6688143426,
+                    "fac_id": 82,
+                    "fac_name": "Amini",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 5244847140,
+                    "fac_id": 83,
+                    "fac_name": "Barauda",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 4638827552,
+                    "fac_id": 84,
+                    "fac_name": "Bhikhampur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 8344615441,
+                    "fac_id": 85,
+                    "fac_name": "Bhorkala",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 4872673233,
+                    "fac_id": 86,
+                    "fac_name": "Dilawalpur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 8575767754,
+                    "fac_id": 87,
+                    "fac_name": "Gosai",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 1412656223,
+                    "fac_id": 88,
+                    "fac_name": "Kardhana II",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 3468441542,
+                    "fac_id": 89,
+                    "fac_name": "Lalpur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 5251445127,
+                    "fac_id": 90,
+                    "fac_name": "Son Barasa",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 8186814631,
+                    "fac_id": 91,
+                    "fac_name": "Gaharpur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 5766386378,
+                    "fac_id": 93,
+                    "fac_name": "Kalika Dham",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 7458862179,
+                    "fac_id": 94,
+                    "fac_name": "Kapsathi",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 4672848159,
+                    "fac_id": 95,
+                    "fac_name": "Sakalpur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 2174858643,
+                    "fac_id": 219,
+                    "fac_name": "Vihda",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 1127512349,
+                    "fac_id": 221,
+                    "fac_name": "Gosaipur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 4174824336,
+                    "fac_id": 224,
+                    "fac_name": "Chhateri Manapur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  }
+                ]
+              },
+              {
+                "block_id": 10,
+                "block_name": "Cholapur",
+                "facilities": [
+                  {
+                    "nin_no": 6853474713,
+                    "fac_id": 50,
+                    "fac_name": "Ugapur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 8577657367,
+                    "fac_id": 51,
+                    "fac_name": "Hazipur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 4515126235,
+                    "fac_id": 52,
+                    "fac_name": "dharsauna",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 5637385443,
+                    "fac_id": 148,
+                    "fac_name": "Ajgara I",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 8473528324,
+                    "fac_id": 149,
+                    "fac_name": "Chaubeypur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 6783385419,
+                    "fac_id": 150,
+                    "fac_name": "Rauna Khurd",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 6414177482,
+                    "fac_id": 151,
+                    "fac_name": "Rajwari",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 1811635554,
+                    "fac_id": 152,
+                    "fac_name": "Sultanipur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 3873241776,
+                    "fac_id": 153,
+                    "fac_name": "Babiyaw",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 6748832133,
+                    "fac_id": 154,
+                    "fac_name": "Niiyar Sub Center",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 5628458829,
+                    "fac_id": 155,
+                    "fac_name": "Singhpur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 4458567635,
+                    "fac_id": 156,
+                    "fac_name": "Mawaiya",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 7234367857,
+                    "fac_id": 157,
+                    "fac_name": "Roopchandpur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 5772758677,
+                    "fac_id": 158,
+                    "fac_name": "Garthauli",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 2427284464,
+                    "fac_id": 159,
+                    "fac_name": "Hariharpur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 2347264836,
+                    "fac_id": 160,
+                    "fac_name": "Kaithi",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 3865386241,
+                    "fac_id": 161,
+                    "fac_name": "Barthara Khurd",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 8442341858,
+                    "fac_id": 162,
+                    "fac_name": "Jagdishpur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 1784277186,
+                    "fac_id": 216,
+                    "fac_name": "Danganj MC",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 1127511689,
+                    "fac_id": 217,
+                    "fac_name": "Sugalpur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  },
+                  {
+                    "nin_no": 1771458872,
+                    "fac_id": 218,
+                    "fac_name": "Trishora",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  }
+                ]
+              },
+              {
+                "block_id": 1111,
+                "block_name": "Varansi",
+                "facilities": [
+                  {
+                    "nin_no": 8567744258,
+                    "fac_id": 92,
+                    "fac_name": "Ghajapur",
+                    "fac_type_id": 8,
+                    "facilities_type": "AAM-SC"
+                  }
+                ]
+              },
+              {
+                "block_id": 1113,
+                "block_name": "Sadar",
+                "facilities": [
+                  {
+                    "nin_no": 1116276534,
+                    "fac_id": 68,
+                    "fac_name": "Durgakund",
+                    "fac_type_id": 1,
+                    "facilities_type": "CHC"
+                  }
+                ]
+              },
+              {
+                "block_id": 1114,
+                "block_name": "Urban",
+                "facilities": [
+                  {
+                    "nin_no": 1113723355,
+                    "fac_id": 220,
+                    "fac_name": "Sarnath",
+                    "fac_type_id": 1,
+                    "facilities_type": "CHC"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

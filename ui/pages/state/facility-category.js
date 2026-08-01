@@ -137,6 +137,10 @@
     }
 
     async function init() {
+        if (SQ.deployment && typeof SQ.deployment.load === "function") {
+            await SQ.deployment.load();
+            SQ.deployment.applyLabels(document);
+        }
         bindDistrictToggle();
         document.getElementById("stateFacilityRefresh")?.addEventListener("click", load);
         bindSearch();

@@ -1,0 +1,14 @@
+{
+  "id": "assessor-reports",
+  "name": "Assessor Reports",
+  "title": "Assessor Reports",
+  "layout": "dashboard",
+  "pageHeader": { "title": "Assessment Reports", "subtitle": "Assessment details for assigned Schools and Facilities." },
+  "authentication": { "required": true },
+  "assets": {
+    "css": ["/ui/pages/assessor/dashboard.css?v=20260718-3"],
+    "js": ["/ui/pages/assessor/reports.js?v=20260731-1"]
+  },
+  "breadcrumb": [{"label":"Dashboard","url":"/ui/dashboard.html"},{"label":"Assessor"},{"label":"Reports"}],
+  "moduleName": "assessorReports"
+}

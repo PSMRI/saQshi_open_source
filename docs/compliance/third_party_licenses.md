@@ -1,7 +1,7 @@
 # Third-Party License and Attribution Inventory
 
-Version: 1.1  
-Updated: 2026-07-16  
+Version: 1.2  
+Updated: 2026-07-30  
 Project license: GPL-3.0
 
 ## Purpose
@@ -20,6 +20,7 @@ open_source/api/
 open_source/docs/
 open_source/gitbook.html
 open_source/developer.php
+open_source/tools/observability/
 ```
 
 Scan date: 2026-07-16
@@ -37,6 +38,10 @@ No `package.json`, `composer.json`, `node_modules/` or Composer `vendor/` depend
 | Leaflet | `leaflet@1.9.4` from `cdn.jsdelivr.net`; upstream source `https://github.com/Leaflet/Leaflet` | `ui/pages/state/map.json`, `ui/pages/state/map.js` for interactive certification maps | BSD-2-Clause | Version-pinned CDN dependency. Leaflet copyright/license notice is retained through this inventory. For offline/production releases, vendor the exact `leaflet.css` and `leaflet.js` files with the BSD-2-Clause license. |
 | OpenStreetMap tiles/data | Configured tile URL in `api/config/masters/map_config.json` | State certification map | OSM attribution required | Detected. UI must keep visible `OpenStreetMap contributors` attribution wherever OSM tiles are shown. |
 | Postman Collection schema | `https://schema.getpostman.com/json/collection/v2.1.0/collection.json` | API testing collections | Postman schema reference | Documentation/test artifact reference only. |
+| Memurai for Windows | Installed separately; SaQshi session settings are in `api/config/session.json` | Optional Redis-compatible PHP session handler on Windows | Proprietary Memurai EULA; Developer Edition is development/test only | **Not bundled with SaQshi.** Do not use Memurai Developer Edition in production. Obtain and document an appropriate production/Enterprise license before production use. Official terms: `https://www.memurai.com/terms`; license configuration: `https://docs.memurai.com/en/config-license`. |
+| Grafana OSS | Portable installer downloads Grafana OSS `13.1.1` | Optional local log dashboards under `tools/observability/` | AGPL-3.0 | Not bundled in the source repository; downloaded by the installer. Review AGPL obligations before distributing modified Grafana or offering modified Grafana as a network service. Official licensing: `https://grafana.com/licensing/`. |
+| Grafana Loki | Portable installer downloads Loki `3.7.4` | Optional local log aggregation under `tools/observability/` | AGPL-3.0 | Not bundled in the source repository; downloaded by the installer. Preserve applicable notices and review AGPL obligations for modifications/distribution. Official project page: `https://grafana.com/oss/loki/`. |
+| Grafana Alloy | Portable installer downloads Alloy `1.18.0` | Optional file-based collection of `api/storage/events/*.log` | Apache-2.0 | Not bundled in the source repository; downloaded by the installer. Retain its license/notice when distributing a bundled copy. Official source: `https://github.com/grafana/alloy`. |
 
 ## Referenced But Missing From Public Source Package
 
@@ -103,6 +108,23 @@ Current data/configuration position:
 - Outcome configuration is retained as approved core quality-monitoring configuration.
 - State boundary/map data is attributed to DataMeet where used.
 
+## Optional Operations Tooling License Notes
+
+The Memurai and Grafana tooling is optional operational tooling, not part of the
+SaQshi PHP/browser runtime. The portable installer downloads official binaries
+locally; it does not commit or redistribute them with this source package.
+
+- **Memurai:** Developer Edition is suitable only for local development and test
+  use. A valid production/Enterprise license must be obtained before production
+  deployment.
+- **Grafana OSS and Loki:** listed under AGPL-3.0. Any plan to modify, bundle,
+  distribute, or expose modified versions as a network service requires legal
+  review of the applicable AGPL terms.
+- **Grafana Alloy:** listed under Apache-2.0; retain its attribution and license
+  when redistributing a copy.
+- **Kafka:** is not currently bundled, installed, or required by SaQshi. If it
+  is added later, record the selected distribution, version and license here.
+
 ## CDN Release Rule
 
 Current CDN dependencies are acceptable for development documentation, but before a formal public release maintainers should choose one release approach:
@@ -124,3 +146,7 @@ Before publishing SaQshi:
 5. Keep map/data attribution visible in the UI.
 6. Keep the pinned Leaflet source/license entry current, or vendor the exact files for offline releases.
 7. Re-run dependency and secret scans before tagging a release.
+8. Confirm the Memurai license is valid for the target environment; never use
+   the Developer Edition for production.
+9. Complete legal review before bundling or modifying Grafana OSS/Loki, or
+   exposing modified AGPL components as a network service.

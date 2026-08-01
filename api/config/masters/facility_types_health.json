@@ -1,0 +1,37 @@
+[
+  {
+    "fac_type_id":1,
+    "facilities_type":"CHC",
+    "fac":"CHC"
+  },
+  {
+    "fac_type_id":2,
+    "facilities_type":"DH",
+    "fac":"DH"
+  },
+  {
+    "fac_type_id":3,
+    "facilities_type":"PHC",
+    "fac":"PHC"
+  },
+  {
+    "fac_type_id":5,
+    "facilities_type":"UPHC",
+    "fac":"UPHC"
+  },
+  {
+    "fac_type_id":8,
+    "facilities_type":"AAM-SC",
+    "fac":"HWC"
+  },
+  {
+    "fac_type_id":9,
+    "facilities_type":"APHC (PHC without bed)",
+    "fac":"PHC without bed"
+  },
+  {
+    "fac_type_id":10,
+    "facilities_type":"SH",
+    "fac":"SDH"
+  }
+]

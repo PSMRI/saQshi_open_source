@@ -112,5 +112,11 @@ try {
 
 } catch (Throwable $e) {
 
+    Event::dispatch('auth.login.failed', [
+        'reason' => 'server_error',
+        'error_type' => get_class($e),
+        'error_message' => $e->getMessage()
+    ]);
+
     Response::serverError($e->getMessage());
 }

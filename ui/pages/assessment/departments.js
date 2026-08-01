@@ -12,6 +12,10 @@
     window.SQ = window.SQ || {};
     const SQ = window.SQ;
 
+    function label(key, fallback) {
+        return SQ.deployment?.label ? SQ.deployment.label(key, fallback) : fallback;
+    }
+
     const API = {
         assessment: "/assessment/v1/active_assessment.php",
         departments: "/framework/v1/my_departments.php",
@@ -179,7 +183,7 @@
     }
 
     function renderLoading() {
-        renderEmpty("Loading departments...");
+        renderEmpty(`Loading ${label("departments", "departments").toLowerCase()}...`);
     }
 
     function renderDepartments() {
@@ -190,7 +194,7 @@
         }
 
         if (!state.departments.length) {
-            renderEmpty("No departments found for this assessment.");
+            renderEmpty(`No ${label("departments", "departments").toLowerCase()} found for this ${label("assessment", "assessment").toLowerCase()}.`);
             return;
         }
 
@@ -231,7 +235,7 @@
                                         type="button"
                                         class="sq-btn sq-btn-primary"
                                         data-sq-assessor-info="${Number(dept.dept_id || 0)}">
-                                        Assessor Info
+                                        ${escapeHtml(label("assessor_info", "Assessor Info"))}
                                     </button>
                                 ` : ""}
                             </div>
@@ -308,7 +312,7 @@
                 is_active: 1
             });
 
-            notify("success", response.message || "Department activated.");
+            notify("success", response.message || `${label("department", "Department")} activated.`);
 
             await loadDepartments();
             renderDepartments();
@@ -364,6 +368,10 @@
         }
 
         state.isLoading = true;
+        if (SQ.deployment?.load) {
+            await SQ.deployment.load();
+            SQ.deployment.applyLabels(document);
+        }
         renderLoading();
         bindEvents();
 

@@ -38,8 +38,8 @@ License : GPL-3.0
     <div class="sq-card">
         <div class="sq-card-header">
             <div>
-                <h3>Facility Assessments</h3>
-                <p>All assessment records for the logged-in facility.</p>
+                <h3 data-domain-template="{facility} {assessments}">Facility Assessments</h3>
+                <p data-domain-template="All {assessment} records for the logged-in {facility}.">All assessment records for the logged-in facility.</p>
             </div>
             <div class="sq-list-tools">
                 <select id="statusFilter" class="sq-form-control" aria-label="Status Filter">
@@ -63,8 +63,8 @@ License : GPL-3.0
                             <th>Framework</th>
                             <th>Status</th>
                             <th>Dates</th>
-                            <th>Departments</th>
-                            <th>Checkpoints</th>
+                            <th data-domain-label="departments">Departments</th>
+                            <th data-domain-label="checkpoints">Checkpoints</th>
                             <th>
                                 Score
                                 <span class="sq-th-note">done / total</span>

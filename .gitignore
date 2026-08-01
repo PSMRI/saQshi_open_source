@@ -6,6 +6,7 @@ api/storage/events/*.log
 api/storage/logs/*.log
 api/storage/keys/
 api/storage/schema/
+api/config/facilities.json
 uploads/
 
 *.rar
@@ -23,3 +24,7 @@ uploads/
 .codex_tmp/
 node_modules/
 vendor/
+api/config/frameworks/saqshi-education.json
+api/config/frameworks/saqshi-nqas_health.json
+api/config/masters/facilities.json
+api/config/masters/facilities_health.json

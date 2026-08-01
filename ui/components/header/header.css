@@ -110,6 +110,20 @@
     flex-shrink: 0;
 }
 
+.sq-logo-fallback {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: #0f766e;
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 800;
+}
+
 .sq-header-brand {
     display: flex;
     flex-direction: column;
@@ -313,6 +327,18 @@
     border: 2px solid var(--sq-border);
     background: var(--sq-bg-muted);
     flex-shrink: 0;
+}
+
+.sq-user-avatar-fallback {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    background: #0f766e;
+    color: #ffffff;
+    font-size: .82rem;
+    font-weight: 800;
+    letter-spacing: .02em;
 }
 
 .sq-user-details {

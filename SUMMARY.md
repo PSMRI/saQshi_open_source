@@ -40,6 +40,12 @@
 ## Deployment and Operations
 
 - [Deployment Guide](docs/deployment/deployment_guide.md)
+<<<<<<< Updated upstream
+=======
+- [Memurai (Redis) Session Configuration](docs/deployment/memurai_session_configuration.md)
+- [Local Log Monitoring (Grafana, Loki and Alloy)](docs/observability.md)
+- [Local Docker Deployment](docs/deployment/docker_local_guide.md)
+>>>>>>> Stashed changes
 - [System Requirements for UAT and Production](docs/deployment/system_requirements.md)
 - [UI Deployment Guide](docs/deployment/ui_deployment_guide.md)
 - [SMS and Email Notification Configuration](docs/deployment/notification_configuration.md)

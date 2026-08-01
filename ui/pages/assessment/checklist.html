@@ -42,15 +42,19 @@ License : GPL-3.0
         </div>
     </div>
 
-    <div class="sq-card">
+    <div class="sq-card" id="checklistScopeCard">
         <div class="sq-card-header">
             <div>
                 <h3>Checklist Scope</h3>
-                <p>Choose department, area of concern, subtype and optional assessment method.</p>
+                <p>Choose how you want to complete the checklist.</p>
             </div>
         </div>
 
         <div class="sq-card-body">
+            <div class="sq-checklist-view-switch" role="tablist" aria-label="Checklist view">
+                <button type="button" class="sq-view-tab is-active" data-checklist-view="detailed" role="tab" aria-selected="true">Detailed View</button>
+                <button type="button" class="sq-view-tab" data-checklist-view="concern" role="tab" aria-selected="false">Area of Concern View</button>
+            </div>
             <div class="sq-filter-grid">
                 <div class="sq-form-group">
                     <label for="deptSelect">Department</label>
@@ -59,21 +63,21 @@ License : GPL-3.0
                     </select>
                 </div>
 
-                <div class="sq-form-group">
+                <div class="sq-form-group sq-detailed-only">
                     <label for="concernSelect">Area of Concern</label>
                     <select id="concernSelect" class="sq-form-control" disabled aria-label="Concern Select">
                         <option value="">Select department first</option>
                     </select>
                 </div>
 
-                <div class="sq-form-group">
+                <div class="sq-form-group sq-detailed-only">
                     <label for="subtypeSelect">Subtype</label>
                     <select id="subtypeSelect" class="sq-form-control" disabled aria-label="Subtype Select">
                         <option value="">Select concern first</option>
                     </select>
                 </div>
 
-                <div class="sq-form-group">
+                <div class="sq-form-group sq-detailed-only">
                     <label for="methodSelect">Assessment Method</label>
                     <select id="methodSelect" class="sq-form-control" disabled aria-label="Method Select">
                         <option value="">All methods</option>
@@ -82,10 +86,27 @@ License : GPL-3.0
             </div>
         </div>
 
-        <div class="sq-card-footer">
+        <div class="sq-card-footer sq-detailed-only">
             <button type="button" class="sq-btn sq-btn-primary" id="btnLoadCheckpoint">
                 Load Checkpoint
             </button>
+        </div>
+    </div>
+
+    <div id="concernChecklistPanel" class="sq-card sq-hidden">
+        <div class="sq-card-header">
+            <div>
+                <h3>Area of Concern Checklist</h3>
+                <p>Choose an area, save work as a draft, then submit it after all mandatory checkpoints are answered.</p>
+            </div>
+        </div>
+        <div class="sq-card-body">
+            <div id="concernTabs" class="sq-concern-tabs" role="tablist" aria-label="Areas of concern"></div>
+            <div id="concernChecklistContent" class="sq-concern-checklist-content"></div>
+        </div>
+        <div class="sq-card-footer sq-concern-actions">
+            <button type="button" class="sq-btn sq-btn-secondary" id="btnSaveConcernDraft">Save Draft</button>
+            <button type="button" class="sq-btn sq-btn-primary" id="btnSubmitConcern">Submit Area of Concern</button>
         </div>
     </div>
 

@@ -679,10 +679,6 @@ body.sq-sidebar-collapsed .sq-sidebar {
     }
 }
 
-.sq-layout-footer {
-    display: none !important;
-}
-
 .sq-layout-breadcrumb {
     min-height: 0 !important;
 }
@@ -753,5 +749,36 @@ body.sq-sidebar-collapsed .sq-sidebar {
 
     .sq-grid-4 {
         grid-template-columns: 1fr !important;
+    }
+}
+
+/* A collapsed desktop sidebar must never reserve horizontal space on phones. */
+@media (max-width: 992px) {
+    .sq-layout-body {
+        display: block !important;
+    }
+
+    .sq-layout-sidebar {
+        width: 0 !important;
+        min-width: 0 !important;
+        flex-basis: 0 !important;
+    }
+
+    .sq-layout-main,
+    .sq-main {
+        width: 100% !important;
+        margin-left: 0 !important;
+    }
+
+    body.sq-sidebar-collapsed .sq-layout-sidebar {
+        width: 0 !important;
+        min-width: 0 !important;
+        flex-basis: 0 !important;
+    }
+
+    body.sq-sidebar-collapsed .sq-layout-main,
+    body.sq-sidebar-collapsed .sq-main {
+        width: 100% !important;
+        margin-left: 0 !important;
     }
 }

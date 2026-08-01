@@ -92,6 +92,109 @@ body:has(.sq-checklist-page) .sq-content{
     border-top:1px solid var(--sq-border);
 }
 
+.sq-checklist-view-switch,
+.sq-concern-tabs{
+    display:flex;
+    gap:.35rem;
+    flex-wrap:wrap;
+}
+
+.sq-checklist-view-switch{
+    margin-bottom:.5rem;
+    border-bottom:1px solid var(--sq-border);
+}
+
+.sq-view-tab,
+.sq-concern-tab{
+    border:1px solid var(--sq-border);
+    background:var(--sq-bg-surface);
+    color:var(--sq-text);
+    border-radius:6px;
+    padding:.3rem .55rem;
+    cursor:pointer;
+    font-size:.72rem;
+}
+
+.sq-view-tab{
+    border-bottom-left-radius:0;
+    border-bottom-right-radius:0;
+}
+
+.sq-view-tab.is-active,
+.sq-concern-tab.is-active{
+    background:var(--sq-color-primary);
+    border-color:var(--sq-color-primary);
+    color:#fff;
+}
+
+.sq-concern-tab{
+    display:flex;
+    align-items:center;
+    gap:.4rem;
+    text-align:left;
+}
+
+.sq-concern-tab small{
+    font-size:.62rem;
+    opacity:.8;
+    white-space:nowrap;
+}
+
+#checklistScopeCard.is-aoc-mode .sq-detailed-only{
+    display:none;
+}
+
+.sq-concern-checklist-content{
+    margin-top:.6rem;
+}
+
+.sq-aoc-heading{
+    display:flex;
+    justify-content:space-between;
+    gap:.5rem;
+    padding:.4rem .1rem;
+    color:var(--sq-text);
+    font-size:.78rem;
+}
+
+.sq-aoc-heading span{
+    color:var(--sq-text-muted);
+    white-space:nowrap;
+}
+
+.sq-aoc-subtype{
+    border:1px solid var(--sq-border);
+    border-radius:7px;
+    margin-bottom:.55rem;
+    overflow:hidden;
+}
+
+.sq-aoc-subtype h4{
+    margin:0;
+    padding:.4rem .55rem;
+    background:var(--sq-bg-soft);
+    font-size:.76rem;
+}
+
+.sq-aoc-checkpoint{
+    padding:.55rem;
+    border-top:1px solid var(--sq-border);
+}
+
+.sq-aoc-control{
+    margin-top:.45rem;
+}
+
+.sq-aoc-response{
+    display:flex;
+    flex-wrap:wrap;
+    gap:.35rem;
+}
+
+.sq-concern-actions{
+    justify-content:flex-end;
+}
+
 .sq-progress-block{
     margin-bottom:.5rem;
 }
@@ -268,6 +371,23 @@ body:has(.sq-checklist-page) .sq-content{
 }
 
 @media (max-width:640px){
+    .sq-checklist-page{
+        width:100%;
+        max-width:none;
+    }
+
+    .sq-assessment-summary,
+    .sq-filter-grid,
+    .sq-score-options,
+    .sq-response-inline-grid{
+        grid-template-columns:1fr;
+    }
+
+    .sq-checklist-page .sq-card-header,
+    .sq-checklist-page .sq-card-body{
+        padding:.55rem .65rem !important;
+    }
+
     .sq-card-footer,
     .sq-checkpoint-actions{
         flex-direction:column-reverse;

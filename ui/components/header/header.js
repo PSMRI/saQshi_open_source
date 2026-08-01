@@ -47,6 +47,15 @@
         document.querySelectorAll("[data-sq-user-role]").forEach(function (el) {
             el.textContent = user.role_name || user.role_id || "Role";
         });
+
+        const name = String(user.full_name || user.u_name || "User").trim();
+        const initials = name.split(/\s+/).filter(Boolean).slice(0, 2).map(function (part) {
+            return part.charAt(0).toUpperCase();
+        }).join("") || "U";
+        document.querySelectorAll("[data-sq-user-avatar]").forEach(function (el) {
+            el.textContent = initials;
+            el.setAttribute("aria-label", name);
+        });
     }
 
    function bindSidebarToggle() {
@@ -85,6 +94,20 @@
                     SQ.toast("Theme changed to " + next, "info");
                 }
             });
+        });
+    }
+
+    function bindLogoFallback() {
+        document.querySelectorAll("[data-sq-logo]").forEach(function (logo) {
+            const fallback = logo.parentElement?.querySelector("[data-sq-logo-fallback]");
+            if (!fallback || logo.dataset.sqLogoBound === "true") return;
+            logo.dataset.sqLogoBound = "true";
+            const showFallback = function () {
+                logo.hidden = true;
+                fallback.hidden = false;
+            };
+            logo.addEventListener("error", showFallback);
+            if (logo.complete && !logo.naturalWidth) showFallback();
         });
     }
 
@@ -554,6 +577,7 @@
     function init() {
         applyAccessibilitySettings();
         renderUser();
+        bindLogoFallback();
         bindSidebarToggle();
         bindThemeToggle();
         bindAccessibilityControls();

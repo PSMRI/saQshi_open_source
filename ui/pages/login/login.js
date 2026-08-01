@@ -17,6 +17,32 @@
     }
 
     const SQ = window.SQ;
+    let loginPublicKeyPromise = null;
+
+    function setText(id, value) {
+        const element = document.getElementById(id);
+        if (element && value) element.textContent = value;
+    }
+
+    async function loadLoginBranding() {
+        try {
+            const config = (await SQ.api.get("/config/v1/public_deployment.php", {}, {
+                loader: false,
+                showError: false,
+                redirectOnUnauthorized: false
+            })).data;
+            const branding = config?.domain?.branding || {};
+
+            setText("loginBrandAppName", branding.login_app_name);
+            setText("loginBrandAppTagline", branding.login_app_tagline);
+            setText("loginBrandKicker", branding.login_kicker);
+            setText("loginBrandTitle", branding.login_title);
+            setText("loginBrandDescription", branding.login_description);
+        } catch (error) {
+            // Keep the HTML defaults if public deployment configuration is unavailable.
+            console.warn("Login branding could not be loaded.", error);
+        }
+    }
 
     function form() {
         return document.getElementById("loginForm");
@@ -68,11 +94,31 @@
         return window.btoa(binary);
     }
 
+    function loadLoginPublicKey() {
+        if (!loginPublicKeyPromise) {
+            loginPublicKeyPromise = SQ.api.get("/auth/v1/login_key.php", {}, {
+                loader: false,
+                showError: false,
+                redirectOnUnauthorized: false,
+                timeout: 60000
+            }).then(function (keyResponse) {
+                const publicKeyPem = keyResponse.data?.public_key || "";
+                if (!publicKeyPem) throw new Error("Login security key could not be loaded. Please try again.");
+                return window.crypto.subtle.importKey("spki", pemToArrayBuffer(publicKeyPem), { name: "RSA-OAEP", hash: "SHA-1" }, false, ["encrypt"]);
+            }).catch(function (error) {
+                loginPublicKeyPromise = null;
+                throw error;
+            });
+        }
+        return loginPublicKeyPromise;
+    }
+
     async function encryptPassword(plainPassword) {
         if (!window.crypto || !window.crypto.subtle) {
             throw new Error("Secure password encryption is not available in this browser. Please use HTTPS or localhost.");
         }
 
+<<<<<<< Updated upstream
         const keyResponse = await SQ.api.get("/auth/v1/login_key.php", {}, {
             loader: false,
             showError: false,
@@ -92,6 +138,9 @@
             false,
             ["encrypt"]
         );
+=======
+        const publicKey = await loadLoginPublicKey();
+>>>>>>> Stashed changes
 
         const encrypted = await window.crypto.subtle.encrypt(
             { name: "RSA-OAEP" },
@@ -307,6 +356,9 @@
 
     function init() {
         bindEvents();
+        loadLoginBranding();
+        // Fetch in parallel with CAPTCHA so submitting login has no extra key request.
+        loadLoginPublicKey().catch(function () {});
         loadCaptcha();
         focusUsername();
     }

@@ -1,29 +1,29 @@
 {
-    "domain": "healthcare",
-    "description": "Controls optional SaQshi healthcare modules for assessment, CQI, performance, certification, reports, analytics and map features.",
+    "domain": "education",
+    "description": "Controls optional SaQshi education modules for school assessment, reporting, field analytics and map features.",
     "modules": {
         "assessment": {
             "enabled": true,
             "label": "Assessment"
         },
         "cqi": {
-            "enabled": true,
+            "enabled": false,
             "label": "CQI / Gap Closure"
         },
         "performance": {
-            "enabled": true,
+            "enabled": false,
             "label": "Performance Monitoring"
         },
         "kpi": {
-            "enabled": true,
+            "enabled": false,
             "label": "KPI"
         },
         "outcome": {
-            "enabled": true,
+            "enabled": false,
             "label": "Outcome"
         },
         "certification": {
-            "enabled": true,
+            "enabled": false,
             "label": "Certification"
         },
         "reports": {
@@ -43,29 +43,11 @@
         "assessor": [
             "assessment"
         ],
-        "facility": [
-            "assessment",
-            "cqi",
-            "performance",
-            "kpi",
-            "outcome",
-            "certification",
-            "reports",
-            "field_analytics",
-            "map"
-        ],
+        "facility": ["assessment", "reports", "field_analytics", "map"],
         "state": [
-            "assessment",
-            "cqi",
-            "performance",
-            "kpi",
-            "outcome",
-            "certification",
-            "reports",
-            "field_analytics",
-            "map"
+            "assessment", "reports", "field_analytics", "map"
         ]
     },
-    "active_profile": "healthcare",
-    "default_framework": "saqshi-nqas"
+    "active_profile": "education",
+    "default_framework": "saqshi-education"
 }

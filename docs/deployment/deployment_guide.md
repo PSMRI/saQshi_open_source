@@ -9,11 +9,17 @@ This guide explains how to deploy SaQshi on common PHP web servers. Adjust paths
 | PHP | PHP 8.2+ |
 | Database | MySQL or MariaDB |
 | Web server | IIS, Apache or Nginx |
-| PHP extensions | mysqli, openssl, json, mbstring, fileinfo, zip |
+| PHP extensions | mysqli, openssl, json, mbstring, fileinfo, zip; `redis` when Memurai sessions are enabled |
 | Writable folders | `uploads/`, `api/storage/logs/`, `api/storage/events/` |
 | Secrets | Store in `.env`, not in committed PHP files |
 
 For environment sizing, server capacity, PHP settings, database sizing and UAT/production readiness, see [System Requirements for UAT and Production](system_requirements.md).
+
+## Sessions and operational monitoring
+
+For IIS/PHP deployments, SaQshi can use Memurai (Redis-compatible) session storage instead of local PHP session files. Configure it through `api/config/session.json`; do not place application-specific session prefixes or passwords in a shared `php.ini`. See [Memurai (Redis) Session Configuration](memurai_session_configuration.md) for installation, isolation of multiple applications, environment-variable passwords and verification.
+
+For optional central search of API and audit-event logs without Docker or a virtual machine, use the portable Alloy, Loki and Grafana stack. See [Local Log Monitoring (Grafana, Loki and Alloy)](../observability.md).
 
 ## Deployment Steps
 
@@ -26,6 +32,8 @@ For environment sizing, server capacity, PHP settings, database sizing and UAT/p
 7. Confirm `{main_url}/ui/login.html` opens.
 8. Confirm `{main_url}/api/auth/v1/csrf.php` returns JSON.
 9. Login with a test user and verify dashboard routing.
+10. If Memurai sessions are enabled, confirm `memurai-cli.exe ping` returns `PONG` and verify a login session is retained.
+11. If log monitoring is enabled, verify Loki `/ready` and Grafana access before production handover.
 
 ## UI Deployment
 
@@ -56,6 +64,7 @@ Recommended setup:
 - Add MIME mappings for `.md`, `.yaml`, `.yml` and `.json` if GitBook documents are served directly.
 - Use `web.config` for static documentation MIME support.
 - Ensure the IIS application pool identity can write to `uploads/` and `api/storage/`.
+- If Memurai is on another server, allow only the application server to reach its Redis port; never expose it publicly.
 
 Checklist:
 
@@ -64,6 +73,8 @@ Checklist:
 - Request size allows evidence uploads.
 - Directory browsing is disabled.
 - `.env` is not publicly downloadable.
+- The PHP Redis extension is enabled when `api/config/session.json` uses `"driver": "redis"`.
+- The application pool identity can write event logs; Alloy reads them asynchronously when monitoring is enabled.
 
 ## Apache
 

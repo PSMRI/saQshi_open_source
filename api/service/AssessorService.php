@@ -18,7 +18,7 @@ require_once __DIR__ . '/SmsService.php';
 
 class AssessorService
 {
-    private const SCHEMA_MARKER = 'api/storage/schema/assessor_service_v2.ready';
+    private const SCHEMA_MARKER = 'api/storage/schema/assessor_service_v5.ready';
 
     private mysqli $db;
     private array $columnCache = [];
@@ -41,13 +41,30 @@ class AssessorService
         $values = [];
 
         if ($search !== '') {
-            $where = "WHERE am.assessor_code LIKE ? OR CAST(am.user_id AS CHAR) LIKE ?";
+            $where = "WHERE (am.assessor_code LIKE ? OR u.u_name LIKE ? OR CAST(am.user_id AS CHAR) LIKE ?)";
             $like = '%' . $search . '%';
-            $types = 'ss';
-            $values = [$like, $like];
+            $types = 'sss';
+            $values = [$like, $like, $like];
+
+            $facilityIds = $this->facilityIdsMatching($search);
+            if ($facilityIds) {
+                $placeholders = implode(', ', array_fill(0, count($facilityIds), '?'));
+                $where .= " OR EXISTS (
+                    SELECT 1 FROM assessor_facility_mapping mapping_search
+                    WHERE mapping_search.assessor_id = am.assessor_id
+                      AND mapping_search.assignment_status = 'ACTIVE'
+                      AND mapping_search.fac_id IN ({$placeholders})
+                )";
+                $types .= str_repeat('i', count($facilityIds));
+                $values = array_merge($values, $facilityIds);
+            }
         }
 
-        $total = $this->scalar("SELECT COUNT(*) FROM assessor_master am {$where}", $types, $values);
+        $total = $this->scalar(
+            "SELECT COUNT(*) FROM assessor_master am LEFT JOIN s_user u ON u.u_id = am.user_id {$where}",
+            $types,
+            $values
+        );
         $sql = "
             SELECT am.*, u.u_name,
                    COUNT(afm.mapping_id) AS mapped_facilities
@@ -69,8 +86,11 @@ class AssessorService
             'pagination' => [
                 'page' => $page,
                 'per_page' => $perPage,
+                'total_rows' => $total,
+                'total_pages' => max(1, (int)ceil($total / $perPage)),
+                // Kept for existing API consumers.
                 'total' => $total,
-                'pages' => (int)ceil($total / $perPage)
+                'pages' => max(1, (int)ceil($total / $perPage))
             ]
         ];
     }
@@ -91,11 +111,13 @@ class AssessorService
 
         $linkedUserId = $this->nullableInt($payload['user_id'] ?? null);
         $notification = null;
+        $temporaryPassword = null;
 
         if ($assessorId <= 0 && (!$linkedUserId || $linkedUserId <= 0)) {
             $createdUser = $this->createAssessorLoginUser($code, $name, $payload);
             $linkedUserId = (int)$createdUser['user_id'];
             $notification = $createdUser['notification'];
+            $temporaryPassword = $createdUser['temporary_password'] ?? null;
         }
 
         if ($assessorId > 0) {
@@ -151,6 +173,9 @@ class AssessorService
         $assessor = $this->getAssessor($assessorId);
         $assessor['login_user_created'] = $notification !== null;
         $assessor['temporary_password_sent'] = $notification;
+        // Returned only in the create response; it is never persisted or included
+        // in assessor list/detail responses.
+        $assessor['temporary_password'] = $temporaryPassword;
 
         return $assessor;
     }
@@ -174,6 +199,21 @@ class AssessorService
     {
         $search = trim((string)($params['search'] ?? ''));
         $limit = min(50, max(5, (int)($params['limit'] ?? 25)));
+
+        if ($this->usesJsonFacilities()) {
+            $needle = strtolower($search);
+            $rows = array_values(array_filter($this->jsonFacilities(), static function (array $facility) use ($needle): bool {
+                if ($needle === '') {
+                    return true;
+                }
+                return str_contains(strtolower(implode(' ', [
+                    $facility['fac_name'] ?? '', $facility['NIN_no'] ?? '', $facility['Dist_Name'] ?? '', $facility['Block_Name'] ?? ''
+                ])), $needle);
+            }));
+            usort($rows, static fn(array $a, array $b): int => strcasecmp((string)$a['fac_name'], (string)$b['fac_name']));
+            return array_slice($rows, 0, $limit);
+        }
+
         $where = $search !== ''
             ? "WHERE fac_name LIKE ? OR CAST(NIN_no AS CHAR) LIKE ? OR Dist_Name LIKE ? OR Block_Name LIKE ?"
             : '';
@@ -197,7 +237,7 @@ class AssessorService
             throw new InvalidArgumentException('Assessor ID is required.');
         }
 
-        return $this->rows(
+        $rows = $this->rows(
             "SELECT afm.*, f.fac_name, f.Dist_Name, f.Block_Name, f.state_name, f.division, f.Health_facilty_type
              FROM assessor_facility_mapping afm
              LEFT JOIN facilities f ON f.fac_id = afm.fac_id
@@ -206,6 +246,8 @@ class AssessorService
             'i',
             [$assessorId]
         );
+
+        return $this->hydrateJsonFacilities($rows);
     }
 
     public function saveMapping(array $payload, int $userId): array
@@ -233,8 +275,8 @@ class AssessorService
              ON DUPLICATE KEY UPDATE
                 fac_nin = VALUES(fac_nin),
                 assignment_status = VALUES(assignment_status),
-                assigned_from = VALUES(assigned_from),
-                assigned_to = VALUES(assigned_to),
+                assigned_from = COALESCE(VALUES(assigned_from), assigned_from),
+                assigned_to = COALESCE(VALUES(assigned_to), assigned_to),
                 assigned_by = VALUES(assigned_by),
                 remarks = VALUES(remarks),
                 updated_on = CURRENT_TIMESTAMP",
@@ -244,7 +286,7 @@ class AssessorService
                 $facId,
                 $facility['NIN_no'] !== null ? (int)$facility['NIN_no'] : null,
                 $status,
-                $this->nullableDate($payload['assigned_from'] ?? null),
+                $this->nullableDate($payload['assigned_from'] ?? ($status === 'ACTIVE' ? date('Y-m-d') : null)),
                 $this->nullableDate($payload['assigned_to'] ?? null),
                 $userId,
                 trim((string)($payload['remarks'] ?? ''))
@@ -252,6 +294,40 @@ class AssessorService
         );
 
         return ['assessor_id' => $assessorId, 'fac_id' => $facId, 'assignment_status' => $status];
+    }
+
+    /** Saves a selected group of facility mappings as one all-or-nothing action. */
+    public function saveMappings(array $payload, int $userId): array
+    {
+        $facilityIds = array_values(array_unique(array_filter(
+            array_map('intval', (array)($payload['fac_ids'] ?? [])),
+            static fn(int $id): bool => $id > 0
+        )));
+        if (!$facilityIds) {
+            throw new InvalidArgumentException('Select at least one facility.');
+        }
+        if (count($facilityIds) > 50) {
+            throw new InvalidArgumentException('A maximum of 50 facilities can be assigned at once.');
+        }
+
+        $this->db->begin_transaction();
+        try {
+            $mapped = [];
+            foreach ($facilityIds as $facilityId) {
+                $item = $payload;
+                $item['fac_id'] = $facilityId;
+                $mapped[] = $this->saveMapping($item, $userId);
+            }
+            $this->db->commit();
+            return [
+                'assessor_id' => (int)($payload['assessor_id'] ?? 0),
+                'mapped_count' => count($mapped),
+                'mappings' => $mapped
+            ];
+        } catch (Throwable $e) {
+            $this->db->rollback();
+            throw $e;
+        }
     }
 
     public function assessorDashboard(int $userId, string $username): array
@@ -262,14 +338,48 @@ class AssessorService
             fn($row) => $this->withFacilityWorkflow($row, $modules),
             $this->mappedFacilities((int)$assessor['assessor_id'])
         );
+        $assessmentSummary = $this->assessmentSummaryForFacilities($facilities);
 
         return [
             'assessor' => $this->publicAssessor($assessor),
             'modules' => $modules,
             'total_facilities' => count($facilities),
             'active_mappings' => count(array_filter($facilities, fn($row) => $row['assignment_status'] === 'ACTIVE')),
+            'assessment_summary' => $assessmentSummary,
             'facilities' => $facilities
         ];
+    }
+
+    /** Compact dashboard counts across facilities assigned to this assessor/DPO. */
+    private function assessmentSummaryForFacilities(array $facilities): array
+    {
+        $facilityIds = array_values(array_unique(array_filter(array_map(
+            static fn(array $facility): int => (int)($facility['fac_id'] ?? 0),
+            $facilities
+        ))));
+        $summary = ['total_assessments' => 0, 'completed' => 0, 'in_progress' => 0, 'not_started' => count($facilityIds)];
+
+        if (!$facilityIds) return $summary;
+
+        $placeholders = implode(', ', array_fill(0, count($facilityIds), '?'));
+        $rows = $this->rows(
+            "SELECT fac_id_fk, status, COUNT(*) AS count FROM assessment_master WHERE fac_id_fk IN ({$placeholders}) GROUP BY fac_id_fk, status",
+            str_repeat('i', count($facilityIds)),
+            $facilityIds
+        );
+        $startedFacilities = [];
+
+        foreach ($rows as $row) {
+            $count = (int)($row['count'] ?? 0);
+            $status = strtoupper((string)($row['status'] ?? ''));
+            $summary['total_assessments'] += $count;
+            $startedFacilities[(int)$row['fac_id_fk']] = true;
+            if ($status === 'COMPLETED') $summary['completed'] += $count;
+            if ($status === 'ACTIVE') $summary['in_progress'] += $count;
+        }
+
+        $summary['not_started'] = max(0, count($facilityIds) - count($startedFacilities));
+        return $summary;
     }
 
     public function mappedFacilitiesForUser(int $userId, string $username): array
@@ -285,6 +395,50 @@ class AssessorService
                 $this->mappedFacilities((int)$assessor['assessor_id'])
             )
         ];
+    }
+
+    /** Returns assessment history for every unit mapped to the logged-in assessor. */
+    public function assessmentReportRows(int $userId, string $username): array
+    {
+        $assessor = $this->currentAssessor($userId, $username);
+        $rows = [];
+
+        foreach ($this->mappedFacilities((int)$assessor['assessor_id']) as $facility) {
+            $facilityId = (int)($facility['fac_id'] ?? 0);
+            $history = $this->facilityAssessments($facilityId, $facility);
+
+            if (!$history) {
+                $rows[] = [
+                    'fac_name' => $facility['fac_name'] ?? '',
+                    'fac_code' => $facility['NIN_no'] ?? $facility['fac_nin'] ?? '',
+                    'district' => $facility['Dist_Name'] ?? '',
+                    'block' => $facility['Block_Name'] ?? '',
+                    'assessment_name' => '', 'framework_code' => '', 'status' => 'Not started',
+                    'start_date' => '', 'end_date' => '', 'saved_checkpoints' => 0,
+                    'total_checkpoints' => 0, 'score_percent' => 0
+                ];
+                continue;
+            }
+
+            foreach ($history as $assessment) {
+                $rows[] = [
+                    'fac_name' => $facility['fac_name'] ?? '',
+                    'fac_code' => $facility['NIN_no'] ?? $facility['fac_nin'] ?? '',
+                    'district' => $facility['Dist_Name'] ?? '',
+                    'block' => $facility['Block_Name'] ?? '',
+                    'assessment_name' => $assessment['assessment_name'] ?? '',
+                    'framework_code' => $assessment['framework_code'] ?? '',
+                    'status' => $assessment['status'] ?? '',
+                    'start_date' => $assessment['start_date'] ?? '',
+                    'end_date' => $assessment['end_date'] ?? '',
+                    'saved_checkpoints' => $assessment['saved_checkpoints'] ?? 0,
+                    'total_checkpoints' => $assessment['total_checkpoints'] ?? 0,
+                    'score_percent' => $assessment['score_percent'] ?? 0
+                ];
+            }
+        }
+
+        return $rows;
     }
 
     public function facilitySummary(int $userId, string $username, int $facId): array
@@ -313,12 +467,15 @@ class AssessorService
         $_SESSION['assessor_id'] = (int)$assessor['assessor_id'];
         $_SESSION['assessor_selected_fac_id'] = $facId;
 
+        $modules = $this->moduleConfig();
         return [
             'facility' => $facility,
-            'modules' => $this->moduleConfig(),
+            'modules' => $modules,
             'assessments' => $this->facilityAssessments($facId, $facility),
             'cqi' => $this->facilityCqiSummary($facId),
-            'performance' => $this->facilityPerformanceSummary($facId)
+            'performance' => $this->moduleEnabled($modules, 'performance')
+                ? $this->facilityPerformanceSummary($facId)
+                : ['enabled' => false]
         ];
     }
 
@@ -354,12 +511,21 @@ class AssessorService
         $_SESSION['assessor_id'] = $assessorId;
         $_SESSION['assessor_selected_fac_id'] = $facId;
 
-        $framework = trim((string)($payload['framework_code'] ?? 'saqshi-nqas'));
+        // The active deployment controls the framework. This prevents a cached
+        // Health UI from starting a School assessment with saqshi-nqas.
+        $framework = $this->defaultFramework();
         $assessment = $this->activeAssessment($facId);
         $created = false;
 
         if (!$assessment) {
-            $name = trim((string)($payload['assessment_name'] ?? 'State Assessment - ' . ($facility['fac_name'] ?? 'Facility')));
+            $previousCount = $this->scalar(
+                'SELECT COUNT(*) FROM assessment_master WHERE fac_id_fk = ?',
+                'i',
+                [$facId]
+            );
+            $defaultName = ($previousCount > 0 ? 'Reassessment ' . ($previousCount + 1) : 'State Assessment')
+                . ' - ' . ($facility['fac_name'] ?? 'Facility') . ' - ' . date('d M Y');
+            $name = trim((string)($payload['assessment_name'] ?? $defaultName));
             $startDate = trim((string)($payload['start_date'] ?? date('Y-m-d')));
             $endDate = trim((string)($payload['end_date'] ?? date('Y-m-d', strtotime('+30 days'))));
 
@@ -506,7 +672,8 @@ class AssessorService
                 'created' => true,
                 'email' => $emailResult,
                 'sms' => $smsResult
-            ]
+            ],
+            'temporary_password' => $temporaryPassword
         ];
     }
 
@@ -570,13 +737,20 @@ class AssessorService
             [$assessorId]
         );
 
-        return $rows;
+        return $this->hydrateJsonFacilities($rows);
     }
 
     private function withFacilityWorkflow(array $row, array $modules): array
     {
         $facId = (int)($row['fac_id'] ?? 0);
         $assessment = $facId > 0 ? $this->activeAssessment($facId) : null;
+
+        // Reconcile older assessments which were fully answered before the
+        // automatic completion rule was introduced.
+        if ($assessment && $this->reconcileCompletedAssessment($facId, $assessment)) {
+            $row['assessment_status'] = 'COMPLETED';
+            $assessment = null;
+        }
 
         if ($assessment) {
             $row['assessment_id'] = (int)$assessment['assessment_id'];
@@ -588,6 +762,76 @@ class AssessorService
 
         $row['next_action'] = $this->workflowForAssessment($facId, $assessment, $modules);
         return $row;
+    }
+
+    /**
+     * Marks a legacy ACTIVE assessment completed when every configured
+     * checkpoint for every active department already has a saved response.
+     */
+    private function reconcileCompletedAssessment(int $facId, array $assessment): bool
+    {
+        $assessmentId = (int)($assessment['assessment_id'] ?? 0);
+        $framework = trim((string)($assessment['framework_code'] ?? ''));
+        $facility = $this->facility($facId);
+        $facilityTypeId = (int)($facility['Health_facilty_type'] ?? 0);
+        $responseTable = $this->responseTable();
+
+        if ($assessmentId <= 0 || $framework === '' || $facilityTypeId <= 0 || $responseTable === '' || !$this->tableExists('assessment_department_status')) {
+            return false;
+        }
+
+        try {
+            $engine = FrameworkEngine::load($framework);
+        } catch (Throwable) {
+            return false;
+        }
+
+        $assessmentColumn = $this->departmentStatusAssessmentColumn();
+        $departments = $this->rows(
+            "SELECT dept_id FROM assessment_department_status WHERE fac_id_fk = ? AND {$assessmentColumn} = ? AND is_active = 1",
+            'ii',
+            [$facId, $assessmentId]
+        );
+
+        if (!$departments) {
+            return false;
+        }
+
+        foreach ($departments as $department) {
+            $deptId = (int)($department['dept_id'] ?? 0);
+            $expectedIds = array_values(array_unique(array_filter(array_map(
+                static fn(array $checkpoint): int => (int)($checkpoint['csqa_id'] ?? 0),
+                $engine->getCheckpoints($facilityTypeId, $deptId)
+            ))));
+            if ($deptId <= 0 || !$expectedIds) {
+                return false;
+            }
+
+            $savedRows = $this->rows(
+                "SELECT DISTINCT checkpoint_id FROM {$responseTable} WHERE assessment_id = ? AND dept_id = ?",
+                'ii',
+                [$assessmentId, $deptId]
+            );
+            $savedIds = array_map(static fn(array $saved): int => (int)($saved['checkpoint_id'] ?? 0), $savedRows);
+
+            if (count(array_intersect($expectedIds, $savedIds)) < count($expectedIds)) {
+                return false;
+            }
+
+            $this->execute(
+                "UPDATE assessment_department SET status = 'COMPLETED', completed_on = COALESCE(completed_on, CURRENT_TIMESTAMP) WHERE assessment_id = ? AND fac_id_fk = ? AND dept_id = ? AND is_active = 1",
+                'iii',
+                [$assessmentId, $facId, $deptId]
+            );
+        }
+
+        $this->execute(
+            "UPDATE assessment_master SET status = 'COMPLETED', completed_on = COALESCE(completed_on, CURRENT_TIMESTAMP) WHERE assessment_id = ? AND fac_id_fk = ? AND status = 'ACTIVE'",
+            'ii',
+            [$assessmentId, $facId]
+        );
+
+        return true;
     }
 
     private function workflowForAssessment(int $facId, ?array $assessment, array $modules): array
@@ -603,9 +847,14 @@ class AssessorService
         }
 
         if (!$assessment) {
+            $assessmentCount = $this->scalar(
+                'SELECT COUNT(*) FROM assessment_master WHERE fac_id_fk = ?',
+                'i',
+                [$facId]
+            );
             return [
                 'type' => 'start',
-                'label' => 'Start Assessment',
+                'label' => $assessmentCount > 0 ? 'Start Reassessment' : 'Start Assessment',
                 'route' => '',
                 'params' => ['fac_id' => $facId],
                 'state' => 'not_started'
@@ -671,10 +920,16 @@ class AssessorService
         $assessmentColumn = $this->departmentStatusAssessmentColumn();
 
         return $this->rows(
-            "SELECT dept_id
-             FROM assessment_department_status
-             WHERE fac_id_fk = ? AND {$assessmentColumn} = ? AND is_active = 1
-             ORDER BY dept_id",
+            "SELECT ads.dept_id
+             FROM assessment_department_status ads
+             LEFT JOIN assessment_department ad
+               ON ad.assessment_id = ads.{$assessmentColumn}
+              AND ad.fac_id_fk = ads.fac_id_fk
+              AND ad.dept_id = ads.dept_id
+              AND ad.is_active = 1
+             WHERE ads.fac_id_fk = ? AND ads.{$assessmentColumn} = ? AND ads.is_active = 1
+               AND COALESCE(ad.status, 'NOT_STARTED') <> 'COMPLETED'
+             ORDER BY ads.dept_id",
             'ii',
             [$facId, $assessmentId]
         );
@@ -773,7 +1028,9 @@ class AssessorService
                  FROM {$responseTable} r
                  {$actionJoin}
                  WHERE r.{$responseColumn} = a.assessment_id) AS obtained_score,
-                0 AS max_score,
+                (SELECT COALESCE(SUM(r.max_score), 0)
+                 FROM {$responseTable} r
+                 WHERE r.{$responseColumn} = a.assessment_id) AS max_score,
                 0 AS score_percent
             ";
         }
@@ -798,7 +1055,12 @@ class AssessorService
                 (string)($row['framework_code'] ?? 'saqshi-nqas'),
                 (int)($facility['Health_facilty_type'] ?? 0)
             );
-            $maxScore = $totalCheckpoints * 2;
+            $maxScore = (float)($row['max_score'] ?? 0);
+            // Compatibility fallback for old response rows which predate the
+            // max_score column. New response rows always carry max_score.
+            if ($maxScore <= 0 && $totalCheckpoints > 0) {
+                $maxScore = $totalCheckpoints * 2;
+            }
             $obtained = (float)($row['obtained_score'] ?? 0);
 
             $row['total_checkpoints'] = $totalCheckpoints;
@@ -817,8 +1079,19 @@ class AssessorService
             return 0;
         }
 
-        $activeDepartments = $this->activeDepartments($facId, $assessmentId);
-        $departmentIds = array_map(fn($row) => (int)($row['dept_id'] ?? 0), $activeDepartments);
+        if (!$this->tableExists('assessment_department_status')) {
+            return 0;
+        }
+
+        // Reporting must include completed departments. Workflow navigation
+        // deliberately excludes them, so it cannot be reused here.
+        $assessmentColumn = $this->departmentStatusAssessmentColumn();
+        $reportDepartments = $this->rows(
+            "SELECT dept_id FROM assessment_department_status WHERE fac_id_fk = ? AND {$assessmentColumn} = ? AND is_active = 1",
+            'ii',
+            [$facId, $assessmentId]
+        );
+        $departmentIds = array_map(fn($row) => (int)($row['dept_id'] ?? 0), $reportDepartments);
         $departmentIds = array_values(array_filter(array_unique($departmentIds)));
 
         if (!$departmentIds) {
@@ -931,6 +1204,13 @@ class AssessorService
         return (bool)($config['modules'][$module]['enabled'] ?? false);
     }
 
+    private function defaultFramework(): string
+    {
+        $path = __DIR__ . '/../config/domain.json';
+        $domain = is_file($path) ? json_decode((string)file_get_contents($path), true) : [];
+        return trim((string)($domain['default_framework'] ?? 'saqshi-nqas')) ?: 'saqshi-nqas';
+    }
+
     private function activeAssessment(int $facId): ?array
     {
         return $this->row(
@@ -970,6 +1250,15 @@ class AssessorService
 
     private function facility(int $facId): ?array
     {
+        if ($this->usesJsonFacilities()) {
+            foreach ($this->jsonFacilities() as $facility) {
+                if ((int)($facility['fac_id'] ?? 0) === $facId) {
+                    return $facility;
+                }
+            }
+            return null;
+        }
+
         return $this->row(
             "SELECT fac_id, NIN_no, fac_name, state_name, division, Dist_Name, Block_Name,
                     Health_facilty_type, lat, longit
@@ -977,6 +1266,102 @@ class AssessorService
             'i',
             [$facId]
         );
+    }
+
+    /** Uses the active deployment's facility master for mapping/search. */
+    private function usesJsonFacilities(): bool
+    {
+        return true;
+    }
+
+    /** Flattens the active nested facility master into search-ready rows. */
+    private function jsonFacilities(): array
+    {
+        static $rows = null;
+        if ($rows !== null) {
+            return $rows;
+        }
+
+        $rows = [];
+        $domainPath = __DIR__ . '/../config/domain.json';
+        $domain = is_file($domainPath) ? json_decode((string)file_get_contents($domainPath), true) : [];
+        $masterName = ($domain['domain'] ?? '') === 'healthcare'
+            ? 'facilities_health.json'
+            : 'facilities.json';
+        $path = __DIR__ . '/../config/masters/' . $masterName;
+        $states = is_file($path) ? json_decode((string)file_get_contents($path), true) : [];
+        if (!is_array($states)) {
+            return $rows;
+        }
+
+        foreach ($states as $state) {
+            foreach (($state['divisions'] ?? []) as $division) {
+                foreach (($division['districts'] ?? []) as $district) {
+                    foreach (($district['blocks'] ?? []) as $block) {
+                        foreach (($block['facilities'] ?? []) as $facility) {
+                            $rows[] = [
+                                'fac_id' => (int)($facility['fac_id'] ?? 0),
+                                'NIN_no' => (string)($facility['nin_no'] ?? $facility['NIN_no'] ?? ''),
+                                'fac_name' => (string)($facility['fac_name'] ?? ''),
+                                'state_name' => (string)($state['state_name'] ?? ''),
+                                'division' => (string)($division['division_name'] ?? ''),
+                                'Dist_Name' => (string)($district['dist_name'] ?? ''),
+                                'Block_Name' => (string)($block['block_name'] ?? ''),
+                                'Health_facilty_type' => $facility['fac_type_id'] ?? null,
+                                'lat' => $facility['latitude'] ?? null,
+                                'longit' => $facility['longitude'] ?? null,
+                            ];
+                        }
+                    }
+                }
+            }
+        }
+        return $rows;
+    }
+
+    /** Finds master facilities so a mapping can be searched by name or code. */
+    private function facilityIdsMatching(string $search): array
+    {
+        $needle = strtolower(trim($search));
+        if ($needle === '') {
+            return [];
+        }
+
+        $ids = [];
+        foreach ($this->jsonFacilities() as $facility) {
+            $haystack = strtolower(implode(' ', [
+                $facility['fac_name'] ?? '',
+                $facility['NIN_no'] ?? '',
+                $facility['Dist_Name'] ?? '',
+                $facility['Block_Name'] ?? ''
+            ]));
+            if (str_contains($haystack, $needle)) {
+                $ids[] = (int)$facility['fac_id'];
+            }
+        }
+        return array_values(array_unique(array_filter($ids)));
+    }
+
+    /** Overlays JSON master details onto mappings stored in the database. */
+    private function hydrateJsonFacilities(array $rows): array
+    {
+        if (!$this->usesJsonFacilities()) {
+            return $rows;
+        }
+        $master = [];
+        foreach ($this->jsonFacilities() as $facility) {
+            $master[(int)$facility['fac_id']] = $facility;
+        }
+        foreach ($rows as &$row) {
+            $facility = $master[(int)($row['fac_id'] ?? 0)] ?? null;
+            if ($facility) {
+                $row = array_replace($row, $facility);
+                // The master file is authoritative for school/UDISE details.
+                $row['fac_nin'] = $facility['NIN_no'];
+            }
+        }
+        unset($row);
+        return $rows;
     }
 
     private function ensureTables(): void
@@ -1023,6 +1408,53 @@ class AssessorService
                 KEY idx_mapping_facility (fac_id, fac_nin)
             )
         ");
+
+        // JSON master facilities are not necessarily duplicated in the legacy
+        // facilities table, so mapping.fac_id must not retain that old FK.
+        $facilityForeignKey = $this->row(
+            "SELECT CONSTRAINT_NAME FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE
+             WHERE TABLE_SCHEMA = DATABASE()
+               AND TABLE_NAME = 'assessor_facility_mapping'
+               AND COLUMN_NAME = 'fac_id'
+               AND REFERENCED_TABLE_NAME = 'facilities'
+             LIMIT 1"
+        );
+        if ($facilityForeignKey && preg_match('/^[A-Za-z0-9_]+$/', (string)$facilityForeignKey['CONSTRAINT_NAME'])) {
+            $this->db->query(
+                'ALTER TABLE assessor_facility_mapping DROP FOREIGN KEY `'
+                . $facilityForeignKey['CONSTRAINT_NAME'] . '`'
+            );
+        }
+
+        $assessmentFacilityForeignKey = $this->row(
+            "SELECT CONSTRAINT_NAME FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE
+             WHERE TABLE_SCHEMA = DATABASE()
+               AND TABLE_NAME = 'assessment_master'
+               AND COLUMN_NAME = 'fac_id_fk'
+               AND REFERENCED_TABLE_NAME = 'facilities'
+             LIMIT 1"
+        );
+        if ($assessmentFacilityForeignKey && preg_match('/^[A-Za-z0-9_]+$/', (string)$assessmentFacilityForeignKey['CONSTRAINT_NAME'])) {
+            $this->db->query(
+                'ALTER TABLE assessment_master DROP FOREIGN KEY `'
+                . $assessmentFacilityForeignKey['CONSTRAINT_NAME'] . '`'
+            );
+        }
+
+        $performanceFacilityForeignKey = $this->row(
+            "SELECT CONSTRAINT_NAME FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE
+             WHERE TABLE_SCHEMA = DATABASE()
+               AND TABLE_NAME = 'performance_entries'
+               AND COLUMN_NAME = 'fac_id'
+               AND REFERENCED_TABLE_NAME = 'facilities'
+             LIMIT 1"
+        );
+        if ($performanceFacilityForeignKey && preg_match('/^[A-Za-z0-9_]+$/', (string)$performanceFacilityForeignKey['CONSTRAINT_NAME'])) {
+            $this->db->query(
+                'ALTER TABLE performance_entries DROP FOREIGN KEY `'
+                . $performanceFacilityForeignKey['CONSTRAINT_NAME'] . '`'
+            );
+        }
 
         $this->ensureAssessmentColumn('assigned_assessor_id', 'BIGINT NULL');
         $this->ensureAssessmentColumn('assessment_source', "VARCHAR(30) NULL");

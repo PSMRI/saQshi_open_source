@@ -10,13 +10,18 @@ Security::requireAnyMethod(['POST', 'PATCH']);
 
 try {
     $payload = Security::jsonInput();
-    $data = (new AssessorService($con))->saveMapping($payload, SessionManager::userId());
+    $service = new AssessorService($con);
+    $data = isset($payload['fac_ids'])
+        ? $service->saveMappings($payload, SessionManager::userId())
+        : $service->saveMapping($payload, SessionManager::userId());
 
-    Event::dispatch('assessor.facility_mapped', [
-        'assessor_id' => $data['assessor_id'] ?? null,
-        'fac_id' => $data['fac_id'] ?? null,
-        'mapped_by' => SessionManager::userId()
-    ]);
+    foreach ($data['mappings'] ?? [$data] as $mapping) {
+        Event::dispatch('assessor.facility_mapped', [
+            'assessor_id' => $mapping['assessor_id'] ?? null,
+            'fac_id' => $mapping['fac_id'] ?? null,
+            'mapped_by' => SessionManager::userId()
+        ]);
+    }
 
     Response::success('Facility mapping saved', $data);
 } catch (InvalidArgumentException $e) {

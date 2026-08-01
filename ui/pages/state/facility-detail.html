@@ -6,7 +6,7 @@
             <p>Browse State, Division, District, Block and facility-level monitoring details.</p>
         </div>
         <div class="sq-state-filters">
-            <input class="sq-form-control" id="stateFacilitySearch" type="search" placeholder="Search facility, NIN, district or block" aria-label="Search Facility, NIN, District Or Block">
+            <input class="sq-form-control" id="stateFacilitySearch" type="search" placeholder="Search facility, NIN, district or block" aria-label="Search Facility, NIN, District Or Block" data-domain-placeholder="Search {facility}, {facility_code}, district or block" data-domain-aria-label="Search {facility}, {facility_code}, district or block">
             <button class="sq-btn sq-btn-primary" id="stateFacilityLoad">Search</button>
         </div>
     </div>
@@ -15,7 +15,7 @@
         <div class="sq-card">
             <div class="sq-card-header">
                 <h3 data-domain-label="facility_hierarchy">Facility Hierarchy</h3>
-                <span id="stateFacilityTreeCount" class="sq-state-badge">0 facilities</span>
+                <span id="stateFacilityTreeCount" class="sq-state-badge" data-domain-template="0 {facilities}">0 facilities</span>
             </div>
             <div class="sq-card-body" id="stateFacilityTree"></div>
         </div>
@@ -23,7 +23,7 @@
         <div class="sq-card">
             <div class="sq-card-header">
                 <h3 data-domain-label="facility_details">Facility Details</h3>
-                <span id="stateFacilitySelected" class="sq-state-badge">Select facility</span>
+                <span id="stateFacilitySelected" class="sq-state-badge" data-domain-template="Select {facility}">Select facility</span>
             </div>
             <div class="sq-card-body">
                 <div id="stateFacilityInfo"></div>

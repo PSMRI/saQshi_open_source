@@ -47,6 +47,14 @@ class DeploymentConfigService
                 self::defaultDomain()['labels'],
                 is_array($profile['labels'] ?? null) ? $profile['labels'] : []
             ),
+            'branding' => array_replace(
+                self::defaultDomain()['branding'],
+                is_array($profile['branding'] ?? null) ? $profile['branding'] : []
+            ),
+            'content' => array_replace(
+                self::defaultDomain()['content'],
+                is_array($profile['content'] ?? null) ? $profile['content'] : []
+            ),
             'applied_by' => $userId,
             'applied_on' => date('c')
         ];
@@ -101,8 +109,10 @@ class DeploymentConfigService
                     'profile_name' => (string)($data['profile_name'] ?? basename($file, '.json')),
                     'recommended_for' => (string)($data['recommended_for'] ?? ''),
                     'default_framework' => (string)($data['default_framework'] ?? ''),
-                    'modules' => $data['modules'] ?? [],
-                    'labels' => $data['labels'] ?? []
+                'modules' => $data['modules'] ?? [],
+                    'labels' => $data['labels'] ?? [],
+                    'branding' => $data['branding'] ?? [],
+                    'content' => $data['content'] ?? []
                 ];
             }
         }
@@ -150,6 +160,16 @@ class DeploymentConfigService
         return [
             'domain' => 'healthcare',
             'profile_code' => 'healthcare',
+            'branding' => [
+                'login_kicker' => 'Healthcare Quality Platform',
+                'login_title' => 'Structured assessments for facility improvement.',
+                'login_description' => 'Manage NQAS, MusQan and LaQshya assessment workflows with department activation, checkpoint scoring and CQI tracking.'
+            ],
+            'content' => [
+                'assessor_dashboard_overview' => '{assessment} overview across your assigned {facilities}.',
+                'assessor_choose_item' => 'Choose the {facility} where you will perform {assessment}.',
+                'assessor_no_mapped_items' => 'No {facilities} are mapped to this {assessor} profile.'
+            ],
             'labels' => [
                 'facility' => 'Facility',
                 'facilities' => 'Facilities',

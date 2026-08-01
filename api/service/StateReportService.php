@@ -10,6 +10,7 @@
  */
 
 require_once __DIR__ . '/StateDashboardService.php';
+require_once __DIR__ . '/../core/Crypto.php';
 
 /**
  * Provides state report service behavior for SaQshi API workflows.
@@ -36,6 +37,7 @@ class StateReportService extends StateDashboardService
             match ($report) {
                 'facilities' => self::writeFacilities($con, $out, $filters),
                 'assessments' => self::writeAssessments($con, $out, $filters),
+                'assessor_activity' => self::writeAssessorActivity($con, $out, $filters),
                 'cqi' => self::writeCqi($con, $out, $filters),
                 'performance' => self::writePerformance($con, $out, $filters),
                 'certification' => self::writeCertification($con, $out, $filters),
@@ -54,14 +56,24 @@ class StateReportService extends StateDashboardService
      */
     public static function exportCatalog(): array
     {
-        return [
+        $labels = self::domainLabels();
+        $reports = [
             ['key' => 'summary', 'title' => 'State Summary', 'description' => 'Summary counts for facilities, assessments, CQI, performance and certification.'],
-            ['key' => 'facilities', 'title' => 'All Facility List', 'description' => 'Facility master list with state, division, district, block, type, NIN and coordinates.'],
+            ['key' => 'facilities', 'title' => 'All ' . $labels['facility'] . ' List', 'description' => $labels['facility'] . ' master list with state, division, district, block, type, ' . $labels['facility_code'] . ' and coordinates.'],
             ['key' => 'assessments', 'title' => 'Assessment Details', 'description' => 'All assessment records with status, departments, checkpoints, action plans and score fields.'],
-            ['key' => 'cqi', 'title' => 'CQI Details', 'description' => 'Action plan and gap closure extract with responsible person, target date and revised score.'],
-            ['key' => 'performance', 'title' => 'Performance Details', 'description' => 'KPI and Outcome entries with month, numerator, denominator, result and remarks.'],
-            ['key' => 'certification', 'title' => 'Certification History', 'description' => 'Certification history from certification_history with decoded status, dates and score.']
+            ['key' => 'assessor_activity', 'title' => $labels['assessor'] . ' Activity', 'description' => 'Completed assessment count and assessment-level details for each ' . $labels['assessor'] . '.'],
         ];
+
+        if (self::moduleEnabled('cqi')) {
+            $reports[] = ['key' => 'cqi', 'title' => 'CQI Details', 'description' => 'Action plan and gap closure extract with responsible person, target date and revised score.'];
+        }
+        if (self::moduleEnabled('performance')) {
+            $reports[] = ['key' => 'performance', 'title' => 'Performance Details', 'description' => 'Performance entries with month, numerator, denominator, result and remarks.'];
+        }
+        if (self::moduleEnabled('certification')) {
+            $reports[] = ['key' => 'certification', 'title' => 'Certification History', 'description' => $labels['facility'] . ' certification history with decoded status, dates and score.'];
+        }
+        return $reports;
     }
 
     /**
@@ -69,6 +81,7 @@ class StateReportService extends StateDashboardService
      */
     private static function writeSummary(mysqli $con, $out, array $filters): void
     {
+        $labels = self::domainLabels();
         $facility = self::facilityCategory($con, $filters);
         $assessment = self::assessmentProgress($con, $filters, true);
         $cqi = self::cqiSummary($con, $filters);
@@ -76,9 +89,9 @@ class StateReportService extends StateDashboardService
         $certification = self::certificationSummary($con, $filters);
 
         self::csvRow($out, ['Report', 'Metric', 'Value']);
-        self::csvRow($out, ['Facilities', 'Total Facilities', $facility['total_facilities'] ?? 0]);
+        self::csvRow($out, [$labels['facilities'], 'Total ' . $labels['facilities'], $facility['total_facilities'] ?? 0]);
         foreach (($facility['facility_types'] ?? []) as $row) {
-            self::csvRow($out, ['Facilities', 'Facility Type - ' . ($row['facility_type'] ?? ''), $row['count'] ?? 0]);
+            self::csvRow($out, [$labels['facilities'], $labels['facility'] . ' Type - ' . ($row['facility_type'] ?? ''), $row['count'] ?? 0]);
         }
         self::csvRow($out, ['Assessments', 'Total', $assessment['total'] ?? 0]);
         self::csvRow($out, ['Assessments', 'Active', $assessment['active'] ?? 0]);
@@ -88,12 +101,16 @@ class StateReportService extends StateDashboardService
         self::csvRow($out, ['CQI', 'Completed', $cqi['completed'] ?? 0]);
         self::csvRow($out, ['CQI', 'Pending', $cqi['pending'] ?? 0]);
         self::csvRow($out, ['CQI', 'Overdue', $cqi['overdue'] ?? 0]);
-        self::csvRow($out, ['Performance', 'Facilities', $performance['summary']['facilities'] ?? 0]);
-        self::csvRow($out, ['Performance', 'Performance Entries', $performance['summary']['performance_entries'] ?? 0]);
-        self::csvRow($out, ['Performance', 'Submitted Months', $performance['summary']['submitted_months'] ?? 0]);
-        self::csvRow($out, ['Certification', 'Total', $certification['total'] ?? 0]);
-        foreach (($certification['status'] ?? []) as $row) {
-            self::csvRow($out, ['Certification', 'Status - ' . ($row['status'] ?? ''), $row['count'] ?? 0]);
+        if (self::moduleEnabled('performance')) {
+            self::csvRow($out, ['Performance', 'Facilities', $performance['summary']['facilities'] ?? 0]);
+            self::csvRow($out, ['Performance', 'Performance Entries', $performance['summary']['performance_entries'] ?? 0]);
+            self::csvRow($out, ['Performance', 'Submitted Months', $performance['summary']['submitted_months'] ?? 0]);
+        }
+        if (self::moduleEnabled('certification')) {
+            self::csvRow($out, ['Certification', 'Total', $certification['total'] ?? 0]);
+            foreach (($certification['status'] ?? []) as $row) {
+                self::csvRow($out, ['Certification', 'Status - ' . ($row['status'] ?? ''), $row['count'] ?? 0]);
+            }
         }
     }
 
@@ -102,15 +119,31 @@ class StateReportService extends StateDashboardService
      */
     private static function writeFacilities(mysqli $con, $out, array $filters): void
     {
+        $labels = self::domainLabels();
+        self::csvRow($out, [
+            $labels['facility'] . ' ID', 'State', 'Division', 'District', 'Block', $labels['facility'] . ' Name',
+            $labels['facility'] . ' Type ID', $labels['facility_code'], 'Latitude', 'Longitude', 'Active'
+        ]);
+
+        $masterRows = self::facilityMasterRows();
+        if ($masterRows !== []) {
+            foreach ($masterRows as $row) {
+                if (!self::matchesMasterFilters($row, $filters)) {
+                    continue;
+                }
+                self::csvRow($out, [
+                    $row['fac_id'], $row['state_name'], $row['division'], $row['district'],
+                    $row['block'], $row['fac_name'], $row['facility_type'], $row['nin_no'],
+                    $row['latitude'], $row['longitude'], '1'
+                ]);
+            }
+            return;
+        }
+
         if (!self::tableExistsLocal($con, 'facilities')) {
             self::csvRow($out, ['Facilities table is not available.']);
             return;
         }
-
-        self::csvRow($out, [
-            'Facility ID', 'State', 'Division', 'District', 'Block', 'Facility Name',
-            'Facility Type ID', 'NIN', 'Latitude', 'Longitude', 'Active'
-        ]);
 
         $where = self::facilityWhereLocal($filters, 'f');
         $sql = "
@@ -141,8 +174,9 @@ class StateReportService extends StateDashboardService
             return;
         }
 
+        $labels = self::domainLabels();
         self::csvRow($out, [
-            'Facility ID', 'NIN', 'Facility', 'District', 'Block', 'Assessment ID',
+            $labels['facility'] . ' ID', $labels['facility_code'], $labels['facility'], 'District', 'Block', 'Assessment ID',
             'Assessment Name', 'Framework', 'Start Date', 'End Date', 'Status',
             'Checkpoint Done', 'Original Score', 'Final Score', 'Action Plans',
             'Completed Action Plans', 'Last Updated'
@@ -224,8 +258,9 @@ class StateReportService extends StateDashboardService
             return;
         }
 
+        $labels = self::domainLabels();
         self::csvRow($out, [
-            'District', 'Block', 'Facility Name', 'NIN', 'Facility Type',
+            'District', 'Block', $labels['facility'] . ' Name', $labels['facility_code'], $labels['facility'] . ' Type',
             'Assessment ID', 'Assessment Name', 'Assessment Status',
             'Open Gap', 'Closed Gap', 'Left Gap', 'Total Action Plan',
             'Overdue Gap', 'Last Updated'
@@ -295,8 +330,9 @@ class StateReportService extends StateDashboardService
             return;
         }
 
+        $labels = self::domainLabels();
         self::csvRow($out, [
-            'District', 'Block', 'Facility Name', 'NIN', 'Facility Type',
+            'District', 'Block', $labels['facility'] . ' Name', $labels['facility_code'], $labels['facility'] . ' Type',
             'Total Departments', 'KPI Departments', 'Outcome Departments',
             'KPI Month Count', 'KPI Months', 'Outcome Month Count',
             'Outcome Months', 'KPI Entry Count', 'Outcome Entry Count',
@@ -375,8 +411,9 @@ class StateReportService extends StateDashboardService
             return;
         }
 
+        $labels = self::domainLabels();
         self::csvRow($out, [
-            'History ID', 'Facility ID', 'NIN', 'Facility', 'District', 'Block',
+            'History ID', $labels['facility'] . ' ID', $labels['facility_code'], $labels['facility'], 'District', 'Block',
             'Status', 'Certification Type', 'Assessment Mode', 'Certification Date',
             'Valid From', 'Expiry Date', 'Score', 'Renewal Status', 'Remarks',
             'Action Type', 'Action By', 'Action On'
@@ -449,21 +486,123 @@ class StateReportService extends StateDashboardService
     }
 
     /**
+     * Exports completed-assessment counts and details by assigned Assessor/DPO.
+     */
+    private static function writeAssessorActivity(mysqli $con, $out, array $filters): void
+    {
+        $labels = self::domainLabels();
+        $assessorLabel = $labels['assessor'];
+
+        if (!self::tableExistsLocal($con, 'assessment_master') || !self::columnExistsLocal($con, 'assessment_master', 'assigned_assessor_id')) {
+            self::csvRow($out, [$assessorLabel . ' activity is not available because assessments have no assigned ' . strtolower($assessorLabel) . '.']);
+            return;
+        }
+
+        self::csvRow($out, [
+            $assessorLabel . ' ID', $assessorLabel . ' Code', $assessorLabel . ' Name',
+            'Completed Assessments', 'Assessment ID', 'Assessment Name', 'Framework',
+            $labels['facility'] . ' ID', $labels['facility_code'], $labels['facility'] . ' Name',
+            'District', 'Block', 'Start Date', 'End Date', 'Assessment Status'
+        ]);
+
+        $where = self::facilityWhereLocal($filters, 'f');
+        $hasAssessorMaster = self::tableExistsLocal($con, 'assessor_master');
+        $assessorJoin = $hasAssessorMaster
+            ? 'LEFT JOIN assessor_master am ON am.assessor_id = a.assigned_assessor_id'
+            : '';
+        $assessorId = $hasAssessorMaster ? 'am.assessor_id' : 'a.assigned_assessor_id';
+        $assessorCode = $hasAssessorMaster ? 'am.assessor_code' : "''";
+        $assessorName = $hasAssessorMaster ? 'am.assessor_name' : "''";
+        $completedJoin = "
+            LEFT JOIN (
+                SELECT assigned_assessor_id,
+                       SUM(CASE WHEN UPPER(COALESCE(status, '')) IN ('COMPLETED', 'CLOSED') THEN 1 ELSE 0 END) AS completed_assessments
+                FROM assessment_master
+                WHERE assigned_assessor_id IS NOT NULL
+                GROUP BY assigned_assessor_id
+            ) ac ON ac.assigned_assessor_id = a.assigned_assessor_id
+        ";
+
+        $sql = "
+            SELECT {$assessorId} AS assessor_id, {$assessorCode} AS assessor_code,
+                   {$assessorName} AS assessor_name, COALESCE(ac.completed_assessments, 0) AS completed_assessments,
+                   a.assessment_id, a.assessment_name, a.framework_code, a.start_date, a.end_date, a.status,
+                   f.fac_id, f.NIN_no, f.fac_name, f.Dist_Name, f.Block_Name
+            FROM assessment_master a
+            LEFT JOIN facilities f ON f.fac_id = a.fac_id_fk
+            {$assessorJoin}
+            {$completedJoin}
+            {$where['sql']}
+            ORDER BY assessor_name, assessor_code, a.assessment_id DESC
+        ";
+
+        self::streamQuery($con, $sql, $where['types'], $where['params'], $out, static function (array $row): array {
+            return [
+                $row['assessor_id'] ?? '', $row['assessor_code'] ?? '',
+                Crypto::decrypt((string) ($row['assessor_name'] ?? '')),
+                $row['completed_assessments'] ?? 0, $row['assessment_id'] ?? '',
+                $row['assessment_name'] ?? '', $row['framework_code'] ?? '',
+                $row['fac_id'] ?? '', $row['NIN_no'] ?? '', $row['fac_name'] ?? '',
+                $row['Dist_Name'] ?? '', $row['Block_Name'] ?? '', $row['start_date'] ?? '',
+                $row['end_date'] ?? '', $row['status'] ?? ''
+            ];
+        });
+    }
+
+    /**
+     * Returns display labels for the currently active deployment domain.
+     */
+    private static function domainLabels(): array
+    {
+        static $labels = null;
+        if ($labels !== null) {
+            return $labels;
+        }
+
+        $path = __DIR__ . '/../config/domain.json';
+        $domain = is_file($path) ? json_decode((string) file_get_contents($path), true) : [];
+        $configured = is_array($domain['labels'] ?? null) ? $domain['labels'] : [];
+        $labels = [
+            'facility' => (string) ($configured['facility'] ?? 'Facility'),
+            'facilities' => (string) ($configured['facilities'] ?? 'Facilities'),
+            'facility_code' => (string) ($configured['facility_code'] ?? 'NIN'),
+            'assessor' => (string) ($configured['assessor'] ?? 'Assessor'),
+        ];
+        return $labels;
+    }
+
+    /**
+     * Checks whether an optional module is enabled for the active domain.
+     */
+    private static function moduleEnabled(string $key): bool
+    {
+        static $modules = null;
+        if ($modules === null) {
+            $path = __DIR__ . '/../config/modules.json';
+            $config = is_file($path) ? json_decode((string) file_get_contents($path), true) : [];
+            $modules = is_array($config['modules'] ?? null) ? $config['modules'] : [];
+        }
+
+        return !isset($modules[$key]) || !empty($modules[$key]['enabled']);
+    }
+
+    /**
      * Handles facility type name processing for this API workflow.
      */
     private static function facilityTypeName(mixed $typeId): string
     {
         $id = (int)$typeId;
-        $map = [
-            1 => 'CHC',
-            2 => 'DH',
-            3 => 'PHC',
-            4 => 'SDH',
-            5 => 'UPHC',
-            6 => 'U-CHC',
-            7 => 'HWC',
-            8 => 'AAM-SC'
-        ];
+        static $map = null;
+
+        if ($map === null) {
+            $map = [];
+            $path = __DIR__ . '/../config/masters/facility_types.json';
+            $types = is_file($path) ? json_decode((string)file_get_contents($path), true) : [];
+
+            foreach (is_array($types) ? $types : [] as $type) {
+                $map[(int)($type['fac_type_id'] ?? 0)] = (string)($type['facilities_type'] ?? '');
+            }
+        }
 
         return $map[$id] ?? (string)$typeId;
     }
@@ -513,7 +652,10 @@ class StateReportService extends StateDashboardService
         }
 
         $map = [];
-        $path = __DIR__ . '/../config/frameworks/saqshi-nqas.json';
+        $domainPath = __DIR__ . '/../config/domain.json';
+        $domain = is_file($domainPath) ? json_decode((string)file_get_contents($domainPath), true) : [];
+        $frameworkCode = preg_replace('/[^a-z0-9_-]/i', '', (string)($domain['default_framework'] ?? '')) ?: 'saqshi-nqas';
+        $path = __DIR__ . '/../config/frameworks/' . $frameworkCode . '.json';
         if (!is_file($path)) {
             return $map;
         }
@@ -656,6 +798,90 @@ class StateReportService extends StateDashboardService
         }
 
         return ['sql' => 'WHERE ' . implode(' AND ', $where), 'types' => $types, 'params' => $params];
+    }
+
+    /**
+     * Flattens the configured facility master for exports in non-database domains.
+     */
+    private static function facilityMasterRows(): array
+    {
+        static $rows = null;
+        if ($rows !== null) {
+            return $rows;
+        }
+
+        $rows = [];
+        $domainPath = __DIR__ . '/../config/domain.json';
+        $domain = is_file($domainPath) ? json_decode((string) file_get_contents($domainPath), true) : [];
+        if (($domain['domain'] ?? '') !== 'education') {
+            return $rows;
+        }
+
+        $path = __DIR__ . '/../config/masters/facilities.json';
+        $states = is_file($path) ? json_decode((string) file_get_contents($path), true) : [];
+        if (!is_array($states)) {
+            return $rows;
+        }
+
+        foreach ($states as $state) {
+            foreach (($state['divisions'] ?? []) as $division) {
+                foreach (($division['districts'] ?? []) as $district) {
+                    foreach (($district['blocks'] ?? []) as $block) {
+                        foreach (($block['facilities'] ?? []) as $facility) {
+                            $rows[] = [
+                                'state_code' => (int) ($state['state_id'] ?? 0),
+                                'state_name' => (string) ($state['state_name'] ?? ''),
+                                'division' => (string) ($division['division_name'] ?? ''),
+                                'district' => (string) ($district['dist_name'] ?? ''),
+                                'block' => (string) ($block['block_name'] ?? ''),
+                                'fac_id' => $facility['fac_id'] ?? '',
+                                'fac_name' => (string) ($facility['fac_name'] ?? ''),
+                                'facility_type' => $facility['fac_type_id'] ?? '',
+                                'nin_no' => $facility['nin_no'] ?? '',
+                                'latitude' => $facility['latitude'] ?? '',
+                                'longitude' => $facility['longitude'] ?? '',
+                            ];
+                        }
+                    }
+                }
+            }
+        }
+
+        usort($rows, static fn (array $a, array $b): int => [
+            $a['state_name'], $a['division'], $a['district'], $a['block'], $a['fac_name']
+        ] <=> [
+            $b['state_name'], $b['division'], $b['district'], $b['block'], $b['fac_name']
+        ]);
+
+        return $rows;
+    }
+
+    /**
+     * Applies the State Report filters to a facility-master row.
+     */
+    private static function matchesMasterFilters(array $row, array $filters): bool
+    {
+        $exact = [
+            'state_code' => 'state_code',
+            'division' => 'division',
+            'district' => 'district',
+            'block' => 'block',
+            'facility_type' => 'facility_type',
+        ];
+        foreach ($exact as $filter => $field) {
+            if (($filters[$filter] ?? '') !== '' && (string) $filters[$filter] !== (string) $row[$field]) {
+                return false;
+            }
+        }
+
+        $search = mb_strtolower(trim((string) ($filters['search'] ?? '')));
+        if ($search === '') {
+            return true;
+        }
+        $haystack = mb_strtolower(implode(' ', [
+            $row['fac_id'], $row['nin_no'], $row['fac_name'], $row['district'], $row['block']
+        ]));
+        return str_contains($haystack, $search);
     }
 
     /**

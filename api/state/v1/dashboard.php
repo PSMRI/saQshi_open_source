@@ -10,8 +10,31 @@ try {
     Event::dispatch('state.dashboard.viewed', ['user_id' => SessionManager::userId()]);
 
     $facilityCategory = StateDashboardService::facilityCategory($con, $_GET);
-    $certificationSummary = StateDashboardService::certificationSummary($con, $_GET);
-    $currentMonthStatus = StateDashboardService::currentMonthStatus($con, $_GET);
+    $certificationSummary = ['total' => 0, 'status' => [], 'map_points' => []];
+    $currentMonthStatus = [
+        'assessment' => ['started' => 0, 'in_progress' => 0, 'completed' => 0],
+        'performance' => ['kpi_filled' => 0, 'outcome_filled' => 0]
+    ];
+
+    try {
+        $certificationSummary = StateDashboardService::certificationSummary($con, $_GET);
+    } catch (Throwable $certificationError) {
+        if (class_exists('ErrorHandler')) {
+            ErrorHandler::log('State dashboard certification summary failed', [
+                'error' => $certificationError->getMessage()
+            ]);
+        }
+    }
+
+    try {
+        $currentMonthStatus = StateDashboardService::currentMonthStatus($con, $_GET);
+    } catch (Throwable $monthStatusError) {
+        if (class_exists('ErrorHandler')) {
+            ErrorHandler::log('State dashboard current month status failed', [
+                'error' => $monthStatusError->getMessage()
+            ]);
+        }
+    }
     $assessmentSummary = [
         'total' => 0,
         'active' => 0,

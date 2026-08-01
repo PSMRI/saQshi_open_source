@@ -39,6 +39,16 @@
         return `<div class="sq-state-empty">${esc(message || "No data available.")}</div>`;
     }
 
+    function domainLabel(key, fallback) {
+        return SQ.deployment && typeof SQ.deployment.label === "function"
+            ? SQ.deployment.label(key, fallback)
+            : fallback;
+    }
+
+    function moduleEnabled(key) {
+        return !SQ.deployment || typeof SQ.deployment.moduleEnabled !== "function" || SQ.deployment.moduleEnabled(key);
+    }
+
     function nodeId(prefix, path) {
         return `${prefix}-${path.join("-").replace(/[^a-zA-Z0-9_-]/g, "_")}`;
     }
@@ -54,7 +64,7 @@
                 <button class="sq-state-plus" type="button" data-tree-toggle="${esc(id)}" aria-expanded="false">+</button>
                 <div>
                     <strong>${esc(label || "-")}</strong>
-                    <small>${esc(count || 0)} facilities</small>
+                    <small>${esc(count || 0)} ${esc(domainLabel("facilities", "facilities").toLowerCase())}</small>
                 </div>
             </div>
             <div id="${esc(id)}" class="sq-state-tree-children" hidden></div>
@@ -124,7 +134,7 @@
         });
         const data = response.data || {};
         state.hierarchy = data.states || [];
-        text("stateFacilityTreeCount", `${data.total_facilities || 0} facilities`);
+        text("stateFacilityTreeCount", `${data.total_facilities || 0} ${domainLabel("facilities", "facilities").toLowerCase()}`);
         renderTree();
     }
 
@@ -136,7 +146,7 @@
                 <div class="sq-state-row"><span>Division</span><b>${esc(facility.division)}</b></div>
                 <div class="sq-state-row"><span>District</span><b>${esc(facility.Dist_Name)}</b></div>
                 <div class="sq-state-row"><span>Block</span><b>${esc(facility.Block_Name)}</b></div>
-                <div class="sq-state-row"><span>NIN</span><b>${esc(facility.NIN_no)}</b></div>
+                <div class="sq-state-row"><span>${esc(domainLabel("facility_code", "NIN"))}</span><b>${esc(facility.NIN_no)}</b></div>
             </div>`
             : empty("Facility not found."));
     }
@@ -151,8 +161,7 @@
             <div><span>Completed</span><strong>${esc(assessments.completed || 0)}</strong></div>
             <div><span>In Progress</span><strong>${esc((assessments.active || 0) + (assessments.in_progress || 0))}</strong></div>
             <div><span>Cancelled</span><strong>${esc(assessments.cancelled || 0)}</strong></div>
-            <div><span>KPI Entries</span><strong>${esc(performance.kpi_entries || 0)}</strong></div>
-            <div><span>Outcome Entries</span><strong>${esc(performance.outcome_entries || 0)}</strong></div>
+            ${moduleEnabled("performance") ? `<div><span>Performance Entries</span><strong>${esc((performance.kpi_entries || 0) + (performance.outcome_entries || 0))}</strong></div>` : ""}
             <div><span>Open Gaps</span><strong>${esc(cqi.open_gaps || 0)}</strong></div>
             <div><span>CQI Overdue</span><strong>${esc(cqi.overdue || 0)}</strong></div>
         `);
@@ -177,7 +186,7 @@
                         </table>`
                         : empty("No assessments found.")}
                 </div>
-                <div>
+                ${moduleEnabled("performance") ? `<div>
                     <h3>Performance Entries</h3>
                     ${performance.length
                         ? `<table class="sq-state-table">
@@ -191,7 +200,7 @@
                             `).join("")}</tbody>
                         </table>`
                         : empty("No KPI or Outcome entries found.")}
-                </div>
+                </div>` : ""}
             </div>
         `);
     }
@@ -239,6 +248,10 @@
     }
 
     async function init() {
+        if (SQ.deployment && typeof SQ.deployment.load === "function") {
+            await SQ.deployment.load();
+            SQ.deployment.applyLabels(document);
+        }
         bindTree();
         document.getElementById("stateFacilityLoad")?.addEventListener("click", loadHierarchy);
         document.getElementById("stateFacilitySearch")?.addEventListener("keydown", function (event) {

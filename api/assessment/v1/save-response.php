@@ -33,6 +33,13 @@ require_once __DIR__ . '/../../service/ResponseTypeService.php';
 
 Security::requireMethod('POST');
 
+/** Finds the assessment column used by the installed department-status table. */
+function responseDepartmentStatusAssessmentColumn(mysqli $con): string
+{
+    $result = $con->query("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'assessment_department_status' AND COLUMN_NAME = 'assessment_id' LIMIT 1");
+    return ($result && $result->fetch_assoc()) ? 'assessment_id' : 'ass_period_id';
+}
+
 try {
 
     $request = Security::jsonInput();
@@ -306,6 +313,67 @@ try {
     }
 
     /*
+     * A scope is not the whole department.  Compare saved responses with every
+     * checkpoint configured for this department before closing it, then close
+     * the assessment only when every active department is complete.
+     */
+    $facilityTypeId = (int)($checkpoint['_fac_type_id'] ?? 0);
+    $departmentCheckpoints = $facilityTypeId > 0 ? $engine->getCheckpoints($facilityTypeId, $deptId) : [];
+    $expectedCheckpointIds = array_values(array_unique(array_filter(array_map(
+        static fn(array $item): int => (int)($item['csqa_id'] ?? 0),
+        $departmentCheckpoints
+    ))));
+
+    $savedCheckpointIds = [];
+    $stmt = $con->prepare('SELECT DISTINCT checkpoint_id FROM assessment_response WHERE assessment_id = ? AND dept_id = ?');
+    if ($stmt) {
+        $stmt->bind_param('ii', $assessmentId, $deptId);
+        $stmt->execute();
+        $savedResult = $stmt->get_result();
+        while ($savedRow = $savedResult->fetch_assoc()) {
+            $savedCheckpointIds[] = (int)$savedRow['checkpoint_id'];
+        }
+    }
+
+    $completedCheckpointCount = count(array_intersect($expectedCheckpointIds, $savedCheckpointIds));
+    $departmentCompleted = count($expectedCheckpointIds) > 0
+        && $completedCheckpointCount >= count($expectedCheckpointIds);
+    $assessmentCompleted = false;
+
+    if ($departmentCompleted) {
+        $stmt = $con->prepare("UPDATE assessment_department SET status = 'COMPLETED', completed_on = CURRENT_TIMESTAMP WHERE assessment_id = ? AND fac_id_fk = ? AND dept_id = ? AND is_active = 1");
+        if ($stmt) {
+            $stmt->bind_param('iii', $assessmentId, $facId, $deptId);
+            $stmt->execute();
+        }
+
+        $statusColumn = responseDepartmentStatusAssessmentColumn($con);
+        $activeDepartments = $con->prepare("SELECT ads.dept_id, COALESCE(ad.status, 'NOT_STARTED') AS status FROM assessment_department_status ads LEFT JOIN assessment_department ad ON ad.assessment_id = ads.{$statusColumn} AND ad.fac_id_fk = ads.fac_id_fk AND ad.dept_id = ads.dept_id AND ad.is_active = 1 WHERE ads.{$statusColumn} = ? AND ads.fac_id_fk = ? AND ads.is_active = 1");
+        $allDepartmentsCompleted = true;
+        $activeDepartmentCount = 0;
+        if ($activeDepartments) {
+            $activeDepartments->bind_param('ii', $assessmentId, $facId);
+            $activeDepartments->execute();
+            $activeResult = $activeDepartments->get_result();
+            while ($activeRow = $activeResult->fetch_assoc()) {
+                $activeDepartmentCount++;
+                if (($activeRow['status'] ?? '') !== 'COMPLETED') $allDepartmentsCompleted = false;
+            }
+        } else {
+            $allDepartmentsCompleted = false;
+        }
+
+        if ($activeDepartmentCount > 0 && $allDepartmentsCompleted) {
+            $stmt = $con->prepare("UPDATE assessment_master SET status = 'COMPLETED', completed_on = CURRENT_TIMESTAMP WHERE assessment_id = ? AND fac_id_fk = ? AND status = 'ACTIVE'");
+            if ($stmt) {
+                $stmt->bind_param('ii', $assessmentId, $facId);
+                $stmt->execute();
+                $assessmentCompleted = $stmt->affected_rows > 0;
+            }
+        }
+    }
+
+    /*
      * 7. Count saved responses
      */
     $sqlCount = "
@@ -356,7 +424,13 @@ try {
             'updated_by' => $userId,
             'progress' => [
                 'saved_responses' => (int)($countRow['saved_count'] ?? 0),
-                'current_checkpoint_id' => $checkpointId
+                'current_checkpoint_id' => $checkpointId,
+                'expected_checkpoints' => count($expectedCheckpointIds),
+                'completed_checkpoints' => $completedCheckpointCount
+            ],
+            'lifecycle' => [
+                'department_completed' => $departmentCompleted,
+                'assessment_completed' => $assessmentCompleted
             ]
         ]
     );

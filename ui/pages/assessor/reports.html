@@ -1,0 +1,25 @@
+<section class="sq-assessor-page">
+    <div class="sq-assessor-toolbar">
+        <div>
+            <h3>Assessment Reports</h3>
+            <p>Assessment details for your assigned Schools/Facilities.</p>
+        </div>
+        <div class="sq-assessor-actions">
+            <button class="sq-btn sq-btn-muted" id="assessorReportRefresh" type="button">Refresh</button>
+            <button class="sq-btn sq-btn-primary" id="assessorReportDownload" type="button">Download CSV</button>
+        </div>
+    </div>
+
+    <div class="sq-card">
+        <div class="sq-card-header"><h3>Assessment Details</h3></div>
+        <div class="sq-card-body" id="assessorReportRows"></div>
+    </div>
+
+    <div class="sq-card">
+        <div class="sq-card-header">
+            <div><h3>Assessment Score Trend</h3><p>Compare assessment rounds for an assigned School or Facility.</p></div>
+            <input class="sq-form-control" id="assessorTrendSearch" type="search" placeholder="Search name or UDISE Code" aria-label="Search assessment score trend">
+        </div>
+        <div class="sq-card-body" id="assessorTrendRows"></div>
+    </div>
+</section>

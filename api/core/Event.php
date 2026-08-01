@@ -225,8 +225,29 @@ class Event
         $file = $dir . '/events-' . date('Y-m-d') . '.log';
         $line = json_encode($event, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . PHP_EOL;
 
-        if (@file_put_contents($file, $line, FILE_APPEND | LOCK_EX) === false) {
+        $handle = @fopen($file, 'ab');
+        if ($handle === false) {
             error_log('SaQshi event log write failed: ' . $file);
+            return;
+        }
+
+        try {
+            /*
+             * Event logging is diagnostic only. A busy log file must never
+             * hold up an interactive request such as sign-in.
+             */
+            if (!@flock($handle, LOCK_EX | LOCK_NB)) {
+                return;
+            }
+
+            $written = @fwrite($handle, $line);
+            @flock($handle, LOCK_UN);
+
+            if ($written === false) {
+                error_log('SaQshi event log write failed: ' . $file);
+            }
+        } finally {
+            fclose($handle);
         }
     }
 }

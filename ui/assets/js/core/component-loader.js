@@ -51,7 +51,7 @@
 
     const CONFIG = {
         basePath: "/ui/components",
-        assetVersion: "20260718-a11y-focus-hover-speech",
+        assetVersion: "20260730-logo-fallback-1",
         attribute: "data-component",
         cache: false,
         debug: true,

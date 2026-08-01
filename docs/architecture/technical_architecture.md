@@ -40,7 +40,7 @@ flowchart LR
     Modules["Application Modules<br/>Assessment, CQI, Performance,<br/>Certification, Reports,<br/>State Monitoring, AI Chat"]
     API["Versioned APIs<br/>api/<module>/v1"]
     Core["Core + Services<br/>Session, CSRF, validation,<br/>business rules, events"]
-    Data["Data + Storage<br/>Database, JSON config,<br/>uploads, logs"]
+    Data["Data + Storage<br/>Database, JSON config,<br/>uploads, logs, sessions"]
     Docs["Docs + Testing<br/>GitBook, Swagger,<br/>Postman, test docs"]
 
     Users --> UI
@@ -136,7 +136,40 @@ configuration, uploads, reports, logs and events work together.
 | Modules | Assessment, CQI, performance, certification, reports and state monitoring are separate functional areas. |
 | API | Versioned PHP endpoints receive requests and return friendly JSON responses. Chat APIs also receive user questions and return scoped assistant answers. |
 | Core + Services | Shared validation, session, CSRF, security, business rules, formulas and event dispatching live here. |
-| Data + Storage | MySQL stores transactions, JSON config drives dynamic behavior, uploads store evidence/report files. |
+| Data + Storage | MySQL stores transactions, JSON config drives dynamic behavior, uploads store evidence/report files, and Memurai/Redis can store PHP sessions. |
+
+## Technology and Developer Requirements
+
+### Pre-requisites
+
+Before developing, deploying, or troubleshooting SaQshi, confirm:
+
+- PHP 8.2+ is installed and the required PHP extensions are enabled.
+- MySQL or MariaDB is reachable and the SaQshi schema/migrations have been applied.
+- The web server is configured to run PHP and serve the SaQshi project root.
+- The web-server identity can write to `uploads/`, `api/storage/logs/`, and `api/storage/events/`.
+- `.env` is present with environment-specific database and application values; secrets are not committed to Git.
+- Git is available for source/version control. Use a current browser for the HTML/JavaScript UI.
+- If Redis sessions are enabled, Memurai and the PHP `redis` extension are available before switching `api/config/session.json` to the Redis driver.
+- If log monitoring is enabled, reserve local ports `3100` (Loki), `12345` (Alloy), and `3300` (SaQshi Grafana).
+
+| Area | Technology | Required version / purpose |
+| --- | --- | --- |
+| Application runtime | PHP | PHP 8.2 or later. Runs the versioned SaQshi API and service layer. |
+| Web server | IIS, Apache or Nginx | IIS with FastCGI is the standard Windows deployment option; Apache/Nginx are supported alternatives. |
+| Database | MySQL or MariaDB | Stores users, assessments, CQI, certification, reporting and state-monitoring data. |
+| PHP database driver | `mysqli` | Required PHP extension for database connectivity. |
+| PHP supporting extensions | `openssl`, `json`, `mbstring`, `fileinfo`, `zip` | Required for security, JSON APIs, text handling, uploads and exports. |
+| Session handler | Memurai / Redis | Optional but recommended for shared, fast PHP sessions. Requires the PHP `redis` extension. |
+| Configuration | JSON files under `api/config/` | Configures domain, frameworks, master data, labels and rules without code changes. |
+| Front end | HTML5, CSS3, vanilla JavaScript | Static UI under `ui/`; no Node.js runtime is required in production. |
+| API style | Versioned PHP REST endpoints | JSON APIs under `api/<module>/v1/`, protected by sessions, CSRF and role checks. |
+| Evidence and exports | Local/server file storage | `uploads/` and `api/storage/` must be writable by the web-server identity. |
+| Log monitoring | Grafana Alloy, Loki and Grafana OSS | Optional portable stack for asynchronous API/audit log collection and search. |
+| Documentation | GitBook-compatible Markdown and Swagger/OpenAPI | Static developer/user documentation served with the application. |
+| Source control and quality | Git, GitHub Actions, CodeQL | Recommended for version control, tests and security scanning. |
+
+For installation details, see [Deployment Guide](../deployment/deployment_guide.md), [Memurai (Redis) Session Configuration](../deployment/memurai_session_configuration.md), and [Local Log Monitoring](../observability.md).
 
 ## System Architecture File Visualisation
 
@@ -221,22 +254,30 @@ sequenceDiagram
     participant UI as Browser UI
     participant API as Versioned API
     participant Core as Auth/Security/Core
+    participant Session as Memurai/Redis (optional)
     participant Service as Business Service
     participant DB as MySQL/MariaDB
     participant Event as Event Dispatcher
+    participant Logs as Event Log Files
+    participant Monitor as Alloy → Loki → Grafana (optional)
 
     User->>UI: Open page and submit action
     UI->>API: HTTP request with session/CSRF where required
-    API->>Core: Validate method, session, role and payload
+    API->>Core: Load configuration and validate request
+    Core-->>Session: Optional Redis session read/write
+    Session-->>Core: Session state when enabled
+    API->>Core: Validate session, role and payload
     Core-->>API: Validated request context
     API->>Service: Execute business operation
     Service->>DB: Prepared query / transaction
     DB-->>Service: Result rows or save status
     Service->>Event: dispatch domain event
-    Event-->>Service: Logged locally now, Kafka-ready later
+    Event->>Logs: Append local audit/event entry
     Service-->>API: Result object
     API-->>UI: Friendly JSON response
     UI-->>User: Updated page, message, chart or report
+    Logs-->>Monitor: Optional asynchronous collection by Alloy
+    Monitor-->>User: Grafana provides searchable logs and dashboards
 ```
 
 ### Runtime Flow in Detail
@@ -246,16 +287,18 @@ sequenceDiagram
 | 1. Page route | `ui/dashboard.html`, `ui/assets/js/core/router.js` | The browser opens a route or direct page. The router loads the correct HTML, CSS, JS and JSON metadata for the selected module. | Page shell and page script are loaded. |
 | 2. Page initialization | `ui/pages/<module>/<page>.js` | Page JS reads URL parameters, session context, default filters and page JSON settings. It prepares empty cards/tables/forms before data arrives. | Page is visible with loading or empty states. |
 | 3. API request | `ui/assets/js/core/api.js` | API client sends GET/POST request to a versioned endpoint. For protected actions it includes session cookies and CSRF token where required. | HTTP request reaches PHP API. |
-| 4. Bootstrap | `api/bootstrap.php` | Bootstrap loads environment values, database connection, error handling, response helpers, session and common core classes. | API has application context. |
-| 5. Security check | `api/core/*`, endpoint validation | API checks request method, login session, role permission, CSRF token, required fields and payload type. | Validated request or friendly error response. |
-| 6. Role scope | Session + service filters | Facility users are limited to their facility. Block, district, division and state users get scoped data only for their level. | Safe query/filter context. |
-| 7. Service call | `api/service/*.php` | Endpoint delegates business logic to service classes such as assessment, performance, certification, state, reports or chat assistant. | Service result object. |
-| 8. Configuration read | `api/config/**/*.json` | Services load framework, department, facility type, validation, performance indicator, formula or map configuration as needed. | Dynamic rules and labels. |
-| 9. Data operation | MySQL/MariaDB tables | Services use prepared queries or safe helpers to read/write assessment, CQI, performance, certification, user or state data. | Rows, calculated values or saved records. |
-| 10. Files and evidence | `uploads/`, report output | File APIs validate upload type/path. Report APIs generate Excel/PDF/CSV output. Evidence and reports are stored or streamed. | File URL, report download or storage update. |
-| 11. Event dispatch | `Event::dispatch(...)` | Important actions are logged as domain events, keeping the code ready for future queue/Kafka style publishing. | Local event/audit entry. |
-| 12. Response | `api/core/Response.php` | API returns consistent success/error JSON, or a downloadable file for report endpoints. Raw PHP/database errors should not reach users. | Friendly API response. |
-| 13. UI update | Page JS + shared components | Page updates cards, forms, tables, progress bars, charts, alerts or navigation state. | User sees the result. |
+| 4. Bootstrap | `api/bootstrap.php` | Bootstrap loads environment values, database connection, error handling, response helpers, session configuration and common core classes. | API has application context. |
+| 5. Session resolution | `api/config/session.json`, session core | When the Redis driver is enabled, PHP reads/writes the session through Memurai/Redis using the configured database and prefix. Otherwise the configured fallback session driver is used. | Authenticated session context. |
+| 6. Security check | `api/core/*`, endpoint validation | API checks request method, login session, role permission, CSRF token, required fields and payload type. | Validated request or friendly error response. |
+| 7. Role scope | Session + service filters | Facility users are limited to their facility. Block, district, division and state users get scoped data only for their level. | Safe query/filter context. |
+| 8. Service call | `api/service/*.php` | Endpoint delegates business logic to service classes such as assessment, performance, certification, state, reports or chat assistant. | Service result object. |
+| 9. Configuration read | `api/config/**/*.json` | Services load framework, department, facility type, validation, performance indicator, formula or map configuration as needed. | Dynamic rules and labels. |
+| 10. Data operation | MySQL/MariaDB tables | Services use prepared queries or safe helpers to read/write assessment, CQI, performance, certification, user or state data. | Rows, calculated values or saved records. |
+| 11. Files and evidence | `uploads/`, report output | File APIs validate upload type/path. Report APIs generate Excel/PDF/CSV output. Evidence and reports are stored or streamed. | File URL, report download or storage update. |
+| 12. Event dispatch | `Event::dispatch(...)`, `api/storage/events/` | Important actions are appended as local domain/audit events. Grafana tooling, if enabled, reads these files asynchronously; Kafka remains an optional future extension. | Local event/audit entry. |
+| 13. Response | `api/core/Response.php` | API returns consistent success/error JSON, or a downloadable file for report endpoints. Raw PHP/database errors should not reach users. | Friendly API response. |
+| 14. UI update | Page JS + shared components | Page updates cards, forms, tables, progress bars, charts, alerts or navigation state. | User sees the result. |
+| 15. Optional log monitoring | Alloy, Loki, Grafana | Alloy tails new event-log lines after the request flow; Loki stores them and Grafana provides search/dashboard access. This is not on the synchronous login/API response path. | Searchable operational logs. |
 
 ### Runtime Variations
 
@@ -487,14 +530,41 @@ flowchart LR
     PHP["SaQshi PHP Application<br/>api/ + ui/"]
     DB[("MySQL / MariaDB")]
     Files["Evidence Upload Storage"]
+    Redis[("Memurai / Redis<br/>optional sessions")]
+    Events["Event and audit logs"]
+    Alloy["Grafana Alloy<br/>optional collector"]
+    Loki[("Grafana Loki<br/>log store")]
+    Grafana["Grafana<br/>log search and dashboards"]
     Docs["GitBook / Markdown Docs"]
 
     Browser --> Web
     Web --> PHP
     PHP --> DB
     PHP --> Files
+    PHP --> Redis
+    PHP --> Events
+    Events -. asynchronous .-> Alloy
+    Alloy --> Loki
+    Loki --> Grafana
     Web --> Docs
 ```
+
+### Session and observability components
+
+Memurai is an optional Redis-compatible session store selected through
+`api/config/session.json`. It keeps session data outside local PHP session files
+and can be shared safely across IIS/PHP worker processes when each application
+uses its own cookie name and Redis prefix/database.
+
+SaQshi writes event/audit records locally first. The optional observability
+layer is intentionally asynchronous: Grafana Alloy tails
+`api/storage/events/*.log`, sends entries to Loki, and Grafana provides search
+and dashboards. This means log collection does not sit in the login or API
+response path.
+
+For installation and configuration, see [Memurai (Redis) Session
+Configuration](../deployment/memurai_session_configuration.md) and [Local Log
+Monitoring](../observability.md).
 
 ## Event-Driven Extension Point
 

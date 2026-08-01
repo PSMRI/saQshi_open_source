@@ -36,6 +36,16 @@
         return cached?.domain?.labels?.[key] || fallback || key;
     }
 
+    function interpolate(value) {
+        return String(value || "").replace(/\{([a-z_]+)\}/g, function (_, key) {
+            return label(key, key);
+        });
+    }
+
+    function text(key, fallback = "") {
+        return interpolate(cached?.domain?.content?.[key] || fallback || key);
+    }
+
     function moduleEnabled(key) {
         const module = cached?.modules?.modules?.[key];
         return module ? module.enabled !== false : true;
@@ -50,11 +60,59 @@
             const key = el.getAttribute("data-domain-label");
             el.textContent = label(key, el.textContent);
         });
+
+        root.querySelectorAll("[data-domain-content]").forEach(function (el) {
+            const key = el.getAttribute("data-domain-content");
+            el.textContent = text(key, el.textContent);
+        });
+
+        root.querySelectorAll("[data-domain-template]").forEach(function (el) {
+            el.textContent = String(el.getAttribute("data-domain-template") || "").replace(/\{([a-z_]+)\}/g, function (_, key) {
+                return label(key, key);
+            });
+        });
+
+        root.querySelectorAll("[data-domain-placeholder]").forEach(function (el) {
+            el.setAttribute("placeholder", String(el.getAttribute("data-domain-placeholder") || "").replace(/\{([a-z_]+)\}/g, function (_, key) {
+                return label(key, key);
+            }));
+        });
+
+        root.querySelectorAll("[data-domain-aria-label]").forEach(function (el) {
+            el.setAttribute("aria-label", String(el.getAttribute("data-domain-aria-label") || "").replace(/\{([a-z_]+)\}/g, function (_, key) {
+                return label(key, key);
+            }));
+        });
+
+        root.querySelectorAll("[data-domain-title]").forEach(function (el) {
+            el.setAttribute("title", String(el.getAttribute("data-domain-title") || "").replace(/\{([a-z_]+)\}/g, function (_, key) {
+                return label(key, key);
+            }));
+        });
+
+        root.querySelectorAll("[data-domain-template]").forEach(function (el) {
+            el.textContent = String(el.getAttribute("data-domain-template") || "").replace(/\{([a-z_]+)\}/g, function (_, key) {
+                return label(key, key);
+            });
+        });
+
+        root.querySelectorAll("[data-domain-placeholder]").forEach(function (el) {
+            el.setAttribute("placeholder", String(el.getAttribute("data-domain-placeholder") || "").replace(/\{([a-z_]+)\}/g, function (_, key) {
+                return label(key, key);
+            }));
+        });
+
+        root.querySelectorAll("[data-domain-aria-label]").forEach(function (el) {
+            el.setAttribute("aria-label", String(el.getAttribute("data-domain-aria-label") || "").replace(/\{([a-z_]+)\}/g, function (_, key) {
+                return label(key, key);
+            }));
+        });
     }
 
     SQ.deployment = {
         load,
         label,
+        text,
         moduleEnabled,
         applyLabels,
         get current() {

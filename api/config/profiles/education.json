@@ -2,7 +2,19 @@
   "profile_code": "education",
   "profile_name": "Education / School Assessment",
   "recommended_for": "Schools, education department inspections, school infrastructure and teacher/student data capture.",
-  "default_framework": "education-school",
+  "default_framework": "saqshi-education",
+  "branding": {
+    "login_app_name": "SaQshi",
+    "login_app_tagline": "Digital School Quality Assessment Platform",
+    "login_kicker": "School Quality Platform",
+    "login_title": "Structured assessments for school improvement.",
+    "login_description": "Manage school assessment workflows with section activation, question scoring and improvement tracking."
+  },
+  "content": {
+    "assessor_dashboard_overview": "{assessment} overview across your assigned {facilities}.",
+    "assessor_choose_item": "Choose the {facility} where you will perform {assessment}.",
+    "assessor_no_mapped_items": "No {facilities} are mapped to this {assessor} profile."
+  },
   "modules": {
     "assessment": true,
     "cqi": false,
@@ -24,6 +36,8 @@
     "assigned_facilities": "Assigned Schools",
     "department": "Section",
     "departments": "Sections",
+    "area_of_concern": "Domain",
+    "areas_of_concern": "Domains",
     "assessment": "School Assessment",
     "assessments": "School Assessments",
     "assessment_list": "School Assessment List",
