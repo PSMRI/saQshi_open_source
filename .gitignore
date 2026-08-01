@@ -8,6 +8,7 @@ api/storage/keys/
 api/storage/schema/
 api/config/facilities.json
 uploads/
+tools/observability/
 
 *.rar
 *.zip
