@@ -152,29 +152,7 @@
             throw new Error("Secure password encryption is not available in this browser. Please use HTTPS or localhost.");
         }
 
-<<<<<<< Updated upstream
-        const keyResponse = await SQ.api.get("/auth/v1/login_key.php", {}, {
-            loader: false,
-            showError: false,
-            redirectOnUnauthorized: false
-        });
-
-        const publicKeyPem = keyResponse.data?.public_key || "";
-
-        if (!publicKeyPem) {
-            throw new Error("Login security key could not be loaded. Please try again.");
-        }
-
-        const publicKey = await window.crypto.subtle.importKey(
-            "spki",
-            pemToArrayBuffer(publicKeyPem),
-            { name: "RSA-OAEP", hash: "SHA-1" },
-            false,
-            ["encrypt"]
-        );
-=======
         const publicKey = await loadLoginPublicKey();
->>>>>>> Stashed changes
 
         const encrypted = await window.crypto.subtle.encrypt(
             { name: "RSA-OAEP" },

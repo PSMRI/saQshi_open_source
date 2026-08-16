@@ -342,12 +342,7 @@
 
         state.assessment = assessment;
         renderAssessment();
-<<<<<<< Updated upstream
-
-        if (assessment.is_assessor_led) {
-=======
         if (assessment.is_assessor_led && !assessment.is_assessor_session) {
->>>>>>> Stashed changes
             setStateMessage("This assessor-led assessment is read-only for facility users. Use Assessment Progress or Reports to view it.");
             return false;
         }

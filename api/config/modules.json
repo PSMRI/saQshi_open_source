@@ -1,57 +1,4 @@
 {
-<<<<<<< Updated upstream
-    "domain": "education",
-    "description": "Controls optional SaQshi education modules for school assessment, reporting, field analytics and map features.",
-    "modules": {
-        "assessment": {
-            "enabled": true,
-            "label": "Assessment"
-        },
-        "cqi": {
-            "enabled": false,
-            "label": "CQI / Gap Closure"
-        },
-        "performance": {
-            "enabled": false,
-            "label": "Performance Monitoring"
-        },
-        "kpi": {
-            "enabled": false,
-            "label": "KPI"
-        },
-        "outcome": {
-            "enabled": false,
-            "label": "Outcome"
-        },
-        "certification": {
-            "enabled": false,
-            "label": "Certification"
-        },
-        "reports": {
-            "enabled": true,
-            "label": "Reports"
-        },
-        "field_analytics": {
-            "enabled": true,
-            "label": "Field Analytics"
-        },
-        "map": {
-            "enabled": true,
-            "label": "Map"
-        }
-    },
-    "role_visibility": {
-        "assessor": [
-            "assessment"
-        ],
-        "facility": ["assessment", "reports", "field_analytics", "map"],
-        "state": [
-            "assessment", "reports", "field_analytics", "map"
-        ]
-    },
-    "active_profile": "education",
-    "default_framework": "saqshi-education"
-=======
   "domain": "education",
   "description": "Controls optional SaQshi education modules for school assessment, reporting, field analytics and map features.",
   "modules": {
@@ -72,5 +19,4 @@
   },
   "active_profile": "education",
   "default_framework": "saqshi-education"
->>>>>>> Stashed changes
 }
