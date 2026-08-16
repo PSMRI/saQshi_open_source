@@ -31,6 +31,8 @@ require_once __DIR__ . '/../../assets/conn/db.php';
 require_once __DIR__ . '/../../core/FrameworkEngine.php';
 require_once __DIR__ . '/../../service/ResponseTypeService.php';
 require_once __DIR__ . '/../../core/AssessmentAccess.php';
+require_once __DIR__ . '/../../core/ApiCache.php';
+require_once __DIR__ . '/../../service/AssessmentSectionAssignmentService.php';
 
 Security::requireMethod('POST');
 
@@ -90,6 +92,7 @@ try {
     }
 
     AssessmentAccess::requireEditableByCurrentUser($con, $assessmentId, $facId);
+    AssessmentSectionAssignmentService::requireOwner($con, $assessmentId, $deptId);
 
     ResponseTypeService::ensureSchema($con);
 
@@ -350,6 +353,15 @@ try {
             $stmt->execute();
         }
 
+        // Release the assessor's class lock when all checkpoints are saved.
+        // Without this, a completed class remains IN_PROGRESS and cannot be
+        // selected by another mapped assessor.
+        $assignment = $con->prepare("UPDATE assessment_section_assignee SET status = 'COMPLETED', completed_on = COALESCE(completed_on, CURRENT_TIMESTAMP) WHERE assessment_id = ? AND fac_id_fk = ? AND dept_id = ? AND status = 'IN_PROGRESS'");
+        if ($assignment) {
+            $assignment->bind_param('iii', $assessmentId, $facId, $deptId);
+            $assignment->execute();
+        }
+
         $statusColumn = responseDepartmentStatusAssessmentColumn($con);
         $activeDepartments = $con->prepare("SELECT ads.dept_id, COALESCE(ad.status, 'NOT_STARTED') AS status FROM assessment_department_status ads LEFT JOIN assessment_department ad ON ad.assessment_id = ads.{$statusColumn} AND ad.fac_id_fk = ads.fac_id_fk AND ad.dept_id = ads.dept_id AND ad.is_active = 1 WHERE ads.{$statusColumn} = ? AND ads.fac_id_fk = ? AND ads.is_active = 1");
         $allDepartmentsCompleted = true;
@@ -366,6 +378,9 @@ try {
             $allDepartmentsCompleted = false;
         }
 
+        // An assessment can contain multiple active classes/departments.
+        // Completing one class must never close the parent assessment while
+        // another class is still pending.
         if ($activeDepartmentCount > 0 && $allDepartmentsCompleted) {
             $stmt = $con->prepare("UPDATE assessment_master SET status = 'COMPLETED', completed_on = CURRENT_TIMESTAMP WHERE assessment_id = ? AND fac_id_fk = ? AND status = 'ACTIVE'");
             if ($stmt) {
@@ -409,6 +424,8 @@ try {
         'fac_id' => $facId,
         'updated_by' => $userId
     ]);
+
+    ApiCache::forget('assessment:list:facility:' . $facId);
 
     Response::success(
         'Response saved successfully',

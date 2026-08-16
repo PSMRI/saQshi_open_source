@@ -9,7 +9,7 @@ License   : GPL-3.0
 ==========================================================
 -->
 
-<aside class="sq-sidebar" role="navigation" aria-label="Main Navigation">
+<aside class="sq-sidebar" id="sq-main-sidebar" role="navigation" aria-label="Main Navigation">
 
     <!---div class="sq-sidebar-brand">
         <a href="/ui/dashboard.html" class="sq-sidebar-logo-link">
@@ -24,7 +24,7 @@ License   : GPL-3.0
 
     <nav class="sq-sidebar-nav">
 
-        <a href="/ui/dashboard.html" class="sq-sidebar-link" data-sq-nav data-facility-only>
+        <a href="/ui/dashboard.html" class="sq-sidebar-link" data-sq-route="dashboard" data-sq-nav data-facility-only>
             <i class="bi bi-speedometer2"></i>
             <span>Dashboard</span>
         </a>
@@ -113,7 +113,7 @@ License   : GPL-3.0
             <span>Renewal Status</span>
         </a>
 
-        <div class="sq-sidebar-section-title" data-state-only data-monitoring-title>State Monitoring</div>
+        <div class="sq-sidebar-section-title" data-state-only data-monitoring-title data-role11-management>Management</div>
 
         <a href="#" class="sq-sidebar-link" data-sq-route="state/dashboard" data-sq-nav data-state-only>
             <i class="bi bi-grid-1x2"></i>
@@ -160,12 +160,12 @@ License   : GPL-3.0
             <span data-domain-label="facility_drilldown">Facility Drill-down</span>
         </a>
 
-        <a href="#" class="sq-sidebar-link" data-sq-route="state/users" data-sq-nav data-state-only>
+        <a href="#" class="sq-sidebar-link" data-sq-route="state/users" data-sq-nav data-state-only data-role11-management>
             <i class="bi bi-person-gear"></i>
             <span>User Administration</span>
         </a>
 
-        <a href="#" class="sq-sidebar-link" data-sq-route="state/assessors" data-sq-nav data-state-only>
+        <a href="#" class="sq-sidebar-link" data-sq-route="state/assessors" data-sq-nav data-state-only data-role11-management>
             <i class="bi bi-person-badge"></i>
             <span data-domain-label="assessor_management">Assessor Management</span>
         </a>
@@ -177,7 +177,7 @@ License   : GPL-3.0
 
         <div class="sq-sidebar-section-title" data-assessor-only>Assessor</div>
 
-        <a href="#" class="sq-sidebar-link" data-sq-route="assessor/dashboard" data-sq-nav data-assessor-only>
+        <a href="#" class="sq-sidebar-link" data-sq-route="assessor/dashboard" data-sq-nav data-assessor-only data-sidebar-disabled>
             <i class="bi bi-speedometer"></i>
             <span data-domain-label="assessor_dashboard">Assessor Dashboard</span>
         </a>
@@ -187,7 +187,7 @@ License   : GPL-3.0
             <span data-domain-label="assigned_facilities">Assigned Facilities</span>
         </a>
 
-        <a href="#" class="sq-sidebar-link" data-sq-route="assessor/reports" data-sq-nav data-assessor-only>
+        <a href="#" class="sq-sidebar-link" data-sq-route="assessor/reports" data-sq-nav data-assessor-only data-sidebar-disabled>
             <i class="bi bi-file-earmark-bar-graph"></i>
             <span>Reports</span>
         </a>
@@ -221,7 +221,7 @@ License   : GPL-3.0
             <span data-domain-label="facility_profile">Facility Profile</span>
         </a>
 
-        <div class="sq-sidebar-section-title">Help</div>
+        <!--div class="sq-sidebar-section-title">Help</div>
 
         <a href="/ui/help/documentation.html" class="sq-sidebar-link" data-sq-nav>
             <i class="bi bi-question-circle"></i>
@@ -236,7 +236,7 @@ License   : GPL-3.0
         <a href="/ui/help/about.html" class="sq-sidebar-link" data-sq-nav>
             <i class="bi bi-info-circle"></i>
             <span>About</span>
-        </a>
+        </a-->
 
     </nav>
 

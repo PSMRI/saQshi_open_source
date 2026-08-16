@@ -217,8 +217,8 @@
             </div>
 
             <div class="sq-info-item">
-                <span class="sq-info-label">Facility ID</span>
-                <span class="sq-info-value">${escapeHtml(facility.fac_id || user.fac_id_fk || "-")}</span>
+                <span class="sq-info-label">${escapeHtml(domainLabel("facility_code", "NIN"))}</span>
+                <span class="sq-info-value">${escapeHtml(facility.nin_no || facility.NIN_no || facility.fac_nin || "-")}</span>
             </div>
         `;
     }
@@ -240,7 +240,7 @@
                             Assessment can be created
                         </div>
                         <div class="sq-alert-text">
-                            No ACTIVE assessment found for this facility.
+                            No ACTIVE facility self-assessment found. Assessor-led assessments do not prevent you from creating one.
                         </div>
                     </div>
                 </div>
@@ -258,10 +258,10 @@
             <div class="sq-alert sq-alert-warning">
                 <div class="sq-alert-content">
                     <div class="sq-alert-title">
-                        ACTIVE assessment already exists
+                        ACTIVE facility self-assessment already exists
                     </div>
                     <div class="sq-alert-text">
-                        You cannot create another assessment until the current assessment is completed or cancelled. If required, cancel this assessment and then create a new one.
+                        You cannot create another self-assessment until the current self-assessment is completed or cancelled. Assessor-led assessments are managed independently.
                     </div>
                 </div>
             </div>
@@ -564,6 +564,10 @@
     }
 
     async function init() {
+        if (SQ.deployment && typeof SQ.deployment.load === "function") {
+            await SQ.deployment.load();
+            SQ.deployment.applyLabels(document);
+        }
         setDefaultDates();
         autoFillAssessmentName(true);
         bindEvents();

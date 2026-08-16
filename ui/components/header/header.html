@@ -24,7 +24,9 @@ Loaded automatically by:
     class="sq-header-toggle"
     id="sq-sidebar-toggle"
     data-sq-sidebar-toggle
-    aria-label="Toggle Sidebar">
+    aria-label="Toggle Sidebar"
+    aria-controls="sq-main-sidebar"
+    aria-expanded="false">
     <i class="bi bi-list"></i>
 </button>
 
@@ -35,10 +37,11 @@ Loaded automatically by:
             class="sq-header-logo">
 
             <img
-                src="/ui/assets/images/logo.svg"
+                src="/ui/assets/images/logo.png"
                 alt="SaQshi Logo"
                 class="sq-logo"
-                data-sq-logo>
+                data-sq-logo
+                onerror="this.hidden=true;this.parentElement.querySelector('[data-sq-logo-fallback]').hidden=false;">
             <span class="sq-logo-fallback" data-sq-logo-fallback hidden aria-label="SaQshi">S</span>
 
             <div class="sq-header-brand">
@@ -65,25 +68,6 @@ Loaded automatically by:
 
     </div>
 
-    <!-- Center -->
-
-    <div class="sq-header-center">
-
-        <form
-            class="sq-header-search"
-            role="search">
-
-            <i class="bi bi-search"></i>
-
-            <input
-                type="search"
-                placeholder="Search assessment, facility, user..."
-                aria-label="Global Search">
-
-        </form>
-
-    </div>
-
     <!-- Right -->
 
     <div class="sq-header-right">
@@ -103,23 +87,16 @@ Loaded automatically by:
 
         <!-- Notification -->
 
-        <button
-            type="button"
-            class="sq-icon-button"
-            title="Notifications"
-            aria-label="Open notifications">
-
-            <i class="bi bi-bell"></i>
-
-            <span
-                class="sq-badge sq-badge-danger"
-                id="sq-notification-count">
-
-                0
-
-            </span>
-
-        </button>
+        <div class="sq-notification-menu">
+            <button type="button" class="sq-icon-button" id="sq-notification-button" title="Notifications" aria-label="Open notifications" aria-expanded="false" aria-controls="sq-notification-dropdown">
+                <i class="bi bi-bell"></i>
+                <span class="sq-badge sq-badge-danger" id="sq-notification-count" hidden>0</span>
+            </button>
+            <section class="sq-notification-dropdown" id="sq-notification-dropdown" hidden aria-label="Notifications">
+                <div class="sq-notification-heading"><strong>Notifications</strong><button type="button" id="sq-notification-read-all">Mark all read</button></div>
+                <div id="sq-notification-list" class="sq-notification-list"></div>
+            </section>
+        </div>
 
         <!-- Accessibility -->
 

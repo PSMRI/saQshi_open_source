@@ -50,6 +50,7 @@
 - [UI Deployment Guide](docs/deployment/ui_deployment_guide.md)
 - [SMS and Email Notification Configuration](docs/deployment/notification_configuration.md)
 - [Healthcare Deployment Configuration](docs/deployment/deployment_profiles.md)
+- [Background Worker Deployment](docs/deployment/background-workers.md)
 - [Backup and Restore Guide](docs/deployment/backup_restore_guide.md)
 - [Upgrade and Migration Guide](docs/deployment/upgrade_migration_guide.md)
 - [Troubleshooting and FAQ](docs/deployment/troubleshooting_faq.md)
@@ -81,6 +82,7 @@
 - [Non-functional Test Cases](docs/testing/saqshi_non_functional_test_cases.csv)
 - [WCAG and Web Platform Compliance](docs/testing/saqshi_wcag_web_platform_compliance.md)
 - [Accessibility Test Execution Report 2026-07-17](docs/testing/accessibility_test_execution_report_2026_07_17.md)
+- [WHO Compatibility Test Execution 2026-08-03](docs/testing/who_compatibility_test_execution_2026_08_03.md)
 - [WCAG Page Audit](docs/testing/wcag_page_by_page_audit.csv)
 
 ## Legal and Governance
@@ -109,5 +111,6 @@
 - [Non-PII Export and Import](docs/compliance/non_pii_data_export_import.md)
 - [Non-PII Sample Exports](docs/compliance/sample_exports/README.md)
 - [Open Standards Mapping](docs/compliance/open_standards_mapping.md)
+- [WHO Digital Health Compatibility](docs/compliance/who_digital_health_compatibility.md)
 - [Release and Versioning Policy](docs/compliance/release_versioning_policy.md)
 - [Release Checklist](docs/compliance/release_checklist.md)

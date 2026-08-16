@@ -15,6 +15,7 @@
 
 require_once __DIR__ . '/../../auth_api.php';
 require_once __DIR__ . '/../../core/FrameworkEngine.php';
+require_once __DIR__ . '/../../core/ApiCache.php';
 require_once __DIR__ . '/../../assets/conn/db.php';
 
 Security::requireMethod('GET');
@@ -160,6 +161,12 @@ try {
 
     if ($userId <= 0) {
         Response::error('User session not found');
+    }
+
+    $cacheKey = 'assessment:list:facility:' . $facId;
+    $cached = ApiCache::get($cacheKey);
+    if (is_array($cached)) {
+        Response::success('Assessment list fetched successfully', $cached);
     }
 
     $departmentStatusAssessmentColumn = listColumnExists($con, 'assessment_department_status', 'assessment_id')
@@ -352,13 +359,9 @@ try {
         ? round($scoreTotal / $scoreCount, 2)
         : 0;
 
-    Response::success(
-        'Assessment list fetched successfully',
-        [
-            'summary' => $summary,
-            'assessments' => $assessments
-        ]
-    );
+    $payload = ['summary' => $summary, 'assessments' => $assessments];
+    ApiCache::put($cacheKey, $payload, ApiCache::assessmentListTtl());
+    Response::success('Assessment list fetched successfully', $payload);
 
 } catch (Throwable $e) {
 

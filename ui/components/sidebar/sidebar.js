@@ -119,17 +119,27 @@
 
         document.body.classList.add("sq-sidebar-open");
 
+        const button = document.querySelector("[data-sq-sidebar-toggle]");
+        if (button) button.setAttribute("aria-expanded", "true");
+
     }
 
     function close() {
 
         document.body.classList.remove("sq-sidebar-open");
 
+        const button = document.querySelector("[data-sq-sidebar-toggle]");
+        if (button && window.innerWidth <= 992) button.setAttribute("aria-expanded", "false");
+
     }
 
     function toggleMobile() {
 
-        document.body.classList.toggle("sq-sidebar-open");
+        if (document.body.classList.contains("sq-sidebar-open")) {
+            close();
+        } else {
+            open();
+        }
 
     }
 
@@ -222,6 +232,7 @@
                 : null;
 
         const roleId = Number(user && user.role_id);
+        const isManagementRole = roleId === 11;
         const isMonitoringRole = [4, 5, 8, 9].indexOf(roleId) !== -1;
         const isAssessorRole =
             roleId === 10 ||
@@ -240,9 +251,12 @@
         document
             .querySelectorAll("[data-state-only]")
             .forEach(function (item) {
-                const hiddenByRole = !isMonitoringRole;
+                const managementItem = item.hasAttribute("data-role11-management");
+                const hiddenByRole = isManagementRole
+                    ? !managementItem
+                    : !isMonitoringRole;
                 item.dataset.roleHidden = hiddenByRole ? "1" : "0";
-                item.hidden = hiddenByRole;
+                item.hidden = item.hasAttribute("data-sidebar-disabled") || hiddenByRole;
             });
 
         document
@@ -250,7 +264,7 @@
             .forEach(function (item) {
                 const hiddenByRole = isMonitoringRole || isAssessorRole;
                 item.dataset.roleHidden = hiddenByRole ? "1" : "0";
-                item.hidden = hiddenByRole;
+                item.hidden = item.hasAttribute("data-sidebar-disabled") || hiddenByRole;
             });
 
         document
@@ -258,7 +272,7 @@
             .forEach(function (item) {
                 const hiddenByRole = !isAssessorRole;
                 item.dataset.roleHidden = hiddenByRole ? "1" : "0";
-                item.hidden = hiddenByRole;
+                item.hidden = item.hasAttribute("data-sidebar-disabled") || hiddenByRole;
             });
 
         document
@@ -272,6 +286,16 @@
             .forEach(function (item) {
                 item.textContent = dashboardLabel;
             });
+
+        // Role 11 is intentionally a narrow administration account: it has
+        // no facility, assessor, monitoring, reporting or dashboard routes.
+        if (isManagementRole) {
+            document.querySelectorAll(".sq-sidebar-link, .sq-sidebar-section-title").forEach(function (item) {
+                const permitted = item.hasAttribute("data-role11-management");
+                item.dataset.roleHidden = permitted ? "0" : "1";
+                item.hidden = item.hasAttribute("data-sidebar-disabled") || !permitted;
+            });
+        }
 
     }
 
@@ -316,8 +340,31 @@
         document.querySelectorAll("[data-module-key]").forEach(function (item) {
             const hiddenByRole = item.dataset.roleHidden === "1";
             const hiddenByModule = !moduleEnabled(config, item.getAttribute("data-module-key"));
-            item.hidden = hiddenByRole || hiddenByModule;
+            item.hidden = item.hasAttribute("data-sidebar-disabled") || hiddenByRole || hiddenByModule;
         });
+    }
+
+    // When the current dashboard entry is hidden/disabled, use the first
+    // available sidebar route instead. This keeps landing behaviour aligned
+    // with the configured navigation for every role.
+    function redirectFromDisabledDashboard() {
+        if (!SQ.router || typeof SQ.router.currentRouteFromUrl !== "function" || typeof SQ.router.navigate !== "function") return;
+        const requested = SQ.router.currentRouteFromUrl();
+        const user = SQ.auth && SQ.auth.getUser ? SQ.auth.getUser() : null;
+        const roleId = Number(user && user.role_id);
+        const isAssessor = roleId === 10 || /assessor|mentor/i.test(String(user && user.role_name || ""));
+        const isMonitoring = [4, 5, 8, 9].includes(roleId);
+        const current = requested === "dashboard"
+            ? (isAssessor ? "assessor/dashboard" : (isMonitoring ? "state/dashboard" : "dashboard"))
+            : requested;
+        const dashboardRoutes = ["dashboard", "state/dashboard", "assessor/dashboard"];
+        if (!dashboardRoutes.includes(current)) return;
+        const currentLink = document.querySelector(`[data-sq-route="${current}"]`);
+        const dashboardDisabled = document.body.hasAttribute("data-sidebar-dashboard-disabled") || (currentLink && currentLink.hidden);
+        if (!dashboardDisabled) return;
+        const next = Array.from(document.querySelectorAll(".sq-sidebar-link[data-sq-route]")).find(item => !item.hidden && !item.hasAttribute("data-sidebar-disabled"));
+        const route = next && next.getAttribute("data-sq-route");
+        if (route && route !== current) SQ.router.navigate(route);
     }
 
     async function refresh() {
@@ -370,9 +417,13 @@
 
     function responsive() {
 
-        if (window.innerWidth < 992) {
+        if (window.innerWidth <= 992) {
 
             expand();
+
+        } else {
+
+            close();
 
         }
 
@@ -469,6 +520,7 @@
             SQ.deployment.applyLabels(document);
         }
 
+        redirectFromDisabledDashboard();
         activeMenu();
 
         responsive();

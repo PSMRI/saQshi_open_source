@@ -204,6 +204,16 @@
     color:var(--sq-color-danger-700);
 }
 
+.sq-report-status.is-closed{
+    background:#f1f5f9;
+    color:#475569;
+}
+
+.sq-report-status.is-not-started{
+    background:#eef2ff;
+    color:#3730a3;
+}
+
 .sq-report-score{
     background:var(--sq-color-info-50);
     color:var(--sq-color-info-700);

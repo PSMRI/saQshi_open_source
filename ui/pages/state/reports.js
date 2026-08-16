@@ -47,9 +47,9 @@
             { key: "facilities", title: `All ${domainLabel("facility", "Facility")} List`, description: `${domainLabel("facility", "Facility")} master details.` },
             { key: "assessments", title: "Assessment Details", description: "Assessment status, score and action plan summary." },
             { key: "assessor_activity", title: `${domainLabel("assessor", "Assessor")} Activity`, description: `Completed assessments and assessment details by ${domainLabel("assessor", "Assessor")}.` },
-            { key: "cqi", title: "CQI Details", description: "Action plan and gap closure details." },
+            ...(moduleEnabled("cqi") ? [{ key: "cqi", title: "CQI Details", description: "Action plan and gap closure details." }] : []),
             ...(moduleEnabled("performance") ? [{ key: "performance", title: "Performance Details", description: "Performance entries." }] : []),
-            { key: "certification", title: "Certification History", description: `${domainLabel("facility", "Facility")} certification history.` }
+            ...(moduleEnabled("certification") ? [{ key: "certification", title: "Certification History", description: `${domainLabel("facility", "Facility")} certification history.` }] : [])
         ];
 
         document.getElementById("stateReportExports").innerHTML = list.map(function (item) {
@@ -78,9 +78,9 @@
             <div class="sq-state-list">
                 <div class="sq-state-row"><span>Total ${esc(domainLabel("facilities", "Facilities"))}</span><b>${esc(data.facility_category?.total_facilities || 0)}</b></div>
                 <div class="sq-state-row"><span>Assessment Records</span><b>${esc(data.assessment_progress?.summary?.total || 0)}</b></div>
-                <div class="sq-state-row"><span>CQI Pending</span><b>${esc(data.cqi_summary?.pending || 0)}</b></div>
+                ${moduleEnabled("cqi") ? `<div class="sq-state-row"><span>CQI Pending</span><b>${esc(data.cqi_summary?.pending || 0)}</b></div>` : ""}
                 ${moduleEnabled("performance") ? `<div class="sq-state-row"><span>Performance Months</span><b>${esc((data.performance_summary?.months || []).length)}</b></div>` : ""}
-                <div class="sq-state-row"><span>Certification Records</span><b>${esc(data.certification_summary?.total || 0)}</b></div>
+                ${moduleEnabled("certification") ? `<div class="sq-state-row"><span>Certification Records</span><b>${esc(data.certification_summary?.total || 0)}</b></div>` : ""}
             </div>
         `;
 

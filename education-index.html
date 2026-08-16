@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="SaQshi digital school quality assessment platform.">
+    <title>SaQshi | School Quality Improvement</title>
+    <link rel="icon" type="image/png" href="ui/assets/images/favicon.png">
+    <link rel="stylesheet" href="ui/assets/css/landing.css?v=20260803-education-1">
+    <style>
+        :root { --ink:#172554; --muted:#52647f; --teal:#4f46e5; --line:#d8def2; --sand:#eef2ff; }
+        body { background:#f7f8ff; }.sq-landing-visual,.sq-landing-cta .sq-landing-primary { background:#172554!important; }
+        .sq-landing-primary,.sq-landing-login { background:#4f46e5!important; }.sq-landing-trust span:before,.sq-landing-eyebrow,.sq-landing-heading>span,.sq-landing-cta span,.sq-landing-number { color:#4f46e5; }
+        .sq-landing-photo { margin:0; }.sq-landing-photo img { display:block; width:100%; height:390px; object-fit:cover; }.sq-landing-photo figcaption { display:grid; gap:6px; padding:18px 20px; background:#172554; color:#dbe4ff; font-size:.82rem; line-height:1.5; }.sq-landing-photo figcaption span { color:#a5b4fc; font-size:.68rem; font-weight:900; letter-spacing:.1em; text-transform:uppercase; }
+        .sq-education-visual { padding:30px; background:#172554; color:#fff; }.sq-education-visual header { display:flex; justify-content:space-between; padding-bottom:17px; border-bottom:1px solid #ffffff33; color:#c7d2fe; font-size:.7rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+        .sq-education-stages { display:grid; gap:0; padding:10px 0; }.sq-education-stages div { display:grid; grid-template-columns:32px 1fr; gap:13px; padding:17px 0; border-bottom:1px solid #ffffff24; }.sq-education-stages b { color:#a5b4fc; font-size:.8rem; }.sq-education-stages strong { display:block; margin-bottom:4px; }.sq-education-stages span { color:#dbe4ff; font-size:.8rem; line-height:1.45; }.sq-education-note { padding-top:15px; color:#c7d2fe; font-size:.8rem; font-weight:700; }
+    </style>
+    <script>
+        (async function () {
+            try {
+                const response = await fetch('/api/config/v1/public_deployment.php', { cache: 'no-store' });
+                const payload = await response.json();
+                if ((payload?.data?.domain?.profile_code || '').toLowerCase() !== 'education') location.replace('/index.html');
+            } catch (_) { /* Keep the education landing page available if the configuration API is temporarily unavailable. */ }
+        }());
+    </script>
+</head>
+<body>
+<header id="top" class="sq-landing-header">
+    <a class="sq-landing-brand" href="education-index.html"><span><strong>SaQshi</strong><small>Digital school improvement</small></span></a>
+    <div class="sq-landing-header-actions"><a href="gitbook.html">Learn &amp; Explore</a><a href="ui/login.html">Sign in &rarr;</a></div>
+</header>
+<main>
+    <section class="sq-landing-hero">
+        <div class="sq-landing-copy"><span class="sq-landing-eyebrow">School Quality Assessment Platform</span><h1>Turn school observations into better learning environments.</h1><p>SaQshi helps schools, mentors and education teams assess standards, prioritise improvements and follow progress from the school to district and state level.</p><div class="sq-landing-actions"><a class="sq-landing-primary" href="ui/login.html">Go to workspace &rarr;</a><a class="sq-landing-secondary" href="#how-it-works">See how it works</a></div><div class="sq-landing-trust"><span>Configurable school frameworks</span><span>School-to-state visibility</span></div></div>
+        <figure class="sq-landing-photo"><img src="ui/assets/images/landing-school-assessment-tablet.png" alt="School quality assessor using a tablet with a teacher during a classroom assessment while students learn"><figcaption><span>In practice</span> School improvement becomes possible when observations, evidence and follow-up actions are visible to the people who can act on them.</figcaption></figure>
+    </section>
+    <section id="how-it-works" class="sq-landing-overview"><div class="sq-landing-heading"><span>One connected platform</span><h2>Assess. Improve. Learn.</h2><p>Built for education systems that need school-quality information to become timely action, transparent follow-up and better support for every school.</p></div><div class="sq-landing-grid"><article><span class="sq-landing-number">01 · Assess</span><h3>Make school standards visible.</h3><p>Use structured school frameworks, question scoring and evidence capture to understand what needs attention.</p></article><article><span class="sq-landing-number">02 · Improve</span><h3>Move from observation to action.</h3><p>Turn findings into owned improvement actions and follow progress over time.</p></article><article><span class="sq-landing-number">03 · Support</span><h3>See where help is needed.</h3><p>Use role-based dashboards and drill-down reporting across schools, blocks, districts and states.</p></article></div></section>
+    <section class="sq-landing-cta"><div><span>SaQshi workspace</span><h2>Support every school improvement journey.</h2></div><a class="sq-landing-primary" href="ui/login.html">Sign in securely &rarr;</a></section>
+</main>
+<a href="#top" aria-label="Back to top" style="position:fixed;right:24px;bottom:24px;z-index:20;display:inline-flex;align-items:center;padding:11px 14px;border-radius:999px;background:#4f46e5;color:#fff;font-size:.78rem;font-weight:800;text-decoration:none;box-shadow:0 10px 24px rgba(23,37,84,.22);">&uarr; Back to top</a>
+<footer class="sq-landing-footer"><span>SaQshi Digital School Quality Assessment Platform</span><span><img class="sq-landing-mark" src="ui/assets/images/partner-mark.png" alt="Piramal Swasthya"> Version 1.0.0 &middot; GPL-3.0</span></footer>
+</body>
+</html>

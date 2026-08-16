@@ -10,11 +10,13 @@
 
     <title>Dashboard | SaQshi</title>
 
+    <link rel="manifest" href="/ui/manifest.webmanifest">
+
     <link rel="stylesheet" href="/ui/assets/css/sq-ui.css?v=20260730-mobile-2">
 
     <link
         rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+        href="/ui/assets/vendor/bootstrap-icons/bootstrap-icons.min.css?v=1.11.3">
 </head>
 
 <body class="sq-app">
@@ -25,16 +27,16 @@
     <script src="/ui/assets/js/sq-ui.js?v=20260702-13"></script>
     <script src="/ui/assets/js/core/storage.js"></script>
     <script src="/ui/assets/js/core/api.js?v=20260718-1"></script>
-    <script src="/ui/assets/js/core/auth.js?v=20260710-3"></script>
+    <script src="/ui/assets/js/core/auth.js?v=20260803-logout-1"></script>
     <script src="/ui/assets/js/core/deployment.js?v=20260729-2"></script>
     <script src="/ui/assets/js/core/validator.js"></script>
     <script src="/ui/assets/js/core/a11y.js?v=20260717-1"></script>
     <script src="/ui/assets/js/core/upload.js?v=20260704-2"></script>
     <script src="/ui/assets/js/core/pagination.js?v=20260713-1"></script>
-    <script src="/ui/assets/js/core/router.js?v=20260713-a11y-speech-2"></script>
+    <script src="/ui/assets/js/core/router.js?v=20260805-state-progress-fallback-1"></script>
     <script src="/ui/assets/js/core/chat.js"></script>
-    <script src="/ui/assets/js/core/component-loader.js?v=20260718-a11y-focus-hover-speech"></script>
-    <script src="/ui/assets/js/app.js?v=20260702-13"></script>
+    <script src="/ui/assets/js/core/component-loader.js?v=20260807-notification-dropdown-1"></script>
+    <script src="/ui/assets/js/app.js?v=20260806-mobile-sidebar-1"></script>
 
     <!-- Page Bootstrap -->
     <script>
@@ -48,11 +50,14 @@
                     ? SQ.router.currentRouteFromUrl()
                     : "dashboard";
                 const monitoringRoles = [4, 5, 8, 9];
+                const isManagementRole = Number(user && user.role_id) === 11;
                 const isAssessor =
                     Number(user && user.role_id) === 10 ||
                     /assessor/i.test(String(user && user.role_name || ""));
-                const route = isAssessor && requestedRoute === "dashboard"
-                    ? "assessor/dashboard"
+                const route = isManagementRole
+                    ? "state/users"
+                    : isAssessor && requestedRoute === "dashboard"
+                    ? "assessor/facilities"
                     : monitoringRoles.indexOf(Number(user && user.role_id)) !== -1 && requestedRoute === "dashboard"
                     ? "state/dashboard"
                     : requestedRoute;

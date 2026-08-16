@@ -58,17 +58,39 @@
         });
     }
 
-   function bindSidebarToggle() {
-    const btn = document.getElementById("sq-sidebar-toggle");
+    function bindSidebarToggle() {
+        const btn = document.getElementById("sq-sidebar-toggle");
 
-    if (!btn) {
-        return;
+        if (!btn) {
+            return;
+        }
+
+        btn.onclick = function (event) {
+            // Prevent the legacy delegated sq-ui handler from toggling the
+            // sidebar a second time after this component handles the click.
+            event.preventDefault();
+            event.stopPropagation();
+
+            const mobile = window.matchMedia("(max-width: 992px)").matches;
+
+            if (SQ.sidebar) {
+                if (mobile && typeof SQ.sidebar.toggleMobile === "function") {
+                    SQ.sidebar.toggleMobile();
+                } else if (!mobile && typeof SQ.sidebar.toggle === "function") {
+                    SQ.sidebar.toggle();
+                }
+            } else {
+                document.body.classList.toggle(mobile ? "sq-sidebar-open" : "sq-sidebar-collapsed");
+            }
+
+            btn.setAttribute(
+                "aria-expanded",
+                mobile
+                    ? String(document.body.classList.contains("sq-sidebar-open"))
+                    : String(!document.body.classList.contains("sq-sidebar-collapsed"))
+            );
+        };
     }
-
-    btn.onclick = function () {
-        document.body.classList.toggle("sq-sidebar-collapsed");
-    };
-}
 
     function bindThemeToggle() {
         document.querySelectorAll("[data-sq-theme-toggle]").forEach(function (btn) {
@@ -513,6 +535,17 @@
             return;
         }
 
+        // AI assistance is not part of the Education deployment.
+        if (SQ.deployment?.current?.domain?.profile_code === "education" || SQ.deployment?.current?.modules?.active_profile === "education") {
+            btn.remove();
+            return;
+        }
+        if (SQ.deployment?.load) {
+            SQ.deployment.load().then(function () {
+                if (SQ.deployment?.current?.domain?.profile_code === "education" || SQ.deployment?.current?.modules?.active_profile === "education") btn.remove();
+            }).catch(function () {});
+        }
+
         if (btn.dataset.sqAiBound === "true") {
             return;
         }
@@ -533,45 +566,61 @@
         });
     }
 
-    function bindGlobalSearch() {
-        const searchForm = document.querySelector(".sq-header-search");
+    function notificationItems() {
+        try {
+            const items = JSON.parse(localStorage.getItem("sq_notifications") || "[]");
+            return Array.isArray(items) ? items : [];
+        } catch (_) {
+            return [];
+        }
+    }
 
-        if (!searchForm) {
+    function saveNotificationItems(items) {
+        localStorage.setItem("sq_notifications", JSON.stringify(items));
+    }
+
+    function renderNotifications() {
+        const badge = document.querySelector("#sq-notification-count");
+        const list = document.querySelector("#sq-notification-list");
+        const items = notificationItems();
+        const unread = items.filter(function (item) { return !item.read; }).length;
+        if (badge) { badge.textContent = String(unread); badge.hidden = unread === 0; }
+        if (!list) return;
+        list.replaceChildren();
+        if (!items.length) {
+            const empty = document.createElement("p");
+            empty.className = "sq-notification-empty";
+            empty.textContent = "No new notifications.";
+            list.appendChild(empty);
             return;
         }
-
-        if (searchForm.dataset.sqSearchBound === "true") {
-            return;
-        }
-
-        searchForm.dataset.sqSearchBound = "true";
-
-        searchForm.addEventListener("submit", function (event) {
-            event.preventDefault();
-
-            const input = searchForm.querySelector("input[type='search']");
-            const keyword = input ? input.value.trim() : "";
-
-            if (!keyword) {
-                return;
-            }
-
-            if (SQ.router) {
-                SQ.router.go("/ui/search.html", {
-                    q: keyword
-                });
-            }
+        items.slice(0, 8).forEach(function (item) {
+            const row = document.createElement("article");
+            row.className = "sq-notification-item" + (item.read ? "" : " is-unread");
+            const title = document.createElement("strong");
+            title.textContent = item.title || "Notification";
+            const message = document.createElement("span");
+            message.textContent = item.message || "";
+            row.append(title, message);
+            list.appendChild(row);
         });
     }
 
-    function initNotificationCount() {
-        const badge = document.querySelector("#sq-notification-count");
-
-        if (!badge) {
-            return;
-        }
-
-        badge.textContent = "0";
+    function bindNotifications() {
+        const button = document.querySelector("#sq-notification-button");
+        const dropdown = document.querySelector("#sq-notification-dropdown");
+        if (!button || !dropdown || button.dataset.sqNotificationsBound === "true") return;
+        button.dataset.sqNotificationsBound = "true";
+        button.addEventListener("click", function () {
+            const open = dropdown.hidden;
+            dropdown.hidden = !open;
+            button.setAttribute("aria-expanded", String(open));
+            renderNotifications();
+        });
+        document.querySelector("#sq-notification-read-all")?.addEventListener("click", function () {
+            saveNotificationItems(notificationItems().map(function (item) { return Object.assign({}, item, { read: true }); }));
+            renderNotifications();
+        });
     }
 
     function init() {
@@ -584,15 +633,17 @@
         bindAutoPageSpeech();
         bindFocusSpeech();
         bindDropdown();
-        bindLogout();
+        // Logout is bound centrally by SQ.auth after this component loads.
+        // Keeping a single handler avoids duplicate confirmation dialogs.
         bindAiButton();
-        bindGlobalSearch();
-        initNotificationCount();
+        bindNotifications();
+        renderNotifications();
     }
 
     window.SQ.header = {
         init: init,
-        renderUser: renderUser
+        renderUser: renderUser,
+        setNotifications: function (items) { saveNotificationItems(Array.isArray(items) ? items : []); renderNotifications(); }
     };
 
     document.addEventListener("DOMContentLoaded", init);
@@ -601,13 +652,4 @@
             init();
         }
     });
-document.addEventListener("click", function (event) {
-    const btn = event.target.closest("[data-sq-sidebar-toggle]");
-
-    if (!btn) {
-        return;
-    }
-
-    document.body.classList.toggle("sq-sidebar-collapsed");
-});
 })(window, document);

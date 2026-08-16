@@ -9,19 +9,23 @@ require_once __DIR__ . '/../../service/AssessorService.php';
 Security::requireMethod('GET');
 
 try {
+    $domainPath = __DIR__ . '/../../config/domain.json';
+    $domainConfig = is_file($domainPath) ? json_decode((string)file_get_contents($domainPath), true) : [];
+    $labels = is_array($domainConfig['labels'] ?? null) ? $domainConfig['labels'] : [];
+    $facilityLabel = (string)($labels['facility'] ?? 'Facility');
+    $facilityCodeLabel = (string)($labels['facility_code'] ?? 'NIN');
+
     $rows = (new AssessorService($con))->assessmentReportRows(
         SessionManager::userId(),
         SessionManager::username()
     );
 
     if (strtolower((string)($_GET['format'] ?? '')) === 'json') {
-        $domainPath = __DIR__ . '/../../config/domain.json';
-        $domainConfig = is_file($domainPath) ? json_decode((string)file_get_contents($domainPath), true) : [];
         $domain = (string)($domainConfig['domain'] ?? 'healthcare');
         Response::success('Assessment report loaded', [
             'rows' => $rows,
             'domain' => $domain,
-            'facility_code_label' => $domain === 'education' ? 'UDISE Code' : 'NIN'
+            'facility_code_label' => $facilityCodeLabel
         ]);
         exit;
     }
@@ -32,12 +36,12 @@ try {
     header('Cache-Control: no-store, private');
 
     $output = fopen('php://output', 'w');
-    fputcsv($output, ['Facility / School', 'NIN / UDISE', 'District', 'Block', 'Assessment', 'Framework', 'Status', 'Start Date', 'End Date', 'Saved Checkpoints', 'Total Checkpoints', 'Score %'], ',', '"', '\\');
+    fputcsv($output, [$facilityLabel, $facilityCodeLabel, 'District', 'Block', 'Assessment', 'Framework', 'Assessor Name', 'Assessor Code', 'Class / Department', 'Status', 'Start Date', 'Planned End Date', 'Actual Completion Date', 'Cancellation Date', 'Saved Checkpoints', 'Total Checkpoints', 'Score %'], ',', '"', '\\');
     foreach ($rows as $row) {
         fputcsv($output, [
             $row['fac_name'], $row['fac_code'], $row['district'], $row['block'],
-            $row['assessment_name'], $row['framework_code'], $row['status'],
-            $row['start_date'], $row['end_date'], $row['saved_checkpoints'],
+            $row['assessment_name'], $row['framework_code'], $row['assessor_name'] ?? '', $row['assessor_code'] ?? '', $row['classes'] ?? '', $row['status'],
+            $row['start_date'], $row['end_date'], $row['completed_on'], $row['cancelled_on'], $row['saved_checkpoints'],
             $row['total_checkpoints'], $row['score_percent']
         ], ',', '"', '\\');
     }

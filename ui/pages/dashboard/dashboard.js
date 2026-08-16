@@ -20,6 +20,7 @@
 
     const API = {
         activeAssessment: "/assessment/v1/active_assessment.php",
+        assessments: "/assessment/v1/list.php",
         progress: "/assessment/v1/progress.php",
         score: "/assessment/v1/score.php",
         gapAnalysis: "/assessment/v1/gap_analysis.php",
@@ -29,6 +30,8 @@
 
     const state = {
         activeAssessment: null,
+        assessorAssessment: null,
+        assessments: [],
         progress: null,
         score: null,
         gaps: null,
@@ -63,28 +66,25 @@
     }
 
     async function loadActiveAssessment() {
-        const response = await SQ.api.get(
-            API.activeAssessment,
-            {},
-            {
-                loader: false,
-                showError: false
-            }
-        );
+        const [response, assessmentsResponse] = await Promise.all([
+            SQ.api.get(API.activeAssessment, {}, { loader: false, showError: false }),
+            SQ.api.get(API.assessments, {}, { loader: false, showError: false })
+        ]);
 
-        state.activeAssessment =
-            response.data?.assessment ||
-            response.data ||
-            null;
+        state.activeAssessment = response.data?.assessment || response.assessment || null;
+        state.assessments = assessmentsResponse.data?.assessments || [];
+        state.assessorAssessment = state.assessments
+            .find(item => item.is_assessor_led && String(item.status || "").toUpperCase() === "ACTIVE") || null;
 
         renderActiveAssessment();
 
-        if (state.activeAssessment?.assessment_id) {
+        const dashboardAssessment = state.activeAssessment || state.assessorAssessment;
+        if (dashboardAssessment?.assessment_id) {
             await Promise.all([
-                loadProgress(state.activeAssessment.assessment_id),
-                loadScore(state.activeAssessment.assessment_id),
-                loadGapAnalysis(state.activeAssessment.assessment_id),
-                loadInsights(state.activeAssessment.assessment_id),
+                loadProgress(dashboardAssessment.assessment_id),
+                loadScore(dashboardAssessment.assessment_id),
+                loadGapAnalysis(dashboardAssessment.assessment_id),
+                loadInsights(dashboardAssessment.assessment_id),
                 loadPerformanceDashboard()
             ]);
         }
@@ -178,19 +178,20 @@
         }
 
         const assessment = state.activeAssessment;
+        const assessorAssessment = state.assessorAssessment;
 
         if (!assessment || !assessment.assessment_id) {
             target.innerHTML = `
                 <div class="sq-empty-message">
                     <div>
-                        <strong>No active assessment found.</strong>
+                        <strong>${assessorAssessment ? "No active facility self-assessment found." : "No active assessment found."}</strong>
                         <br>
                         <a href="#" data-sq-route="assessment/create" class="sq-btn sq-btn-primary sq-mt-3">
                             Create Assessment
                         </a>
                     </div>
                 </div>
-            `;
+            ` + renderAssessorAssessment(assessorAssessment);
             return;
         }
 
@@ -215,8 +216,10 @@
                     </div>
 
                     <div>
-                        <div class="sq-text-muted sq-text-sm">End Date</div>
+                        <div class="sq-text-muted sq-text-sm">Planned End Date</div>
                         <strong>${escapeHtml(assessment.end_date || "-")}</strong>
+                        ${assessment.completed_on ? `<div class="sq-text-muted sq-text-sm">Completed ${escapeHtml(assessment.completed_on)}</div>` : ""}
+                        ${assessment.cancelled_on ? `<div class="sq-text-muted sq-text-sm">Cancelled ${escapeHtml(assessment.cancelled_on)}</div>` : ""}
                     </div>
                 </div>
 
@@ -226,6 +229,26 @@
                         <a href="#" data-sq-route="reports/dashboard" class="sq-btn sq-btn-light sq-btn-sm">Reports</a>` : `
                         <a href="#" data-sq-route="assessment/departments" class="sq-btn sq-btn-outline-primary sq-btn-sm">View Progress</a>
                         <a href="#" data-sq-route="assessment/checklist" class="sq-btn sq-btn-primary sq-btn-sm">Continue Assessment</a>`}
+                </div>
+            </div>
+        ` + renderAssessorAssessment(assessorAssessment);
+    }
+
+    function renderAssessorAssessment(assessment) {
+        if (!assessment?.assessment_id) return "";
+
+        return `
+            <div class="sq-assessment-card sq-mt-3">
+                <div class="sq-assessment-card-header">
+                    <div>
+                        <div class="sq-assessment-title">Assessor Assessment: ${escapeHtml(assessment.assessment_name || "Assessment")}</div>
+                        <div class="sq-assessment-meta">Read-only progress managed by the assigned assessor</div>
+                    </div>
+                    ${badge(assessment.status)}
+                </div>
+                <div class="sq-grid sq-grid-2 sq-mt-4">
+                    <div><div class="sq-text-muted sq-text-sm">Start Date</div><strong>${escapeHtml(assessment.start_date || "-")}</strong></div>
+                    <div><div class="sq-text-muted sq-text-sm">Planned End Date</div><strong>${escapeHtml(assessment.end_date || "-")}</strong>${assessment.completed_on ? `<div class="sq-text-muted sq-text-sm">Completed ${escapeHtml(assessment.completed_on)}</div>` : ""}${assessment.cancelled_on ? `<div class="sq-text-muted sq-text-sm">Cancelled ${escapeHtml(assessment.cancelled_on)}</div>` : ""}</div>
                 </div>
             </div>
         `;
@@ -446,9 +469,9 @@
             return;
         }
 
-        const assessment = state.activeAssessment;
+        const assessments = state.assessments;
 
-        if (!assessment || !assessment.assessment_id) {
+        if (!assessments.length) {
             target.innerHTML = `
                 <tr>
                     <td colspan="7" class="sq-text-center sq-text-muted">
@@ -459,33 +482,28 @@
             return;
         }
 
-        const overall = state.score?.overall_score || {};
-        const finalPercent = Number(
-            overall.improved?.percentage ||
-            overall.original?.percentage ||
-            0
-        );
+        target.innerHTML = assessments.slice(0, 10).map(assessment => {
+            const isAssessorLed = Boolean(assessment.is_assessor_led);
+            const action = isAssessorLed
+                ? `<span class="sq-text-muted sq-text-sm">Assessor-managed</span>`
+                : `<a href="#" data-sq-route="assessment/departments" class="sq-btn sq-btn-sm sq-btn-outline-primary">Open</a>`;
 
-        target.innerHTML = `
-            <tr>
-                <td>${escapeHtml(assessment.assessment_name || "Assessment")}</td>
-                <td>${escapeHtml(assessment.framework_code || "-")}</td>
-                <td>${badge(assessment.status)}</td>
-                <td>${escapeHtml(assessment.start_date || "-")}</td>
-                <td>${escapeHtml(assessment.end_date || "-")}</td>
-                <td id="recent-score">${escapeHtml(finalPercent)}%</td>
-                <td class="sq-td-right">
-                    <a href="#" data-sq-route="assessment/departments"
-                       class="sq-btn sq-btn-sm sq-btn-outline-primary">
-                        Open
-                    </a>
-                </td>
-            </tr>
-        `;
+            return `
+                <tr>
+                    <td>${escapeHtml(assessment.assessment_name || "Assessment")}${isAssessorLed ? `<br><small class="sq-text-muted">Assessor assessment</small>` : ""}</td>
+                    <td>${escapeHtml(assessment.framework_code || "-")}</td>
+                    <td>${badge(assessment.status)}</td>
+                    <td>${escapeHtml(assessment.start_date || "-")}</td>
+                    <td>Planned end ${escapeHtml(assessment.end_date || "-")}${assessment.completed_on ? `<br><small class="sq-text-muted">Completed ${escapeHtml(assessment.completed_on)}</small>` : ""}${assessment.cancelled_on ? `<br><small class="sq-text-muted">Cancelled ${escapeHtml(assessment.cancelled_on)}</small>` : ""}</td>
+                    <td>${escapeHtml(Number(assessment.score_percent || 0))}%</td>
+                    <td class="sq-td-right">${action}</td>
+                </tr>
+            `;
+        }).join("");
     }
 
     function renderMetrics() {
-        setText("metric-total-assessments", state.activeAssessment ? 1 : 0);
+        setText("metric-total-assessments", state.assessments.length);
         renderRecentAssessments();
     }
 

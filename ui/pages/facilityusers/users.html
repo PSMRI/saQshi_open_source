@@ -16,7 +16,7 @@ License : GPL-3.0
             <div class="sq-card-header">
                 <div>
                     <h3>My Profile</h3>
-                    <p>Update your facility user details and password.</p>
+                    <p data-domain-template="Update your {facility} user details and password.">Update your facility user details and password.</p>
                 </div>
                 <button type="button" class="sq-btn sq-btn-light" id="btnRefreshUsers">
                     Refresh
@@ -51,7 +51,7 @@ License : GPL-3.0
                         <strong id="adminRoleText">-</strong>
                     </div>
                     <div>
-                        <span>Facility ID</span>
+                        <span id="adminFacilityCodeLabel">Facility Code</span>
                         <strong id="adminFacilityText">-</strong>
                     </div>
                     <div>
@@ -63,23 +63,23 @@ License : GPL-3.0
                 <div class="sq-admin-form-grid">
                     <label>
                         <span>First Name</span>
-                        <input type="text" id="adminFirstName" class="sq-form-control" required disabled aria-label="Admin First Name">
+                        <input type="text" id="adminFirstName" class="sq-form-control" required maxlength="60" pattern="[A-Za-z ]+" disabled aria-label="Admin First Name">
                     </label>
                     <label>
                         <span>Middle Name</span>
-                        <input type="text" id="adminMiddleName" class="sq-form-control" disabled aria-label="Admin Middle Name">
+                        <input type="text" id="adminMiddleName" class="sq-form-control" maxlength="60" pattern="[A-Za-z ]+" disabled aria-label="Admin Middle Name">
                     </label>
                     <label>
                         <span>Last Name</span>
-                        <input type="text" id="adminLastName" class="sq-form-control" disabled aria-label="Admin Last Name">
+                        <input type="text" id="adminLastName" class="sq-form-control" maxlength="60" pattern="[A-Za-z ]+" disabled aria-label="Admin Last Name">
                     </label>
                     <label>
                         <span>Email</span>
-                        <input type="email" id="adminEmail" class="sq-form-control" disabled aria-label="Admin Email">
+                        <input type="email" id="adminEmail" class="sq-form-control" maxlength="120" disabled aria-label="Admin Email">
                     </label>
                     <label>
                         <span>Mobile</span>
-                        <input type="text" id="adminMobile" class="sq-form-control" disabled aria-label="Admin Mobile">
+                        <input type="text" id="adminMobile" class="sq-form-control" inputmode="numeric" maxlength="10" pattern="[0-9]{10}" disabled aria-label="Admin Mobile">
                     </label>
                     <label>
                         <span>User Type</span>

@@ -11,7 +11,8 @@
 
     window.SQ = window.SQ || {};
     const SQ = window.SQ;
-    const state = { pager: null, selectedAssessor: null, facilityTimer: null, selectedFacilities: new Map(), searchFacilityRows: new Map() };
+    const state = { pager: null, selectedAssessor: null, facilityTimer: null, selectedFacilities: new Map(), searchFacilityRows: new Map(), mappingRows: [], mappingPage: 1 };
+    const MAPPINGS_PER_PAGE = 10;
 
     function domainLabel(key, fallback) {
         return SQ.deployment && typeof SQ.deployment.label === "function"
@@ -55,7 +56,7 @@
     function formPayload() {
         return {
             assessor_id: val("assessorId"),
-            assessor_code: val("assessorCode"),
+            assessor_code: val("assessorId") ? val("assessorCode").trim().toUpperCase() : "",
             assessor_name: val("assessorName"),
             user_id: val("assessorUserId"),
             designation: val("assessorDesignation"),
@@ -68,10 +69,47 @@
     function resetForm() {
         ["assessorId", "assessorCode", "assessorName", "assessorUserId", "assessorDesignation", "assessorMobile", "assessorEmail"].forEach(id => setVal(id, ""));
         setVal("assessorStatus", "1");
+        document.getElementById("assessorCode")?.setCustomValidity("");
+    }
+
+    function generatedAssessorCode() {
+        const name = val("assessorName").replace(/[^a-z0-9]/gi, "").toUpperCase();
+        const mobile = val("assessorMobile").replace(/\D/g, "");
+        return name.length >= 3 && mobile.length >= 4 ? `${name.slice(0, 3)}_${mobile.slice(0, 2)}${mobile.slice(-2)}` : "";
+    }
+
+    async function validateAssessorCode() {
+        const input = document.getElementById("assessorCode");
+        const code = val("assessorCode").trim().toUpperCase();
+        const assessorId = Number(val("assessorId") || 0);
+
+        if (!input || !code) return true;
+
+        input.value = code;
+        input.setCustomValidity("");
+        const response = await SQ.api.get("/assessor/v1/list.php", {
+            search: code,
+            page: 1,
+            per_page: 100
+        }, { loader: false, showError: false });
+        const duplicate = (response.data?.rows || []).find(function (row) {
+            return String(row.assessor_code || "").trim().toUpperCase() === code
+                && Number(row.assessor_id || 0) !== assessorId;
+        });
+
+        if (!duplicate) return true;
+
+        const label = domainLabel("assessor", "Assessor");
+        const message = `${label} code “${code}” already exists. Use a different code.`;
+        input.setCustomValidity(message);
+        input.focus();
+        if (SQ.notification) SQ.notification.error(message);
+        return false;
     }
 
     function selectAssessor(row) {
         state.selectedAssessor = row;
+        state.mappingPage = 1;
         document.getElementById("mappingAssessorName").textContent = `${row.assessor_name || row.assessor_code} (${row.assessor_code})`;
         loadMappings();
     }
@@ -118,6 +156,8 @@
     async function saveAssessor(event) {
         event.preventDefault();
         try {
+            const code = generatedAssessorCode();
+            if (!code) throw new Error("Enter a valid name and 10-digit mobile number.");
             const response = await SQ.api.post("/assessor/v1/save.php", formPayload(), { loader: true, showError: false });
             if (SQ.notification) SQ.notification.success("Assessor saved.");
             resetForm();
@@ -171,13 +211,25 @@
         }
 
         const response = await SQ.api.get("/assessor/v1/mapping_list.php", { assessor_id: state.selectedAssessor.assessor_id }, { loader: false, showError: false });
-        const rows = response.data?.rows || [];
-        target.innerHTML = rows.length ? rows.map(row => `
+        state.mappingRows = response.data?.rows || [];
+        renderMappings();
+    }
+
+    function renderMappings() {
+        const target = document.getElementById("mappingRows");
+        if (!target) return;
+        const rows = state.mappingRows;
+        const totalPages = Math.max(1, Math.ceil(rows.length / MAPPINGS_PER_PAGE));
+        state.mappingPage = Math.min(Math.max(1, state.mappingPage), totalPages);
+        const start = (state.mappingPage - 1) * MAPPINGS_PER_PAGE;
+        const pageRows = rows.slice(start, start + MAPPINGS_PER_PAGE);
+        target.innerHTML = rows.length ? `<div class="sq-assessor-mapping-page">${pageRows.map(row => `
             <div class="sq-assessor-mini-row">
-                <div><strong>${esc(row.fac_name || domainLabel("facility", "Facility") + " " + row.fac_id)}</strong><small>${esc(domainLabel("facility_code", "NIN"))} ${esc(row.fac_nin || "-")} | ${esc(row.Dist_Name || "-")} / ${esc(row.Block_Name || "-")}${row.assigned_from ? ` | From ${esc(row.assigned_from)}` : ""}${row.assigned_to ? ` to ${esc(row.assigned_to)}` : ""}</small></div>
+                <div><strong>${esc(row.fac_name || domainLabel("facility", "Facility"))}</strong><small>${esc(domainLabel("facility_code", "NIN"))} ${esc(row.fac_nin || "-")} | ${esc(row.Dist_Name || "-")} / ${esc(row.Block_Name || "-")}${row.assigned_from ? ` | From ${esc(row.assigned_from)}` : ""}${row.assigned_to ? ` to ${esc(row.assigned_to)}` : ""}</small></div>
                 ${badge(row.assignment_status)}
                 ${String(row.assignment_status).toUpperCase() === "ACTIVE" ? `<button class="sq-btn sq-btn-light" type="button" data-end-mapping="${esc(row.fac_id)}">End Assignment</button>` : ""}
-            </div>`).join("") : `<div class="sq-state-empty">No ${esc(domainLabel("facilities", "facilities").toLowerCase())} mapped yet.</div>`;
+            </div>`).join("")}</div>
+            <div class="sq-state-pager sq-assessor-mapping-pager"><span>Showing ${start + 1}-${Math.min(start + MAPPINGS_PER_PAGE, rows.length)} of ${rows.length} ${esc(domainLabel("facilities", "facilities").toLowerCase())}</span><div><button class="sq-btn sq-btn-light" type="button" data-mapping-page="${state.mappingPage - 1}" ${state.mappingPage === 1 ? "disabled" : ""}>Previous</button><strong>Page ${state.mappingPage} / ${totalPages}</strong><button class="sq-btn sq-btn-light" type="button" data-mapping-page="${state.mappingPage + 1}" ${state.mappingPage === totalPages ? "disabled" : ""}>Next</button></div></div>` : `<div class="sq-state-empty">No ${esc(domainLabel("facilities", "facilities").toLowerCase())} mapped yet.</div>`;
     }
 
     async function endMapping(facId) {
@@ -239,6 +291,19 @@
 
     function bind() {
         document.getElementById("assessorForm")?.addEventListener("submit", saveAssessor);
+        document.getElementById("assessorCode")?.addEventListener("blur", function () {
+            validateAssessorCode().catch(function (error) {
+                console.warn("Unable to validate assessor code.", error);
+            });
+        });
+        document.getElementById("assessorCode")?.addEventListener("input", function () {
+            this.setCustomValidity("");
+        });
+        ["assessorName", "assessorDesignation"].forEach(function (id) {
+            document.getElementById(id)?.addEventListener("input", function () {
+                this.value = this.value.replace(/[^A-Za-z .'-]/g, "");
+            });
+        });
         document.getElementById("assessorReset")?.addEventListener("click", resetForm);
         document.getElementById("assessorRefresh")?.addEventListener("click", function () {
             state.pager.reset();
@@ -275,7 +340,12 @@
         });
         document.getElementById("mappingRows")?.addEventListener("click", function (event) {
             const endButton = event.target.closest("[data-end-mapping]");
+            const pageButton = event.target.closest("[data-mapping-page]");
             if (endButton) endMapping(endButton.getAttribute("data-end-mapping"));
+            if (pageButton && !pageButton.disabled) {
+                state.mappingPage = Number(pageButton.getAttribute("data-mapping-page")) || 1;
+                renderMappings();
+            }
         });
         document.getElementById("facilitySearchRows")?.addEventListener("change", function (event) {
             const checkbox = event.target.closest("[data-map-facility-select]");
@@ -305,6 +375,14 @@
         }
         state.pager = SQ.pagination.create({ page: 1, perPage: 25, onChange: loadAssessors });
         bind();
+        const credentialLogButton = document.getElementById("assessorCredentialLog");
+        const currentUser = SQ.auth && typeof SQ.auth.getUser === "function" ? SQ.auth.getUser() : null;
+        if (credentialLogButton && Number(currentUser?.role_id) === 11) {
+            credentialLogButton.hidden = false;
+            credentialLogButton.addEventListener("click", function () {
+                SQ.router?.navigate("state/credential-log");
+            });
+        }
         await loadAssessors();
         await loadMappings();
     }

@@ -13,6 +13,7 @@ require_once __DIR__ . '/CertificationService.php';
 require_once __DIR__ . '/CertificationExpiryService.php';
 require_once __DIR__ . '/PerformanceService.php';
 require_once __DIR__ . '/../core/FrameworkEngine.php';
+require_once __DIR__ . '/../core/Crypto.php';
 
 /**
  * Provides state dashboard service behavior for SaQshi API workflows.
@@ -481,6 +482,9 @@ class StateDashboardService
      */
     public static function certificationMap(mysqli $con, array $filters = []): array
     {
+        if (self::isEducationDomain()) {
+            return self::educationGeoMap($con, $filters);
+        }
         $filters['_all_facilities'] = true;
         $summary = self::certificationSummary($con, $filters);
         $coordinates = self::facilityCoordinatesFromDb($con, $filters);
@@ -550,6 +554,125 @@ class StateDashboardService
             'total_points' => count($points),
             'total_facilities' => $summary['total'] ?? 0
         ];
+    }
+
+    /** Education map: every school with a valid GPS location saved in DB. */
+    private static function educationGeoMap(mysqli $con, array $filters = []): array
+    {
+        $mapMode = strtolower(trim((string)($filters['map_mode'] ?? 'facility')));
+        $mapMode = $mapMode === 'domain' ? 'domain' : 'facility';
+        $selectedDomain = trim((string)($filters['domain'] ?? ''));
+        $where = self::facilityWhere($con, $filters);
+        $rows = self::rows($con, "
+            SELECT f.fac_id, f.NIN_no, f.fac_name, f.Dist_Name AS district, f.Block_Name AS block,
+                   f.Health_facilty_type, f.lat, f.longit,
+                   am.assessment_id, am.assessment_name, am.status AS assessment_status
+            FROM facilities f
+            LEFT JOIN assessment_master am ON am.assessment_id = (
+                SELECT latest.assessment_id FROM assessment_master latest
+                WHERE latest.fac_id_fk = f.fac_id AND UPPER(COALESCE(latest.status, '')) <> 'PENDING'
+                ORDER BY latest.assessment_id DESC LIMIT 1
+            )
+            {$where['sql']} AND lat IS NOT NULL AND longit IS NOT NULL
+            ORDER BY fac_name
+        ", $where['types'], $where['params']);
+
+        $points = []; $typeCounts = [];
+        foreach ($rows as $row) {
+            $lat = (float)($row['lat'] ?? 0); $lng = (float)($row['longit'] ?? 0);
+            if ($lat < -90 || $lat > 90 || $lng < -180 || $lng > 180 || ($lat == 0.0 && $lng == 0.0)) continue;
+            $type = self::facilityTypeLabel($row) ?: 'Unknown';
+            $typeCounts[$type] = ($typeCounts[$type] ?? 0) + 1;
+            $points[] = [
+                'fac_id' => (int)$row['fac_id'], 'fac_name' => (string)($row['fac_name'] ?? ''),
+                'fac_nin' => self::normalizeNin($row['NIN_no'] ?? ''), 'facility_type' => $type,
+                'district' => (string)($row['district'] ?? ''), 'block' => (string)($row['block'] ?? ''),
+                'status' => 'GEO LOCATED', 'score' => null, 'certification_type' => 'SCHOOL',
+                'assessment_id' => (int)($row['assessment_id'] ?? 0),
+                'assessment_name' => (string)($row['assessment_name'] ?? ''),
+                'assessment_status' => (string)($row['assessment_status'] ?? 'NOT STARTED'),
+                'certification_date' => null, 'valid_to' => null, 'lat' => $lat, 'longit' => $lng
+            ];
+        }
+        arsort($typeCounts);
+        $domainOptions = self::educationDomainOptions();
+        $districtScores = [];
+        if ($mapMode === 'domain' && $selectedDomain !== '') {
+            $scoreWhere = self::facilityWhere($con, $filters);
+            $scoreFacilities = self::rows($con, "
+                SELECT f.fac_id, f.Dist_Name AS district
+                FROM facilities f
+                {$scoreWhere['sql']}
+            ", $scoreWhere['types'], $scoreWhere['params']);
+            $districtScores = self::educationDistrictDomainScores($con, $scoreFacilities, $selectedDomain);
+        }
+        return [
+            'map_config' => self::mapConfig($filters),
+            'status' => $points ? [['status' => 'GEO LOCATED', 'count' => count($points)]] : [],
+            'certification_categories' => array_map(fn($type, $count) => ['type' => $type, 'count' => $count], array_keys($typeCounts), array_values($typeCounts)),
+            'map_points' => $mapMode === 'facility' ? array_slice($points, 0, 500) : [],
+            'mode' => 'education_geo',
+            'map_mode' => $mapMode,
+            'selected_domain' => $selectedDomain,
+            'domain_options' => $domainOptions,
+            'district_domain_scores' => $districtScores
+        ];
+    }
+
+    private static function educationDomainOptions(): array
+    {
+        $path = __DIR__ . '/../config/scoring/saqshi-education.json';
+        $policy = is_file($path) ? json_decode((string)file_get_contents($path), true) : [];
+        $domains = ['Overall'];
+        foreach (($policy['domains'] ?? []) as $domain) {
+            $name = preg_replace('/\s+/', ' ', trim((string)($domain['domain_name'] ?? '')));
+            if ($name !== '') $domains[] = $name;
+        }
+        return $domains;
+    }
+
+    private static function educationDistrictDomainScores(mysqli $con, array $facilityRows, string $selectedDomain): array
+    {
+        $latestScores = self::latestCompletedFacilityScores($con);
+        $selectedDomainKey = strtolower((string)preg_replace('/\s+/', ' ', trim($selectedDomain)));
+        $districts = [];
+        foreach ($facilityRows as $facility) {
+            $district = trim((string)($facility['Dist_Name'] ?? $facility['district'] ?? ''));
+            $facilityId = (int)($facility['fac_id'] ?? 0);
+            if ($district === '' || $facilityId <= 0 || !isset($latestScores[$facilityId])) continue;
+            if ($selectedDomainKey === 'overall') {
+                $key = self::mapKey($district);
+                if (!isset($districts[$key])) {
+                    $districts[$key] = ['district' => $district, 'domain' => 'Overall', 'obtained_score' => 0.0, 'total_score' => 0.0, 'school_count' => 0];
+                }
+                $districts[$key]['obtained_score'] += (float)($latestScores[$facilityId]['obtained_score'] ?? 0);
+                $districts[$key]['total_score'] += (float)($latestScores[$facilityId]['total_score'] ?? 0);
+                $districts[$key]['school_count']++;
+                continue;
+            }
+            foreach (($latestScores[$facilityId]['models'] ?? []) as $domain) {
+                $domainKey = strtolower((string)preg_replace('/\s+/', ' ', trim((string)($domain['model_name'] ?? ''))));
+                if ($domainKey !== $selectedDomainKey) continue;
+                $key = self::mapKey($district);
+                if (!isset($districts[$key])) {
+                    $districts[$key] = ['district' => $district, 'domain' => $selectedDomain, 'obtained_score' => 0.0, 'total_score' => 0.0, 'school_count' => 0];
+                }
+                $districts[$key]['obtained_score'] += (float)($domain['obtained_score'] ?? 0);
+                $districts[$key]['total_score'] += (float)($domain['total_score'] ?? 0);
+                $districts[$key]['school_count']++;
+                break;
+            }
+        }
+        foreach ($districts as &$district) {
+            $total = (float)$district['total_score'];
+            $percentage = $total > 0 ? round(((float)$district['obtained_score'] / $total) * 100, 2) : 0.0;
+            $district['percentage'] = $percentage;
+            $district['category'] = self::configuredCategory('saqshi-education', $percentage);
+            $district['obtained_score'] = round((float)$district['obtained_score'], 2);
+            $district['total_score'] = round($total, 2);
+        }
+        unset($district);
+        return array_values($districts);
     }
 
     /**
@@ -744,10 +867,15 @@ class StateDashboardService
                 a.assessment_id,
                 a.assessment_name,
                 a.framework_code,
+                a.round_id,
+                fr.round_no,
                 a.start_date,
                 a.end_date,
+                a.completed_on,
+                a.cancelled_on,
                 a.status
             FROM assessment_master a
+            LEFT JOIN facility_assessment_round fr ON fr.round_id = a.round_id
             {$where['sql']}
             ORDER BY a.assessment_id DESC
             LIMIT ? OFFSET ?
@@ -832,6 +960,27 @@ class StateDashboardService
             $row['score_percent'] = $totalScore > 0 ? round(($finalObtained / $totalScore) * 100, 2) : 0;
             $row['baseline_score_percent'] = $totalScore > 0 ? round(($originalObtained / $totalScore) * 100, 2) : 0;
             $row['revised_checkpoints'] = (int)$responseProgress['revised_checkpoints'];
+            $completedUnitIds = array_values($deptProgress['completed_dept_ids'] ?? $deptProgress['dept_ids']);
+            $row['model_score'] = strtoupper((string)($row['status'] ?? '')) === 'COMPLETED'
+                ? self::assessmentModelCategory($con, $assessmentId, (string)($row['framework_code'] ?: 'saqshi-nqas'), $facTypeId, $completedUnitIds)
+                : null;
+            $row['round_score'] = self::roundModelCategory($con, (int)($row['round_id'] ?? 0), (string)($row['framework_code'] ?: 'saqshi-nqas'), $facTypeId);
+
+            // One assessor record represents one claimed Class/Department.
+            // Display the configured label, never the old numeric fallback.
+            $unitIds = array_values($deptProgress['dept_ids'] ?? []);
+            if ($unitIds) {
+                $unitName = self::assessmentUnitName(
+                    (string)($row['framework_code'] ?? ''),
+                    $facTypeId,
+                    (int)$unitIds[0]
+                );
+                if ($unitName !== '') {
+                    $prefix = str_starts_with((string)($row['assessment_name'] ?? ''), 'Reassessment') ? 'Reassessment' : 'New Assessment';
+                    $date = trim((string)($row['start_date'] ?? ''));
+                    $row['assessment_name'] = $prefix . ' - ' . $unitName . ($date !== '' ? ' - ' . date('d M Y', strtotime($date)) : '');
+                }
+            }
         }
         unset($row);
 
@@ -845,6 +994,26 @@ class StateDashboardService
     /**
      * Handles assessment department progress processing for this API workflow.
      */
+    private static function assessmentUnitName(string $frameworkCode, int $facilityTypeId, int $deptId): string
+    {
+        if ($deptId <= 0) return '';
+        $domainPath = __DIR__ . '/../config/domain.json';
+        $domain = is_file($domainPath) ? (json_decode((string)file_get_contents($domainPath), true) ?: []) : [];
+        if (($domain['profile_code'] ?? $domain['domain'] ?? '') === 'education') {
+            $masterPath = __DIR__ . '/../config/masters/department.json';
+            $master = is_file($masterPath) ? (json_decode((string)file_get_contents($masterPath), true) ?: []) : [];
+            foreach (($master['education']['facility_types'][(string)$facilityTypeId] ?? []) as $unit) {
+                if ((int)($unit['dept_id'] ?? 0) === $deptId) return (string)($unit['dept_name'] ?? '');
+            }
+        }
+        try {
+            foreach (FrameworkEngine::load($frameworkCode)->getDepartments($facilityTypeId) as $unit) {
+                if ((int)($unit['dept_id'] ?? $unit['fac_dept_id'] ?? 0) === $deptId) return (string)($unit['dept_name'] ?? '');
+            }
+        } catch (Throwable $e) { }
+        return '';
+    }
+
     private static function assessmentDepartmentProgress(mysqli $con, array $assessmentIds): array
     {
         if (!$assessmentIds) {
@@ -1064,6 +1233,129 @@ class StateDashboardService
         $max = max($scores);
 
         return $max > 0 ? $max : 2.0;
+    }
+
+    /** Config-driven Education class category, exposed to State monitoring. */
+    private static function assessmentModelCategory(mysqli $con, int $assessmentId, string $frameworkCode, int $facTypeId, array $deptIds): ?array
+    {
+        $policyPath = __DIR__ . '/../config/scoring/' . basename($frameworkCode) . '.json';
+        $policy = is_file($policyPath) ? json_decode((string)file_get_contents($policyPath), true) : [];
+        $configuredDomains = $policy['domains'] ?? $policy['areas_of_concern'] ?? $policy['models'] ?? [];
+        if (!is_array($policy) || empty($configuredDomains) || !$deptIds) return null;
+        $categoryFor = static function (float $percentage) use ($policy): ?array {
+            foreach (($policy['performance_levels'] ?? []) as $level) {
+                $min = isset($level['min_percent']) ? (float)$level['min_percent'] : null;
+                $max = isset($level['max_percent']) ? (float)$level['max_percent'] : null;
+                $minOk = $min === null || (($level['min_inclusive'] ?? true) ? $percentage >= $min : $percentage > $min);
+                $maxOk = $max === null || (($level['max_inclusive'] ?? true) ? $percentage <= $max : $percentage < $max);
+                if ($minOk && $maxOk) return ['name' => $level['name'] ?? '', 'points' => (int)($level['points'] ?? 0)];
+            }
+            return null;
+        };
+        try {
+            $engine = FrameworkEngine::load($frameworkCode);
+            if ($engine->getFacilityTypeById($facTypeId) === null && count($engine->getFacilityTypes()) === 1) {
+                $facTypeId = (int)($engine->getFacilityTypes()[0]['fac_type_id'] ?? 0);
+            }
+            $configured = [];
+            foreach ($configuredDomains as $model) {
+                $name = preg_replace('/\s+/', ' ', trim((string)($model['domain_name'] ?? $model['area_of_concern_name'] ?? $model['model_name'] ?? '')));
+                if ($name !== '') $configured[$name] = ['obtained' => 0.0, 'possible' => 0.0, 'total_checkpoints' => 0, 'answered_checkpoints' => 0];
+            }
+            $responses = self::rows($con, "SELECT checkpoint_id, score FROM assessment_response WHERE assessment_id = ?", 'i', [$assessmentId]);
+            $responseMap = [];
+            foreach ($responses as $response) $responseMap[(string)$response['checkpoint_id']] = (float)$response['score'];
+            foreach (array_unique(array_map('intval', $deptIds)) as $deptId) {
+                foreach ($engine->getCheckpoints($facTypeId, $deptId) as $checkpoint) {
+                    $checkpointId = (string)($checkpoint['csqa_id'] ?? '');
+                    $modelName = preg_replace('/\s+/', ' ', trim((string)($checkpoint['_concern_name'] ?? '')));
+                    if ($checkpointId === '' || !isset($configured[$modelName])) continue;
+                    $configured[$modelName]['total_checkpoints']++;
+                    $configured[$modelName]['possible'] += self::checkpointMaxScore($checkpoint);
+                    if (array_key_exists($checkpointId, $responseMap)) {
+                        $configured[$modelName]['answered_checkpoints']++;
+                        $configured[$modelName]['obtained'] += $responseMap[$checkpointId];
+                    }
+                }
+            }
+            $percentages = [];
+            $models = [];
+            $totalObtained = 0.0;
+            $totalPossible = 0.0;
+            foreach ($configured as $modelName => $model) {
+                if ($model['possible'] <= 0) continue;
+                $modelPercentage = round(($model['obtained'] / $model['possible']) * 100, 2);
+                $percentages[] = $modelPercentage;
+                $totalObtained += $model['obtained'];
+                $totalPossible += $model['possible'];
+                $models[] = ['model_name' => $modelName, 'percentage' => $modelPercentage, 'obtained_score' => $model['obtained'], 'total_score' => $model['possible'], 'answered_checkpoints' => $model['answered_checkpoints'], 'total_checkpoints' => $model['total_checkpoints'], 'category' => $categoryFor($modelPercentage)];
+            }
+            if (!$percentages) return null;
+            $percentage = $totalPossible > 0 ? round(($totalObtained / $totalPossible) * 100, 2) : 0;
+            return ['percentage' => $percentage, 'category' => $categoryFor($percentage), 'models' => $models];
+        } catch (Throwable $e) { return null; }
+    }
+
+    /** Whole School/Facility category for one round, based on completed classes/departments. */
+    private static function roundModelCategory(mysqli $con, int $roundId, string $frameworkCode, int $facTypeId): ?array
+    {
+        if ($roundId <= 0) return null;
+        $rows = self::rows($con, "SELECT a.assessment_id, d.dept_id
+            FROM assessment_master a JOIN assessment_department d ON d.assessment_id = a.assessment_id
+            WHERE a.round_id = ? AND a.framework_code = ? AND UPPER(a.status) = 'COMPLETED' AND d.is_active = 1 AND UPPER(d.status) = 'COMPLETED'",
+            'is', [$roundId, $frameworkCode]);
+        $byAssessment = [];
+        foreach ($rows as $row) $byAssessment[(int)$row['assessment_id']][] = (int)$row['dept_id'];
+        $scores = [];
+        $domainValues = [];
+        foreach ($byAssessment as $assessmentId => $deptIds) {
+            $score = self::assessmentModelCategory($con, $assessmentId, $frameworkCode, $facTypeId, $deptIds);
+            if ($score !== null) {
+                $scores[] = $score['percentage'];
+                foreach (($score['models'] ?? []) as $domain) {
+                    $name = (string)($domain['model_name'] ?? '');
+                    if ($name !== '') {
+                        if (!isset($domainValues[$name])) $domainValues[$name] = ['obtained' => 0.0, 'possible' => 0.0];
+                        $domainValues[$name]['obtained'] += (float)($domain['obtained_score'] ?? 0);
+                        $domainValues[$name]['possible'] += (float)($domain['total_score'] ?? 0);
+                    }
+                }
+            }
+        }
+        if (!$scores) return null;
+        $roundObtained = 0.0;
+        $roundPossible = 0.0;
+        foreach ($domainValues as $values) {
+            $roundObtained += (float)$values['obtained'];
+            $roundPossible += (float)$values['possible'];
+        }
+        $percentage = $roundPossible > 0 ? round(($roundObtained / $roundPossible) * 100, 2) : 0.0;
+        $policyPath = __DIR__ . '/../config/scoring/' . basename($frameworkCode) . '.json';
+        $policy = is_file($policyPath) ? json_decode((string)file_get_contents($policyPath), true) : [];
+        $category = null;
+        foreach (($policy['performance_levels'] ?? []) as $level) {
+            $min = isset($level['min_percent']) ? (float)$level['min_percent'] : null;
+            $max = isset($level['max_percent']) ? (float)$level['max_percent'] : null;
+            if (($min === null || (($level['min_inclusive'] ?? true) ? $percentage >= $min : $percentage > $min)) &&
+                ($max === null || (($level['max_inclusive'] ?? true) ? $percentage <= $max : $percentage < $max))) {
+                $category = ['name' => $level['name'] ?? '', 'points' => (int)($level['points'] ?? 0)]; break;
+            }
+        }
+        $domains = [];
+        foreach ($domainValues as $name => $values) {
+            $domainPercentage = $values['possible'] > 0 ? round(($values['obtained'] / $values['possible']) * 100, 2) : 0;
+            $domainCategory = null;
+            foreach (($policy['performance_levels'] ?? []) as $level) {
+                $min = isset($level['min_percent']) ? (float)$level['min_percent'] : null;
+                $max = isset($level['max_percent']) ? (float)$level['max_percent'] : null;
+                if (($min === null || (($level['min_inclusive'] ?? true) ? $domainPercentage >= $min : $domainPercentage > $min)) &&
+                    ($max === null || (($level['max_inclusive'] ?? true) ? $domainPercentage <= $max : $domainPercentage < $max))) {
+                    $domainCategory = ['name' => $level['name'] ?? '', 'points' => (int)($level['points'] ?? 0)]; break;
+                }
+            }
+            $domains[] = ['model_name' => $name, 'percentage' => $domainPercentage, 'obtained_score' => $values['obtained'], 'total_score' => $values['possible'], 'category' => $domainCategory];
+        }
+        return ['percentage' => $percentage, 'obtained_score' => $roundObtained, 'total_score' => $roundPossible, 'category' => $category, 'models' => $domains, 'completed_classes_departments' => count($scores)];
     }
 
     /**
@@ -1376,7 +1668,9 @@ class StateDashboardService
 
         $facility = self::facilitiesById()[$facilityId] ?? [];
         $assessments = self::tableExists($con, 'assessment_master')
-            ? self::rows($con, "SELECT * FROM assessment_master WHERE fac_id_fk = ? ORDER BY assessment_id DESC LIMIT 50", 'i', [$facilityId])
+            // Pending assessor records are only unclaimed class-selection
+            // drafts. They are not assessments for state monitoring/counts.
+            ? self::rows($con, "SELECT * FROM assessment_master WHERE fac_id_fk = ? AND status <> 'PENDING' ORDER BY assessment_id DESC LIMIT 50", 'i', [$facilityId])
             : [];
         $performance = self::tableExists($con, 'performance_entries')
             ? self::rows($con, "SELECT indicator_type, entry_month, entry_year, COUNT(*) AS entries FROM performance_entries WHERE fac_id = ? GROUP BY indicator_type, entry_year, entry_month ORDER BY entry_year DESC, entry_month DESC LIMIT 24", 'i', [$facilityId])
@@ -1400,11 +1694,24 @@ class StateDashboardService
     /**
      * Handles facility hierarchy processing for this API workflow.
      */
-    public static function facilityHierarchy(array $filters = []): array
+    public static function facilityHierarchy(mysqli $con, array $filters = []): array
     {
         $states = [];
         $stateIndex = [];
         $facilities = self::filteredFacilities($filters);
+        $latestScores = [];
+        try {
+            $latestScores = self::latestCompletedFacilityScores($con);
+        } catch (Throwable $scoreError) {
+            if (class_exists('ErrorHandler')) {
+                ErrorHandler::log('School hierarchy score aggregation failed', [
+                    'error' => $scoreError->getMessage()
+                ]);
+            }
+            // Hierarchy browsing must remain available even when optional
+            // assessment score tables are missing or temporarily unavailable.
+        }
+        $includeFacilityDomains = !empty($filters['include_domains']);
 
         foreach ($facilities as $facility) {
             $stateName = trim((string)($facility['state_name'] ?? 'State'));
@@ -1412,6 +1719,7 @@ class StateDashboardService
             $districtName = trim((string)($facility['Dist_Name'] ?? $facility['district'] ?? 'District'));
             $blockName = trim((string)($facility['Block_Name'] ?? $facility['block'] ?? 'Block'));
             $facilityId = (int)($facility['fac_id'] ?? 0);
+            $score = $latestScores[$facilityId] ?? null;
 
             if ($stateName === '') {
                 $stateName = 'State';
@@ -1431,6 +1739,8 @@ class StateDashboardService
                 $states[] = [
                     'name' => $stateName,
                     'count' => 0,
+                    '_score' => ['obtained' => 0.0, 'possible' => 0.0, 'framework' => 'saqshi-education'],
+                    '_domains' => [],
                     'divisions' => [],
                     '_division_index' => []
                 ];
@@ -1444,6 +1754,8 @@ class StateDashboardService
                 $states[$stateKey]['divisions'][] = [
                     'name' => $divisionName,
                     'count' => 0,
+                    '_score' => ['obtained' => 0.0, 'possible' => 0.0, 'framework' => 'saqshi-education'],
+                    '_domains' => [],
                     'districts' => [],
                     '_district_index' => []
                 ];
@@ -1457,6 +1769,8 @@ class StateDashboardService
                 $states[$stateKey]['divisions'][$divisionKey]['districts'][] = [
                     'name' => $districtName,
                     'count' => 0,
+                    '_score' => ['obtained' => 0.0, 'possible' => 0.0, 'framework' => 'saqshi-education'],
+                    '_domains' => [],
                     'blocks' => [],
                     '_block_index' => []
                 ];
@@ -1470,26 +1784,44 @@ class StateDashboardService
                 $states[$stateKey]['divisions'][$divisionKey]['districts'][$districtKey]['blocks'][] = [
                     'name' => $blockName,
                     'count' => 0,
+                    '_score' => ['obtained' => 0.0, 'possible' => 0.0, 'framework' => 'saqshi-education'],
+                    '_domains' => [],
                     'facilities' => []
                 ];
             }
 
             $blockKey = $states[$stateKey]['divisions'][$divisionKey]['districts'][$districtKey]['_block_index'][$blockName];
             $states[$stateKey]['divisions'][$divisionKey]['districts'][$districtKey]['blocks'][$blockKey]['count']++;
+            if ($score !== null && (float)($score['total_score'] ?? 0) > 0) {
+                self::addHierarchyScore($states[$stateKey], $score);
+                self::addHierarchyScore($states[$stateKey]['divisions'][$divisionKey], $score);
+                self::addHierarchyScore($states[$stateKey]['divisions'][$divisionKey]['districts'][$districtKey], $score);
+                self::addHierarchyScore($states[$stateKey]['divisions'][$divisionKey]['districts'][$districtKey]['blocks'][$blockKey], $score);
+            }
             $states[$stateKey]['divisions'][$divisionKey]['districts'][$districtKey]['blocks'][$blockKey]['facilities'][] = [
                 'fac_id' => $facilityId,
                 'fac_name' => (string)($facility['fac_name'] ?? ''),
                 'nin' => (string)($facility['NIN_no'] ?? $facility['nin_no'] ?? ''),
                 'facility_type' => self::facilityTypeLabel($facility)
+                ,'score_percent' => $score['percentage'] ?? null
+                ,'category' => $score['category'] ?? null
+                ,'domains' => $includeFacilityDomains ? ($score['models'] ?? []) : []
             ];
         }
 
         foreach ($states as &$state) {
+            self::applyHierarchyCategory($state);
             unset($state['_division_index']);
             foreach ($state['divisions'] as &$division) {
+                self::applyHierarchyCategory($division);
                 unset($division['_district_index']);
                 foreach ($division['districts'] as &$district) {
+                    self::applyHierarchyCategory($district);
                     unset($district['_block_index']);
+                    foreach ($district['blocks'] as &$block) {
+                        self::applyHierarchyCategory($block);
+                    }
+                    unset($block);
                 }
                 unset($district);
             }
@@ -1501,6 +1833,266 @@ class StateDashboardService
             'total_facilities' => count($facilities),
             'states' => $states
         ];
+    }
+
+    /**
+     * Returns the latest completed assessment category count for filtered schools.
+     */
+    public static function schoolCategorySummary(mysqli $con, array $filters = []): array
+    {
+        $counts = [
+            'Abhilasha' => 0,
+            'Pragati' => 0,
+            'Jagriti' => 0
+        ];
+        $latestScores = self::latestCompletedFacilityScores($con);
+        $divisionScores = [];
+        $districtScores = [];
+
+        foreach (self::filteredFacilities($filters) as $facility) {
+            $facilityId = (int)($facility['fac_id'] ?? 0);
+            $score = $latestScores[$facilityId] ?? null;
+            if ($score === null || (float)($score['total_score'] ?? 0) <= 0) {
+                continue;
+            }
+            $categoryData = $score['category'] ?? null;
+            $category = trim((string)(is_array($categoryData) ? ($categoryData['name'] ?? '') : $categoryData));
+            if (isset($counts[$category])) {
+                $counts[$category]++;
+            }
+
+            $division = trim((string)($facility['division'] ?? 'Unknown Division')) ?: 'Unknown Division';
+            $district = trim((string)($facility['Dist_Name'] ?? 'Unknown District')) ?: 'Unknown District';
+            foreach ([
+                [&$divisionScores, $division, $division],
+                [&$districtScores, $division . '|' . $district, $district]
+            ] as &$target) {
+                [$collection, $key, $name] = $target;
+                if (!isset($collection[$key])) {
+                    $collection[$key] = [
+                        'name' => $name,
+                        'division' => $division,
+                        'obtained_score' => 0.0,
+                        'total_score' => 0.0,
+                        'school_count' => 0,
+                        'distribution' => ['Abhilasha' => 0, 'Pragati' => 0, 'Jagriti' => 0]
+                    ];
+                }
+                $collection[$key]['obtained_score'] += (float)$score['obtained_score'];
+                $collection[$key]['total_score'] += (float)$score['total_score'];
+                $collection[$key]['school_count']++;
+                if (isset($collection[$key]['distribution'][$category])) {
+                    $collection[$key]['distribution'][$category]++;
+                }
+                $target[0] = $collection;
+            }
+            unset($target);
+        }
+
+        $formatRows = static function (array $rows): array {
+            $result = [];
+            foreach ($rows as $row) {
+                $percentage = $row['total_score'] > 0
+                    ? round(($row['obtained_score'] / $row['total_score']) * 100, 2)
+                    : 0.0;
+                $categoryData = self::configuredCategory('saqshi-education', $percentage);
+                $row['percentage'] = $percentage;
+                $row['category'] = (string)($categoryData['name'] ?? 'Not Categorised');
+                unset($row['obtained_score'], $row['total_score']);
+                $result[] = $row;
+            }
+            usort($result, static fn(array $a, array $b): int => strcasecmp((string)$a['name'], (string)$b['name']));
+            return $result;
+        };
+
+        return [
+            'total_scored' => array_sum($counts),
+            'categories' => [
+                ['category' => 'Abhilasha', 'count' => $counts['Abhilasha'], 'color' => '#dc2626'],
+                ['category' => 'Pragati', 'count' => $counts['Pragati'], 'color' => '#f59e0b'],
+                ['category' => 'Jagriti', 'count' => $counts['Jagriti'], 'color' => '#16a34a']
+            ],
+            'divisions' => $formatRows($divisionScores),
+            'districts' => $formatRows($districtScores)
+        ];
+    }
+
+    private static function latestCompletedFacilityScores(mysqli $con): array
+    {
+        if (!self::tableExists($con, 'assessment_master') || !self::tableExists($con, 'assessment_response') || !self::tableExists($con, 'facility_assessment_round')) return [];
+        // A school's official category is based on its latest *fully completed*
+        // school round.  A class can be reassessed independently, so MAX(round_no)
+        // across completed assessments can otherwise select a newer round containing
+        // only one class.  facility_assessment_round is marked COMPLETED only once
+        // all framework classes for that school round are complete.
+        //
+        // Legacy data may predate the round-status update.  In that case the
+        // compatible check below confirms that all configured class IDs have
+        // completed records in the same round.
+        $latestRoundIds = self::latestFullyCompletedRoundIds($con);
+        if (!$latestRoundIds) return [];
+        $roundIds = array_values($latestRoundIds);
+        $placeholders = implode(',', array_fill(0, count($roundIds), '?'));
+
+        // Keep this as a grouped query for every selected school round;
+        // calling roundModelCategory per school would time out at State scale.
+        $rows = self::rows($con, "
+            SELECT a.fac_id_fk, a.framework_code, r.checkpoint_id,
+                   COALESCE(SUM(r.score), 0) AS obtained_score,
+                   COALESCE(SUM(r.max_score), 0) AS total_score
+            FROM assessment_master a
+            LEFT JOIN assessment_response r ON r.assessment_id = a.assessment_id
+            WHERE UPPER(a.status) = 'COMPLETED'
+              AND a.round_id IN ({$placeholders})
+            GROUP BY a.fac_id_fk, a.framework_code, r.checkpoint_id",
+            str_repeat('i', count($roundIds)), $roundIds);
+        $map = [];
+        $checkpointDomains = self::frameworkCheckpointDomains('saqshi-education');
+        foreach ($rows as $row) {
+            $facilityId = (int)$row['fac_id_fk'];
+            $obtained = (float)($row['obtained_score'] ?? 0);
+            $possible = (float)($row['total_score'] ?? 0);
+            if ($possible <= 0) continue;
+            $framework = (string)($row['framework_code'] ?? 'saqshi-education');
+            if (!isset($map[$facilityId])) $map[$facilityId] = ['framework_code' => $framework, 'obtained_score' => 0.0, 'total_score' => 0.0, '_domains' => []];
+            $map[$facilityId]['obtained_score'] += $obtained;
+            $map[$facilityId]['total_score'] += $possible;
+            $domain = $checkpointDomains[(int)($row['checkpoint_id'] ?? 0)] ?? null;
+            if ($domain !== null) {
+                if (!isset($map[$facilityId]['_domains'][$domain])) $map[$facilityId]['_domains'][$domain] = ['obtained_score' => 0.0, 'total_score' => 0.0];
+                $map[$facilityId]['_domains'][$domain]['obtained_score'] += $obtained;
+                $map[$facilityId]['_domains'][$domain]['total_score'] += $possible;
+            }
+        }
+        foreach ($map as &$score) {
+            $score['percentage'] = round(($score['obtained_score'] / $score['total_score']) * 100, 2);
+            $score['category'] = self::configuredCategory($score['framework_code'], $score['percentage']);
+            $score['models'] = [];
+            foreach ($score['_domains'] as $name => $domain) {
+                if ($domain['total_score'] <= 0) continue;
+                $percentage = round(($domain['obtained_score'] / $domain['total_score']) * 100, 2);
+                $score['models'][] = ['model_name' => $name, 'percentage' => $percentage, 'obtained_score' => $domain['obtained_score'], 'total_score' => $domain['total_score'], 'category' => self::configuredCategory($score['framework_code'], $percentage)];
+            }
+            unset($score['_domains']);
+        }
+        unset($score);
+        return $map;
+    }
+
+    /** Latest complete school round per facility, including legacy round records. */
+    private static function latestFullyCompletedRoundIds(mysqli $con): array
+    {
+        if (!self::tableExists($con, 'assessment_department')) return [];
+        $rows = self::rows($con, "
+            SELECT fr.round_id, fr.fac_id, fr.round_no, fr.status AS round_status,
+                   a.framework_code, f.Health_facilty_type AS facility_type_id,
+                   GROUP_CONCAT(DISTINCT CASE
+                       WHEN UPPER(a.status) = 'COMPLETED'
+                        AND d.is_active = 1
+                        AND UPPER(d.status) = 'COMPLETED'
+                       THEN d.dept_id END) AS completed_department_ids
+            FROM facility_assessment_round fr
+            JOIN assessment_master a ON a.round_id = fr.round_id
+            LEFT JOIN assessment_department d ON d.assessment_id = a.assessment_id
+            LEFT JOIN facilities f ON f.fac_id = fr.fac_id
+            GROUP BY fr.round_id, fr.fac_id, fr.round_no, fr.status,
+                     a.framework_code, f.Health_facilty_type
+            ORDER BY fr.fac_id, fr.round_no DESC, fr.round_id DESC");
+
+        $latest = [];
+        $engines = [];
+        foreach ($rows as $row) {
+            $facilityId = (int)($row['fac_id'] ?? 0);
+            if ($facilityId <= 0 || isset($latest[$facilityId])) continue;
+
+            $isMarkedComplete = strtoupper((string)($row['round_status'] ?? '')) === 'COMPLETED';
+            $isCompleteFromClasses = false;
+            $frameworkCode = (string)($row['framework_code'] ?? '');
+            $facilityTypeId = (int)($row['facility_type_id'] ?? 0);
+            try {
+                if (!isset($engines[$frameworkCode])) $engines[$frameworkCode] = FrameworkEngine::load($frameworkCode);
+                $expectedIds = array_values(array_filter(array_map(
+                    static fn(array $department): int => (int)($department['fac_dept_id'] ?? $department['dept_id'] ?? 0),
+                    $engines[$frameworkCode]->getDepartments($facilityTypeId)
+                )));
+                $completedIds = array_values(array_filter(array_map('intval', explode(',', (string)($row['completed_department_ids'] ?? '')))));
+                $isCompleteFromClasses = $expectedIds
+                    && !array_diff($expectedIds, $completedIds);
+            } catch (Throwable $e) {
+                // A marked complete round remains valid when its old framework
+                // configuration is no longer present locally.
+            }
+
+            if ($isMarkedComplete || $isCompleteFromClasses) {
+                $latest[$facilityId] = (int)$row['round_id'];
+            }
+        }
+        return $latest;
+    }
+
+    private static function frameworkCheckpointDomains(string $frameworkCode): array
+    {
+        $map = [];
+        try {
+            $engine = FrameworkEngine::load($frameworkCode);
+            foreach ($engine->getFacilityTypes() as $type) {
+                $typeId = (int)($type['fac_type_id'] ?? 0);
+                foreach ($engine->getDepartments($typeId) as $department) {
+                    foreach ($engine->getCheckpoints($typeId, (int)($department['fac_dept_id'] ?? 0)) as $checkpoint) {
+                        $name = preg_replace('/\s+/', ' ', trim((string)($checkpoint['_concern_name'] ?? '')));
+                        if ($name !== '') $map[(int)($checkpoint['csqa_id'] ?? 0)] = $name;
+                    }
+                }
+            }
+        } catch (Throwable $e) { return []; }
+        return $map;
+    }
+
+    /** Add the configured colour/category to a hierarchy aggregate. */
+    private static function addHierarchyScore(array &$node, array $score): void
+    {
+        $node['_score']['obtained'] += (float)$score['obtained_score'];
+        $node['_score']['possible'] += (float)$score['total_score'];
+        $node['_score']['framework'] = (string)($score['framework_code'] ?? $node['_score']['framework']);
+        foreach (($score['models'] ?? []) as $domain) {
+            $name = (string)($domain['model_name'] ?? '');
+            if ($name === '') continue;
+            if (!isset($node['_domains'][$name])) $node['_domains'][$name] = ['obtained_score' => 0.0, 'total_score' => 0.0];
+            $node['_domains'][$name]['obtained_score'] += (float)($domain['obtained_score'] ?? 0);
+            $node['_domains'][$name]['total_score'] += (float)($domain['total_score'] ?? 0);
+        }
+    }
+
+    private static function applyHierarchyCategory(array &$node): void
+    {
+        $score = $node['_score'] ?? [];
+        $possible = (float)($score['possible'] ?? 0);
+        $percentage = $possible > 0 ? round(((float)$score['obtained'] / $possible) * 100, 2) : null;
+        $node['score_percent'] = $percentage;
+        $node['category'] = $percentage === null ? null : self::configuredCategory((string)($score['framework'] ?? 'saqshi-education'), $percentage);
+        $node['domains'] = [];
+        foreach (($node['_domains'] ?? []) as $name => $domain) {
+            $total = (float)($domain['total_score'] ?? 0);
+            if ($total <= 0) continue;
+            $value = round(((float)$domain['obtained_score'] / $total) * 100, 2);
+            $node['domains'][] = ['model_name' => $name, 'percentage' => $value, 'obtained_score' => (float)$domain['obtained_score'], 'total_score' => $total, 'category' => self::configuredCategory((string)($score['framework'] ?? 'saqshi-education'), $value)];
+        }
+        unset($node['_score']);
+        unset($node['_domains']);
+    }
+
+    private static function configuredCategory(string $frameworkCode, float $percentage): ?array
+    {
+        $path = __DIR__ . '/../config/scoring/' . basename($frameworkCode) . '.json';
+        $policy = is_file($path) ? json_decode((string)file_get_contents($path), true) : [];
+        foreach (($policy['performance_levels'] ?? []) as $level) {
+            $min = isset($level['min_percent']) ? (float)$level['min_percent'] : null;
+            $max = isset($level['max_percent']) ? (float)$level['max_percent'] : null;
+            $minOk = $min === null || (($level['min_inclusive'] ?? true) ? $percentage >= $min : $percentage > $min);
+            $maxOk = $max === null || (($level['max_inclusive'] ?? true) ? $percentage <= $max : $percentage < $max);
+            if ($minOk && $maxOk) return ['name' => $level['name'] ?? '', 'points' => (int)($level['points'] ?? 0)];
+        }
+        return null;
     }
 
     /**
@@ -1516,7 +2108,7 @@ class StateDashboardService
         $rows = self::rows($con, "
             SELECT UPPER(COALESCE(status, 'UNKNOWN')) AS status, COUNT(*) AS count
             FROM assessment_master
-            WHERE fac_id_fk = ?
+            WHERE fac_id_fk = ? AND status <> 'PENDING'
             GROUP BY UPPER(COALESCE(status, 'UNKNOWN'))
         ", 'i', [$facilityId]);
 
@@ -1647,6 +2239,12 @@ class StateDashboardService
         $types = '';
         $params = [];
 
+        // Role 11 is a restricted management account. It may administer
+        // administrator and Mentor/Assessor accounts, not the full state-user list.
+        if (!empty($filters['management_roles_only'])) {
+            $where[] = "(LOWER(COALESCE(r.role_name, '')) LIKE '%admin%' OR LOWER(COALESCE(r.role_name, '')) LIKE '%assessor%' OR LOWER(COALESCE(r.role_name, '')) LIKE '%mentor%')";
+        }
+
         if (!empty($filters['role_id'])) {
             $where[] = 'u.role_id_fk = ?';
             $types .= 'i';
@@ -1679,7 +2277,8 @@ class StateDashboardService
             {$sqlWhere}
         ", $types, $params);
         $rows = self::rows($con, "
-            SELECT u.u_id, u.u_name, u.role_id_fk, r.role_name, u.is_active, u.fac_id_fk, f.fac_name, f.Dist_Name AS district
+            SELECT u.u_id, u.u_name, u.f_name, u.m_name, u.l_name, u.mail_id, u.mob_no,
+                   u.role_id_fk, r.role_name, u.is_active, u.fac_id_fk, f.fac_name, f.Dist_Name AS district
             FROM s_user u
             LEFT JOIN u_role r ON r.role_id = u.role_id_fk
             LEFT JOIN facilities f ON f.fac_id = u.fac_id_fk
@@ -1687,6 +2286,16 @@ class StateDashboardService
             ORDER BY u.u_id DESC
             LIMIT ? OFFSET ?
         ", $types . 'ii', array_merge($params, [$perPage, $offset]));
+
+        foreach ($rows as &$row) {
+            $row = Crypto::decryptFields($row, ['f_name', 'm_name', 'l_name', 'mail_id', 'mob_no']);
+            $row['full_name'] = trim(implode(' ', array_filter([
+                (string)($row['f_name'] ?? ''),
+                (string)($row['m_name'] ?? ''),
+                (string)($row['l_name'] ?? '')
+            ], static fn(string $value): bool => $value !== '')));
+        }
+        unset($row);
 
         return [
             'summary' => $summary,
@@ -1945,7 +2554,7 @@ class StateDashboardService
             FROM (
                 SELECT
                     a.fac_id_fk,
-                    COALESCE(f.fac_name, CONCAT('Facility ', a.fac_id_fk)) AS fac_name,
+                    COALESCE(f.fac_name, 'Unnamed Facility') AS fac_name,
                     COALESCE(f.Dist_Name, '') AS district,
                     COALESCE(f.Block_Name, '') AS block,
                     COALESCE(CAST(f.NIN_no AS CHAR), '') AS nin_no,
@@ -2024,12 +2633,18 @@ class StateDashboardService
     private static function facilitiesFromJson(): array
     {
         static $facilities = null;
+        static $sourceVersion = null;
 
-        if ($facilities !== null) {
+        $path = __DIR__ . '/../config/masters/facilities.json';
+        $currentVersion = is_file($path) ? ((string)filemtime($path) . ':' . (string)filesize($path)) : 'missing';
+
+        // Long-running PHP/IIS workers may retain static values. Reload the
+        // authoritative master immediately when its file changes.
+        if ($facilities !== null && $sourceVersion === $currentVersion) {
             return $facilities;
         }
 
-        $path = __DIR__ . '/../config/masters/facilities.json';
+        $sourceVersion = $currentVersion;
 
         if (!is_file($path)) {
             $facilities = [];
@@ -2255,6 +2870,13 @@ class StateDashboardService
             'boundary_source_url' => $selected['source'] ?? null,
             'boundary_type' => $selected['source_type'] ?? null
         ];
+    }
+
+    private static function isEducationDomain(): bool
+    {
+        $path = __DIR__ . '/../config/domain.json';
+        $config = is_file($path) ? json_decode((string)file_get_contents($path), true) : [];
+        return strtolower(trim((string)($config['domain'] ?? ''))) === 'education';
     }
 
     /**
@@ -2623,7 +3245,9 @@ class StateDashboardService
         $placeholders = implode(',', array_fill(0, count($ids), '?'));
 
         return [
-            'sql' => "WHERE a.fac_id_fk IN ({$placeholders})",
+            // PENDING assessor records are unclaimed class-selection drafts;
+            // they are not state-monitorable assessment records.
+            'sql' => "WHERE a.fac_id_fk IN ({$placeholders}) AND UPPER(COALESCE(a.status, '')) <> 'PENDING'",
             'types' => str_repeat('i', count($ids)),
             'params' => $ids
         ];

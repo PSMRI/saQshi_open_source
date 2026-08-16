@@ -63,3 +63,7 @@ authentication and response utilities before business logic executes.
 5. Keep response envelopes consistent through `Response` helpers.
 6. Record any needed audit/history data before changing a lifecycle state.
 7. Add the new endpoint to this documentation and to the Postman collection.
+
+The assessment module also provides a facility-scoped FHIR R4 `MeasureReport`
+export. Its machine-readable contract is included in `openapi.yaml` and its
+request is included in the Postman collection.

@@ -1,0 +1,121 @@
+{"kind":"deck","id":"pr/d23slr","name":"Deck"}
+{"kind":"layout","layoutId":"c0704bef-d0c8-48e6-b847-d4c19c0e1766","name":"Master","type":"master"}
+{"kind":"layout","layoutId":"9572a5c3-f85e-4a85-bd30-60c2c1d6b728","name":"Title Slide","type":"title"}
+{"kind":"slide","id":"sl/zp0xi7","slide":1,"title":"SaQshi Education","textShapes":4}
+{"kind":"shape","id":"sh/gnmt4v21","slide":1,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/fmdcvq1g","slide":1,"bbox":[64,74,10,460]}
+{"kind":"textbox","id":"sh/el4b2lkv","slide":1,"text":"SaQshi Education","textPreview":"SaQshi Education","textChars":16,"textLines":1,"bbox":[98,98,740,80]}
+{"kind":"textbox","id":"sh/tkvutgjq","slide":1,"text":"A digital quality-assessment and improvement platform for schools","textPreview":"A digital quality-assessment and improvement platform for schools","textChars":65,"textLines":1,"bbox":[98,198,690,86]}
+{"kind":"textbox","id":"sh/szmt0v25","slide":1,"text":"A donor partnership opportunity to make school quality visible, actionable and scalable.","textPreview":"A donor partnership opportunity to make school quality visible, actionable and scalable.","textChars":88,"textLines":1,"bbox":[98,468,690,62]}
+{"kind":"textbox","id":"sh/6xkbylkz","slide":1,"text":"Open-source • Configurable • Field-ready","textPreview":"Open-source • Configurable • Field-ready","textChars":40,"textLines":1,"bbox":[98,620,500,26]}
+{"kind":"image","id":"im/21gjmx4v","slide":1,"name":"","geometry":"roundRect","alt":"SaQshi school assessment interface","bbox":[835,70,365,530]}
+{"kind":"notes","id":"nt/zp0xi7","slide":1,"text":"[Sources]\nSaQshi open-source repository: README.md and docs/architecture/project_overview.md.\nProduct image: ui/assets/images/landing-school-assessment.png.\n[/Sources]"}
+{"kind":"slide","id":"sl/f7hmlh","slide":2,"title":"SAQSHI EDUCATION","textShapes":9}
+{"kind":"textbox","id":"sh/ex8f2tkj","slide":2,"text":"SAQSHI EDUCATION","textPreview":"SAQSHI EDUCATION","textChars":16,"textLines":1,"bbox":[64,42,280,26]}
+{"kind":"textbox","id":"sh/1kzex83a","slide":2,"text":"School quality work is often fragmented","textPreview":"School quality work is often fragmented","textChars":39,"textLines":1,"bbox":[64,92,1030,56]}
+{"kind":"textbox","id":"sh/0jqx432p","slide":2,"text":"02","textPreview":"02","textChars":2,"textLines":1,"bbox":[1165,48,48,24]}
+{"kind":"textbox","id":"sh/ruxwryls","slide":2,"text":"Programme teams need a single, trusted view of what is happening in schools.","textPreview":"Programme teams need a single, trusted view of what is happening in schools.","textChars":76,"textLines":1,"bbox":[64,172,800,42]}
+{"kind":"shape","id":"sh/qtovyt4n","slide":2,"bbox":[90,260,10,10]}
+{"kind":"textbox","id":"sh/dwfeto3y","slide":2,"text":"Assessments are difficult to standardise across schools and grades.","textPreview":"Assessments are difficult to standardise across schools and grades.","textChars":67,"textLines":1,"bbox":[114,252,735,52]}
+{"kind":"shape","id":"sh/sv6d03md","slide":2,"bbox":[90,330,10,10]}
+{"kind":"textbox","id":"sh/3qxwnelw","slide":2,"text":"Findings can remain in paper forms, spreadsheets or disconnected files.","textPreview":"Findings can remain in paper forms, spreadsheets or disconnected files.","textChars":71,"textLines":1,"bbox":[114,322,735,52]}
+{"kind":"shape","id":"sh/ipovu94b","slide":2,"bbox":[90,400,10,10]}
+{"kind":"textbox","id":"sh/o36pkvqx","slide":2,"text":"Follow-up actions and progress are hard to monitor across geography.","textPreview":"Follow-up actions and progress are hard to monitor across geography.","textChars":68,"textLines":1,"bbox":[114,392,735,52]}
+{"kind":"shape","id":"sh/94f6tg72","slide":2,"bbox":[920,210,230,285]}
+{"kind":"textbox","id":"sh/m1onil8r","slide":2,"text":"The result","textPreview":"The result","textChars":10,"textLines":1,"bbox":[950,250,170,28]}
+{"kind":"textbox","id":"sh/n2xorqpc","slide":2,"text":"Limited visibility\nSlow follow-up\nUneven learning environments","textPreview":"Limited visibility | Slow follow-up | Uneven learning environments","textChars":62,"textLines":3,"bbox":[950,310,180,130]}
+{"kind":"notes","id":"nt/f7hmlh","slide":2,"text":"[Sources]\nSaQshi open-source repository: README.md and docs/architecture/project_overview.md.\nProduct image: ui/assets/images/landing-school-assessment.png.\n[/Sources]"}
+{"kind":"slide","id":"sl/aar9bx","slide":3,"title":"SAQSHI EDUCATION","textShapes":18}
+{"kind":"textbox","id":"sh/50vqdwne","slide":3,"text":"SAQSHI EDUCATION","textPreview":"SAQSHI EDUCATION","textChars":16,"textLines":1,"bbox":[64,42,280,26]}
+{"kind":"textbox","id":"sh/ixk7214n","slide":3,"text":"SaQshi turns assessment into a continuous improvement cycle","textPreview":"SaQshi turns assessment into a continuous improvement cycle","textChars":59,"textLines":1,"bbox":[64,92,1030,56]}
+{"kind":"textbox","id":"sh/3ytob658","slide":3,"text":"03","textPreview":"03","textChars":2,"textLines":1,"bbox":[1165,48,48,24]}
+{"kind":"shape","id":"sh/snmp8bmp","slide":3,"bbox":[70,265,180,130]}
+{"kind":"textbox","id":"sh/dovqhgna","slide":3,"text":"01","textPreview":"01","textChars":2,"textLines":1,"bbox":[88,284,45,20]}
+{"kind":"textbox","id":"sh/ql47614z","slide":3,"text":"Prepare","textPreview":"Prepare","textChars":7,"textLines":1,"bbox":[88,326,145,34]}
+{"kind":"textbox","id":"sh/rmd8f654","slide":3,"text":"→","textPreview":"→","textChars":1,"textLines":1,"bbox":[260,313,36,35]}
+{"kind":"shape","id":"sh/8ripw7ml","slide":3,"bbox":[302,265,180,130]}
+{"kind":"textbox","id":"sh/9sb65cn6","slide":3,"text":"02","textPreview":"02","textChars":2,"textLines":1,"bbox":[320,284,45,20]}
+{"kind":"textbox","id":"sh/18vqxsfa","slide":3,"text":"Assess","textPreview":"Assess","textChars":6,"textLines":1,"bbox":[320,326,145,34]}
+{"kind":"textbox","id":"sh/07mponep","slide":3,"text":"→","textPreview":"→","textChars":1,"textLines":1,"bbox":[492,313,36,35]}
+{"kind":"shape","id":"sh/f6d8vix4","slide":3,"bbox":[534,265,180,130]}
+{"kind":"textbox","id":"sh/e547mdwj","slide":3,"text":"03","textPreview":"03","textChars":2,"textLines":1,"bbox":[552,284,45,20]}
+{"kind":"textbox","id":"sh/pcfq1sf6","slide":3,"text":"Prioritise","textPreview":"Prioritise","textChars":10,"textLines":1,"bbox":[552,326,145,34]}
+{"kind":"textbox","id":"sh/ob6psnel","slide":3,"text":"→","textPreview":"→","textChars":1,"textLines":1,"bbox":[724,313,36,35]}
+{"kind":"shape","id":"sh/nax8z2x0","slide":3,"bbox":[766,265,180,130]}
+{"kind":"textbox","id":"sh/2947qxwf","slide":3,"text":"04","textPreview":"04","textChars":2,"textLines":1,"bbox":[784,284,45,20]}
+{"kind":"textbox","id":"sh/x0fq5cf2","slide":3,"text":"Act","textPreview":"Act","textChars":3,"textLines":1,"bbox":[784,326,145,34]}
+{"kind":"textbox","id":"sh/cz6pw7ex","slide":3,"text":"→","textPreview":"→","textChars":1,"textLines":1,"bbox":[956,313,36,35]}
+{"kind":"shape","id":"sh/wje98bmt","slide":3,"bbox":[998,265,180,130]}
+{"kind":"textbox","id":"sh/hkna1g3e","slide":3,"text":"05","textPreview":"05","textChars":2,"textLines":1,"bbox":[1016,284,45,20]}
+{"kind":"textbox","id":"sh/uhwr6143","slide":3,"text":"Monitor","textPreview":"Monitor","textChars":7,"textLines":1,"bbox":[1016,326,145,34]}
+{"kind":"textbox","id":"sh/vi5sz6l8","slide":3,"text":"A configurable workflow captures evidence, scores performance, identifies gaps and tracks closure over time.","textPreview":"A configurable workflow captures evidence, scores performance, identifies gaps and tracks closure over time.","textChars":108,"textLines":1,"bbox":[100,505,1060,50]}
+{"kind":"notes","id":"nt/aar9bx","slide":3,"text":"[Sources]\nSaQshi open-source repository: README.md and docs/architecture/project_overview.md.\nProduct image: ui/assets/images/landing-school-assessment.png.\n[/Sources]"}
+{"kind":"slide","id":"sl/5fgdas","slide":4,"title":"SAQSHI EDUCATION","textShapes":10}
+{"kind":"textbox","id":"sh/qhwni9o3","slide":4,"text":"SAQSHI EDUCATION","textPreview":"SAQSHI EDUCATION","textChars":16,"textLines":1,"bbox":[64,42,280,26]}
+{"kind":"textbox","id":"sh/dk76donu","slide":4,"text":"One platform for assessors, school leaders and programme teams","textPreview":"One platform for assessors, school leaders and programme teams","textChars":62,"textLines":1,"bbox":[64,92,1030,56]}
+{"kind":"textbox","id":"sh/sjy5kj69","slide":4,"text":"04","textPreview":"04","textChars":2,"textLines":1,"bbox":[1165,48,48,24]}
+{"kind":"shape","id":"sh/fmpofe5k","slide":4,"bbox":[64,210,340,285]}
+{"kind":"textbox","id":"sh/elgnmtof","slide":4,"text":"Field assessor","textPreview":"Field assessor","textChars":14,"textLines":1,"bbox":[90,248,280,34]}
+{"kind":"textbox","id":"sh/1o76honq","slide":4,"text":"Guided checklist\nSave and resume\nStructured responses","textPreview":"Guided checklist | Save and resume | Structured responses","textChars":53,"textLines":3,"bbox":[90,320,280,115]}
+{"kind":"shape","id":"sh/0ny5oj65","slide":4,"bbox":[449,210,340,285]}
+{"kind":"textbox","id":"sh/vql43u5g","slide":4,"text":"School leader","textPreview":"School leader","textChars":13,"textLines":1,"bbox":[475,248,280,34]}
+{"kind":"textbox","id":"sh/upcnapov","slide":4,"text":"Clear gaps\nAction ownership\nEvidence-based follow-up","textPreview":"Clear gaps | Action ownership | Evidence-based follow-up","textChars":52,"textLines":3,"bbox":[475,320,280,115]}
+{"kind":"shape","id":"sh/8b2x0bet","slide":4,"bbox":[834,210,340,285]}
+{"kind":"textbox","id":"sh/9cby9wfe","slide":4,"text":"Programme team","textPreview":"Programme team","textChars":14,"textLines":1,"bbox":[860,248,280,34]}
+{"kind":"textbox","id":"sh/m90fy1wn","slide":4,"text":"School-to-state view\nProgress monitoring\nDownloadable reports","textPreview":"School-to-state view | Progress monitoring | Downloadable reports","textChars":61,"textLines":3,"bbox":[860,320,280,115]}
+{"kind":"textbox","id":"sh/7atg76x8","slide":4,"text":"Role-based access connects action at the school with oversight across blocks, districts and the state.","textPreview":"Role-based access connects action at the school with oversight across blocks, districts and the state.","textChars":102,"textLines":1,"bbox":[115,560,1040,35]}
+{"kind":"notes","id":"nt/5fgdas","slide":4,"text":"[Sources]\nSaQshi open-source repository: README.md and docs/architecture/project_overview.md.\nProduct image: ui/assets/images/landing-school-assessment.png.\n[/Sources]"}
+{"kind":"slide","id":"sl/m40ozg","slide":5,"title":"SAQSHI EDUCATION","textShapes":9}
+{"kind":"textbox","id":"sh/3ap4za9k","slide":5,"text":"SAQSHI EDUCATION","textPreview":"SAQSHI EDUCATION","textChars":16,"textLines":1,"bbox":[64,42,280,26]}
+{"kind":"textbox","id":"sh/4bylsfq5","slide":5,"text":"Designed to work where connectivity is unreliable","textPreview":"Designed to work where connectivity is unreliable","textChars":49,"textLines":1,"bbox":[64,92,1030,56]}
+{"kind":"textbox","id":"sh/pc7m1kra","slide":5,"text":"05","textPreview":"05","textChars":2,"textLines":1,"bbox":[1165,48,48,24]}
+{"kind":"textbox","id":"sh/qdg3up8v","slide":5,"text":"Offline-ready assessment protects field progress.","textPreview":"Offline-ready assessment protects field progress.","textChars":49,"textLines":1,"bbox":[70,185,600,52]}
+{"kind":"shape","id":"sh/rep43u9g","slide":5,"bbox":[90,290,10,10]}
+{"kind":"textbox","id":"sh/cfylwfq1","slide":5,"text":"Responses can be saved on the device during a network interruption.","textPreview":"Responses can be saved on the device during a network interruption.","textChars":67,"textLines":1,"bbox":[114,282,585,52]}
+{"kind":"shape","id":"sh/dg7m5krm","slide":5,"bbox":[90,360,10,10]}
+{"kind":"textbox","id":"sh/eh03yp87","slide":5,"text":"Pending responses synchronise when connectivity returns.","textPreview":"Pending responses synchronise when connectivity returns.","textChars":56,"textLines":1,"bbox":[114,352,585,52]}
+{"kind":"shape","id":"sh/zi947u9s","slide":5,"bbox":[90,430,10,10]}
+{"kind":"textbox","id":"sh/n69o3y50","slide":5,"text":"A mobile app pathway can strengthen continuity beyond the browser.","textPreview":"A mobile app pathway can strengthen continuity beyond the browser.","textChars":66,"textLines":1,"bbox":[114,422,585,52]}
+{"kind":"shape","id":"sh/250natof","slide":5,"bbox":[760,175,380,340]}
+{"kind":"textbox","id":"sh/p8r658nq","slide":5,"text":"Field confidence","textPreview":"Field confidence","textChars":16,"textLines":1,"bbox":[798,222,280,30]}
+{"kind":"textbox","id":"sh/o7ipc3m5","slide":5,"text":"Assessors can continue their work rather than losing progress to a connection failure.","textPreview":"Assessors can continue their work rather than losing progress to a connection failure.","textChars":86,"textLines":1,"bbox":[798,285,278,115]}
+{"kind":"notes","id":"nt/m40ozg","slide":5,"text":"[Sources]\nSaQshi open-source repository: README.md and docs/architecture/project_overview.md.\nProduct image: ui/assets/images/landing-school-assessment.png.\n[/Sources]"}
+{"kind":"slide","id":"sl/8o7xf7","slide":6,"title":"SAQSHI EDUCATION","textShapes":9}
+{"kind":"textbox","id":"sh/hs32x8bu","slide":6,"text":"SAQSHI EDUCATION","textPreview":"SAQSHI EDUCATION","textChars":16,"textLines":1,"bbox":[64,42,280,26]}
+{"kind":"textbox","id":"sh/u5cjmds3","slide":6,"text":"Donor support can take SaQshi Education from platform to programme","textPreview":"Donor support can take SaQshi Education from platform to programme","textChars":66,"textLines":1,"bbox":[64,92,1030,56]}
+{"kind":"textbox","id":"sh/f6lkvyto","slide":6,"text":"06","textPreview":"06","textChars":2,"textLines":1,"bbox":[1165,48,48,24]}
+{"kind":"shape","id":"sh/s3a1k3ad","slide":6,"bbox":[70,205,1060,82]}
+{"kind":"textbox","id":"sh/t43it8by","slide":6,"text":"1. Pilot","textPreview":"1. Pilot","textChars":8,"textLines":1,"bbox":[95,227,150,30]}
+{"kind":"textbox","id":"sh/61sjitc7","slide":6,"text":"Adapt the framework, onboard schools and train assessors.","textPreview":"Adapt the framework, onboard schools and train assessors.","textChars":57,"textLines":1,"bbox":[300,225,770,40]}
+{"kind":"shape","id":"sh/7210ryts","slide":6,"bbox":[70,320,1060,82]}
+{"kind":"textbox","id":"sh/kza1gju1","slide":6,"text":"2. Learn","textPreview":"2. Learn","textChars":8,"textLines":1,"bbox":[95,342,150,30]}
+{"kind":"textbox","id":"sh/50jipobm","slide":6,"text":"Use data to improve the workflow, dashboards and support model.","textPreview":"Use data to improve the workflow, dashboards and support model.","textChars":63,"textLines":1,"bbox":[300,340,770,40]}
+{"kind":"shape","id":"sh/tgrilc3u","slide":6,"bbox":[70,435,1060,82]}
+{"kind":"textbox","id":"sh/sfihc7m9","slide":6,"text":"3. Scale","textPreview":"3. Scale","textChars":8,"textLines":1,"bbox":[95,457,150,30]}
+{"kind":"textbox","id":"sh/re90j2lo","slide":6,"text":"Expand to priority geographies with evidence-based governance.","textPreview":"Expand to priority geographies with evidence-based governance.","textChars":62,"textLines":1,"bbox":[300,455,770,40]}
+{"kind":"notes","id":"nt/8o7xf7","slide":6,"text":"[Sources]\nSaQshi open-source repository: README.md and docs/architecture/project_overview.md.\nProduct image: ui/assets/images/landing-school-assessment.png.\n[/Sources]"}
+{"kind":"slide","id":"sl/xq4a3r","slide":7,"title":"SAQSHI EDUCATION","textShapes":11}
+{"kind":"textbox","id":"sh/943uxgje","slide":7,"text":"SAQSHI EDUCATION","textPreview":"SAQSHI EDUCATION","textChars":16,"textLines":1,"bbox":[64,42,280,26]}
+{"kind":"textbox","id":"sh/mhcvmlkn","slide":7,"text":"A partnership can create measurable public value","textPreview":"A partnership can create measurable public value","textChars":48,"textLines":1,"bbox":[64,92,1030,56]}
+{"kind":"textbox","id":"sh/nilcv618","slide":7,"text":"07","textPreview":"07","textChars":2,"textLines":1,"bbox":[1165,48,48,24]}
+{"kind":"shape","id":"sh/w7edsv25","slide":7,"bbox":[70,205,505,125]}
+{"kind":"textbox","id":"sh/x8nu10ja","slide":7,"text":"Consistency","textPreview":"Consistency","textChars":11,"textLines":1,"bbox":[95,229,420,30]}
+{"kind":"textbox","id":"sh/a5cvqlkz","slide":7,"text":"A common assessment approach across participating schools","textPreview":"A common assessment approach across participating schools","textChars":57,"textLines":1,"bbox":[95,271,420,45]}
+{"kind":"shape","id":"sh/v6lczq1k","slide":7,"bbox":[630,205,505,125]}
+{"kind":"textbox","id":"sh/cbatgr2l","slide":7,"text":"Accountability","textPreview":"Accountability","textChars":14,"textLines":1,"bbox":[655,229,420,30]}
+{"kind":"textbox","id":"sh/dcjupwj6","slide":7,"text":"Clear ownership for gaps, actions and follow-up","textPreview":"Clear ownership for gaps, actions and follow-up","textChars":47,"textLines":1,"bbox":[655,271,420,45]}
+{"kind":"shape","id":"sh/pwvq1oze","slide":7,"bbox":[70,375,505,125]}
+{"kind":"textbox","id":"sh/4vm98jit","slide":7,"text":"Visibility","textPreview":"Visibility","textChars":10,"textLines":1,"bbox":[95,399,420,30]}
+{"kind":"textbox","id":"sh/3ut8zeho","slide":7,"text":"Timely reporting for programme decisions","textPreview":"Timely reporting for programme decisions","textChars":40,"textLines":1,"bbox":[95,441,420,45]}
+{"kind":"shape","id":"sh/2tkr6903","slide":7,"bbox":[630,375,505,125]}
+{"kind":"textbox","id":"sh/dkva58zq","slide":7,"text":"Reusability","textPreview":"Reusability","textChars":11,"textLines":1,"bbox":[655,399,420,30]}
+{"kind":"textbox","id":"sh/czm9c3i5","slide":7,"text":"Open-source, configurable technology for future programmes","textPreview":"Open-source, configurable technology for future programmes","textChars":58,"textLines":1,"bbox":[655,441,420,45]}
+{"kind":"notes","id":"nt/xq4a3r","slide":7,"text":"[Sources]\nSaQshi open-source repository: README.md and docs/architecture/project_overview.md.\nProduct image: ui/assets/images/landing-school-assessment.png.\n[/Sources]"}
+{"kind":"slide","id":"sl/c4etmz","slide":8,"title":"A practical next step","textShapes":5}
+{"kind":"textbox","id":"sh/xonmt4b2","slide":8,"text":"A practical next step","textPreview":"A practical next step","textChars":21,"textLines":1,"bbox":[70,90,800,58]}
+{"kind":"textbox","id":"sh/alcnipcr","slide":8,"text":"Fund a focused pilot that proves how digital quality assessment can help schools move from observation to improvement.","textPreview":"Fund a focused pilot that proves how digital quality assessment can help schools move from observation to improvement.","textChars":118,"textLines":1,"bbox":[70,190,810,95]}
+{"kind":"shape","id":"sh/vml4rutc","slide":8,"bbox":[70,355,620,2]}
+{"kind":"textbox","id":"sh/8ju5gful","slide":8,"text":"Pilot discussion","textPreview":"Pilot discussion","textChars":16,"textLines":1,"bbox":[70,402,260,30]}
+{"kind":"textbox","id":"sh/9k3mpkb6","slide":8,"text":"Define the geography, assessment framework, partners and success measures together.","textPreview":"Define the geography, assessment framework, partners and success measures together.","textChars":83,"textLines":1,"bbox":[70,448,650,58]}
+{"kind":"textbox","id":"sh/mhc3e5cf","slide":8,"text":"SaQshi Education","textPreview":"SaQshi Education","textChars":16,"textLines":1,"bbox":[70,620,500,30]}
+{"kind":"notes","id":"nt/c4etmz","slide":8,"text":"[Sources]\nSaQshi open-source repository: README.md and docs/architecture/project_overview.md.\nProduct image: ui/assets/images/landing-school-assessment.png.\n[/Sources]"}

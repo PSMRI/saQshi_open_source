@@ -3,7 +3,6 @@
     <div class="sq-state-toolbar">
         <div>
             <h3 id="stateMonitoringTitle">State Monitoring Dashboard</h3>
-            <p>Monitor certification, assessment, CQI and performance across facilities.</p>
         </div>
         <div class="sq-state-filters">
             <input type="search" class="sq-form-control" id="stateDashboardSearch" placeholder="Search facility or NIN" aria-label="Search Facility Or NIN" data-domain-placeholder="Search {facility} or {facility_code}" data-domain-aria-label="Search {facility} or {facility_code}">
@@ -12,13 +11,16 @@
     </div>
     <div class="sq-state-kpis">
         <div><span data-domain-template="Total {facilities}">Total Facilities</span><strong id="stateTotalFacilities">0</strong></div>
-        <div><span>Assessment Started</span><strong id="stateMonthAssessmentStarted">0</strong></div>
-        <div><span>Assessment In Progress</span><strong id="stateMonthAssessmentProgress">0</strong></div>
-        <div><span>Assessment Completed</span><strong id="stateMonthAssessmentCompleted">0</strong></div>
+        <div><span>Total Assessments</span><strong id="stateMonthAssessmentStarted">0</strong></div>
+        <div><span>Assessments In Progress</span><strong id="stateMonthAssessmentProgress">0</strong></div>
+        <div><span>Assessments Completed</span><strong id="stateMonthAssessmentCompleted">0</strong></div>
     </div>
+    <div class="sq-state-category-kpis" id="stateSchoolCategoryCards" aria-label="School assessment category counts"></div>
+    <div class="sq-state-category-breakdown" id="stateCategoryBreakdown"></div>
+    <div class="sq-state-category-graphs" id="stateCategoryGraphs"></div>
     <div class="sq-state-grid">
-        <div class="sq-card"><div class="sq-card-header"><h3>Facility Categories</h3></div><div class="sq-card-body" id="stateFacilityTypes"></div></div>
-        <div class="sq-card"><div class="sq-card-header"><h3>Certification Status</h3></div><div class="sq-card-body" id="stateCertification"></div></div>
+        <div class="sq-card"><div class="sq-card-header"><h3 data-domain-template="{facility} Categories">Facility Categories</h3></div><div class="sq-card-body" id="stateFacilityTypes"></div></div>
+        <div class="sq-card" id="stateCertificationCard"><div class="sq-card-header"><h3>Certification Status</h3></div><div class="sq-card-body" id="stateCertification"></div></div>
         <div class="sq-card"><div class="sq-card-header"><h3>Current Month Status</h3></div><div class="sq-card-body" id="statePerformance"></div></div>
     </div>
 </section>

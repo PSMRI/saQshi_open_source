@@ -6,9 +6,9 @@
  * Creates a new assessment for logged-in user's facility.
  *
  * Rule:
- * - One facility can have only one ACTIVE assessment.
- * - New assessment can be created only after previous one is
- *   COMPLETED or CANCELLED.
+ * - A facility can have one ACTIVE self-assessment.
+ * - Assessor-led assessments are separate and never block a facility
+ *   from creating its own assessment.
  *
  * Method:
  * POST
@@ -28,6 +28,7 @@
 
 require_once __DIR__ . '/../../auth_api.php';
 require_once __DIR__ . '/../../assets/conn/db.php';
+require_once __DIR__ . '/../../core/ApiCache.php';
 
 Security::requireMethod('POST');
 
@@ -138,7 +139,9 @@ try {
     }
 
     /*
-     * Check active assessment
+     * Check the facility's own active assessment only. State/assessor-led
+     * cycles use assessment_source = STATE_ASSESSOR and are intentionally
+     * excluded so both workflows can run independently.
      */
     $sqlCheck = "
         SELECT
@@ -154,6 +157,8 @@ try {
         FROM assessment_master
         WHERE fac_id_fk = ?
           AND status = 'ACTIVE'
+          AND (assigned_assessor_id IS NULL OR assigned_assessor_id = 0)
+          AND (assessment_source IS NULL OR UPPER(assessment_source) <> 'STATE_ASSESSOR')
         LIMIT 1
     ";
 
@@ -189,7 +194,7 @@ try {
     }
 
     /*
-     * Create new active assessment
+     * Create a facility-owned active assessment.
      */
     $sqlInsert = "
         INSERT INTO assessment_master
@@ -200,11 +205,12 @@ try {
                 start_date,
                 end_date,
                 status,
-                created_by
+                created_by,
+                assessment_source
             )
         VALUES
             (
-                ?, ?, ?, ?, ?, 'ACTIVE', ?
+                ?, ?, ?, ?, ?, 'ACTIVE', ?, 'FACILITY_SELF'
             )
     ";
 
@@ -229,6 +235,7 @@ try {
     }
 
     $assessmentId = (int)$stmt->insert_id;
+    ApiCache::forget('assessment:list:facility:' . $facId);
 
     Event::dispatch('assessment.created', [
         'assessment_id' => $assessmentId,

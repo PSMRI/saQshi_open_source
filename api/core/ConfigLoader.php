@@ -68,6 +68,16 @@ class ConfigLoader
     {
         $frameworkCode = self::sanitizeCode($frameworkCode);
 
+        // Existing Education assessment cycles may still carry the former
+        // framework code. Resolve them to the current class-based checklist.
+        if ($frameworkCode === 'education-school') {
+            $domainPath = self::$basePath . '/domain.json';
+            $domain = is_file($domainPath) ? json_decode((string)file_get_contents($domainPath), true) : [];
+            if (($domain['profile_code'] ?? $domain['domain'] ?? '') === 'education') {
+                $frameworkCode = 'saqshi-education';
+            }
+        }
+
         return self::loadJson(
             "frameworks/{$frameworkCode}.json"
         );

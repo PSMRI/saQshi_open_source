@@ -15,10 +15,10 @@
 
     "assets": {
         "css": [
-            "/ui/pages/reports/dashboard.css?v=20260707-1"
+            "/ui/pages/reports/dashboard.css?v=20260803-1"
         ],
         "js": [
-            "/ui/pages/reports/dashboard.js?v=20260707-1"
+            "/ui/pages/reports/dashboard.js?v=20260803-1"
         ]
     },
 

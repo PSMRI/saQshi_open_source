@@ -10,7 +10,7 @@
  * - Department must be activated.
  * - Department must be IN_PROGRESS.
  * - Assessor information must be saved.
- * - At least one response must be saved.
+ * - Every configured checkpoint must have a saved response.
  *
  * Method:
  * POST
@@ -18,8 +18,7 @@
  * Body:
  * {
  *   "assessment_id": 1,
- *   "dept_id": 25,
- *   "force_complete": false
+ *   "dept_id": 25
  * }
  * -------------------------------------------------------
  */
@@ -27,6 +26,8 @@
 require_once __DIR__ . '/../../auth_api.php';
 require_once __DIR__ . '/../../assets/conn/db.php';
 require_once __DIR__ . '/../../core/AssessmentAccess.php';
+require_once __DIR__ . '/../../core/FrameworkEngine.php';
+require_once __DIR__ . '/../../service/AssessmentSectionAssignmentService.php';
 
 Security::requireMethod('POST');
 
@@ -53,10 +54,6 @@ try {
         ? (int)$request['dept_id']
         : 0;
 
-    $forceComplete = isset($request['force_complete'])
-        ? (bool)$request['force_complete']
-        : false;
-
     if ($assessmentId <= 0) {
         Response::validation([
             'assessment_id' => 'assessment_id is required'
@@ -70,6 +67,7 @@ try {
     }
 
     AssessmentAccess::requireEditableByCurrentUser($con, $assessmentId, $facId);
+    AssessmentSectionAssignmentService::requireOwner($con, $assessmentId, $deptId);
 
     /*
      * 1. Validate active assessment
@@ -228,8 +226,48 @@ try {
 
     $savedCount = (int)($countRow['saved_count'] ?? 0);
 
-    if ($savedCount <= 0 && !$forceComplete) {
-        Response::error('No responses saved. Department cannot be completed');
+    $facilityStmt = $con->prepare('SELECT Health_facilty_type FROM facilities WHERE fac_id = ? LIMIT 1');
+    if (!$facilityStmt) {
+        Response::serverError('Facility type prepare failed: ' . $con->error);
+    }
+    $facilityStmt->bind_param('i', $facId);
+    $facilityStmt->execute();
+    $facility = $facilityStmt->get_result()->fetch_assoc() ?: [];
+    $facilityTypeId = (int)($facility['Health_facilty_type'] ?? 0);
+
+    try {
+        $engine = FrameworkEngine::load((string)($assessment['framework_code'] ?? ''));
+        $expectedCheckpointIds = array_values(array_unique(array_filter(array_map(
+            static fn(array $checkpoint): int => (int)($checkpoint['csqa_id'] ?? 0),
+            $engine->getCheckpoints($facilityTypeId, $deptId)
+        ))));
+    } catch (Throwable $e) {
+        Response::serverError('Checklist configuration could not be loaded: ' . $e->getMessage());
+    }
+
+    if (!$expectedCheckpointIds) {
+        Response::serverError('No checklist configuration is available for this class');
+    }
+
+    $savedCheckpointStmt = $con->prepare('SELECT DISTINCT checkpoint_id FROM assessment_response WHERE assessment_id = ? AND dept_id = ?');
+    if (!$savedCheckpointStmt) {
+        Response::serverError('Saved checkpoint prepare failed: ' . $con->error);
+    }
+    $savedCheckpointStmt->bind_param('ii', $assessmentId, $deptId);
+    $savedCheckpointStmt->execute();
+    $savedCheckpointIds = [];
+    $savedCheckpointResult = $savedCheckpointStmt->get_result();
+    while ($savedCheckpoint = $savedCheckpointResult->fetch_assoc()) {
+        $savedCheckpointIds[] = (int)($savedCheckpoint['checkpoint_id'] ?? 0);
+    }
+
+    $completedCheckpointCount = count(array_intersect($expectedCheckpointIds, $savedCheckpointIds));
+    if ($completedCheckpointCount < count($expectedCheckpointIds)) {
+        Response::error('All checklist checkpoints must be completed before this class can be completed.', [
+            'saved_checkpoints' => $completedCheckpointCount,
+            'total_checkpoints' => count($expectedCheckpointIds),
+            'pending_checkpoints' => count($expectedCheckpointIds) - $completedCheckpointCount
+        ]);
     }
 
     /*
@@ -256,6 +294,8 @@ try {
     if (!$stmt->execute()) {
         Response::serverError('Department completion failed: ' . $stmt->error);
     }
+
+    AssessmentSectionAssignmentService::complete($con, $assessmentId, $deptId);
 
     Response::success(
         'Department assessment completed successfully',

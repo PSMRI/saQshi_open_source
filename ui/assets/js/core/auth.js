@@ -231,8 +231,15 @@
 
     function bindLogoutButtons() {
         document.querySelectorAll("[data-sq-logout]").forEach(function (btn) {
+            if (btn.dataset.sqAuthLogoutBound === "true") {
+                return;
+            }
+
+            btn.dataset.sqAuthLogoutBound = "true";
+
             btn.addEventListener("click", function (event) {
                 event.preventDefault();
+                event.stopPropagation();
 
                 if (window.confirm("Are you sure you want to logout?")) {
                     logout();

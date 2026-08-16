@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "driver": "redis",
+  "redis": {
+    "host": "127.0.0.1",
+    "port": 6379,
+    "database": 3,
+    "prefix": "saqshi_cache_",
+    "timeout_seconds": 1,
+    "password_env": "SAQSHI_REDIS_PASSWORD"
+  },
+  "assessment_list_ttl_seconds": 30
+}

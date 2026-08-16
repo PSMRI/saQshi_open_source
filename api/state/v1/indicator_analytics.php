@@ -15,7 +15,7 @@ require_once __DIR__ . '/../../service/StateIndicatorAnalyticsService.php';
 Security::requireMethod('GET');
 
 try {
-    if (($_GET['download'] ?? '') === 'zero_facilities') {
+    if (in_array(($_GET['download'] ?? ''), ['zero_facilities', 'low_score_facilities'], true)) {
         StateIndicatorAnalyticsService::streamZeroFacilityList($con, (int)($_GET['checkpoint_id'] ?? 0), $_GET);
     }
 

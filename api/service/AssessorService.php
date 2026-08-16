@@ -101,12 +101,30 @@ class AssessorService
         $code = strtoupper(trim((string)($payload['assessor_code'] ?? '')));
         $name = trim((string)($payload['assessor_name'] ?? ''));
 
-        if ($code === '') {
-            throw new InvalidArgumentException('Assessor code is required.');
-        }
-
         if ($name === '') {
             throw new InvalidArgumentException('Assessor name is required.');
+        }
+        if (!preg_match("/^[A-Za-z][A-Za-z .'-]*$/", $name)) throw new InvalidArgumentException('Assessor name may contain letters and basic name punctuation only.');
+        $designation = trim((string)($payload['designation'] ?? ''));
+        if ($designation !== '' && !preg_match("/^[A-Za-z][A-Za-z .'-]*$/", $designation)) throw new InvalidArgumentException('Designation may contain letters and basic name punctuation only.');
+        $mobileValue = preg_replace('/\D/', '', (string)($payload['mobile_no'] ?? ''));
+        if (!preg_match('/^[0-9]{10}$/', $mobileValue)) throw new InvalidArgumentException('Mobile number must contain exactly 10 digits.');
+        $emailValue = trim((string)($payload['mail_id'] ?? ''));
+        if (!filter_var($emailValue, FILTER_VALIDATE_EMAIL)) throw new InvalidArgumentException('Enter a valid email address.');
+
+        if ($code === '') {
+            $namePart = strtoupper(substr(preg_replace('/[^A-Za-z0-9]/', '', $name), 0, 3));
+            $mobile = preg_replace('/\D/', '', (string)($payload['mobile_no'] ?? ''));
+            if (strlen($namePart) < 3 || strlen($mobile) < 4) {
+                throw new InvalidArgumentException('Enter at least three name characters and four mobile digits to generate the assessor code.');
+            }
+            $base = $namePart . '_' . substr($mobile, 0, 2) . substr($mobile, -2);
+            $code = $base;
+            $suffix = 2;
+            while ($this->row('SELECT assessor_id FROM assessor_master WHERE assessor_code = ? LIMIT 1', 's', [$code])
+                || $this->row('SELECT u_id FROM s_user WHERE u_name = ? LIMIT 1', 's', [$code])) {
+                $code = $base . '_' . $suffix++;
+            }
         }
 
         $linkedUserId = $this->nullableInt($payload['user_id'] ?? null);
@@ -414,13 +432,28 @@ class AssessorService
                     'district' => $facility['Dist_Name'] ?? '',
                     'block' => $facility['Block_Name'] ?? '',
                     'assessment_name' => '', 'framework_code' => '', 'status' => 'Not started',
-                    'start_date' => '', 'end_date' => '', 'saved_checkpoints' => 0,
+                    'start_date' => '', 'end_date' => '', 'completed_on' => '', 'cancelled_on' => '', 'saved_checkpoints' => 0,
                     'total_checkpoints' => 0, 'score_percent' => 0
                 ];
                 continue;
             }
 
             foreach ($history as $assessment) {
+                $availableClassCount = count($this->frameworkDepartments((string)($assessment['framework_code'] ?? ''), (int)($facility['Health_facilty_type'] ?? 0)));
+                $assignedId = (int)($assessment['assigned_assessor_id'] ?? 0);
+                $assigned = $assignedId > 0 ? $this->row('SELECT assessor_name, assessor_code FROM assessor_master WHERE assessor_id = ? LIMIT 1', 'i', [$assignedId]) : null;
+                if ($assigned) $assigned = $this->publicAssessor($assigned);
+                $classIds = $this->rows('SELECT dept_id FROM assessment_section_assignee WHERE assessment_id = ?', 'i', [(int)$assessment['assessment_id']]);
+                $classNames = [];
+                $roundData = (int)($assessment['round_id'] ?? 0) > 0
+                    ? $this->row('SELECT round_no, status, completed_on FROM facility_assessment_round WHERE round_id = ? LIMIT 1', 'i', [(int)$assessment['round_id']])
+                    : [];
+                $configuredClasses = $this->frameworkDepartments((string)($assessment['framework_code'] ?? ''), (int)($facility['Health_facilty_type'] ?? 0));
+                foreach ($classIds as $classRow) {
+                    $classId = (int)($classRow['dept_id'] ?? 0);
+                    $match = array_values(array_filter($configuredClasses, fn($class) => (int)($class['dept_id'] ?? $class['fac_dept_id'] ?? 0) === $classId));
+                    $classNames[] = $match[0]['dept_name'] ?? ('Class ' . $classId);
+                }
                 $rows[] = [
                     'fac_name' => $facility['fac_name'] ?? '',
                     'fac_code' => $facility['NIN_no'] ?? $facility['fac_nin'] ?? '',
@@ -431,9 +464,19 @@ class AssessorService
                     'status' => $assessment['status'] ?? '',
                     'start_date' => $assessment['start_date'] ?? '',
                     'end_date' => $assessment['end_date'] ?? '',
+                    'completed_on' => $assessment['completed_on'] ?? '',
+                    'cancelled_on' => $assessment['cancelled_on'] ?? '',
                     'saved_checkpoints' => $assessment['saved_checkpoints'] ?? 0,
                     'total_checkpoints' => $assessment['total_checkpoints'] ?? 0,
-                    'score_percent' => $assessment['score_percent'] ?? 0
+                    'score_percent' => $assessment['score_percent'] ?? 0,
+                    'round_id' => $assessment['round_id'] ?? 0,
+                    'round_no' => (int)($roundData['round_no'] ?? 0),
+                    'round_status' => $roundData['status'] ?? '',
+                    'round_completed_on' => $roundData['completed_on'] ?? ''
+                    ,'available_class_count' => $availableClassCount
+                    ,'assessor_name' => $assigned['assessor_name'] ?? '',
+                    'assessor_code' => $assigned['assessor_code'] ?? '',
+                    'classes' => implode(', ', $classNames)
                 ];
             }
         }
@@ -471,7 +514,10 @@ class AssessorService
         return [
             'facility' => $facility,
             'modules' => $modules,
-            'assessments' => $this->facilityAssessments($facId, $facility),
+            // A mapped assessor can review the school's full assessment
+            // history. Class-level ownership still controls who can edit;
+            // this view is read-only and includes activity by co-assessors.
+            'assessments' => $this->facilityAssessmentActivity($facId, $facility),
             'cqi' => $this->facilityCqiSummary($facId),
             'performance' => $this->moduleEnabled($modules, 'performance')
                 ? $this->facilityPerformanceSummary($facId)
@@ -514,7 +560,17 @@ class AssessorService
         // The active deployment controls the framework. This prevents a cached
         // Health UI from starting a School assessment with saqshi-nqas.
         $framework = $this->defaultFramework();
-        $assessment = $this->activeAssessment($facId);
+        // Each mapped assessor receives an independent assessment record for
+        // the same school. Class-level locking prevents duplicate live work.
+        $assessment = $this->row(
+            "SELECT assessment_id, assessment_name, framework_code, fac_id_fk, start_date,
+                    end_date, status, created_by, created_on, updated_on
+             FROM assessment_master
+             WHERE fac_id_fk = ? AND assigned_assessor_id = ? AND status IN ('ACTIVE', 'PENDING')
+             ORDER BY assessment_id DESC LIMIT 1",
+            'ii',
+            [$facId, $assessorId]
+        );
         $created = false;
 
         if (!$assessment) {
@@ -523,7 +579,7 @@ class AssessorService
                 'i',
                 [$facId]
             );
-            $defaultName = ($previousCount > 0 ? 'Reassessment ' . ($previousCount + 1) : 'State Assessment')
+            $defaultName = 'New Assessment'
                 . ' - ' . ($facility['fac_name'] ?? 'Facility') . ' - ' . date('d M Y');
             $name = trim((string)($payload['assessment_name'] ?? $defaultName));
             $startDate = trim((string)($payload['start_date'] ?? date('Y-m-d')));
@@ -531,13 +587,13 @@ class AssessorService
 
             $this->execute(
                 "INSERT INTO assessment_master
-                 (assessment_name, framework_code, fac_id_fk, start_date, end_date, status, created_by, assigned_assessor_id, assessment_source)
-                 VALUES (?, ?, ?, ?, ?, 'ACTIVE', ?, ?, 'STATE_ASSESSOR')",
-                'ssissii',
-                [$name, $framework, $facId, $startDate, $endDate, $userId, $assessorId]
+                (assessment_name, framework_code, fac_id_fk, start_date, end_date, status, created_by, assigned_assessor_id, assessment_source, round_id)
+                 VALUES (?, ?, ?, ?, ?, 'PENDING', ?, ?, 'STATE_ASSESSOR', ?)",
+                'ssissiii',
+                [$name, $framework, $facId, $startDate, $endDate, $userId, $assessorId, $this->openFacilityRound($facId)]
             );
 
-            $assessment = $this->activeAssessment($facId);
+            $assessment = $this->openAssessment($facId, $assessorId);
             $created = true;
         }
 
@@ -567,14 +623,23 @@ class AssessorService
             [$assessmentId, $assessorId, $facId]
         );
 
+        $claimed = $this->row(
+            "SELECT dept_id FROM assessment_section_assignee WHERE assessment_id = ? AND assessor_id = ? AND status = 'IN_PROGRESS' LIMIT 1",
+            'ii',
+            [$assessmentId, $assessorId]
+        );
+        $nextAction = $claimed
+            ? ['route' => 'assessment/checklist', 'params' => ['assessment_id' => $assessmentId, 'dept_id' => (int)$claimed['dept_id']], 'state' => 'checklist_ready']
+            : ['route' => 'assessment/departments', 'params' => ['assessment_id' => $assessmentId], 'state' => 'class_claim_pending'];
+
         return [
             'created' => $created,
             'assessment' => $assessment,
             'facility' => $facility,
             'department_count' => count($departments),
             'auto_activated_single_department' => $autoActivated,
-            'next_action' => $this->workflowForAssessment($facId, $assessment, $this->moduleConfig()),
-            'next_route' => $autoActivated ? 'assessment/assessor-info' : 'assessment/departments'
+            'next_action' => $nextAction,
+            'next_route' => $nextAction['route']
         ];
     }
 
@@ -743,25 +808,56 @@ class AssessorService
     private function withFacilityWorkflow(array $row, array $modules): array
     {
         $facId = (int)($row['fac_id'] ?? 0);
-        $assessment = $facId > 0 ? $this->activeAssessment($facId) : null;
+        $assessorId = (int)($row['assessor_id'] ?? 0);
+        $assessment = $facId > 0 ? $this->openAssessment($facId, $assessorId) : null;
 
-        // Reconcile older assessments which were fully answered before the
-        // automatic completion rule was introduced.
-        if ($assessment && $this->reconcileCompletedAssessment($facId, $assessment)) {
-            $row['assessment_status'] = 'COMPLETED';
-            $assessment = null;
+        // A PENDING record is just a saved class-selection draft. It must
+        // never make the mapped-school card look like an active assessment.
+        // startAssessment() still reuses it when the assessor chooses a class.
+        $isPendingDraft = strtoupper((string)($assessment['status'] ?? '')) === 'PENDING';
+        $displayAssessment = $isPendingDraft
+            ? null
+            : $assessment;
+
+        // Keep drafts out of the assessment-status column, while still
+        // exposing the exact record for the Choose Class and Discard Draft UI.
+        $row['pending_draft_id'] = $isPendingDraft ? (int)($assessment['assessment_id'] ?? 0) : 0;
+
+        if ($displayAssessment) {
+            $row['assessment_id'] = (int)$displayAssessment['assessment_id'];
+            $row['last_assessment_id'] = (int)$displayAssessment['assessment_id'];
+            $row['assessment_name'] = $displayAssessment['assessment_name'] ?? '';
+            $row['assessment_status'] = $displayAssessment['status'] ?? 'ACTIVE';
+            $row['framework_code'] = $displayAssessment['framework_code'] ?? '';
+        } else {
+            $row['assessment_id'] = 0;
+            $row['assessment_name'] = '';
+            $row['assessment_status'] = 'Not started';
         }
 
-        if ($assessment) {
-            $row['assessment_id'] = (int)$assessment['assessment_id'];
-            $row['last_assessment_id'] = (int)$assessment['assessment_id'];
-            $row['assessment_name'] = $assessment['assessment_name'] ?? '';
-            $row['assessment_status'] = $assessment['status'] ?? 'ACTIVE';
-            $row['framework_code'] = $assessment['framework_code'] ?? '';
-        }
-
-        $row['next_action'] = $this->workflowForAssessment($facId, $assessment, $modules);
+        $row['next_action'] = $this->workflowForAssessment($facId, $assessment, $modules, $assessorId, $row);
         return $row;
+    }
+
+    /** Read-only school activity, including assessment records owned by other mapped assessors. */
+    private function facilityAssessmentActivity(int $facId, array $facility): array
+    {
+        $assessments = $this->facilityAssessments($facId, $facility);
+
+        foreach ($assessments as &$assessment) {
+            $assignedId = (int)($assessment['assigned_assessor_id'] ?? 0);
+            $assigned = $assignedId > 0
+                ? $this->row('SELECT assessor_name, assessor_code FROM assessor_master WHERE assessor_id = ? LIMIT 1', 'i', [$assignedId])
+                : null;
+            if ($assigned) {
+                $assigned = $this->publicAssessor($assigned);
+                $assessment['assessor_name'] = $assigned['assessor_name'] ?? '';
+                $assessment['assessor_code'] = $assigned['assessor_code'] ?? '';
+            }
+        }
+        unset($assessment);
+
+        return $assessments;
     }
 
     /**
@@ -834,7 +930,7 @@ class AssessorService
         return true;
     }
 
-    private function workflowForAssessment(int $facId, ?array $assessment, array $modules): array
+    private function workflowForAssessment(int $facId, ?array $assessment, array $modules, int $assessorId = 0, array $facility = []): array
     {
         if (!$this->moduleEnabled($modules, 'assessment')) {
             return [
@@ -847,17 +943,13 @@ class AssessorService
         }
 
         if (!$assessment) {
-            $assessmentCount = $this->scalar(
-                'SELECT COUNT(*) FROM assessment_master WHERE fac_id_fk = ?',
-                'i',
-                [$facId]
-            );
+            $startAction = $this->nextClosedAssessmentAction($facId, $facility);
             return [
                 'type' => 'start',
-                'label' => $assessmentCount > 0 ? 'Start Reassessment' : 'Start Assessment',
+                'label' => $startAction['label'],
                 'route' => '',
                 'params' => ['fac_id' => $facId],
-                'state' => 'not_started'
+                'state' => $startAction['state']
             ];
         }
 
@@ -868,10 +960,10 @@ class AssessorService
         if (!$activeDepartments) {
             return [
                 'type' => 'route',
-                'label' => 'Activate Department',
+                'label' => strtoupper((string)($assessment['status'] ?? '')) === 'PENDING' ? 'Choose Class' : 'Activate Department',
                 'route' => 'assessment/departments',
                 'params' => ['assessment_id' => $assessmentId],
-                'state' => 'department_pending',
+                'state' => strtoupper((string)($assessment['status'] ?? '')) === 'PENDING' ? 'class_selection_pending' : 'department_pending',
                 'assessment_id' => $assessmentId,
                 'active_department_count' => 0,
                 'assessor_info_count' => 0,
@@ -909,6 +1001,66 @@ class AssessorService
             'assessor_info_count' => $assessorInfoCount,
             'response_count' => $responseCount
         ];
+    }
+
+    /**
+     * Determines the next dashboard action after an assessment has closed or
+     * been cancelled. A cancelled record never by itself makes the next run a
+     * reassessment. Reassessment begins only once every configured class is
+     * completed in the latest facility round.
+     */
+    private function nextClosedAssessmentAction(int $facId, array $facility): array
+    {
+        $framework = $this->defaultFramework();
+        $facilityType = (int)($facility['Health_facilty_type'] ?? 0);
+        $configuredClasses = $this->frameworkDepartments($framework, $facilityType);
+        $classIds = array_values(array_filter(array_unique(array_map(
+            static fn(array $class): int => (int)($class['dept_id'] ?? $class['fac_dept_id'] ?? 0),
+            $configuredClasses
+        ))));
+
+        $completedEver = (int)$this->scalar(
+            "SELECT COUNT(DISTINCT asa.dept_id)
+             FROM assessment_section_assignee asa
+             JOIN assessment_master a ON a.assessment_id = asa.assessment_id
+             WHERE asa.fac_id_fk = ?
+               AND UPPER(asa.status) = 'COMPLETED'
+               AND UPPER(a.status) = 'COMPLETED'",
+            'i',
+            [$facId]
+        );
+
+        // A facility can have an open round created by a cancelled attempt.
+        // Count only completed classes in that latest round; released/cancelled
+        // claims must not make the dashboard say "Reassess Class".
+        $latestRound = $this->row(
+            'SELECT round_id FROM facility_assessment_round WHERE fac_id = ? ORDER BY round_no DESC, round_id DESC LIMIT 1',
+            'i',
+            [$facId]
+        );
+        $completedInRound = 0;
+        if ($latestRound) {
+            $completedInRound = (int)$this->scalar(
+                "SELECT COUNT(DISTINCT asa.dept_id)
+                 FROM assessment_section_assignee asa
+                 JOIN assessment_master a ON a.assessment_id = asa.assessment_id
+                 WHERE a.round_id = ?
+                   AND UPPER(asa.status) = 'COMPLETED'
+                   AND UPPER(a.status) = 'COMPLETED'",
+                'i',
+                [(int)$latestRound['round_id']]
+            );
+        }
+
+        if ($classIds && $completedInRound >= count($classIds)) {
+            return ['label' => 'Start Reassessment', 'state' => 'reassessment_ready'];
+        }
+
+        if ($completedEver > 0) {
+            return ['label' => 'Start Next Class', 'state' => 'next_class_ready'];
+        }
+
+        return ['label' => 'Start Assessment', 'state' => 'not_started'];
     }
 
     private function activeDepartments(int $facId, int $assessmentId): array
@@ -987,7 +1139,7 @@ class AssessorService
         return '';
     }
 
-    private function facilityAssessments(int $facId, array $facility): array
+    private function facilityAssessments(int $facId, array $facility, int $assessorId = 0): array
     {
         $responseTable = $this->responseTable();
         $deptSelect = "0 AS active_departments";
@@ -1035,20 +1187,49 @@ class AssessorService
             ";
         }
 
+        $assessorFilter = $assessorId > 0 ? ' AND a.assigned_assessor_id = ?' : '';
         $rows = $this->rows(
-            "SELECT a.assessment_id, a.assessment_name, a.framework_code, a.status,
-                    a.start_date, a.end_date, a.created_on,
+            "SELECT a.assessment_id, a.assessment_name, a.framework_code, a.status, a.assigned_assessor_id, a.round_id,
+                    a.start_date, a.end_date, a.completed_on, a.cancelled_on, a.created_on,
                     {$deptSelect},
                     {$scoreSelect}
              FROM assessment_master a
              WHERE a.fac_id_fk = ?
+               AND a.status <> 'PENDING'
+               {$assessorFilter}
              ORDER BY a.assessment_id DESC
              LIMIT 25",
-            'i',
-            [$facId]
+            $assessorId > 0 ? 'ii' : 'i',
+            $assessorId > 0 ? [$facId, $assessorId] : [$facId]
         );
 
         foreach ($rows as &$row) {
+            // An assessment can retain released class claims from an earlier
+            // selection. Prefer the completed/current claim so history does
+            // not display a released class instead of the assessed one.
+            $classAssignment = $this->row(
+                "SELECT dept_id
+                 FROM assessment_section_assignee
+                 WHERE assessment_id = ?
+                 ORDER BY CASE UPPER(status)
+                     WHEN 'COMPLETED' THEN 0
+                     WHEN 'IN_PROGRESS' THEN 1
+                     ELSE 2
+                 END, assignment_id DESC
+                 LIMIT 1",
+                'i',
+                [(int)$row['assessment_id']]
+            );
+            if ($classAssignment) {
+                $configured = $this->frameworkDepartments((string)($row['framework_code'] ?? ''), (int)($facility['Health_facilty_type'] ?? 0));
+                foreach ($configured as $department) {
+                    if ((int)($department['dept_id'] ?? $department['fac_dept_id'] ?? 0) === (int)$classAssignment['dept_id']) {
+                        $prefix = str_starts_with((string)$row['assessment_name'], 'Reassessment') ? 'Reassessment' : 'New Assessment';
+                        $row['assessment_name'] = $prefix . ' - ' . ($department['dept_name'] ?? '');
+                        break;
+                    }
+                }
+            }
             $totalCheckpoints = $this->assessmentChecklistCount(
                 $facId,
                 (int)($row['assessment_id'] ?? 0),
@@ -1211,18 +1392,63 @@ class AssessorService
         return trim((string)($domain['default_framework'] ?? 'saqshi-nqas')) ?: 'saqshi-nqas';
     }
 
-    private function activeAssessment(int $facId): ?array
+    private function activeAssessment(int $facId, int $assessorId = 0): ?array
+    {
+        $assessorFilter = $assessorId > 0 ? ' AND assigned_assessor_id = ?' : '';
+
+        return $this->row(
+            "SELECT assessment_id, assessment_name, framework_code, fac_id_fk, start_date,
+                    end_date, status, created_by, created_on, updated_on
+             FROM assessment_master
+             WHERE fac_id_fk = ? AND status = 'ACTIVE'{$assessorFilter}
+             ORDER BY assessment_id DESC
+             LIMIT 1",
+            $assessorId > 0 ? 'ii' : 'i',
+            $assessorId > 0 ? [$facId, $assessorId] : [$facId]
+        );
+    }
+
+    /** A pending assessor record is only a class-selection draft, not active work. */
+    private function openAssessment(int $facId, int $assessorId): ?array
     {
         return $this->row(
             "SELECT assessment_id, assessment_name, framework_code, fac_id_fk, start_date,
                     end_date, status, created_by, created_on, updated_on
              FROM assessment_master
-             WHERE fac_id_fk = ? AND status = 'ACTIVE'
+             WHERE fac_id_fk = ? AND assigned_assessor_id = ? AND status IN ('ACTIVE', 'PENDING')
              ORDER BY assessment_id DESC
              LIMIT 1",
+            'ii',
+            [$facId, $assessorId]
+        );
+    }
+
+    private function openFacilityRound(int $facId): int
+    {
+        $row = $this->row("SELECT round_id FROM facility_assessment_round WHERE fac_id = ? AND status = 'OPEN' ORDER BY round_id DESC LIMIT 1", 'i', [$facId]);
+        if ($row) return (int)$row['round_id'];
+        // round_no is unique per school. Legacy rows often already use round
+        // 1, so relying on the table default causes a duplicate-key 500.
+        $nextRound = (int)$this->scalar(
+            'SELECT COALESCE(MAX(round_no), 0) + 1 FROM facility_assessment_round WHERE fac_id = ?',
             'i',
             [$facId]
         );
+        try {
+            $this->execute("INSERT INTO facility_assessment_round (fac_id, round_no, status, started_on) VALUES (?, ?, 'OPEN', CURRENT_TIMESTAMP)", 'ii', [$facId, max(1, $nextRound)]);
+            return (int)$this->db->insert_id;
+        } catch (RuntimeException $error) {
+            // Two users may start at the same instant. If the other request
+            // created this school's open round first, reuse it instead of
+            // exposing a duplicate-key database error to the assessor.
+            $openRound = $this->row(
+                "SELECT round_id FROM facility_assessment_round WHERE fac_id = ? AND status = 'OPEN' ORDER BY round_id DESC LIMIT 1",
+                'i',
+                [$facId]
+            );
+            if ($openRound) return (int)$openRound['round_id'];
+            throw $error;
+        }
     }
 
     private function frameworkDepartments(string $framework, int $facilityType): array
@@ -1290,6 +1516,12 @@ class AssessorService
             : 'facilities.json';
         $path = __DIR__ . '/../config/masters/' . $masterName;
         $states = is_file($path) ? json_decode((string)file_get_contents($path), true) : [];
+        $typePath = __DIR__ . '/../config/masters/facility_types.json';
+        $typeRows = is_file($typePath) ? json_decode((string)file_get_contents($typePath), true) : [];
+        $typeNames = [];
+        foreach (is_array($typeRows) ? $typeRows : [] as $type) {
+            $typeNames[(int)($type['fac_type_id'] ?? 0)] = (string)($type['facilities_type'] ?? '');
+        }
         if (!is_array($states)) {
             return $rows;
         }
@@ -1299,6 +1531,7 @@ class AssessorService
                 foreach (($division['districts'] ?? []) as $district) {
                     foreach (($district['blocks'] ?? []) as $block) {
                         foreach (($block['facilities'] ?? []) as $facility) {
+                            $facilityTypeId = (int)($facility['fac_type_id'] ?? $facility['Health_facilty_type'] ?? 0);
                             $rows[] = [
                                 'fac_id' => (int)($facility['fac_id'] ?? 0),
                                 'NIN_no' => (string)($facility['nin_no'] ?? $facility['NIN_no'] ?? ''),
@@ -1307,7 +1540,8 @@ class AssessorService
                                 'division' => (string)($division['division_name'] ?? ''),
                                 'Dist_Name' => (string)($district['dist_name'] ?? ''),
                                 'Block_Name' => (string)($block['block_name'] ?? ''),
-                                'Health_facilty_type' => $facility['fac_type_id'] ?? null,
+                                'Health_facilty_type' => $facilityTypeId ?: null,
+                                'facilities_type' => $typeNames[$facilityTypeId] ?? '',
                                 'lat' => $facility['latitude'] ?? null,
                                 'longit' => $facility['longitude'] ?? null,
                             ];
@@ -1409,6 +1643,19 @@ class AssessorService
             )
         ");
 
+        $this->db->query("CREATE TABLE IF NOT EXISTS facility_assessment_round (
+            round_id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+            round_no INT NOT NULL DEFAULT 1,
+            fac_id INT NOT NULL,
+            status VARCHAR(20) NOT NULL DEFAULT 'OPEN',
+            started_on TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+            completed_on TIMESTAMP NULL,
+            KEY idx_round_facility_status (fac_id, status),
+            UNIQUE KEY uq_round_facility_number (fac_id, round_no)
+        )");
+        $roundColumn = $this->row("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'facility_assessment_round' AND COLUMN_NAME = 'round_no' LIMIT 1");
+        if (!$roundColumn) $this->db->query("ALTER TABLE facility_assessment_round ADD COLUMN round_no INT NOT NULL DEFAULT 1 AFTER round_id");
+
         // JSON master facilities are not necessarily duplicated in the legacy
         // facilities table, so mapping.fac_id must not retain that old FK.
         $facilityForeignKey = $this->row(
@@ -1457,6 +1704,7 @@ class AssessorService
         }
 
         $this->ensureAssessmentColumn('assigned_assessor_id', 'BIGINT NULL');
+        $this->ensureAssessmentColumn('round_id', 'BIGINT NULL');
         $this->ensureAssessmentColumn('assessment_source', "VARCHAR(30) NULL");
         $this->ensureUserColumnDefinition('f_name', 'TEXT NULL');
         $this->ensureUserColumnDefinition('m_name', 'TEXT NULL');

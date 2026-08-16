@@ -81,6 +81,15 @@ body:has(.sq-assessor-info-page) .sq-content{
     gap:.35rem;
 }
 
+.sq-assessor-info-page [hidden]{
+    display:none !important;
+}
+
+.sq-assessor-info-page #assessmentTypeField,
+.sq-assessor-info-page .sq-form-group:has(#assessment_type){
+    display:none !important;
+}
+
 .sq-form-control{
     width:100%;
     min-height:26px;

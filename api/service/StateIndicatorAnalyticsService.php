@@ -11,6 +11,7 @@
 
 class StateIndicatorAnalyticsService
 {
+    private const LOWEST_SCORE_BAND_PERCENT = 25;
     /**
      * Handles analytics processing for this API workflow.
      */
@@ -31,16 +32,17 @@ class StateIndicatorAnalyticsService
     }
 
     /**
-     * Handles stream zero facility list processing for this API workflow.
+     * Streams facilities in the lowest configured score band for one checkpoint.
      */
     public static function streamZeroFacilityList(mysqli $con, int $checkpointId, array $filters = []): void
     {
+        $labels = self::domainLabels();
         $responseTable = self::responseTable($con);
         if ($checkpointId <= 0 || $responseTable === '' || !self::tableExists($con, 'assessment_master')) {
             Response::validation(['checkpoint_id' => 'Valid checkpoint ID is required.']);
         }
 
-        $filename = 'saqshi-zero-score-checkpoint-' . $checkpointId . '-' . date('Ymd-His') . '.csv';
+        $filename = 'saqshi-low-score-checkpoint-' . $checkpointId . '-' . date('Ymd-His') . '.csv';
         header('Content-Type: text/csv; charset=utf-8');
         header('Content-Disposition: attachment; filename="' . $filename . '"');
         header('Pragma: no-cache');
@@ -49,21 +51,21 @@ class StateIndicatorAnalyticsService
         $out = fopen('php://output', 'w');
         fprintf($out, chr(0xEF) . chr(0xBB) . chr(0xBF));
         self::csvRow($out, [
-            'District', 'Block', 'Facility Name', 'NIN', 'Facility Type',
+            'District', 'Block', $labels['facility'] . ' Name', $labels['facility_code'], $labels['facility'] . ' Type',
             'Assessment ID', 'Assessment Name', 'Checkpoint ID', 'Checkpoint',
-            'Department', 'Standard', 'Score', 'Response Value', 'Updated On'
+            'Score', 'Response Value', 'Updated On'
         ]);
 
         $assessmentColumn = self::columnExists($con, $responseTable, 'assessment_id') ? 'assessment_id' : 'cycle_id';
         $where = self::facilityWhere($filters, 'f');
-        $where['sql'] .= ' AND r.checkpoint_id = ? AND r.score <= 0';
+        $where['sql'] .= ' AND r.checkpoint_id = ? AND ' . self::lowestScoreCondition($con, $responseTable, 'r');
         $where['types'] .= 'i';
         $where['params'][] = $checkpointId;
-        $meta = self::checkpointMap()[(string)$checkpointId] ?? [];
+        $metaMap = self::checkpointMap();
 
         $rows = self::rows($con, "
             SELECT f.Dist_Name, f.Block_Name, f.fac_name, f.NIN_no, f.Health_facilty_type,
-                   a.assessment_id, a.assessment_name, r.checkpoint_id, r.score,
+                   a.assessment_id, a.assessment_name, a.framework_code, r.checkpoint_id, r.score,
                    r.response_value, r.updated_on
             FROM {$responseTable} r
             LEFT JOIN assessment_master a ON a.assessment_id = r.{$assessmentColumn}
@@ -73,6 +75,9 @@ class StateIndicatorAnalyticsService
         ", $where['types'], $where['params']);
 
         foreach ($rows as $row) {
+            $meta = $metaMap[(string)($row['framework_code'] ?? '') . ':' . (string)$checkpointId]
+                ?? $metaMap[(string)$checkpointId]
+                ?? [];
             self::csvRow($out, [
                 $row['Dist_Name'] ?? '',
                 $row['Block_Name'] ?? '',
@@ -83,8 +88,6 @@ class StateIndicatorAnalyticsService
                 $row['assessment_name'] ?? '',
                 $row['checkpoint_id'] ?? '',
                 $meta['checkpoint'] ?? '',
-                $meta['department_name'] ?? '',
-                $meta['standard'] ?? '',
                 $row['score'] ?? '',
                 $row['response_value'] ?? '',
                 $row['updated_on'] ?? ''
@@ -96,7 +99,7 @@ class StateIndicatorAnalyticsService
     }
 
     /**
-     * Handles assessment weak indicators processing for this API workflow.
+     * Ranks assessment checkpoints by responses in the lowest score band.
      */
     private static function assessmentWeakIndicators(mysqli $con, array $filters, array $pagination, int $minFacilities): array
     {
@@ -107,8 +110,8 @@ class StateIndicatorAnalyticsService
 
         $assessmentColumn = self::columnExists($con, $responseTable, 'assessment_id') ? 'assessment_id' : 'cycle_id';
         $where = self::facilityWhere($filters, 'f');
-        $zeroWhere = $where;
-        $zeroWhere['sql'] .= ' AND r.score <= 0';
+        $lowWhere = $where;
+        $lowWhere['sql'] .= ' AND ' . self::lowestScoreCondition($con, $responseTable, 'r');
         $meta = self::checkpointMap();
 
         $summary = self::one($con, "
@@ -118,55 +121,56 @@ class StateIndicatorAnalyticsService
             FROM {$responseTable} r
             LEFT JOIN assessment_master a ON a.assessment_id = r.{$assessmentColumn}
             LEFT JOIN facilities f ON f.fac_id = a.fac_id_fk
-            {$zeroWhere['sql']}
-        ", $zeroWhere['types'], $zeroWhere['params']);
+            {$lowWhere['sql']}
+        ", $lowWhere['types'], $lowWhere['params']);
 
         $total = self::one($con, "
             SELECT COUNT(*) AS row_count
             FROM (
-                SELECT r.checkpoint_id,
-                       COUNT(DISTINCT a.fac_id_fk) AS zero_facility_count
+                SELECT a.framework_code, r.checkpoint_id,
+                       COUNT(DISTINCT a.fac_id_fk) AS low_score_facility_count
                 FROM {$responseTable} r
                 LEFT JOIN assessment_master a ON a.assessment_id = r.{$assessmentColumn}
                 LEFT JOIN facilities f ON f.fac_id = a.fac_id_fk
-                {$zeroWhere['sql']}
-                GROUP BY r.checkpoint_id
-                HAVING zero_facility_count >= ?
+                {$lowWhere['sql']}
+                GROUP BY a.framework_code, r.checkpoint_id
+                HAVING low_score_facility_count >= ?
             ) weak_indicators
-        ", $zeroWhere['types'] . 'i', array_merge($zeroWhere['params'], [$minFacilities]));
+        ", $lowWhere['types'] . 'i', array_merge($lowWhere['params'], [$minFacilities]));
 
         $rows = self::rows($con, "
             SELECT
                 r.checkpoint_id,
+                a.framework_code,
                 COUNT(DISTINCT a.fac_id_fk) AS facility_count,
                 COUNT(*) AS response_count,
-                COUNT(DISTINCT a.fac_id_fk) AS zero_facility_count,
-                COUNT(*) AS zero_count,
+                COUNT(DISTINCT a.fac_id_fk) AS low_score_facility_count,
+                COUNT(*) AS low_score_count,
                 0 AS partial_count,
                 0 AS full_count,
                 ROUND(AVG(r.score), 2) AS average_score,
-                100 AS zero_rate
+                100 AS low_score_rate
             FROM {$responseTable} r
             LEFT JOIN assessment_master a ON a.assessment_id = r.{$assessmentColumn}
             LEFT JOIN facilities f ON f.fac_id = a.fac_id_fk
-            {$zeroWhere['sql']}
-            GROUP BY r.checkpoint_id
-            HAVING zero_facility_count >= ?
-            ORDER BY zero_facility_count DESC, zero_count DESC, facility_count DESC
+            {$lowWhere['sql']}
+            GROUP BY a.framework_code, r.checkpoint_id
+            HAVING low_score_facility_count >= ?
+            ORDER BY low_score_facility_count DESC, low_score_count DESC, facility_count DESC
             LIMIT ? OFFSET ?
-        ", $zeroWhere['types'] . 'iii', array_merge($zeroWhere['params'], [$minFacilities, $pagination['per_page'], $pagination['offset']]));
+        ", $lowWhere['types'] . 'iii', array_merge($lowWhere['params'], [$minFacilities, $pagination['per_page'], $pagination['offset']]));
 
         foreach ($rows as &$row) {
             $id = (string)($row['checkpoint_id'] ?? '');
-            $details = $meta[$id] ?? [];
+            $details = $meta[(string)($row['framework_code'] ?? '') . ':' . $id] ?? $meta[$id] ?? [];
             $row['indicator_type'] = 'ASSESSMENT';
             $row['indicator_name'] = $details['checkpoint'] ?? ('Checkpoint ' . $id);
-            $row['department'] = $details['department_name'] ?? '';
+            $row['class_name'] = $details['class_name'] ?? $details['department_name'] ?? '';
             $row['area_of_concern'] = $details['concern_name'] ?? '';
-            $row['standard'] = $details['standard'] ?? '';
-            $row['weakness_rate'] = (float)($row['zero_rate'] ?? 0);
-            $row['weakness_label'] = self::weaknessLabel((float)$row['zero_rate']);
+            $row['weakness_rate'] = (float)($row['low_score_rate'] ?? 0);
+            $row['weakness_label'] = self::weaknessLabel((float)$row['low_score_rate']);
             $row['download_key'] = $id;
+            $row['low_score_band_percent'] = self::LOWEST_SCORE_BAND_PERCENT;
         }
         unset($row);
 
@@ -307,6 +311,18 @@ class StateIndicatorAnalyticsService
         return '';
     }
 
+    /** Returns a scale-independent condition for the lowest response band. */
+    private static function lowestScoreCondition(mysqli $con, string $responseTable, string $alias): string
+    {
+        if (self::columnExists($con, $responseTable, 'max_score')) {
+            $ratio = self::LOWEST_SCORE_BAND_PERCENT / 100;
+            return "COALESCE({$alias}.max_score, 0) > 0 AND ({$alias}.score / NULLIF({$alias}.max_score, 0)) <= {$ratio}";
+        }
+
+        // Legacy response tables have no maximum-score column; retain the old safe fallback.
+        return "{$alias}.score <= 0";
+    }
+
     /**
      * Handles checkpoint map processing for this API workflow.
      */
@@ -318,31 +334,27 @@ class StateIndicatorAnalyticsService
         }
 
         $map = [];
-        $path = __DIR__ . '/../config/frameworks/saqshi-nqas.json';
-        if (!is_file($path)) {
-            return $map;
-        }
-
-        $facilityTypes = json_decode((string)file_get_contents($path), true);
-        if (!is_array($facilityTypes)) {
-            return $map;
-        }
-
-        foreach ($facilityTypes as $facilityType) {
-            foreach (($facilityType['departments'] ?? []) as $department) {
-                foreach (($department['concerns'] ?? []) as $concern) {
-                    foreach (($concern['subtypes'] ?? []) as $subtype) {
-                        foreach (($subtype['checkpoints'] ?? []) as $checkpoint) {
-                            $id = (string)($checkpoint['csqa_id'] ?? '');
-                            if ($id === '') {
-                                continue;
+        foreach (glob(__DIR__ . '/../config/frameworks/*.json') ?: [] as $path) {
+            $facilityTypes = json_decode((string)file_get_contents($path), true);
+            if (!is_array($facilityTypes)) continue;
+            $frameworkCode = basename($path, '.json');
+            foreach ($facilityTypes as $facilityType) {
+                foreach (($facilityType['departments'] ?? []) as $department) {
+                    foreach (($department['concerns'] ?? []) as $concern) {
+                        foreach (($concern['subtypes'] ?? []) as $subtype) {
+                            foreach (($subtype['checkpoints'] ?? []) as $checkpoint) {
+                                $id = (string)($checkpoint['csqa_id'] ?? '');
+                                if ($id === '') continue;
+                                $details = [
+                                    'department_name' => (string)($department['dept_name'] ?? ''),
+                                    'class_name' => (string)($department['dept_name'] ?? ''),
+                                    'concern_name' => trim((string)($concern['concern_des'] ?? '') . ' ' . (string)($concern['concern_name'] ?? '')),
+                                    'standard' => (string)($subtype['Reference_No'] ?? $checkpoint['c_subtype_Reference_No_fk'] ?? ''),
+                                    'checkpoint' => trim((string)($checkpoint['Checkpoint'] ?? $checkpoint['Measurable_Element'] ?? ''))
+                                ];
+                                $map[$frameworkCode . ':' . $id] = $details;
+                                $map[$id] ??= $details;
                             }
-                            $map[$id] = [
-                                'department_name' => (string)($department['dept_name'] ?? ''),
-                                'concern_name' => trim((string)($concern['concern_des'] ?? '') . ' ' . (string)($concern['concern_name'] ?? '')),
-                                'standard' => (string)($subtype['Reference_No'] ?? $checkpoint['c_subtype_Reference_No_fk'] ?? ''),
-                                'checkpoint' => (string)($checkpoint['Checkpoint'] ?? '')
-                            ];
                         }
                     }
                 }
@@ -432,6 +444,26 @@ class StateIndicatorAnalyticsService
         }
 
         return ['sql' => 'WHERE ' . implode(' AND ', $where), 'types' => $types, 'params' => $params];
+    }
+
+    /**
+     * Handles pagination processing for this API workflow.
+     */
+    private static function domainLabels(): array
+    {
+        static $labels = null;
+        if ($labels !== null) {
+            return $labels;
+        }
+
+        $path = __DIR__ . '/../config/domain.json';
+        $domain = is_file($path) ? json_decode((string)file_get_contents($path), true) : [];
+        $configured = is_array($domain['labels'] ?? null) ? $domain['labels'] : [];
+        $labels = [
+            'facility' => (string)($configured['facility'] ?? 'Facility'),
+            'facility_code' => (string)($configured['facility_code'] ?? 'NIN')
+        ];
+        return $labels;
     }
 
     /**

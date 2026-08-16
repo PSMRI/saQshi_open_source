@@ -65,9 +65,9 @@
         const a = data.assessment?.summary || {};
         document.getElementById("stateIndicatorSummary").innerHTML = `
             <div><span>Assessment Indicators</span><strong>${esc(a.indicators || 0)}</strong></div>
-            <div><span>Assessment ${esc(domainLabel("facilities", "Facilities"))}</span><strong>${esc(a.facilities || 0)}</strong></div>
+            <div><span>Assessment Schools</span><strong>${esc(a.facilities || 0)}</strong></div>
             <div><span>Total Responses</span><strong>${esc(a.responses || 0)}</strong></div>
-            <div><span>Minimum ${esc(domainLabel("facilities", "Facilities"))}</span><strong>${esc(document.getElementById("stateIndicatorMinFacilities")?.value || 1)}</strong></div>
+            <div><span>Minimum Schools</span><strong>${esc(document.getElementById("stateIndicatorMinFacilities")?.value || 1)}</strong></div>
         `;
     }
 
@@ -82,10 +82,9 @@
                 <thead>
                     <tr>
                         <th>Checkpoint</th>
-                        <th>Department</th>
-                        <th>Standard</th>
-                        <th>${esc(domainLabel("facilities", "Facilities"))} Scored 0</th>
-                        <th>Zero Responses</th>
+                        <th>Class</th>
+                        <th>Schools in Lowest Score Band</th>
+                        <th>Low-Score Responses</th>
                         <th>Download</th>
                     </tr>
                 </thead>
@@ -94,13 +93,12 @@
                         return `
                             <tr>
                                 <td><b>${esc(row.indicator_name)}</b><div>${esc(row.area_of_concern || "")}</div></td>
-                                <td>${esc(row.department || "")}</td>
-                                <td>${esc(row.standard || "")}</td>
-                                <td><b>${esc(row.zero_facility_count || 0)}</b></td>
-                                <td>${esc(row.zero_count || 0)}</td>
+                                <td><b>${esc(row.class_name || "-")}</b></td>
+                                <td><b>${esc(row.low_score_facility_count || 0)}</b></td>
+                                <td>${esc(row.low_score_count || 0)}</td>
                                 <td>
-                                    <button class="sq-btn sq-btn-primary" type="button" data-zero-download="${esc(row.download_key || row.checkpoint_id)}">
-                                        ${esc(domainLabel("facilities", "Facilities"))}
+                                    <button class="sq-btn sq-btn-primary" type="button" data-low-score-download="${esc(row.download_key || row.checkpoint_id)}">
+                                        Schools
                                     </button>
                                 </td>
                             </tr>
@@ -124,9 +122,9 @@
 
     async function downloadFacilities(checkpointId) {
         await SQ.api.download("/state/v1/indicator_analytics.php", Object.assign({}, params(), {
-            download: "zero_facilities",
+            download: "low_score_facilities",
             checkpoint_id: checkpointId
-        }), `zero-score-facilities-${checkpointId}.csv`);
+        }), `low-score-facilities-${checkpointId}.csv`);
     }
 
     async function init() {
@@ -152,11 +150,11 @@
             load();
         });
         document.getElementById("stateAssessmentIndicators")?.addEventListener("click", function (event) {
-            const button = event.target.closest("[data-zero-download]");
+            const button = event.target.closest("[data-low-score-download]");
             if (!button) {
                 return;
             }
-            downloadFacilities(button.getAttribute("data-zero-download"));
+            downloadFacilities(button.getAttribute("data-low-score-download"));
         });
         await load();
     }

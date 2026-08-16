@@ -37,7 +37,13 @@ try {
     ]);
 
     $username = Security::cleanString($request['username']);
-    $password = LoginCrypto::decryptPassword((string)$request['password_enc']);
+    try {
+        $password = LoginCrypto::decryptPassword((string)$request['password_enc']);
+    } catch (InvalidArgumentException $cryptoError) {
+        Response::validation([
+            'password' => 'Secure login key changed. Refresh the login page and try again.'
+        ]);
+    }
     $captcha = trim((string)$request['captcha']);
 
     $expectedCaptcha = (string)($_SESSION['login_captcha_answer'] ?? '');

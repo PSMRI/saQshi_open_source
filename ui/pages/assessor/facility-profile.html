@@ -1,0 +1,16 @@
+<section class="sq-assessor-page">
+  <div class="sq-assessor-toolbar"><div><h3 id="assessorProfileTitle">Facility Profile</h3><p id="assessorProfileIntro">Allow location permission to capture and save current GPS coordinates.</p></div></div>
+  <div class="sq-card sq-assessor-profile-card"><div class="sq-card-body">
+    <div id="assessorProfileDetails" class="sq-assessor-profile-details"></div>
+    <div id="assessorProfileOtherUpdate" class="sq-assessor-profile-notice" hidden><div><strong id="assessorProfileOtherUpdateText">Profile location was saved by another assigned assessor.</strong><small>The saved coordinates are shown below. Update only if a new current reading is needed.</small></div><button id="assessorProfileUpdateAnyway" class="sq-btn sq-btn-primary" type="button">Update Location</button></div>
+    <div id="assessorProfileLocationCard" class="sq-assessor-location-card">
+      <div class="sq-assessor-location-heading"><div><span class="sq-assessor-location-kicker">Current GPS location</span><h4>Device coordinates</h4></div><span id="assessorProfileLocationState" class="sq-assessor-status sq-assessor-status--not-started">Waiting for location</span></div>
+      <div class="sq-assessor-coordinate-grid">
+        <label>Latitude<input id="assessorProfileLatitude" type="text" readonly aria-readonly="true"></label>
+        <label>Longitude<input id="assessorProfileLongitude" type="text" readonly aria-readonly="true"></label>
+      </div>
+      <p class="sq-assessor-location-note">Coordinates are captured from the current device location and cannot be edited manually.</p>
+      <div class="sq-assessor-profile-actions"><button id="assessorProfileRefreshLocation" class="sq-btn sq-btn-muted" type="button">Refresh Current Location</button><button id="assessorProfileSaveLocation" class="sq-btn sq-btn-primary" type="button" disabled>Save Location</button><button id="assessorProfileBack" class="sq-btn sq-btn-muted" type="button">Back</button></div>
+    </div>
+  </div></div>
+</section>

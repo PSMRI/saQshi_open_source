@@ -41,6 +41,10 @@ try {
         'completed' => 0,
         'cancelled' => 0
     ];
+    $schoolCategorySummary = [
+        'total_scored' => 0,
+        'categories' => []
+    ];
 
     try {
         $assessmentSummary = StateDashboardService::assessmentProgress($con, $_GET, true);
@@ -52,6 +56,16 @@ try {
         }
 
         $assessmentSummary['_error'] = 'Assessment summary could not be loaded.';
+    }
+
+    try {
+        $schoolCategorySummary = StateDashboardService::schoolCategorySummary($con, $_GET);
+    } catch (Throwable $categoryError) {
+        if (class_exists('ErrorHandler')) {
+            ErrorHandler::log('State dashboard school category summary failed', [
+                'error' => $categoryError->getMessage()
+            ]);
+        }
     }
 
     Response::success('State dashboard loaded', [
@@ -67,6 +81,7 @@ try {
         'facility_category' => $facilityCategory,
         'certification_summary' => $certificationSummary,
         'assessment_summary' => $assessmentSummary,
+        'school_category_summary' => $schoolCategorySummary,
         'cqi_summary' => [
             'total_action_plans' => 0,
             'completed' => 0,

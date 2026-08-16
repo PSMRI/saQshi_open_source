@@ -84,6 +84,7 @@ None detected.
 - `function adminUsersPasswordErrors`
 - `function adminUsersRow`
 - `function adminUsersEncryptedProfilePayload`
+- `function adminUsersColumnExists`
 - `function adminUsersFind`
 
 **Request fields read from `$request`**
@@ -98,6 +99,8 @@ None detected.
 
 **Database tables referenced**
 
+- `column`
+- `INFORMATION_SCHEMA`
 - `s_user`
 - `u_role`
 - `prepare`
@@ -266,7 +269,7 @@ None detected.
 
 - **Role:** HTTP endpoint
 - **HTTP method guard:** `GET`
-- **Source intent:** active_assessment.php  Returns active assessment for logged-in user's facility.  Rule: - One facility can have only one ACTIVE assessment. - If no active assessment exists, return has_active = false.  Method: GET  URL: /api/assessment/v1/active_assessment.php
+- **Source intent:** active_assessment.php  Returns active assessment for logged-in user's facility.  Facility users receive their own active assessment. Assessor-led cycles are kept separate so they do not block the facility self-assessment flow.  Method: GET  URL: /api/assessment/v1/active_assessment.php
 
 **Dependencies included**
 
@@ -299,10 +302,12 @@ None detected.
 
 - `/../../auth_api.php`
 - `/../../assets/conn/db.php`
+- `/../../core/Crypto.php`
 
 **Declared classes and functions**
 
-None detected.
+- `function currentAssessorContext`
+- `function assessorInfoDepartmentStatusColumn`
 
 **Request fields read from `$request`**
 
@@ -310,6 +315,8 @@ None detected.
 
 **Database tables referenced**
 
+- `assessor_master`
+- `INFORMATION_SCHEMA`
 - `assessment_master`
 - `assessment_department_status`
 - `assessment_assessor_info`
@@ -328,10 +335,14 @@ None detected.
 
 - `/../../auth_api.php`
 - `/../../assets/conn/db.php`
+- `/../../core/AssessmentAccess.php`
+- `/../../core/Crypto.php`
 
 **Declared classes and functions**
 
-None detected.
+- `function assessorInfoEncryptedPayload`
+- `function currentAssessorContext`
+- `function assessorInfoDepartmentStatusColumn`
 
 **Request fields read from `$request`**
 
@@ -351,9 +362,13 @@ None detected.
 
 **Database tables referenced**
 
+- `assessor_master`
+- `INFORMATION_SCHEMA`
 - `assessment_master`
 - `assessment_department_status`
+- `it`
 - `assessment_assessor_info`
+- `failed`
 
 **Events dispatched**
 
@@ -363,12 +378,14 @@ None detected.
 
 - **Role:** HTTP endpoint
 - **HTTP method guard:** `POST`
-- **Source intent:** cancel_assessment.php  Cancels the ACTIVE assessment for the logged-in facility.  Method: POST  URL: /api/assessment/v1/cancel_assessment.php  Body: {   "assessment_id": 1 }
+- **Source intent:** cancel_assessment.php  Cancels the ACTIVE assessment for the logged-in facility.  Method: POST  URL: /api/assessment/v1/cancel_assessment.php  Body: {   "assessment_id": 1 }
 
 **Dependencies included**
 
 - `/../../auth_api.php`
 - `/../../assets/conn/db.php`
+- `/../../core/AssessmentAccess.php`
+- `/../../core/ApiCache.php`
 
 **Declared classes and functions**
 
@@ -424,6 +441,7 @@ None detected.
 
 - `/../../auth_api.php`
 - `/../../assets/conn/db.php`
+- `/../../core/AssessmentAccess.php`
 
 **Declared classes and functions**
 
@@ -456,6 +474,7 @@ None detected.
 
 - `/../../auth_api.php`
 - `/../../assets/conn/db.php`
+- `/../../core/AssessmentAccess.php`
 
 **Declared classes and functions**
 
@@ -478,16 +497,19 @@ None detected.
 
 - **Role:** HTTP endpoint
 - **HTTP method guard:** `POST`
-- **Source intent:** create_assessment.php  Creates a new assessment for logged-in user's facility.  Rule: - One facility can have only one ACTIVE assessment. - New assessment can be created only after previous one is   COMPLETED or CANCELLED.  Method: POST  URL: /api/assessment/v1/create_assessment.php  Body: {   "assessment_name": "Internal Assessment",   "framework_code": "saqshi-nqas",   "start_date": "2026-06-25",   "end_date": "2026-07-25" }
+- **Source intent:** create_assessment.php  Creates a new assessment for logged-in user's facility.  Rule: - A facility can have one ACTIVE self-assessment. - Assessor-led assessments are separate and never block a facility   from creating its own assessment.  Method: POST  URL: /api/assessment/v1/create_assessment.php  Body: {   "assessment_name": "Internal Assessment",   "framework_code": "saqshi-nqas",   "start_date": "2026-06-25",   "end_date": "2026-07-25" }
 
 **Dependencies included**
 
 - `/../../auth_api.php`
 - `/../../assets/conn/db.php`
+- `/../../core/ApiCache.php`
 
 **Declared classes and functions**
 
-None detected.
+- `function createAssessmentFrameworkLabel`
+- `function createAssessmentFacilityName`
+- `function createAssessmentAutoName`
 
 **Request fields read from `$request`**
 
@@ -498,6 +520,8 @@ None detected.
 
 **Database tables referenced**
 
+- `creating`
+- `facilities`
 - `assessment_master`
 
 **Events dispatched**
@@ -508,6 +532,7 @@ None detected.
 
 - **Role:** HTTP endpoint
 - **HTTP method guard:** `GET`
+- **Source intent:** Handles dashboard facility type id processing for this API workflow.
 
 **Dependencies included**
 
@@ -537,7 +562,7 @@ None detected.
 
 - **Role:** HTTP endpoint
 - **HTTP method guard:** Not detected (internal/helper or legacy handling).
-- **Source intent:** list.php  Get department activation status list for facility + assessment period.  URL: /api/assessment/v1/department-status/list.php?fac_id=1&ass_period=1
+- **Source intent:** list.php  Get department activation status list for facility + assessment period.  URL: /api/assessment/v1/department-status/list.php?fac_id=1&assessment_id=1
 
 **Dependencies included**
 
@@ -565,13 +590,14 @@ None detected.
 
 - **Role:** HTTP endpoint
 - **HTTP method guard:** `POST`
-- **Source intent:** save.php  Save department activation/deactivation status for logged-in user's facility + assessment period.  Uses session: - fac_id - u_id  URL: /api/assessment/v1/department-status/save.php  Method: POST  Body bulk: {   "ass_period": 1,   "departments": [     {"dept_id": 1, "is_active": 1},     {"dept_id": 2, "is_active": 0}   ] }  Body single: {   "ass_period": 1,   "dept_id": 1,   "is_active": 1 }
+- **Source intent:** save.php  Save department activation/deactivation status for logged-in user's facility + assessment period.  Uses session: - fac_id - u_id  URL: /api/assessment/v1/department-status/save.php  Method: POST  Body bulk: {   "assessment_id": 1,   "departments": [     {"dept_id": 1, "is_active": 1},     {"dept_id": 2, "is_active": 0}   ] }  Body single: {   "assessment_id": 1,   "dept_id": 1,   "is_active": 1 }
 
 **Dependencies included**
 
 - `/../../../auth_api.php`
 - `/../../../service/DepartmentStatusService.php`
 - `/../../../assets/conn/db.php`
+- `/../../../core/AssessmentAccess.php`
 
 **Declared classes and functions**
 
@@ -579,6 +605,7 @@ None detected.
 
 **Request fields read from `$request`**
 
+- `assessment_id`
 - `ass_period`
 - `departments`
 - `dept_id`
@@ -650,6 +677,35 @@ None detected.
 - `to`
 - `assessment_department`
 - `failed`
+
+**Events dispatched**
+
+None detected.
+
+### `api/assessment/v1/fhir_measure_reports.php`
+
+- **Role:** HTTP endpoint
+- **HTTP method guard:** `GET`
+- **Source intent:** Read-only FHIR R4 projection of the logged-in facility's assessment summaries.
+
+**Dependencies included**
+
+- `/../../auth_api.php`
+- `/../../assets/conn/db.php`
+
+**Declared classes and functions**
+
+- `function fhirAssessmentDate`
+- `function fhirAssessmentStatus`
+
+**Request fields read from `$request`**
+
+None detected.
+
+**Database tables referenced**
+
+- `assessment_master`
+- `assessment_response`
 
 **Events dispatched**
 
@@ -751,18 +807,20 @@ None detected.
 
 - **Role:** HTTP endpoint
 - **HTTP method guard:** `GET`
-- **Source intent:** list.php  Lists all assessments for the logged-in user's facility.  Method: GET  URL: /api/assessment/v1/list.php
+- **Source intent:** list.php  Lists all assessments for the logged-in user's facility.  Method: GET  URL: /api/assessment/v1/list.php
 
 **Dependencies included**
 
 - `/../../auth_api.php`
 - `/../../core/FrameworkEngine.php`
+- `/../../core/ApiCache.php`
 - `/../../assets/conn/db.php`
 
 **Declared classes and functions**
 
 - `function listFacilityTypeId`
 - `function listCheckpointMaxScore`
+- `function listColumnExists`
 - `function listFrameworkTotalScore`
 
 **Request fields read from `$request`**
@@ -771,6 +829,7 @@ None detected.
 
 **Database tables referenced**
 
+- `INFORMATION_SCHEMA`
 - `assessment_master`
 - `assessment_department_status`
 - `assessment_department`
@@ -850,6 +909,7 @@ None detected.
 
 - `/../../auth_api.php`
 - `/../../core/FrameworkEngine.php`
+- `/../../core/Crypto.php`
 - `/../../assets/conn/db.php`
 
 **Declared classes and functions**
@@ -944,32 +1004,37 @@ None detected.
 
 - `/../../auth_api.php`
 - `/../../assets/conn/db.php`
+- `/../../core/FrameworkEngine.php`
+- `/../../service/ResponseTypeService.php`
+- `/../../core/AssessmentAccess.php`
+- `/../../core/ApiCache.php`
 
 **Declared classes and functions**
 
-None detected.
+- `function responseDepartmentStatusAssessmentColumn`
 
 **Request fields read from `$request`**
 
 - `assessment_id`
 - `dept_id`
 - `checkpoint_id`
-- `response_value`
-- `score`
 - `remarks`
 - `evidence_url`
 
 **Database tables referenced**
 
 - `one`
+- `INFORMATION_SCHEMA`
 - `assessment_master`
 - `assessment_department`
 - `assessment_assessor_info`
+- `framework`
 - `response`
 - `assessment_response`
 - `response_value`
 - `current`
 - `failed`
+- `assessment_department_status`
 
 **Events dispatched**
 
@@ -1084,10 +1149,12 @@ None detected.
 
 - `/../../auth_api.php`
 - `/../../assets/conn/db.php`
+- `/../../core/AssessmentAccess.php`
+- `/../../core/ApiCache.php`
 
 **Declared classes and functions**
 
-None detected.
+- `function startDepartmentStatusAssessmentColumn`
 
 **Request fields read from `$request`**
 
@@ -1096,6 +1163,7 @@ None detected.
 
 **Database tables referenced**
 
+- `INFORMATION_SCHEMA`
 - `assessment_master`
 - `assessment_department`
 - `assessment_department_status`
@@ -1105,6 +1173,276 @@ None detected.
 **Events dispatched**
 
 None detected.
+
+### `api/assessor/v1/assessment_report.php`
+
+- **Role:** HTTP endpoint
+- **HTTP method guard:** `GET`
+
+**Dependencies included**
+
+- `/../../auth_api.php`
+- `/../../assets/conn/db.php`
+- `/../../service/AssessorService.php`
+
+**Declared classes and functions**
+
+None detected.
+
+**Request fields read from `$request`**
+
+None detected.
+
+**Database tables referenced**
+
+None detected.
+
+**Events dispatched**
+
+None detected.
+
+### `api/assessor/v1/dashboard.php`
+
+- **Role:** HTTP endpoint
+- **HTTP method guard:** `GET`
+
+**Dependencies included**
+
+- `/../../auth_api.php`
+- `/../../assets/conn/db.php`
+- `/../../service/AssessorService.php`
+
+**Declared classes and functions**
+
+None detected.
+
+**Request fields read from `$request`**
+
+None detected.
+
+**Database tables referenced**
+
+None detected.
+
+**Events dispatched**
+
+None detected.
+
+### `api/assessor/v1/facility_search.php`
+
+- **Role:** HTTP endpoint
+- **HTTP method guard:** `GET`
+
+**Dependencies included**
+
+- `/../../auth_api.php`
+- `/../../assets/conn/db.php`
+- `/../../service/AssessorService.php`
+
+**Declared classes and functions**
+
+None detected.
+
+**Request fields read from `$request`**
+
+None detected.
+
+**Database tables referenced**
+
+None detected.
+
+**Events dispatched**
+
+None detected.
+
+### `api/assessor/v1/facility_summary.php`
+
+- **Role:** HTTP endpoint
+- **HTTP method guard:** `GET`
+
+**Dependencies included**
+
+- `/../../auth_api.php`
+- `/../../assets/conn/db.php`
+- `/../../service/AssessorService.php`
+
+**Declared classes and functions**
+
+None detected.
+
+**Request fields read from `$request`**
+
+None detected.
+
+**Database tables referenced**
+
+None detected.
+
+**Events dispatched**
+
+None detected.
+
+### `api/assessor/v1/list.php`
+
+- **Role:** HTTP endpoint
+- **HTTP method guard:** `GET`
+
+**Dependencies included**
+
+- `/../../auth_api.php`
+- `/../../assets/conn/db.php`
+- `/../../service/AssessorService.php`
+
+**Declared classes and functions**
+
+None detected.
+
+**Request fields read from `$request`**
+
+None detected.
+
+**Database tables referenced**
+
+None detected.
+
+**Events dispatched**
+
+None detected.
+
+### `api/assessor/v1/mapping_list.php`
+
+- **Role:** HTTP endpoint
+- **HTTP method guard:** `GET`
+
+**Dependencies included**
+
+- `/../../auth_api.php`
+- `/../../assets/conn/db.php`
+- `/../../service/AssessorService.php`
+
+**Declared classes and functions**
+
+None detected.
+
+**Request fields read from `$request`**
+
+None detected.
+
+**Database tables referenced**
+
+None detected.
+
+**Events dispatched**
+
+None detected.
+
+### `api/assessor/v1/mapping_save.php`
+
+- **Role:** HTTP endpoint
+- **HTTP method guard:** Not detected (internal/helper or legacy handling).
+
+**Dependencies included**
+
+- `/../../auth_api.php`
+- `/../../assets/conn/db.php`
+- `/../../service/AssessorService.php`
+
+**Declared classes and functions**
+
+None detected.
+
+**Request fields read from `$request`**
+
+None detected.
+
+**Database tables referenced**
+
+None detected.
+
+**Events dispatched**
+
+- `assessor.facility_mapped`
+
+### `api/assessor/v1/my_facilities.php`
+
+- **Role:** HTTP endpoint
+- **HTTP method guard:** `GET`
+
+**Dependencies included**
+
+- `/../../auth_api.php`
+- `/../../assets/conn/db.php`
+- `/../../service/AssessorService.php`
+
+**Declared classes and functions**
+
+None detected.
+
+**Request fields read from `$request`**
+
+None detected.
+
+**Database tables referenced**
+
+None detected.
+
+**Events dispatched**
+
+None detected.
+
+### `api/assessor/v1/save.php`
+
+- **Role:** HTTP endpoint
+- **HTTP method guard:** Not detected (internal/helper or legacy handling).
+
+**Dependencies included**
+
+- `/../../auth_api.php`
+- `/../../assets/conn/db.php`
+- `/../../service/AssessorService.php`
+
+**Declared classes and functions**
+
+None detected.
+
+**Request fields read from `$request`**
+
+None detected.
+
+**Database tables referenced**
+
+None detected.
+
+**Events dispatched**
+
+- `assessor.saved`
+
+### `api/assessor/v1/start_assessment.php`
+
+- **Role:** HTTP endpoint
+- **HTTP method guard:** `POST`
+
+**Dependencies included**
+
+- `/../../auth_api.php`
+- `/../../assets/conn/db.php`
+- `/../../service/AssessorService.php`
+
+**Declared classes and functions**
+
+None detected.
+
+**Request fields read from `$request`**
+
+None detected.
+
+**Database tables referenced**
+
+None detected.
+
+**Events dispatched**
+
+- `assessor.assessment_started`
 
 ### `api/auth/v1/captcha.php`
 
@@ -1136,6 +1474,7 @@ None detected.
 
 - **Role:** HTTP endpoint
 - **HTTP method guard:** Not detected (internal/helper or legacy handling).
+- **Source intent:** SaQshi API auth/v1/csrf.php Purpose: csrf endpoint/support workflow.
 
 **Dependencies included**
 
@@ -1178,9 +1517,8 @@ None detected.
 **Request fields read from `$request`**
 
 - `username`
-- `password`
-- `captcha`
 - `password_enc`
+- `captcha`
 
 **Database tables referenced**
 
@@ -1192,31 +1530,6 @@ None detected.
 - `auth.login.failed`
 - `auth.login.auth_checked`
 - `auth.login.succeeded`
-
-### `api/auth/v1/login1.php`
-
-- **Role:** HTTP endpoint
-- **HTTP method guard:** `POST`
-
-**Dependencies included**
-
-- `/../../public_api.php`
-
-**Declared classes and functions**
-
-None detected.
-
-**Request fields read from `$request`**
-
-None detected.
-
-**Database tables referenced**
-
-None detected.
-
-**Events dispatched**
-
-None detected.
 
 ### `api/auth/v1/login_key.php`
 
@@ -1273,31 +1586,6 @@ None detected.
 
 None detected.
 
-### `api/auth/v1/logout1.php`
-
-- **Role:** HTTP endpoint
-- **HTTP method guard:** Not detected (internal/helper or legacy handling).
-
-**Dependencies included**
-
-- `../../../service/AuthService.php`
-
-**Declared classes and functions**
-
-None detected.
-
-**Request fields read from `$request`**
-
-None detected.
-
-**Database tables referenced**
-
-None detected.
-
-**Events dispatched**
-
-None detected.
-
 ### `api/auth/v1/me.php`
 
 - **Role:** HTTP endpoint
@@ -1330,6 +1618,7 @@ None detected.
 
 - **Role:** HTTP endpoint
 - **HTTP method guard:** Not detected (internal/helper or legacy handling).
+- **Source intent:** SaQshi API auth/v1/validate.php Purpose: validate endpoint/support workflow.
 
 **Dependencies included**
 
@@ -1355,6 +1644,7 @@ None detected.
 
 - **Role:** HTTP endpoint
 - **HTTP method guard:** Not detected (internal/helper or legacy handling).
+- **Source intent:** SaQshi API certification/v1/current.php Purpose: current endpoint/support workflow.
 
 **Dependencies included**
 
@@ -1380,6 +1670,7 @@ None detected.
 
 - **Role:** HTTP endpoint
 - **HTTP method guard:** Not detected (internal/helper or legacy handling).
+- **Source intent:** SaQshi API certification/v1/dashboard.php Purpose: dashboard endpoint/support workflow.
 
 **Dependencies included**
 
@@ -1405,6 +1696,7 @@ None detected.
 
 - **Role:** HTTP endpoint
 - **HTTP method guard:** Not detected (internal/helper or legacy handling).
+- **Source intent:** SaQshi API certification/v1/history.php Purpose: history endpoint/support workflow.
 
 **Dependencies included**
 
@@ -1430,6 +1722,7 @@ None detected.
 
 - **Role:** HTTP endpoint
 - **HTTP method guard:** Not detected (internal/helper or legacy handling).
+- **Source intent:** SaQshi API certification/v1/list.php Purpose: list endpoint/support workflow.
 
 **Dependencies included**
 
@@ -1455,6 +1748,7 @@ None detected.
 
 - **Role:** HTTP endpoint
 - **HTTP method guard:** Not detected (internal/helper or legacy handling).
+- **Source intent:** SaQshi API certification/v1/renewal_status.php Purpose: renewal status endpoint/support workflow.
 
 **Dependencies included**
 
@@ -1480,6 +1774,7 @@ None detected.
 
 - **Role:** HTTP endpoint
 - **HTTP method guard:** Not detected (internal/helper or legacy handling).
+- **Source intent:** SaQshi API certification/v1/save.php Purpose: save endpoint/support workflow.
 
 **Dependencies included**
 
@@ -1505,6 +1800,7 @@ None detected.
 
 - **Role:** HTTP endpoint
 - **HTTP method guard:** Not detected (internal/helper or legacy handling).
+- **Source intent:** SaQshi API certification/v1/update.php Purpose: update endpoint/support workflow.
 
 **Dependencies included**
 
@@ -1520,7 +1816,7 @@ None detected.
 
 **Database tables referenced**
 
-None detected.
+- `endpoint`
 
 **Events dispatched**
 
@@ -1530,6 +1826,7 @@ None detected.
 
 - **Role:** HTTP endpoint
 - **HTTP method guard:** Not detected (internal/helper or legacy handling).
+- **Source intent:** SaQshi API certification/v1/validate.php Purpose: validate endpoint/support workflow.
 
 **Dependencies included**
 
@@ -1555,6 +1852,7 @@ None detected.
 
 - **Role:** HTTP endpoint
 - **HTTP method guard:** `POST`
+- **Source intent:** SaQshi API chat/v1/clear.php Purpose: clear endpoint/support workflow.
 
 **Dependencies included**
 
@@ -1580,6 +1878,7 @@ None detected.
 
 - **Role:** HTTP endpoint
 - **HTTP method guard:** `GET`
+- **Source intent:** SaQshi API chat/v1/history.php Purpose: history endpoint/support workflow.
 
 **Dependencies included**
 
@@ -1605,10 +1904,89 @@ None detected.
 
 - **Role:** HTTP endpoint
 - **HTTP method guard:** `POST`
+- **Source intent:** SaQshi API chat/v1/send.php Purpose: send endpoint/support workflow.
 
 **Dependencies included**
 
 - `/_common.php`
+
+**Declared classes and functions**
+
+None detected.
+
+**Request fields read from `$request`**
+
+None detected.
+
+**Database tables referenced**
+
+None detected.
+
+**Events dispatched**
+
+None detected.
+
+### `api/config/v1/deployment.php`
+
+- **Role:** HTTP endpoint
+- **HTTP method guard:** `GET`
+
+**Dependencies included**
+
+- `/../../auth_api.php`
+- `/../../service/DeploymentConfigService.php`
+
+**Declared classes and functions**
+
+None detected.
+
+**Request fields read from `$request`**
+
+None detected.
+
+**Database tables referenced**
+
+None detected.
+
+**Events dispatched**
+
+None detected.
+
+### `api/config/v1/profile_apply.php`
+
+- **Role:** HTTP endpoint
+- **HTTP method guard:** `POST`
+
+**Dependencies included**
+
+- `/../../auth_api.php`
+- `/../../service/DeploymentConfigService.php`
+
+**Declared classes and functions**
+
+None detected.
+
+**Request fields read from `$request`**
+
+None detected.
+
+**Database tables referenced**
+
+None detected.
+
+**Events dispatched**
+
+None detected.
+
+### `api/config/v1/public_deployment.php`
+
+- **Role:** HTTP endpoint
+- **HTTP method guard:** `GET`
+
+**Dependencies included**
+
+- `/../../public_api.php`
+- `/../../service/DeploymentConfigService.php`
 
 **Declared classes and functions**
 
@@ -1684,6 +2062,7 @@ None detected.
 
 - **Role:** HTTP endpoint
 - **HTTP method guard:** Not detected (internal/helper or legacy handling).
+- **Source intent:** SaQshi API framework/v1/assessment_methods.php Purpose: assessment methods endpoint/support workflow.
 
 **Dependencies included**
 
@@ -1711,7 +2090,7 @@ None detected.
 
 - **Role:** HTTP endpoint
 - **HTTP method guard:** Not detected (internal/helper or legacy handling).
-- **Source intent:** checkpoints.php  Load checklist dynamically from nested SaQshi framework JSON.  Flow: Logged-in user facility → facility type → department → concern → subtype → assessment method → checkpoints  URL: /api/framework/v1/checkpoints.php   ?framework=saqshi-nqas   &ass_period=1   &dept_id=1   &concern_id=1   &subtype_id=1   &assessment_method=SI
+- **Source intent:** checkpoints.php  Load checklist dynamically from nested SaQshi framework JSON.  Flow: Logged-in user facility â†’ facility type â†’ department â†’ concern â†’ subtype â†’ assessment method â†’ checkpoints  URL: /api/framework/v1/checkpoints.php   ?framework=saqshi-nqas   &assessment_id=1   &dept_id=1   &concern_id=1   &subtype_id=1   &assessment_method=SI
 
 **Dependencies included**
 
@@ -1719,6 +2098,7 @@ None detected.
 - `/../../core/Response.php`
 - `/../../core/FrameworkEngine.php`
 - `/../../service/DepartmentStatusService.php`
+- `/../../service/ResponseTypeService.php`
 - `/../../assets/conn/db.php`
 
 **Declared classes and functions**
@@ -1771,7 +2151,7 @@ None detected.
 
 - **Role:** HTTP endpoint
 - **HTTP method guard:** Not detected (internal/helper or legacy handling).
-- **Source intent:** departments.php  Returns departments from framework JSON with runtime active/inactive status for a facility + assessment period.  URL: /api/framework/v1/departments.php?framework=sample-framework&facility_type=DH&fac_id=1&ass_period=1
+- **Source intent:** departments.php  Returns departments from framework JSON with runtime active/inactive status for a facility + assessment period.  URL: /api/framework/v1/departments.php?framework=sample-framework&facility_type=DH&fac_id=1&assessment_id=1
 
 **Dependencies included**
 
@@ -1827,6 +2207,7 @@ None detected.
 
 - **Role:** HTTP endpoint
 - **HTTP method guard:** Not detected (internal/helper or legacy handling).
+- **Source intent:** SaQshi API framework/v1/load.php Purpose: load endpoint/support workflow.
 
 **Dependencies included**
 
@@ -2240,11 +2621,13 @@ None detected.
 
 - `/../../auth_api.php`
 - `/../../core/FrameworkEngine.php`
+- `/../../core/Crypto.php`
 - `/../../assets/conn/db.php`
 
 **Declared classes and functions**
 
 - `function scorecardNormalize`
+- `function scorecardDepartmentStatusColumn`
 - `function scorecardFacility`
 - `function scorecardSharedStrings`
 - `function scorecardCellText`
@@ -2265,6 +2648,7 @@ None detected.
 
 **Database tables referenced**
 
+- `INFORMATION_SCHEMA`
 - `assessment_master`
 - `assessment_department_status`
 - `assessment_response`
@@ -2286,11 +2670,13 @@ None detected.
 
 - `/../../auth_api.php`
 - `/../../core/FrameworkEngine.php`
+- `/../../core/Crypto.php`
 - `/../../assets/conn/db.php`
 
 **Declared classes and functions**
 
 - `function scorecardNormalize`
+- `function scorecardDepartmentStatusColumn`
 - `function scorecardFacility`
 - `function scorecardSharedStrings`
 - `function scorecardCellText`
@@ -2307,6 +2693,7 @@ None detected.
 
 **Database tables referenced**
 
+- `INFORMATION_SCHEMA`
 - `assessment_master`
 - `assessment_department_status`
 - `assessment_response`
@@ -2776,6 +3163,7 @@ None detected.
 
 - **Role:** Runtime dependency
 - **HTTP method guard:** Not detected (internal/helper or legacy handling).
+- **Source intent:** SaQshi API assets/conn/session.php Purpose: session endpoint/support workflow.
 
 **Dependencies included**
 
@@ -2859,10 +3247,90 @@ None detected.
 
 None detected.
 
+### `api/cli/configure-deployment-profile.php`
+
+- **Role:** API support file
+- **HTTP method guard:** Not detected (internal/helper or legacy handling).
+- **Source intent:** First-deployment profile selector. Usage: php api/cli/configure-deployment-profile.php --profile=healthcare
+
+**Dependencies included**
+
+- `/service/DeploymentConfigService.php`
+
+**Declared classes and functions**
+
+None detected.
+
+**Request fields read from `$request`**
+
+None detected.
+
+**Database tables referenced**
+
+- `the`
+
+**Events dispatched**
+
+None detected.
+
+### `api/cli/deployment-readiness.php`
+
+- **Role:** API support file
+- **HTTP method guard:** Not detected (internal/helper or legacy handling).
+- **Source intent:** Read-only deployment health check. Run: php api/cli/deployment-readiness.php [--json]
+
+**Dependencies included**
+
+- `/core/Env.php`
+- `/assets/conn/db.php`
+
+**Declared classes and functions**
+
+None detected.
+
+**Request fields read from `$request`**
+
+None detected.
+
+**Database tables referenced**
+
+None detected.
+
+**Events dispatched**
+
+None detected.
+
+### `api/cli/job_worker.php`
+
+- **Role:** API support file
+- **HTTP method guard:** Not detected (internal/helper or legacy handling).
+
+**Dependencies included**
+
+- `/assets/conn/db.php`
+- `/service/JobQueueService.php`
+
+**Declared classes and functions**
+
+None detected.
+
+**Request fields read from `$request`**
+
+None detected.
+
+**Database tables referenced**
+
+None detected.
+
+**Events dispatched**
+
+None detected.
+
 ### `api/controllers/AssessmentController.php`
 
 - **Role:** API support file
 - **HTTP method guard:** Not detected (internal/helper or legacy handling).
+- **Source intent:** SaQshi API controllers/AssessmentController.php Purpose: reserved assessment controller extension point.  Current assessment endpoints are implemented under api/assessment/v1. Add controller-level orchestration here only when shared assessment controller behavior is introduced.
 
 **Dependencies included**
 
@@ -2914,6 +3382,7 @@ None detected.
 
 - **Role:** API support file
 - **HTTP method guard:** Not detected (internal/helper or legacy handling).
+- **Source intent:** SaQshi API routes.php Purpose: routes endpoint/support workflow.
 
 **Dependencies included**
 
@@ -2941,6 +3410,7 @@ None detected.
 
 - **Role:** Internal endpoint helper
 - **HTTP method guard:** Not detected (internal/helper or legacy handling).
+- **Source intent:** Handles respond processing for this API workflow.
 
 **Dependencies included**
 
@@ -2971,11 +3441,13 @@ None detected.
 
 - **Role:** Internal endpoint helper
 - **HTTP method guard:** Not detected (internal/helper or legacy handling).
+- **Source intent:** Handles chat payload processing for this API workflow.
 
 **Dependencies included**
 
 - `/../../auth_api.php`
 - `/../../assets/conn/db.php`
+- `/../../core/ErrorHandler.php`
 - `/../../service/ChatAssistantService.php`
 
 **Declared classes and functions**
@@ -3026,10 +3498,71 @@ None detected.
 
 ## Core infrastructure
 
+### `api/core/ApiCache.php`
+
+- **Role:** Core infrastructure
+- **HTTP method guard:** Not detected (internal/helper or legacy handling).
+- **Source intent:** Short-lived cache for read-heavy API payloads. It fails open when Redis is unavailable.
+
+**Dependencies included**
+
+None detected.
+
+**Declared classes and functions**
+
+- `class ApiCache`
+- `function get`
+- `function put`
+- `function forget`
+- `function assessmentListTtl`
+- `function client`
+- `function config`
+- `function key`
+
+**Request fields read from `$request`**
+
+None detected.
+
+**Database tables referenced**
+
+None detected.
+
+**Events dispatched**
+
+None detected.
+
+### `api/core/AssessmentAccess.php`
+
+- **Role:** Core infrastructure
+- **HTTP method guard:** Not detected (internal/helper or legacy handling).
+- **Source intent:** Authorisation rules for facility access to assessment cycles.
+
+**Dependencies included**
+
+None detected.
+
+**Declared classes and functions**
+
+- `class AssessmentAccess`
+- `function requireEditableByCurrentUser`
+
+**Request fields read from `$request`**
+
+None detected.
+
+**Database tables referenced**
+
+- `assessment_master`
+
+**Events dispatched**
+
+None detected.
+
 ### `api/core/AuditLogger.php`
 
 - **Role:** Core infrastructure
 - **HTTP method guard:** Not detected (internal/helper or legacy handling).
+- **Source intent:** SaQshi API core/AuditLogger.php Purpose: reserved audit logging extension point.  Current event/audit behavior is handled through existing event and service flows. Add shared audit helpers here when a common audit logger is required.
 
 **Dependencies included**
 
@@ -3072,12 +3605,15 @@ None detected.
 - `function findUser`
 - `function findUserById`
 - `function decryptUserProfileFields`
+- `function passwordMustChange`
+- `function columnExists`
 - `function passwordStatus`
 - `function upgradePasswordHash`
 - `function isLocked`
 - `function recordAttempt`
 - `function clearOldFailedAttempts`
 - `function loginAttemptTableExists`
+- `function limitAuditLockWait`
 - `function hashPassword`
 - `function success`
 - `function error`
@@ -3090,8 +3626,11 @@ None detected.
 
 - `s_user`
 - `u_role`
+- `INFORMATION_SCHEMA`
 - `prepare`
 - `login_attempts`
+- `exists`
+- `waiting`
 
 **Events dispatched**
 
@@ -3101,6 +3640,7 @@ None detected.
 
 - **Role:** Core infrastructure
 - **HTTP method guard:** Not detected (internal/helper or legacy handling).
+- **Source intent:** Provides auth middleware behavior for SaQshi API workflows.
 
 **Dependencies included**
 
@@ -3259,6 +3799,7 @@ None detected.
 
 - **Role:** Core infrastructure
 - **HTTP method guard:** Not detected (internal/helper or legacy handling).
+- **Source intent:** Handles load processing for this API workflow.
 
 **Dependencies included**
 
@@ -3286,6 +3827,7 @@ None detected.
 
 - **Role:** Core infrastructure
 - **HTTP method guard:** Not detected (internal/helper or legacy handling).
+- **Source intent:** Handles register processing for this API workflow.
 
 **Dependencies included**
 
@@ -3332,6 +3874,10 @@ None detected.
 - `function dispatch`
 - `function traceRequest`
 - `function defaultMeta`
+- `function redact`
+- `function redactQueryString`
+- `function isSensitiveKey`
+- `function redactString`
 - `function safeSessionValue`
 - `function writeLog`
 
@@ -3341,7 +3887,7 @@ None detected.
 
 **Database tables referenced**
 
-None detected.
+- `free`
 
 **Events dispatched**
 
@@ -3351,6 +3897,7 @@ None detected.
 
 - **Role:** Core infrastructure
 - **HTTP method guard:** Not detected (internal/helper or legacy handling).
+- **Source intent:** Provides framework engine behavior for SaQshi API workflows.
 
 **Dependencies included**
 
@@ -3394,6 +3941,7 @@ None detected.
 
 - **Role:** Core infrastructure
 - **HTTP method guard:** Not detected (internal/helper or legacy handling).
+- **Source intent:** Handles openssl config path processing for this API workflow.
 
 **Dependencies included**
 
@@ -3462,6 +4010,7 @@ None detected.
 
 - **Role:** Core infrastructure
 - **HTTP method guard:** Not detected (internal/helper or legacy handling).
+- **Source intent:** SaQshi API core/RoleMiddleware.php Purpose: reserved role middleware extension point.  Current role checks are handled by bootstrap/session/service filters. Add reusable middleware here when API-wide role enforcement is centralized.
 
 **Dependencies included**
 
@@ -3470,6 +4019,35 @@ None detected.
 **Declared classes and functions**
 
 None detected.
+
+**Request fields read from `$request`**
+
+None detected.
+
+**Database tables referenced**
+
+None detected.
+
+**Events dispatched**
+
+None detected.
+
+### `api/core/ScoreCalculator.php`
+
+- **Role:** Core infrastructure
+- **HTTP method guard:** Not detected (internal/helper or legacy handling).
+- **Source intent:** SaQshi score calculation helper.  Keep score math in a pure helper so reports, dashboards and tests can reuse the same calculation rules without loading endpoint/session/database code.
+
+**Dependencies included**
+
+None detected.
+
+**Declared classes and functions**
+
+- `class ScoreCalculator`
+- `function percentage`
+- `function checkpointMaxScore`
+- `function totalCheckpointScore`
 
 **Request fields read from `$request`**
 
@@ -3536,6 +4114,9 @@ None detected.
 
 - `class SessionManager`
 - `function start`
+- `function configureStorage`
+- `function sessionName`
+- `function config`
 - `function login`
 - `function logout`
 - `function isLoggedIn`
@@ -3560,7 +4141,7 @@ None detected.
 
 **Database tables referenced**
 
-None detected.
+- `profile`
 
 **Events dispatched**
 
@@ -3570,6 +4151,7 @@ None detected.
 
 - **Role:** Core infrastructure
 - **HTTP method guard:** Not detected (internal/helper or legacy handling).
+- **Source intent:** SaQshi API core/Validator.php Purpose: reserved validation extension point.  Current validation is handled by endpoint-specific checks and validation services. Add shared validator helpers here when central validation is needed.
 
 **Dependencies included**
 
@@ -3593,10 +4175,116 @@ None detected.
 
 ## Service layer
 
+### `api/service/AssessorService.php`
+
+- **Role:** Service layer
+- **HTTP method guard:** Not detected (internal/helper or legacy handling).
+- **Source intent:** Saves a selected group of facility mappings as one all-or-nothing action.
+
+**Dependencies included**
+
+- `/../core/Crypto.php`
+- `/../core/Auth.php`
+- `/../core/FrameworkEngine.php`
+- `/DepartmentStatusService.php`
+- `/EmailService.php`
+- `/SmsService.php`
+
+**Declared classes and functions**
+
+- `class AssessorService`
+- `function __construct`
+- `function listAssessors`
+- `function saveAssessor`
+- `function getAssessor`
+- `function searchFacilities`
+- `function listMappings`
+- `function saveMapping`
+- `function saveMappings`
+- `function assessorDashboard`
+- `function assessmentSummaryForFacilities`
+- `function mappedFacilitiesForUser`
+- `function assessmentReportRows`
+- `function facilitySummary`
+- `function startAssessment`
+- `function currentAssessor`
+- `function createAssessorLoginUser`
+- `function assessorRoleId`
+- `function temporaryPassword`
+- `function splitName`
+- `function mappedFacilities`
+- `function withFacilityWorkflow`
+- `function reconcileCompletedAssessment`
+- `function workflowForAssessment`
+- `function activeDepartments`
+- `function assessorInfoCount`
+- `function responseCount`
+- `function responseTable`
+- `function facilityAssessments`
+- `function assessmentChecklistCount`
+- `function facilityCqiSummary`
+- `function facilityPerformanceSummary`
+- `function moduleConfig`
+- `function moduleEnabled`
+- `function defaultFramework`
+- `function activeAssessment`
+- `function frameworkDepartments`
+- `function publicAssessor`
+- `function facility`
+- `function usesJsonFacilities`
+- `function jsonFacilities`
+- `function facilityIdsMatching`
+- `function hydrateJsonFacilities`
+- `function ensureTables`
+- `function ensureSchemaOnce`
+- `function ensureAssessmentColumn`
+- `function ensureUserColumn`
+- `function ensureUserColumnDefinition`
+- `function userColumnSupportsDefinition`
+- `function tableExists`
+- `function columnExists`
+- `function departmentStatusAssessmentColumn`
+- `function tableColumns`
+- `function nullableInt`
+- `function nullableDate`
+- `function row`
+- `function rows`
+- `function scalar`
+- `function execute`
+
+**Request fields read from `$request`**
+
+None detected.
+
+**Database tables referenced**
+
+- `assessor_facility_mapping`
+- `assessor_master`
+- `s_user`
+- `facilities`
+- `fac_nin`
+- `assessment_master`
+- `starting`
+- `u_role`
+- `assessment_department_status`
+- `assessment_department`
+- `assessment_assessor_info`
+- `assessment_action_plan`
+- `performance_entries`
+- `search`
+- `IF`
+- `CURRENT_TIMESTAMP`
+- `INFORMATION_SCHEMA`
+
+**Events dispatched**
+
+None detected.
+
 ### `api/service/AuthService.php`
 
 - **Role:** Service layer
 - **HTTP method guard:** Not detected (internal/helper or legacy handling).
+- **Source intent:** Provides auth service behavior for SaQshi API workflows.
 
 **Dependencies included**
 
@@ -3626,6 +4314,7 @@ None detected.
 
 - **Role:** Service layer
 - **HTTP method guard:** Not detected (internal/helper or legacy handling).
+- **Source intent:** Provides certification expiry service behavior for SaQshi API workflows.
 
 **Dependencies included**
 
@@ -3655,6 +4344,7 @@ None detected.
 
 - **Role:** Service layer
 - **HTTP method guard:** Not detected (internal/helper or legacy handling).
+- **Source intent:** Provides certification service behavior for SaQshi API workflows.
 
 **Dependencies included**
 
@@ -3691,9 +4381,11 @@ None detected.
 - `IF`
 - `CURRENT_TIMESTAMP`
 - `cert_details`
+- `processing`
 - `prepare`
 - `failed`
 - `certification_history`
+- `json`
 
 **Events dispatched**
 
@@ -3703,6 +4395,7 @@ None detected.
 
 - **Role:** Service layer
 - **HTTP method guard:** Not detected (internal/helper or legacy handling).
+- **Source intent:** Provides certification validator behavior for SaQshi API workflows.
 
 **Dependencies included**
 
@@ -3730,10 +4423,14 @@ None detected.
 
 - **Role:** Service layer
 - **HTTP method guard:** Not detected (internal/helper or legacy handling).
+- **Source intent:** Provides chat assistant service behavior for SaQshi API workflows.
 
 **Dependencies included**
 
-None detected.
+- `/../core/SessionManager.php`
+- `/ChatIntentService.php`
+- `/ChatKnowledgeService.php`
+- `/ChatDataService.php`
 
 **Declared classes and functions**
 
@@ -3743,7 +4440,7 @@ None detected.
 - `function history`
 - `function clear`
 - `function saveMessage`
-- `function buildReply`
+- `function ensureColumn`
 
 **Request fields read from `$request`**
 
@@ -3751,9 +4448,105 @@ None detected.
 
 **Database tables referenced**
 
+- `processing`
 - `IF`
 - `ai_chat_messages`
-- `the`
+
+**Events dispatched**
+
+None detected.
+
+### `api/service/ChatDataService.php`
+
+- **Role:** Service layer
+- **HTTP method guard:** Not detected (internal/helper or legacy handling).
+
+**Dependencies included**
+
+- `/../core/SessionManager.php`
+- `/StateDashboardService.php`
+- `/AssessorService.php`
+
+**Declared classes and functions**
+
+- `class ChatDataService`
+- `function answer`
+- `function currentMonthStatus`
+- `function pendingCqiStatus`
+- `function facilityReport`
+- `function formatFacilityDetail`
+- `function findScopedMonitoringFacility`
+- `function findAssignedAssessorFacility`
+- `function monitoringFilters`
+- `function flattenHierarchy`
+- `function matchFacility`
+- `function dash`
+
+**Request fields read from `$request`**
+
+None detected.
+
+**Database tables referenced**
+
+None detected.
+
+**Events dispatched**
+
+None detected.
+
+### `api/service/ChatIntentService.php`
+
+- **Role:** Service layer
+- **HTTP method guard:** Not detected (internal/helper or legacy handling).
+
+**Dependencies included**
+
+None detected.
+
+**Declared classes and functions**
+
+- `class ChatIntentService`
+- `function match`
+- `function roleKey`
+- `function intents`
+- `function roleAllowed`
+- `function normalize`
+
+**Request fields read from `$request`**
+
+None detected.
+
+**Database tables referenced**
+
+None detected.
+
+**Events dispatched**
+
+None detected.
+
+### `api/service/ChatKnowledgeService.php`
+
+- **Role:** Service layer
+- **HTTP method guard:** Not detected (internal/helper or legacy handling).
+
+**Dependencies included**
+
+None detected.
+
+**Declared classes and functions**
+
+- `class ChatKnowledgeService`
+- `function answer`
+- `function answers`
+- `function formatAnswer`
+
+**Request fields read from `$request`**
+
+None detected.
+
+**Database tables referenced**
+
+None detected.
 
 **Events dispatched**
 
@@ -3763,7 +4556,7 @@ None detected.
 
 - **Role:** Service layer
 - **HTTP method guard:** Not detected (internal/helper or legacy handling).
-- **Source intent:** DashboardService.php  Performance dashboard service facade.
+- **Source intent:** DashboardService.php  Performance dashboard service facade.
 
 **Dependencies included**
 
@@ -3805,8 +4598,11 @@ None detected.
 - `function saveBulkStatus`
 - `function getStatusList`
 - `function isDepartmentActive`
+- `function assessmentColumn`
+- `function columnExists`
 - `function success`
 - `function error`
+- `function isSensitiveError`
 
 **Request fields read from `$request`**
 
@@ -3817,6 +4613,40 @@ None detected.
 - `department`
 - `assessment_department_status`
 - `is_active`
+- `INFORMATION_SCHEMA`
+
+**Events dispatched**
+
+None detected.
+
+### `api/service/DeploymentConfigService.php`
+
+- **Role:** Service layer
+- **HTTP method guard:** Not detected (internal/helper or legacy handling).
+
+**Dependencies included**
+
+None detected.
+
+**Declared classes and functions**
+
+- `class DeploymentConfigService`
+- `function current`
+- `function applyProfile`
+- `function profiles`
+- `function normalizeModules`
+- `function readJson`
+- `function writeJson`
+- `function defaultDomain`
+- `function defaultModules`
+
+**Request fields read from `$request`**
+
+None detected.
+
+**Database tables referenced**
+
+None detected.
 
 **Events dispatched**
 
@@ -3851,6 +4681,7 @@ None detected.
 - `function getCycleId`
 - `function success`
 - `function error`
+- `function isSensitiveError`
 
 **Request fields read from `$request`**
 
@@ -3869,11 +4700,46 @@ None detected.
 
 None detected.
 
+### `api/service/EmailService.php`
+
+- **Role:** Service layer
+- **HTTP method guard:** Not detected (internal/helper or legacy handling).
+
+**Dependencies included**
+
+None detected.
+
+**Declared classes and functions**
+
+- `class EmailService`
+- `function __construct`
+- `function send`
+- `function sendTemplate`
+- `function loadConfig`
+- `function log`
+- `function sendHttp`
+- `function headers`
+- `function httpRequest`
+- `function renderArray`
+- `function render`
+
+**Request fields read from `$request`**
+
+None detected.
+
+**Database tables referenced**
+
+None detected.
+
+**Events dispatched**
+
+None detected.
+
 ### `api/service/FormulaEngine.php`
 
 - **Role:** Service layer
 - **HTTP method guard:** Not detected (internal/helper or legacy handling).
-- **Source intent:** FormulaEngine.php  Formula helper for Performance Monitoring.
+- **Source intent:** FormulaEngine.php  Formula helper for Performance Monitoring.
 
 **Dependencies included**
 
@@ -3903,7 +4769,7 @@ None detected.
 
 - **Role:** Service layer
 - **HTTP method guard:** Not detected (internal/helper or legacy handling).
-- **Source intent:** IndicatorService.php  Generic KPI / Outcome indicator service per v3 design.
+- **Source intent:** IndicatorService.php  Generic KPI / Outcome indicator service per v3 design.
 
 **Dependencies included**
 
@@ -3931,11 +4797,42 @@ None detected.
 
 None detected.
 
+### `api/service/JobQueueService.php`
+
+- **Role:** Service layer
+- **HTTP method guard:** Not detected (internal/helper or legacy handling).
+- **Source intent:** Durable MySQL-backed queue. Workers claim one job at a time and can be run by Task Scheduler or a process manager.
+
+**Dependencies included**
+
+None detected.
+
+**Declared classes and functions**
+
+- `class JobQueueService`
+- `function __construct`
+- `function enqueue`
+- `function claim`
+- `function complete`
+- `function fail`
+
+**Request fields read from `$request`**
+
+None detected.
+
+**Database tables referenced**
+
+- `background_jobs`
+
+**Events dispatched**
+
+None detected.
+
 ### `api/service/KPIService.php`
 
 - **Role:** Service layer
 - **HTTP method guard:** Not detected (internal/helper or legacy handling).
-- **Source intent:** KPIService.php  KPI list, save and history service.
+- **Source intent:** KPIService.php  KPI list, save and history service.
 
 **Dependencies included**
 
@@ -3968,7 +4865,7 @@ None detected.
 
 - **Role:** Service layer
 - **HTTP method guard:** Not detected (internal/helper or legacy handling).
-- **Source intent:** OutcomeService.php  Outcome list, save and history service.
+- **Source intent:** OutcomeService.php  Outcome list, save and history service.
 
 **Dependencies included**
 
@@ -3998,7 +4895,7 @@ None detected.
 
 - **Role:** Service layer
 - **HTTP method guard:** Not detected (internal/helper or legacy handling).
-- **Source intent:** PerformanceService.php  Shared helpers for Performance Monitoring.
+- **Source intent:** PerformanceService.php  Shared helpers for Performance Monitoring.
 
 **Dependencies included**
 
@@ -4021,6 +4918,7 @@ None detected.
 - `function activeAssessment`
 - `function latestActiveAssessmentPeriodId`
 - `function activeDepartmentIds`
+- `function departmentStatusAssessmentColumn`
 - `function filterByDepartmentIds`
 - `function flattenIndicators`
 - `function normalizeIndicator`
@@ -4036,11 +4934,92 @@ None detected.
 
 **Database tables referenced**
 
+- `name`
+- `processing`
 - `IF`
 - `CURRENT_TIMESTAMP`
 - `assessment_master`
 - `assessment_department_status`
+- `INFORMATION_SCHEMA`
 - `performance_entries`
+
+**Events dispatched**
+
+None detected.
+
+### `api/service/ResponseTypeService.php`
+
+- **Role:** Service layer
+- **HTTP method guard:** Not detected (internal/helper or legacy handling).
+- **Source intent:** SaQshi configurable checkpoint response handler.  This keeps the checklist engine domain-neutral. Healthcare can keep the default 0/1/2 scoring, while education or other domains can use yes/no, dropdown, number, text or multi-field responses from framework JSON.
+
+**Dependencies included**
+
+None detected.
+
+**Declared classes and functions**
+
+- `class ResponseTypeService`
+- `function ensureSchema`
+- `function evaluate`
+- `function replaceFieldIndex`
+- `function ensureColumn`
+- `function normalizeDefinition`
+- `function payload`
+- `function options`
+- `function matchOption`
+- `function maxOptionScore`
+- `function formFields`
+- `function summaryValue`
+- `function field`
+
+**Request fields read from `$request`**
+
+- `response_value`
+- `response_json`
+
+**Database tables referenced**
+
+- `framework`
+- `IF`
+- `CURRENT_TIMESTAMP`
+- `assessment_response_field_index`
+- `INFORMATION_SCHEMA`
+
+**Events dispatched**
+
+None detected.
+
+### `api/service/SmsService.php`
+
+- **Role:** Service layer
+- **HTTP method guard:** Not detected (internal/helper or legacy handling).
+
+**Dependencies included**
+
+None detected.
+
+**Declared classes and functions**
+
+- `class SmsService`
+- `function __construct`
+- `function send`
+- `function sendTemplate`
+- `function loadConfig`
+- `function log`
+- `function sendHttp`
+- `function headers`
+- `function httpRequest`
+- `function renderArray`
+- `function render`
+
+**Request fields read from `$request`**
+
+None detected.
+
+**Database tables referenced**
+
+None detected.
 
 **Events dispatched**
 
@@ -4050,6 +5029,7 @@ None detected.
 
 - **Role:** Service layer
 - **HTTP method guard:** Not detected (internal/helper or legacy handling).
+- **Source intent:** Provides state assessment service behavior for SaQshi API workflows.
 
 **Dependencies included**
 
@@ -4075,6 +5055,7 @@ None detected.
 
 - **Role:** Service layer
 - **HTTP method guard:** Not detected (internal/helper or legacy handling).
+- **Source intent:** Provides state certification service behavior for SaQshi API workflows.
 
 **Dependencies included**
 
@@ -4100,6 +5081,7 @@ None detected.
 
 - **Role:** Service layer
 - **HTTP method guard:** Not detected (internal/helper or legacy handling).
+- **Source intent:** Provides state cqiservice behavior for SaQshi API workflows.
 
 **Dependencies included**
 
@@ -4125,6 +5107,7 @@ None detected.
 
 - **Role:** Service layer
 - **HTTP method guard:** Not detected (internal/helper or legacy handling).
+- **Source intent:** Provides state dashboard service behavior for SaQshi API workflows.
 
 **Dependencies included**
 
@@ -4200,6 +5183,7 @@ None detected.
 - `function performanceWhere`
 - `function tableExists`
 - `function columnExists`
+- `function departmentStatusAssessmentColumn`
 - `function facilityTypeIdColumn`
 - `function certFacilityColumn`
 - `function scalar`
@@ -4214,6 +5198,7 @@ None detected.
 **Database tables referenced**
 
 - `certification_history`
+- `certification`
 - `failed`
 - `assessment_master`
 - `assessment_department_status`
@@ -4223,8 +5208,13 @@ None detected.
 - `performance_entries`
 - `s_user`
 - `u_role`
+- `user`
 - `is`
 - `prepare`
+- `json`
+- `db`
+- `payload`
+- `exists`
 - `INFORMATION_SCHEMA`
 
 **Events dispatched**
@@ -4236,6 +5226,7 @@ None detected.
 
 - **Role:** Service layer
 - **HTTP method guard:** Not detected (internal/helper or legacy handling).
+- **Source intent:** Provides state facility category service behavior for SaQshi API workflows.
 
 **Dependencies included**
 
@@ -4261,6 +5252,7 @@ None detected.
 
 - **Role:** Service layer
 - **HTTP method guard:** Not detected (internal/helper or legacy handling).
+- **Source intent:** Provides state facility drilldown service behavior for SaQshi API workflows.
 
 **Dependencies included**
 
@@ -4286,6 +5278,7 @@ None detected.
 
 - **Role:** Service layer
 - **HTTP method guard:** Not detected (internal/helper or legacy handling).
+- **Source intent:** Handles analytics processing for this API workflow.
 
 **Dependencies included**
 
@@ -4323,6 +5316,8 @@ None detected.
 - `assessment_master`
 - `facilities`
 - `performance_entries`
+- `processing`
+- `exists`
 - `INFORMATION_SCHEMA`
 
 **Events dispatched**
@@ -4333,6 +5328,7 @@ None detected.
 
 - **Role:** Service layer
 - **HTTP method guard:** Not detected (internal/helper or legacy handling).
+- **Source intent:** Provides state map service behavior for SaQshi API workflows.
 
 **Dependencies included**
 
@@ -4358,6 +5354,7 @@ None detected.
 
 - **Role:** Service layer
 - **HTTP method guard:** Not detected (internal/helper or legacy handling).
+- **Source intent:** Provides state performance service behavior for SaQshi API workflows.
 
 **Dependencies included**
 
@@ -4383,10 +5380,12 @@ None detected.
 
 - **Role:** Service layer
 - **HTTP method guard:** Not detected (internal/helper or legacy handling).
+- **Source intent:** Provides state report service behavior for SaQshi API workflows.
 
 **Dependencies included**
 
 - `/StateDashboardService.php`
+- `/../core/Crypto.php`
 
 **Declared classes and functions**
 
@@ -4402,6 +5401,9 @@ None detected.
 - `function responseTable`
 - `function selectColumn`
 - `function monthName`
+- `function writeAssessorActivity`
+- `function domainLabels`
+- `function moduleEnabled`
 - `function facilityTypeName`
 - `function departmentMap`
 - `function checkpointMap`
@@ -4409,6 +5411,8 @@ None detected.
 - `function collectPerformanceIndicators`
 - `function indicatorFieldLabels`
 - `function facilityWhereLocal`
+- `function facilityMasterRows`
+- `function matchesMasterFilters`
 - `function streamQuery`
 - `function csvRow`
 - `function prepareAndBind`
@@ -4421,12 +5425,15 @@ None detected.
 
 **Database tables referenced**
 
-- `certification_history`
 - `is`
 - `facilities`
 - `assessment_action_plan`
 - `assessment_master`
 - `performance_entries`
+- `certification_history`
+- `processing`
+- `assessor_master`
+- `exists`
 - `INFORMATION_SCHEMA`
 
 **Events dispatched**
@@ -4437,6 +5444,7 @@ None detected.
 
 - **Role:** Service layer
 - **HTTP method guard:** Not detected (internal/helper or legacy handling).
+- **Source intent:** Provides state user admin service behavior for SaQshi API workflows.
 
 **Dependencies included**
 
@@ -4462,7 +5470,7 @@ None detected.
 
 - **Role:** Service layer
 - **HTTP method guard:** Not detected (internal/helper or legacy handling).
-- **Source intent:** ValidationService.php  Performance indicator validation helper.
+- **Source intent:** ValidationService.php  Performance indicator validation helper.
 
 **Dependencies included**
 
@@ -4489,6 +5497,18 @@ None detected.
 
 Configuration files define static behaviour, validation rules, master data, certification settings, and performance settings. They do not expose HTTP endpoints.
 
+### `api/config/background_worker.json`
+
+- **Role:** Configuration
+- **JSON shape:** object
+- **Top-level keys:** `queue_driver`, `execution_mode`, `poll_seconds`, `scheduled_task`, `windows_service`, `redis_coordinated_worker`
+
+### `api/config/cache.json`
+
+- **Role:** Configuration
+- **JSON shape:** object
+- **Top-level keys:** `enabled`, `driver`, `redis`, `assessment_list_ttl_seconds`
+
 ### `api/config/certification/certification.json`
 
 - **Role:** Configuration
@@ -4507,13 +5527,97 @@ Configuration files define static behaviour, validation rules, master data, cert
 - **JSON shape:** object
 - **Top-level keys:** `required_fields`, `score`
 
+### `api/config/chat/intents.json`
+
+- **Role:** Configuration
+- **JSON shape:** object
+- **Top-level keys:** `intents`
+
+### `api/config/chat/knowledge.json`
+
+- **Role:** Configuration
+- **JSON shape:** object
+- **Top-level keys:** `answers`
+
+### `api/config/chat/prompts.json`
+
+- **Role:** Configuration
+- **JSON shape:** object
+- **Top-level keys:** `tone`, `rules`
+
+### `api/config/chat/safety.json`
+
+- **Role:** Configuration
+- **JSON shape:** object
+- **Top-level keys:** `max_message_length`, `fallback_answer_key`, `blocked_terms`
+
+### `api/config/domain.json`
+
+- **Role:** Configuration
+- **JSON shape:** object
+- **Top-level keys:** `domain`, `profile_code`, `profile_name`, `default_framework`, `branding`, `content`, `labels`
+
+### `api/config/domain_health.json`
+
+- **Role:** Configuration
+- **JSON shape:** object
+- **Top-level keys:** `domain`, `profile_code`, `profile_name`, `default_framework`, `labels`
+
+### `api/config/examples/education-domain.example.json`
+
+- **Role:** Configuration
+- **JSON shape:** object
+- **Top-level keys:** `domain`, `profile_code`, `profile_name`, `default_framework`, `labels`
+
+### `api/config/examples/education-modules.example.json`
+
+- **Role:** Configuration
+- **JSON shape:** object
+- **Top-level keys:** `domain`, `description`, `modules`, `role_visibility`, `active_profile`, `default_framework`
+
+### `api/config/examples/healthcare-domain.example.json`
+
+- **Role:** Configuration
+- **JSON shape:** object
+- **Top-level keys:** `domain`, `profile_code`, `profile_name`, `default_framework`, `labels`
+
+### `api/config/examples/healthcare-modules.example.json`
+
+- **Role:** Configuration
+- **JSON shape:** object
+- **Top-level keys:** `domain`, `description`, `modules`, `role_visibility`, `active_profile`, `default_framework`
+
+### `api/config/frameworks/education-school.json`
+
+- **Role:** Configuration
+- **JSON shape:** list
+- **Top-level keys:** Not applicable or list-based configuration.
+
+### `api/config/frameworks/healthcare-example.json`
+
+- **Role:** Configuration
+- **JSON shape:** list
+- **Top-level keys:** Not applicable or list-based configuration.
+
 ### `api/config/frameworks/sample-framework.json`
 
 - **Role:** Configuration
 - **JSON shape:** object
 - **Top-level keys:** `framework`, `settings`, `facility_types`, `departments`, `areas_of_concern`, `reports`, `dashboard`
 
+### `api/config/frameworks/saqshi-education.json`
+
+- **Role:** Configuration
+- **JSON shape:** list
+- **Top-level keys:** Not applicable or list-based configuration.
+
 ### `api/config/frameworks/saqshi-nqas.json`
+
+- **Role:** Configuration
+- **JSON shape:** list
+- **Top-level keys:** Not applicable or list-based configuration.
+
+### `api/config/frameworks/saqshi-nqas_health.json`
 
 - **Role:** Configuration
 - **JSON shape:** list
@@ -4537,13 +5641,37 @@ Configuration files define static behaviour, validation rules, master data, cert
 - **JSON shape:** list
 - **Top-level keys:** Not applicable or list-based configuration.
 
+### `api/config/masters/departmet_heath.json`
+
+- **Role:** Configuration
+- **JSON shape:** list
+- **Top-level keys:** Not applicable or list-based configuration.
+
 ### `api/config/masters/facilities.json`
 
 - **Role:** Configuration
 - **JSON shape:** list
 - **Top-level keys:** Not applicable or list-based configuration.
 
+### `api/config/masters/facilities.sample.json`
+
+- **Role:** Configuration
+- **JSON shape:** list
+- **Top-level keys:** Not applicable or list-based configuration.
+
+### `api/config/masters/facilities_health.json`
+
+- **Role:** Configuration
+- **JSON shape:** list
+- **Top-level keys:** Not applicable or list-based configuration.
+
 ### `api/config/masters/facility_types.json`
+
+- **Role:** Configuration
+- **JSON shape:** invalid JSON
+- **Top-level keys:** Not applicable or list-based configuration.
+
+### `api/config/masters/facility_types_health.json`
 
 - **Role:** Configuration
 - **JSON shape:** list
@@ -4566,6 +5694,30 @@ Configuration files define static behaviour, validation rules, master data, cert
 - **Role:** Configuration
 - **JSON shape:** object
 - **Top-level keys:** `type`, `arcs`, `transform`, `objects`, `crs`
+
+### `api/config/modules.json`
+
+- **Role:** Configuration
+- **JSON shape:** object
+- **Top-level keys:** `domain`, `description`, `modules`, `role_visibility`, `active_profile`, `default_framework`
+
+### `api/config/modules_health.json`
+
+- **Role:** Configuration
+- **JSON shape:** object
+- **Top-level keys:** `domain`, `description`, `modules`, `role_visibility`, `active_profile`, `default_framework`
+
+### `api/config/notifications/email.json`
+
+- **Role:** Configuration
+- **JSON shape:** object
+- **Top-level keys:** `enabled`, `transport`, `from_email`, `from_name`, `log_path`, `templates`, `http`
+
+### `api/config/notifications/sms.json`
+
+- **Role:** Configuration
+- **JSON shape:** object
+- **Top-level keys:** `enabled`, `transport`, `log_path`, `sender_id`, `templates`, `http`
 
 ### `api/config/performance/dashboard.json`
 
@@ -4621,17 +5773,41 @@ Configuration files define static behaviour, validation rules, master data, cert
 - **JSON shape:** object
 - **Top-level keys:** `module`, `config_type`, `version`, `description`, `scope`, `global_validation`, `field_validation`, `month_year_validation`, `formula_validation`, `save_validation`, `indicator_validation`, `messages`
 
+### `api/config/profiles/education.json`
+
+- **Role:** Configuration
+- **JSON shape:** object
+- **Top-level keys:** `profile_code`, `profile_name`, `recommended_for`, `default_framework`, `branding`, `content`, `modules`, `labels`
+
+### `api/config/profiles/generic-inspection.json`
+
+- **Role:** Configuration
+- **JSON shape:** object
+- **Top-level keys:** `profile_code`, `profile_name`, `recommended_for`, `default_framework`, `branding`, `content`, `modules`, `labels`
+
+### `api/config/profiles/healthcare.json`
+
+- **Role:** Configuration
+- **JSON shape:** object
+- **Top-level keys:** `profile_code`, `profile_name`, `recommended_for`, `default_framework`, `branding`, `content`, `modules`, `labels`
+
+### `api/config/session.json`
+
+- **Role:** Configuration
+- **JSON shape:** object
+- **Top-level keys:** `cookie_name`, `driver`, `redis`, `files`
+
 ### `api/postman/collections/SaQshi API Testing Collection.postman_collection.json`
 
 - **Role:** Configuration
 - **JSON shape:** object
 - **Top-level keys:** `info`, `item`, `variable`
 
-### `api/sql/legacy_sql_notes.sql`
+### `api/sql/sql.json`
 
 - **Role:** Configuration
-- **JSON shape:** invalid JSON
-- **Top-level keys:** Not applicable or list-based configuration.
+- **JSON shape:** object
+- **Top-level keys:** `status`, `description`
 
 ## Maintaining this reference
 

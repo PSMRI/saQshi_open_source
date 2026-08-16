@@ -21,6 +21,12 @@
         isLoading: false
     };
 
+    function domainLabel(key, fallback) {
+        return SQ.deployment && typeof SQ.deployment.label === "function"
+            ? SQ.deployment.label(key, fallback)
+            : fallback;
+    }
+
     function $(id) {
         return document.getElementById(id);
     }
@@ -171,7 +177,8 @@
         setText("adminUserIdBadge", "User ID " + Number(user.u_id || 0));
         setText("adminUsernameText", user.u_name || "-");
         setText("adminRoleText", user.role_name || user.user_type || "-");
-        setText("adminFacilityText", user.fac_id_fk || "-");
+        setText("adminFacilityCodeLabel", domainLabel("facility_code", "NIN"));
+        setText("adminFacilityText", user.facility_code || "-");
         setText("adminStatusText", Number(user.is_active || 0) === 1 ? "Active" : "Inactive");
 
         const notice = $("adminPasswordRequiredNotice");
@@ -210,6 +217,31 @@
             return;
         }
 
+        const nameFields = [
+            ["First name", $("adminFirstName").value],
+            ["Middle name", $("adminMiddleName").value],
+            ["Last name", $("adminLastName").value]
+        ];
+        const namePattern = /^[A-Za-z]+(?:\s+[A-Za-z]+)*$/;
+        for (const [label, value] of nameFields) {
+            const trimmed = value.trim();
+            if ((label === "First name" && !trimmed) || (trimmed && !namePattern.test(trimmed))) {
+                notify("warning", `${label} can contain letters and spaces only.`);
+                return;
+            }
+        }
+
+        const email = $("adminEmail").value.trim();
+        const mobile = $("adminMobile").value.trim();
+        if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            notify("warning", "Enter a valid email address.");
+            return;
+        }
+        if (!/^\d{10}$/.test(mobile)) {
+            notify("warning", "Mobile number must contain exactly 10 digits.");
+            return;
+        }
+
         const payload = {
             f_name: $("adminFirstName").value.trim(),
             m_name: $("adminMiddleName").value.trim(),
@@ -240,6 +272,10 @@
         $("btnClearUserForm")?.addEventListener("click", clearPasswordFields);
         $("adminPassword")?.addEventListener("input", renderPasswordRules);
         $("adminConfirmPassword")?.addEventListener("input", renderPasswordRules);
+        ["adminFirstName", "adminMiddleName", "adminLastName"].forEach(function (id) {
+            $(id)?.addEventListener("input", function () { this.value = this.value.replace(/[^A-Za-z\s]/g, "").replace(/\s{2,}/g, " "); });
+        });
+        $("adminMobile")?.addEventListener("input", function () { this.value = this.value.replace(/\D/g, "").slice(0, 10); });
     }
 
     async function init() {
@@ -248,6 +284,12 @@
         }
 
         state.isLoading = true;
+        if (SQ.deployment && typeof SQ.deployment.load === "function") {
+            await SQ.deployment.load();
+            SQ.deployment.applyLabels(document);
+            const facilityLabel = SQ.deployment.label ? SQ.deployment.label("facility", "Facility") : "Facility";
+            setText("sq-page-subtitle", `Update your ${String(facilityLabel).toLowerCase()} user details and password.`);
+        }
         bindEvents();
         renderPasswordRules();
 

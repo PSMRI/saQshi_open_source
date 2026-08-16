@@ -130,6 +130,24 @@ Supported response styles:
 
 **Extension note:** Preserve every ownership/state check before a write. If evidence becomes a managed upload, store a file identifier from the files API instead of accepting an unverified URL.
 
+## FHIR assessment-summary export
+
+**Source:** `api/assessment/v1/fhir_measure_reports.php`  
+**Method:** `GET`  
+**Why:** Exchanges the authenticated facility's assessment summary as a FHIR R4 `Bundle` containing `MeasureReport` resources.
+
+Optional query parameter: `assessment_id` limits the result to one assessment.
+
+The endpoint is read-only and facility-scoped. It returns assessment status,
+period, framework reference, answered-checkpoint count and aggregate score. It
+does not return response text, evidence, user records or credentials. The
+response media type is `application/fhir+json` rather than the usual SaQshi
+JSON envelope.
+
+Before connecting it to an external gateway, map identifiers and terminology
+with the receiving system and confirm the deployment's privacy/data-sharing
+requirements.
+
 ## Complete assessment
 
 **Source:** `api/assessment/v1/complete_assessment.php`  
@@ -163,6 +181,7 @@ The module also contains the following endpoint families. They are listed here s
 |---|---|
 | Department setup | `department/list`, `department/save`, `department-status/list`, `department-status/save`, `start_department`, `resume_department`, `complete-department` |
 | Assessment lifecycle | `list`, `start`, `start_cycle`, `get-cycle`, `complete-cycle`, `cancel_assessment` |
+| Standards-based exchange | `fhir_measure_reports` |
 | Checkpoint navigation | `get_checkpoint`, `next_checkpoint`, `previous_checkpoint`, `progress`, `resume`, `score` |
 | Assessor data | `assessor_info_get`, `assessor_info_save` |
 | Analysis and action plans | `gap_analysis`, `dashboard_insights`, `action_plan`, `action_plan_save`, `action_plan_update`, `action_plan_closure` |

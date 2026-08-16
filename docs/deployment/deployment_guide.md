@@ -34,6 +34,9 @@ For optional central search of API and audit-event logs without Docker or a virt
 9. Login with a test user and verify dashboard routing.
 10. If Memurai sessions are enabled, confirm `memurai-cli.exe ping` returns `PONG` and verify a login session is retained.
 11. If log monitoring is enabled, verify Loki `/ready` and Grafana access before production handover.
+12. Select the deployment profile using `php api/cli/configure-deployment-profile.php` before creating assessments.
+13. Select and install the background-worker mode using `api/cli/configure-background-worker.ps1`; see [Background Worker Deployment](background-workers.md).
+14. Run `php api/cli/deployment-readiness.php` and resolve every failed check before go-live.
 
 ## UI Deployment
 

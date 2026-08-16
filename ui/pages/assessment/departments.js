@@ -20,6 +20,7 @@
         assessment: "/assessment/v1/active_assessment.php",
         departments: "/framework/v1/my_departments.php",
         status: "/assessment/v1/department-status/list.php",
+        assignments: "/assessment/v1/section_assignment.php",
         save: "/assessment/v1/department-status/save.php"
     };
 
@@ -27,6 +28,9 @@
         assessment: null,
         departments: [],
         statusMap: {},
+        assignmentMap: {},
+        currentAssessorId: 0,
+        isAssessorSession: false,
         isLoading: false
     };
 
@@ -202,7 +206,18 @@
 
         state.departments.forEach(function (dept, index) {
             const active = isDepartmentActive(dept);
-            const canActivate = !active && dept.can_activate !== false;
+            const assignment = dept.assignment || null;
+            const completed = assignment && String(assignment.status || "").toUpperCase() === "COMPLETED";
+            const assignedToAnother = assignment && Number(assignment.assessor_id) !== Number(state.currentAssessorId);
+            const isAssessor = state.isAssessorSession || state.currentAssessorId > 0;
+            const assessorHasActiveClass = isAssessor && Object.values(state.assignmentMap).some(function (item) {
+                return Number(item.assessor_id) === Number(state.currentAssessorId)
+                    && String(item.status || "").toUpperCase() === "IN_PROGRESS";
+            });
+            const assignedToCurrentAssessor = assignment && Number(assignment.assessor_id) === Number(state.currentAssessorId);
+            const blockedByCurrentClass = assessorHasActiveClass && !assignedToCurrentAssessor;
+            const canActivate = !active && !assignedToAnother && !blockedByCurrentClass && dept.can_activate !== false;
+            const unit = label("department", "Department");
 
             tbody.insertAdjacentHTML(
                 "beforeend",
@@ -211,31 +226,29 @@
                         <td>${index + 1}</td>
                         <td>
                             <strong>${escapeHtml(dept.dept_name || "-")}</strong>
-                            <div class="sq-dept-meta">
-                                ${escapeHtml(dept.program_tag || "General")}
-                            </div>
+                            ${assignedToAnother ? "" : `<div class="sq-dept-meta">${escapeHtml(dept.program_tag || "General")}</div>`}
                         </td>
                         <td>${Number(dept.concern_count || 0)}</td>
                         <td>
                             <span class="sq-status ${active ? "sq-status-active" : "sq-status-inactive"}">
-                                ${active ? "Activated" : "Inactive"}
+                                ${completed ? "Completed" : (assignment ? (assignedToAnother ? "Assigned to another assessor" : "Assigned to you") : (blockedByCurrentClass ? "Complete current class first" : (active ? "Activated" : "Inactive")))}
                             </span>
                         </td>
                         <td>
                             <div class="sq-action">
-                                <button
+                                ${assignedToAnother || completed || blockedByCurrentClass ? "" : (!active ? `<button
                                     type="button"
                                     class="sq-btn ${active ? "sq-btn-light" : "sq-btn-primary"}"
                                     data-sq-activate-department="${Number(dept.dept_id || 0)}"
                                     ${canActivate ? "" : "disabled"}>
-                                    ${active ? "Locked" : "Activate"}
-                                </button>
-                                ${active ? `
+                                    ${active ? `Continue ${unit} Assessment` : `Start ${unit} Assessment`}
+                                </button>` : (isAssessor && !assignment ? `<button type="button" class="sq-btn sq-btn-primary" data-sq-activate-department="${Number(dept.dept_id || 0)}">Claim ${unit}</button>` : ""))}
+                                ${active && !assignedToAnother && !completed ? `
                                     <button
                                         type="button"
                                         class="sq-btn sq-btn-primary"
                                         data-sq-assessor-info="${Number(dept.dept_id || 0)}">
-                                        ${escapeHtml(label("assessor_info", "Assessor Info"))}
+                                        ${assignment && !assignedToAnother ? `Continue ${escapeHtml(unit)} Assessment` : escapeHtml(label("assessor_info", "Assessor Info"))}
                                     </button>
                                 ` : ""}
                             </div>
@@ -247,7 +260,8 @@
     }
 
     async function loadAssessment() {
-        const response = await apiGet(API.assessment);
+        const requestedAssessmentId = Number(new URLSearchParams(window.location.search).get("assessment_id") || 0);
+        const response = await apiGet(API.assessment, requestedAssessmentId ? { assessment_id: requestedAssessmentId } : {});
         const assessment = getAssessment(response);
 
         if (!assessment || !assessment.assessment_id) {
@@ -258,6 +272,7 @@
         }
 
         state.assessment = assessment;
+        state.isAssessorSession = Boolean(assessment.is_assessor_session);
         renderAssessment();
         return true;
     }
@@ -279,10 +294,21 @@
         });
 
         state.statusMap = {};
+        state.assignmentMap = {};
 
         getStatusRows(statusResponse).forEach(function (row) {
             state.statusMap[Number(row.dept_id)] = row;
         });
+
+        try {
+            const assignmentResponse = await apiGet(API.assignments, { assessment_id: assessment.assessment_id });
+            state.currentAssessorId = Number(assignmentResponse?.data?.assessor_id || 0);
+            (assignmentResponse?.data?.assignments || []).forEach(function (row) {
+                state.assignmentMap[Number(row.dept_id)] = row;
+            });
+        } catch (_) {
+            state.currentAssessorId = 0;
+        }
 
         state.departments = getDepartments(departmentsResponse).map(function (dept) {
             const deptId = Number(dept.dept_id || dept.fac_dept_id || 0);
@@ -291,6 +317,7 @@
             return Object.assign({}, dept, {
                 dept_id: deptId,
                 is_active: status.is_active ?? dept.is_active ?? 0,
+                assignment: state.assignmentMap[deptId] || null,
                 activated_by: status.activated_by ?? dept.activated_by ?? null,
                 activated_on: status.activated_on ?? dept.activated_on ?? null
             });
@@ -306,16 +333,32 @@
         button.textContent = "Saving...";
 
         try {
-            const response = await apiPost(API.save, {
-                assessment_id: state.assessment.assessment_id,
-                dept_id: deptId,
-                is_active: 1
-            });
+            let response;
+            let claimedByAssessor = false;
+            try {
+                response = await apiPost(API.assignments, {
+                    assessment_id: state.assessment.assessment_id,
+                    dept_id: deptId,
+                    assessment_date: new Date().toISOString().slice(0, 10)
+                });
+                claimedByAssessor = true;
+            } catch (assignmentError) {
+                if (state.isAssessorSession || state.currentAssessorId > 0) throw assignmentError;
+                response = await apiPost(API.save, { assessment_id: state.assessment.assessment_id, dept_id: deptId, is_active: 1 });
+            }
 
             notify("success", response.message || `${label("department", "Department")} activated.`);
 
             await loadDepartments();
             renderDepartments();
+
+            if (claimedByAssessor) {
+                if (SQ.router && typeof SQ.router.navigate === "function") {
+                    SQ.router.navigate("assessment/assessor-info", { dept_id: deptId });
+                } else {
+                    window.location.href = "/ui/dashboard.html?route=assessment/assessor-info&dept_id=" + deptId;
+                }
+            }
 
         } catch (error) {
             console.error(error);
@@ -371,6 +414,10 @@
         if (SQ.deployment?.load) {
             await SQ.deployment.load();
             SQ.deployment.applyLabels(document);
+        }
+        const pageTitle = $("sq-page-title");
+        if (pageTitle) {
+            pageTitle.textContent = `${label("assessment", "Assessment")} ${label("departments", "Departments")}`;
         }
         renderLoading();
         bindEvents();

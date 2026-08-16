@@ -1,7 +1,7 @@
 # SaQshi Open Source Readiness Checklist
 
-Version: 1.4  
-Reviewed: 2026-07-19  
+Version: 1.5  
+Reviewed: 2026-08-03  
 Repository location: project root
 
 ## Executive Summary
@@ -12,7 +12,7 @@ publication evidence is listed below.
 
 This checklist covers the current healthcare/NQAS public release package. Any future module expansion should be reviewed separately before it is included in public release material.
 
-The project includes a GPL-3.0 open-source license at the repository root, contribution guidance, a code of conduct, API documentation, testing documents, VAPT notes, WCAG notes, a sample environment file, DPG readiness documentation, privacy notes, governance guidance, production hardening notes, evidence/log retention guidance and role-access guidance. These are strong open-source foundations.
+The project includes a GPL-3.0 open-source license at the repository root, contribution guidance, a code of conduct, API documentation, testing documents, VAPT notes, WCAG evidence, WHO digital-health compatibility documentation, a sample environment file, DPG readiness documentation, privacy notes, governance guidance, production hardening notes, evidence/log retention guidance and role-access guidance. These are strong open-source foundations.
 
 The main release-review items before public release are:
 
@@ -102,8 +102,10 @@ Data-source status now recorded as complete for the current public package:
 | Generated/private storage excluded | Done | `.gitignore` excludes `api/storage/events/*.log`, `api/storage/logs/*.log`, `api/storage/keys/`, `uploads/`. | Good. |
 | Release readiness script | Done | `tools/release_readiness_check.php` checks required docs, local `.env`, private artifacts, obvious secrets, raw error exposure patterns, missing page assets and sanitized schema availability. Facility JSON content is treated as local deployment data and is not flagged automatically. | Run before release and resolve/review warnings. |
 | API documentation | Done | `docs/api/openapi.yaml`, `swagger-ui.html`, Postman collection, and guide exist. | Keep synchronized with API changes. |
-| Testing documentation | Done | Test plan, black-box/white-box, VAPT, load testing, WCAG docs exist under `docs/testing`. | Keep results updated with each release. |
-| Accessibility statement | Done | `docs/testing/saqshi_wcag_web_platform_compliance.md` exists. | Add manual screen-reader/keyboard results when completed. |
+| Testing documentation | Done | Test plan, black-box/white-box, VAPT, load testing, WCAG docs and `docs/testing/who_compatibility_test_execution_2026_08_03.md` exist under `docs/testing`. | Keep results updated with each release. |
+| Accessibility statement | Done | `docs/testing/saqshi_wcag_web_platform_compliance.md` and the accessibility execution report exist. | Repeat manual screen-reader/keyboard testing when UI flows change. |
+| WHO digital-health readiness | Implemented foundation / validation pending | `docs/compliance/who_digital_health_compatibility.md` documents low-bandwidth, scalability, adaptability and interoperability features; it is not a WHO certification claim. | Validate offline operation, target-network performance and selected worker topology in deployment/UAT. |
+| Standards-based exchange | Done / deployment mapping pending | OpenAPI, Postman and facility-scoped FHIR R4 `MeasureReport` export are documented. | Map identifiers, terminology, authentication and data-sharing rules before any external gateway connection. |
 | Security review notes | Done | `docs/security/sql_injection_security_review.md` exists. | Keep remediation status current. |
 | Release security scan | Done for current source pass | `docs/security/release_security_scan_2026_07_16.md` documents secret scan, PHP/JS syntax checks, raw SQL review, upload/auth/session review and code hardening. | Run final active VAPT in UAT before production/public release. |
 | Database migration/install docs | Done / clean-schema validation recorded | `api/sql/schema/001_base_schema.sql`, `api/sql/schema/README.md`, `docs/database/database_setup_and_migration.md` and `docs/database/data_dictionary_erd.md` exist; fresh-schema application check is recorded. | Repeat validation for final UAT/production-like release and keep seed/sample strategy documented. |
@@ -149,6 +151,8 @@ Data-source status now recorded as complete for the current public package:
 | Production hardening | Added | `docs/security/production_hardening.md` |
 | Role/access matrix | Added | `docs/security/role_access_matrix.md` |
 | Use cases | Added | `docs/architecture/use_cases.md` |
+| WHO digital-health compatibility | Added | `docs/compliance/who_digital_health_compatibility.md` |
+| WHO compatibility test execution | Added | `docs/testing/who_compatibility_test_execution_2026_08_03.md` |
 
 ## Release Evidence and Publication Conditions
 

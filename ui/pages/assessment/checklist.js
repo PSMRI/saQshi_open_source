@@ -35,6 +35,8 @@
         scopeCheckpoints: [],
         currentIndex: 0,
         departmentStarted: false,
+        readOnly: false,
+        concernReadOnly: false,
         selected: {
             deptId: 0,
             concernId: 0,
@@ -74,6 +76,43 @@
         if (SQ.toast) {
             SQ.toast(message, type);
         }
+    }
+
+    function domainLabel(key, fallback) {
+        return SQ.deployment?.label ? SQ.deployment.label(key, fallback) : fallback;
+    }
+
+    function queueUserId() {
+        return Number(SQ.auth?.getUser?.()?.u_id || 0);
+    }
+
+    async function updateOfflineStatus() {
+        const target = $("offlineSyncStatus");
+        if (!target || !SQ.offlineResponseQueue) return;
+        const count = await SQ.offlineResponseQueue.count(queueUserId());
+        target.hidden = count === 0 && navigator.onLine;
+        target.textContent = count
+            ? `${count} response${count === 1 ? "" : "s"} saved on this device. They will sync when online.`
+            : "You are offline. New responses will be saved on this device until connectivity returns.";
+    }
+
+    function isNetworkFailure(error) {
+        const message = String(error?.message || "").toLowerCase();
+        return !navigator.onLine || message.includes("network") || message.includes("fetch") || message.includes("timeout");
+    }
+
+    async function syncOfflineResponses() {
+        if (!navigator.onLine || !SQ.offlineResponseQueue) return;
+        try {
+            const sent = await SQ.offlineResponseQueue.flush(queueUserId(), function (payload) {
+                return apiPost(API.saveResponse, payload);
+            });
+            if (sent) notify("success", `${sent} saved response${sent === 1 ? "" : "s"} synchronized.`);
+        } catch (error) {
+            // Keep every queued item until the server acknowledges it.
+            console.warn("Offline response synchronization paused.", error);
+        }
+        await updateOfflineStatus();
     }
 
     async function apiGet(endpoint, params = {}) {
@@ -172,6 +211,11 @@
         return Number(checkpoint?.csqa_id || checkpoint?.checkpoint_id || 0);
     }
 
+    function hasSavedResponse(checkpoint) {
+        const value = checkpoint?.saved_response?.response_value;
+        return value !== null && value !== undefined && value !== "";
+    }
+
     function firstUnansweredIndex() {
         const index = state.scopeCheckpoints.findIndex(function (checkpoint) {
             const id = checkpointId(checkpoint);
@@ -184,7 +228,8 @@
     function renderCompletedScopeMessage() {
         const target = $("checklistState");
         const total = state.scopeCheckpoints.length;
-        const concern = $("concernSelect")?.selectedOptions?.[0]?.textContent || "this area of concern";
+        const domain = domainLabel("area_of_concern", "Area of Concern");
+        const concern = $("concernSelect")?.selectedOptions?.[0]?.textContent || `this ${domain.toLowerCase()}`;
 
         if (!target) {
             return;
@@ -194,12 +239,15 @@
             <div class="sq-card-body">
                 <div class="sq-completed-state">
                     <div>
-                        <div class="sq-completed-title">You have completed all checkpoints for this area of concern.</div>
+                        <div class="sq-completed-title">You have completed all checkpoints for this ${escapeHtml(domain)}.</div>
                         <p>${escapeHtml(concern)} has ${total} completed checkpoint${total === 1 ? "" : "s"}.</p>
                     </div>
                     <div class="sq-completed-actions">
                         <button type="button" class="sq-btn sq-btn-primary" data-sq-edit-completed>
                             Edit / Update Responses
+                        </button>
+                        <button type="button" class="sq-btn sq-btn-light" data-sq-view-completed>
+                            View Responses
                         </button>
                         <button type="button" class="sq-btn sq-btn-light" data-sq-reload-scope>
                             Reload Status
@@ -279,7 +327,10 @@
     }
 
     async function loadAssessment() {
-        const response = await apiGet(API.assessment);
+        const requestedAssessmentId = Number(new URLSearchParams(window.location.search).get("assessment_id") || 0);
+        const response = await apiGet(API.assessment, requestedAssessmentId ? {
+            assessment_id: requestedAssessmentId
+        } : {});
         const assessment = response?.data?.assessment || null;
 
         if (!assessment || !assessment.assessment_id) {
@@ -291,8 +342,12 @@
 
         state.assessment = assessment;
         renderAssessment();
+<<<<<<< Updated upstream
 
         if (assessment.is_assessor_led) {
+=======
+        if (assessment.is_assessor_led && !assessment.is_assessor_session) {
+>>>>>>> Stashed changes
             setStateMessage("This assessor-led assessment is read-only for facility users. Use Assessment Progress or Reports to view it.");
             return false;
         }
@@ -307,10 +362,19 @@
             framework: assessment.framework_code || "saqshi-nqas"
         });
 
-        const statusResponse = await apiGet(API.status, {
-            fac_id: assessment.fac_id,
-            assessment_id: assessment.assessment_id
-        });
+        let statusResponse = { data: [] };
+        let statusLoaded = true;
+        try {
+            statusResponse = await apiGet(API.status, {
+                fac_id: assessment.fac_id || assessment.fac_id_fk,
+                assessment_id: assessment.assessment_id
+            });
+        } catch (error) {
+            // Show the available Class/Department master list instead of
+            // leaving the selector indefinitely in its initial loading state.
+            console.warn("Department status could not be loaded.", error);
+            statusLoaded = false;
+        }
 
         const activeMap = {};
 
@@ -320,14 +384,15 @@
             }
         });
 
-        state.departments = (deptResponse?.data?.departments || [])
+        const allDepartments = (deptResponse?.data?.departments || [])
             .map(function (dept) {
                 const deptId = Number(dept.dept_id || dept.fac_dept_id || 0);
                 return Object.assign({}, dept, { dept_id: deptId });
-            })
-            .filter(function (dept) {
-                return Boolean(activeMap[Number(dept.dept_id)]);
             });
+
+        state.departments = statusLoaded
+            ? allDepartments.filter(function (dept) { return Boolean(activeMap[Number(dept.dept_id)]); })
+            : allDepartments;
 
         setOptions(
             $("deptSelect"),
@@ -355,10 +420,12 @@
         state.scopeCheckpoints = [];
         state.currentIndex = 0;
         state.departmentStarted = false;
+        state.readOnly = false;
+        state.concernReadOnly = false;
         resetBelow("department");
 
         if (!state.selected.deptId) {
-            setStateMessage("Select department to load area of concern.");
+            setStateMessage(`Select ${domainLabel("department", "department").toLowerCase()} to load ${domainLabel("area_of_concern", "area of concern").toLowerCase()}.`);
             return;
         }
 
@@ -373,14 +440,14 @@
 
         setOptions(
             select,
-            concerns.length ? "Select area of concern" : "No concern found",
+            concerns.length ? `Select ${domainLabel("area_of_concern", "area of concern")}` : `No ${domainLabel("area_of_concern", "area of concern")} found`,
             concerns,
             function (row) { return row.concern_id; },
             function (row) { return row.concern_name || row.concern_des || "Concern"; }
         );
 
         select.disabled = concerns.length === 0;
-        setStateMessage("Select area of concern.");
+        setStateMessage(`Select ${domainLabel("area_of_concern", "area of concern")}.`);
 
         if (state.checklistView === "concern") {
             await loadConcernChecklist();
@@ -396,7 +463,7 @@
         resetBelow("concern");
 
         if (!state.selected.concernId) {
-            setStateMessage("Select area of concern to load subtypes.");
+            setStateMessage(`Select ${domainLabel("area_of_concern", "area of concern").toLowerCase()} to load subtypes.`);
             return;
         }
 
@@ -719,9 +786,7 @@
             state.answered = new Set(
                 state.scopeCheckpoints
                     .filter(function (checkpoint) {
-                        return checkpoint.saved_response &&
-                            checkpoint.saved_response.response_value !== null &&
-                            checkpoint.saved_response.response_value !== undefined;
+                        return hasSavedResponse(checkpoint);
                     })
                     .map(function (checkpoint) {
                         return Number(checkpoint.csqa_id || 0);
@@ -735,6 +800,10 @@
             }
 
             if (isScopeCompleted()) {
+                if (state.readOnly) {
+                    renderCheckpointAt(0);
+                    return true;
+                }
                 state.current = null;
                 renderCompletedScopeMessage();
                 return true;
@@ -828,11 +897,19 @@
         $("checkpointText").textContent = checkpoint.Checkpoint || checkpoint.Measurable_Element || "-";
         $("checkpointVerification").textContent = checkpoint.Means_of_Verification || "";
 
+        $("checkpointPanel")?.classList.toggle("is-answered", hasSavedResponse(checkpoint));
+        $("checkpointPanel")?.classList.toggle("is-unanswered", !hasSavedResponse(checkpoint));
+        $("checkpointPanel")?.classList.toggle("is-view-only", state.readOnly);
+
         renderResponseControl(checkpoint, saved);
+        document.querySelectorAll("#responseControl input, #responseControl select, #responseControl textarea").forEach(function (input) {
+            input.disabled = state.readOnly;
+        });
         renderProgress(position);
 
         $("btnPreviousCheckpoint").disabled = Boolean(position.is_first);
-        $("btnNextCheckpoint").textContent = position.is_last ? "Finish Scope" : "Next";
+        $("btnSaveCheckpoint").hidden = state.readOnly;
+        $("btnNextCheckpoint").textContent = state.readOnly && position.is_last ? "Close View" : (position.is_last ? "Finish Scope" : "Next");
 
         show($("checklistState"), false);
         show($("checkpointPanel"), true);
@@ -851,7 +928,7 @@
             return false;
         }
 
-        const response = await apiPost(API.saveResponse, {
+        const request = {
             assessment_id: state.assessment.assessment_id,
             dept_id: state.selected.deptId,
             checkpoint_id: state.selected.checkpointId,
@@ -859,7 +936,19 @@
             response_json: payload.json,
             remarks: "",
             evidence_url: ""
-        });
+        };
+
+        let response;
+        let queued = false;
+        try {
+            response = await apiPost(API.saveResponse, request);
+        } catch (error) {
+            if (!isNetworkFailure(error) || !SQ.offlineResponseQueue) throw error;
+            await SQ.offlineResponseQueue.enqueue(queueUserId(), request);
+            response = { data: { offline_queued: true } };
+            queued = true;
+            await updateOfflineStatus();
+        }
 
         state.answered.add(state.selected.checkpointId);
         if (state.scopeCheckpoints[state.currentIndex]) {
@@ -872,12 +961,13 @@
                 score_status: response?.data?.score_status || "SCORED"
             };
         }
-        notify("success", response.message || "Response saved.");
+        notify(queued ? "warning" : "success", queued ? "Response saved on this device. It will sync automatically." : (response.message || "Response saved."));
         renderProgress(state.current.position || {});
-        return true;
+        return response;
     }
 
     async function handleSave() {
+        if (state.readOnly) return;
         try {
             await saveCurrentResponse();
         } catch (error) {
@@ -888,6 +978,15 @@
 
     async function handleNext() {
         try {
+            if (state.readOnly) {
+                if (state.currentIndex >= state.scopeCheckpoints.length - 1) {
+                    state.readOnly = false;
+                    renderCompletedScopeMessage();
+                } else {
+                    renderCheckpointAt(state.currentIndex + 1);
+                }
+                return;
+            }
             const saved = await saveCurrentResponse();
 
             if (!saved) {
@@ -986,7 +1085,7 @@
                 return { concern: concern, groups: groups };
             }));
 
-            state.activeConcernId = state.concernChecklist[0]?.concern?.concern_id || 0;
+            state.activeConcernId = 0;
             renderConcernTabs();
         } catch (error) {
             console.error(error);
@@ -998,8 +1097,7 @@
     function concernProgress(item) {
         const checkpoints = item.groups.flatMap(function (group) { return group.checkpoints; });
         const answered = checkpoints.filter(function (checkpoint) {
-            const saved = checkpoint.saved_response;
-            return saved && saved.response_value !== null && saved.response_value !== undefined && saved.response_value !== "";
+            return hasSavedResponse(checkpoint);
         }).length;
         return { total: checkpoints.length, answered: answered };
     }
@@ -1015,12 +1113,17 @@
             const concern = item.concern || {};
             const progress = concernProgress(item);
             const active = Number(concern.concern_id) === Number(state.activeConcernId);
-            return `<button type="button" class="sq-concern-tab${active ? " is-active" : ""}" data-concern-tab="${escapeHtml(concern.concern_id)}">
+            const completed = progress.total > 0 && progress.answered === progress.total;
+            return `<button type="button" class="sq-concern-tab${active ? " is-active" : ""}${completed ? " is-complete" : ""}" data-concern-tab="${escapeHtml(concern.concern_id)}">
                 <span>${escapeHtml(concern.concern_name || concern.concern_des || "Area of Concern")}</span>
                 <small>${progress.answered}/${progress.total}${progress.total && progress.answered === progress.total ? " Complete" : ""}</small>
             </button>`;
         }).join("");
-        renderActiveConcern();
+        if (state.activeConcernId) {
+            renderActiveConcern();
+        } else if ($("concernChecklistContent")) {
+            $("concernChecklistContent").innerHTML = `<div class="sq-empty-state">${escapeHtml(`Select a ${domainLabel("area_of_concern", "Domain")} tab to load its checklist.`)}</div>`;
+        }
     }
 
     function renderConcernResponse(checkpoint) {
@@ -1061,13 +1164,19 @@
         const target = $("concernChecklistContent");
         if (!target || !item) return;
         const progress = concernProgress(item);
-        target.innerHTML = `<div class="sq-aoc-heading"><strong>${escapeHtml(item.concern.concern_name || item.concern.concern_des || "Area of Concern")}</strong><span>${progress.answered} of ${progress.total} answered</span></div>${item.groups.map(function (group) {
+        target.innerHTML = `<div class="sq-aoc-heading"><strong>${escapeHtml(item.concern.concern_name || item.concern.concern_des || "Area of Concern")}</strong><span>${state.concernReadOnly ? "View only · " : ""}${progress.answered} of ${progress.total} answered</span></div>${item.groups.map(function (group) {
             const subtype = group.subtype || {};
             return `<section class="sq-aoc-subtype"><h4>${escapeHtml([subtype.Reference_No, subtype.area_of_con_subtypedeatils].filter(Boolean).join(" - ") || "Checklist")}</h4>${group.checkpoints.map(function (checkpoint, index) {
                 const id = checkpointId(checkpoint);
-                return `<article class="sq-aoc-checkpoint" data-aoc-checkpoint="${id}"><div class="sq-checkpoint-reference">${escapeHtml(checkpoint.csqa_reference_id || id || "-")}</div><div class="sq-checkpoint-text">${escapeHtml(checkpoint.Checkpoint || checkpoint.Measurable_Element || "-")}</div>${checkpoint.Means_of_Verification ? `<div class="sq-checkpoint-verification">${escapeHtml(checkpoint.Means_of_Verification)}</div>` : ""}<div class="sq-aoc-control">${renderConcernResponse(checkpoint)}</div></article>`;
+                const answerState = hasSavedResponse(checkpoint) ? " is-answered" : " is-unanswered";
+                return `<article class="sq-aoc-checkpoint${answerState}${state.concernReadOnly ? " is-view-only" : ""}" data-aoc-checkpoint="${id}"><div class="sq-checkpoint-reference">${escapeHtml(checkpoint.csqa_reference_id || id || "-")}</div><div class="sq-checkpoint-text">${escapeHtml(checkpoint.Checkpoint || checkpoint.Measurable_Element || "-")}</div>${checkpoint.Means_of_Verification ? `<div class="sq-checkpoint-verification">${escapeHtml(checkpoint.Means_of_Verification)}</div>` : ""}<div class="sq-aoc-control">${renderConcernResponse(checkpoint)}</div></article>`;
             }).join("")}</section>`;
         }).join("")}`;
+        document.querySelectorAll("#concernChecklistContent input, #concernChecklistContent select, #concernChecklistContent textarea").forEach(function (input) {
+            input.disabled = state.concernReadOnly;
+        });
+        $("btnSaveConcernDraft").hidden = state.concernReadOnly;
+        $("btnSubmitConcern").hidden = state.concernReadOnly;
     }
 
     function concernPayload(card, checkpoint) {
@@ -1102,20 +1211,44 @@
         try {
             await startDepartment();
             let savedCount = 0;
+            let queuedCount = 0;
             for (const entry of entries) {
                 const payload = concernPayload(entry.card, entry.checkpoint);
                 if (!payload) continue;
                 const saved = entry.checkpoint.saved_response;
                 if (saved && String(saved.response_value ?? "") === String(payload.value)) continue;
-                const response = await apiPost(API.saveResponse, { assessment_id: state.assessment.assessment_id, dept_id: state.selected.deptId, checkpoint_id: checkpointId(entry.checkpoint), response_value: payload.value, response_json: payload.json, remarks: "", evidence_url: "" });
+                const request = { assessment_id: state.assessment.assessment_id, dept_id: state.selected.deptId, checkpoint_id: checkpointId(entry.checkpoint), response_value: payload.value, response_json: payload.json, remarks: "", evidence_url: "" };
+                let response;
+                try {
+                    response = await apiPost(API.saveResponse, request);
+                } catch (error) {
+                    if (!isNetworkFailure(error) || !SQ.offlineResponseQueue) throw error;
+                    await SQ.offlineResponseQueue.enqueue(queueUserId(), request);
+                    response = { data: { offline_queued: true } };
+                    queuedCount++;
+                }
                 entry.checkpoint.saved_response = { response_value: response?.data?.response_value ?? payload.value, response_json: response?.data?.response_json || payload.json };
                 savedCount++;
             }
+            if (submit) {
+                const next = state.concernChecklist.find(function (candidate) {
+                    const progress = concernProgress(candidate);
+                    return Number(candidate.concern?.concern_id) !== Number(state.activeConcernId)
+                        && progress.total > 0 && progress.answered < progress.total;
+                });
+                if (next) {
+                    state.activeConcernId = Number(next.concern?.concern_id || 0);
+                    state.concernReadOnly = false;
+                }
+            }
             renderConcernTabs();
-            notify("success", submit ? "Area of Concern submitted successfully." : (savedCount ? "Draft saved." : "No changes to save."));
+            await updateOfflineStatus();
+            notify(queuedCount ? "warning" : "success", queuedCount
+                ? `${queuedCount} response${queuedCount === 1 ? "" : "s"} saved on this device and pending synchronization.`
+                : (submit ? `All responses for this ${domainLabel("area_of_concern", "Area of Concern")} were submitted successfully.` : (savedCount ? "Draft saved." : "No changes to save.")));
         } catch (error) {
             console.error(error);
-            notify("error", error.message || "Unable to save Area of Concern.");
+            notify("error", error.message || `Unable to save ${domainLabel("area_of_concern", "Area of Concern")}.`);
         }
     }
 
@@ -1149,12 +1282,23 @@
             }
 
             if (editButton) {
+                state.readOnly = false;
                 if (state.scopeCheckpoints.length) {
                     renderCheckpointAt(0);
                     return;
                 }
 
                 loadScopeCheckpoints();
+            }
+
+            const viewButton = event.target.closest("[data-sq-view-completed]");
+            if (viewButton) {
+                state.readOnly = true;
+                if (state.scopeCheckpoints.length) {
+                    renderCheckpointAt(0);
+                } else {
+                    loadScopeCheckpoints();
+                }
             }
 
             if (reloadButton) {
@@ -1169,6 +1313,11 @@
             const tab = event.target.closest("[data-concern-tab]");
             if (!tab) return;
             state.activeConcernId = Number(tab.dataset.concernTab || 0);
+            const item = state.concernChecklist.find(function (row) { return Number(row.concern.concern_id) === state.activeConcernId; });
+            const progress = item ? concernProgress(item) : { total: 0, answered: 0 };
+            state.concernReadOnly = progress.total > 0 && progress.answered === progress.total
+                ? !window.confirm("This Domain is complete. Select OK to Edit / Update responses, or Cancel to View responses only.")
+                : false;
             renderConcernTabs();
         });
         $("btnSaveConcernDraft")?.addEventListener("click", function () { saveActiveConcern(false); });
@@ -1186,6 +1335,8 @@
             SQ.deployment.applyLabels(document);
         }
         bindEvents();
+        window.addEventListener("online", syncOfflineResponses);
+        window.addEventListener("offline", updateOfflineStatus);
         setStateMessage("Loading checklist page...");
 
         try {
@@ -1193,7 +1344,9 @@
 
             if (hasAssessment) {
                 await loadDepartments();
-                setStateMessage("Select department to begin checklist.");
+                setStateMessage(`Select ${domainLabel("department", "department").toLowerCase()} to begin checklist.`);
+                await syncOfflineResponses();
+                await updateOfflineStatus();
             }
 
         } catch (error) {

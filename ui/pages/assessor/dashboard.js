@@ -35,6 +35,7 @@
 
         if (normalized.includes("COMPLETE")) tone = "completed";
         else if (normalized.includes("ACTIVE") || normalized.includes("PROGRESS")) tone = "progress";
+        else if (normalized.includes("CLOSED")) tone = "closed";
         else if (normalized.includes("CANCEL") || normalized.includes("EXPIRE")) tone = "attention";
 
         return `<span class="sq-assessor-status sq-assessor-status--${tone}">${esc(label)}</span>`;
@@ -46,22 +47,39 @@
 
     function actionButton(row) {
         const action = row.next_action || {};
-        const label = action.label || (row.last_assessment_id ? "Continue" : "Start");
+        const unit = label("department", "Department");
+        const isClass = unit.toLowerCase() === "class";
+        let actionLabel = action.label || (row.last_assessment_id ? "Continue" : "Start");
+        if (action.state === "class_selection_pending") {
+            actionLabel = isClass ? "Choose Class" : "Choose Department";
+        } else if (action.state === "class_claim_pending" || action.state === "department_pending") {
+            actionLabel = isClass ? "Start Next Class" : "Start New Department";
+        } else if (String(actionLabel).toLowerCase().includes("reassessment")) {
+            actionLabel = isClass ? "Reassess Class" : "Reassess Department";
+        }
 
         if (action.type === "disabled") {
-            return `<button class="sq-btn sq-btn-muted" type="button" disabled>${esc(label)}</button>`;
+            return `<button class="sq-btn sq-btn-muted" type="button" disabled>${esc(actionLabel)}</button>`;
         }
 
-        if (action.type === "start" || action.type === "route") {
-            return `<button class="sq-btn sq-btn-primary" type="button" data-start-facility="${esc(row.fac_id)}">${esc(label)}</button>`;
+        if (action.type === "route") {
+            return `<button class="sq-btn sq-btn-primary" type="button" data-dashboard-route="${esc(action.route || "")}" data-dashboard-params="${esc(JSON.stringify(action.params || {}))}" data-facility-id="${esc(row.fac_id)}">${esc(actionLabel)}</button>`;
         }
 
-        return `<button class="sq-btn sq-btn-muted" type="button" disabled>${esc(label)}</button>`;
+        if (action.type === "start") {
+            return `<button class="sq-btn sq-btn-primary" type="button" data-start-facility="${esc(row.fac_id)}">${esc(actionLabel)}</button>`;
+        }
+
+        return `<button class="sq-btn sq-btn-muted" type="button" disabled>${esc(actionLabel)}</button>`;
     }
 
     function cancelButton(row) {
-        return String(row.assessment_status || "").toUpperCase() === "ACTIVE"
-            ? `<button class="sq-btn sq-btn-muted" type="button" data-cancel-assessment="${esc(row.assessment_id)}">Cancel</button>`
+        const assessmentStatus = String(row.assessment_status || "").toUpperCase();
+        if (Number(row.pending_draft_id || 0) > 0) {
+            return `<button class="sq-btn sq-btn-muted" type="button" data-cancel-assessment="${esc(row.pending_draft_id)}">Discard Draft</button>`;
+        }
+        return ["ACTIVE", "PENDING"].includes(assessmentStatus)
+            ? `<button class="sq-btn sq-btn-muted" type="button" data-cancel-assessment="${esc(row.assessment_id)}">${assessmentStatus === "PENDING" ? "Discard Draft" : "Cancel"}</button>`
             : "";
     }
 
@@ -83,17 +101,26 @@
         document.getElementById("assessorCompletedAssessments").textContent = summary.completed || 0;
         document.getElementById("assessorInProgressAssessments").textContent = summary.in_progress || 0;
         document.getElementById("assessorNotStartedFacilities").textContent = summary.not_started || 0;
+        document.querySelectorAll(".sq-assessor-toolbar h3").forEach(function (element) {
+            element.textContent = label("assigned_facilities", "Assigned Facilities");
+        });
+        const assignedLabel = label("assigned_facilities", "Assigned Facilities");
+        const facilityLabel = label("facility", "Facility");
+        const pageTitle = document.getElementById("sq-page-title");
+        const pageSubtitle = document.getElementById("sq-page-subtitle");
+        if (pageTitle) pageTitle.textContent = assignedLabel;
+        if (pageSubtitle) pageSubtitle.textContent = `${label("facilities", "Facilities")} mapped to the logged-in ${label("assessor", "Assessor")}.`;
+        document.title = `${assignedLabel} | SaQshi`;
         document.querySelector(".sq-assessor-toolbar p").textContent = text("assessor_dashboard_overview", "Assessment overview across your assigned facilities.");
 
         const rows = data.facilities || [];
         document.getElementById("assessorFacilityRows").innerHTML = rows.length ? `
             <table class="sq-assessor-table">
-                <thead><tr><th>${esc(label("facility", "Facility"))}</th><th>Location</th><th>Type</th><th>${esc(label("assessment", "Assessment"))}</th><th>Next Step</th><th>Action</th></tr></thead>
+                <thead><tr><th>${esc(label("facility", "Facility"))}</th><th>Location</th><th>${esc(label("assessment", "Assessment"))}</th><th>Next Step</th><th>Action</th></tr></thead>
                 <tbody>${rows.map(row => `
                     <tr>
-                        <td><strong>${esc(row.fac_name || label("facility", "Facility") + " " + row.fac_id)}</strong><small>${esc(label("facility_code", "NIN"))} ${esc(row.fac_nin || "-")}</small></td>
+                        <td><strong>${esc(row.fac_name || label("facility", "Facility"))}</strong><small>${esc(label("facility_code", "NIN"))} ${esc(row.fac_nin || "-")}</small></td>
                         <td>${esc(row.Dist_Name || "-")}<small>${esc(row.Block_Name || "")}</small></td>
-                        <td>${esc(row.Health_facilty_type || "-")}</td>
                         <td>${statusBadge(status(row))}<small>${esc(row.assessment_name || "")}</small></td>
                         <td>${esc(row.next_action?.label || "-")}<small>${esc(workflowHint(row))}</small></td>
                         <td>
@@ -101,6 +128,7 @@
                                 ${actionButton(row)}
                                 ${cancelButton(row)}
                                 <button class="sq-btn sq-btn-muted" type="button" data-detail-facility="${esc(row.fac_id)}">View</button>
+                                <button class="sq-btn sq-btn-muted" type="button" data-profile-facility="${esc(row.fac_id)}">${esc(label("facility", "Facility"))} Profile</button>
                             </div>
                         </td>
                     </tr>`).join("")}</tbody>
@@ -113,6 +141,7 @@
     }
 
     async function startAssessment(facId) {
+        if (!window.confirm("Start this assessment? If no existing assessment is available, a draft will be created and you must choose a class before work begins.")) return;
         try {
             const response = await SQ.api.post("/assessor/v1/start_assessment.php", {
                 fac_id: Number(facId)
@@ -129,8 +158,14 @@
         }
     }
 
+    async function selectFacilityContext(facId) {
+        await SQ.api.post("/assessor/v1/start_assessment.php", {
+            fac_id: Number(facId)
+        }, { loader: true, showError: false });
+    }
+
     async function cancelAssessment(assessmentId) {
-        if (!window.confirm("Cancel this active assessment? Saved responses will remain in assessment history.")) return;
+        if (!window.confirm("Cancel or discard this assessment? Saved responses will remain in assessment history, but the assessment cannot be resumed.")) return;
 
         try {
             await SQ.api.post("/assessment/v1/cancel_assessment.php", {
@@ -150,15 +185,16 @@
 
         return `
             <table class="sq-assessor-table sq-assessor-summary-table">
-                <thead><tr><th>Assessment</th><th>Status</th><th>Departments</th><th>Checklist</th><th>Score</th><th>Period</th></tr></thead>
+                <thead><tr><th>Assessment</th><th>Assessor</th><th>Status</th><th>${esc(label("departments", label("department", "Department") + "s"))}</th><th>Checklist</th><th>Score</th><th>Period</th></tr></thead>
                 <tbody>${rows.map(row => `
                     <tr>
                         <td><strong>${esc(row.assessment_name || "Assessment " + row.assessment_id)}</strong><small>${esc(row.framework_code || "")}</small></td>
+                        <td>${esc(row.assessor_name || "-")}${row.assessor_code ? `<small>${esc(row.assessor_code)}</small>` : ""}</td>
                         <td>${statusBadge(row.status || "Not started")}</td>
                         <td>${esc(row.active_departments || 0)}</td>
                         <td>${esc(row.saved_checkpoints || 0)} / ${esc(row.total_checkpoints || 0)}</td>
                         <td>${esc(row.score_percent || 0)}%<small>${esc(row.obtained_score || 0)} / ${esc(row.max_score || 0)}</small></td>
-                        <td>${esc(row.start_date || "-")}<small>${esc(row.end_date || "")}</small></td>
+                        <td>${esc(row.start_date || "-")}<small>Planned end ${esc(row.end_date || "-")}</small>${row.completed_on ? `<small>Completed ${esc(row.completed_on)}</small>` : ""}${row.cancelled_on ? `<small>Cancelled ${esc(row.cancelled_on)}</small>` : ""}</td>
                     </tr>
                 `).join("")}</tbody>
             </table>`;
@@ -187,7 +223,7 @@
             <div class="sq-assessor-summary-grid">${blocks.join("") || `<div><span>Modules</span><strong>Assessment</strong></div>`}</div>
             <div class="sq-assessor-empty">${moduleEnabled(modules, "performance")
                 ? "Assessor access is read-only for performance and CQI. Assessment entry remains the assessor responsibility."
-                : "Assessment entry remains the DPO responsibility."}</div>
+                : "Assessment entry remains the Assessor responsibility."}</div>
             ${links.length ? `<div class="sq-assessor-summary-links">${links.join("")}</div>` : ""}
             <div class="sq-assessor-summary-section">
                 <h4>Assessment History</h4>
@@ -228,10 +264,24 @@
                 SQ.router.navigate(route, params);
             }
         });
-        document.getElementById("assessorFacilityRows")?.addEventListener("click", function (event) {
+        document.getElementById("assessorFacilityRows")?.addEventListener("click", async function (event) {
+            const routeButton = event.target.closest("[data-dashboard-route]");
             const startButton = event.target.closest("[data-start-facility]");
             const cancelButton = event.target.closest("[data-cancel-assessment]");
             const detailButton = event.target.closest("[data-detail-facility]");
+            const profileButton = event.target.closest("[data-profile-facility]");
+
+            if (routeButton) {
+                const route = routeButton.getAttribute("data-dashboard-route");
+                const params = JSON.parse(routeButton.getAttribute("data-dashboard-params") || "{}");
+                try {
+                    await selectFacilityContext(routeButton.getAttribute("data-facility-id"));
+                    if (route && SQ.router?.navigate) SQ.router.navigate(route, params);
+                } catch (error) {
+                    if (SQ.notification) SQ.notification.error(error.message || "Unable to select this facility.");
+                }
+                return;
+            }
 
             if (startButton) {
                 startAssessment(startButton.getAttribute("data-start-facility"));
@@ -245,6 +295,11 @@
 
             if (detailButton) {
                 loadFacilitySummary(detailButton.getAttribute("data-detail-facility"));
+                return;
+            }
+
+            if (profileButton && SQ.router?.navigate) {
+                SQ.router.navigate("assessor/facility-profile", { fac_id: Number(profileButton.getAttribute("data-profile-facility")) });
             }
         });
     }

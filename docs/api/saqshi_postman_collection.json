@@ -184,6 +184,19 @@
           }
         },
         {
+          "name": "FHIR Assessment Summary Export",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/fhir+json"
+              }
+            ],
+            "url": "{{baseUrl}}/assessment/v1/fhir_measure_reports.php?assessment_id={{assessmentId}}"
+          }
+        },
+        {
           "name": "Create Assessment",
           "request": {
             "method": "POST",

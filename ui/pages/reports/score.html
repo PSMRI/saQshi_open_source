@@ -74,6 +74,11 @@ License : GPL-3.0
             <strong id="scoreRevisedCheckpoints">0</strong>
             <small>checkpoints</small>
         </div>
+        <div class="sq-score-kpi">
+            <span>Current Round Category</span>
+            <strong id="scoreRoundCategory">-</strong>
+            <small id="scoreRoundPercent">No completed class/department</small>
+        </div>
     </div>
 
     <div class="sq-card">
@@ -93,15 +98,33 @@ License : GPL-3.0
                             <th>Answered</th>
                             <th>Original</th>
                             <th>Improved</th>
+                            <th>Model Category</th>
                             <th>Gain</th>
                             <th>Revised</th>
                         </tr>
                     </thead>
                     <tbody id="scoreDepartmentRows">
                         <tr>
-                            <td colspan="7" class="sq-text-center sq-text-muted">Loading score report...</td>
+                            <td colspan="8" class="sq-text-center sq-text-muted">Loading score report...</td>
                         </tr>
                     </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="sq-card">
+        <div class="sq-card-header">
+            <div>
+                <h3>Round Score History</h3>
+                <p>Whole School/Facility category calculated from completed classes/departments in each round.</p>
+            </div>
+        </div>
+        <div class="sq-card-body sq-p-0">
+            <div class="sq-table-wrapper">
+                <table class="sq-table sq-score-table">
+                    <thead><tr><th>Round</th><th>Status</th><th>Completed Classes / Departments</th><th>Whole School / Facility Score</th><th>Category</th></tr></thead>
+                    <tbody id="scoreRoundRows"><tr><td colspan="5" class="sq-text-center sq-text-muted">Loading round history...</td></tr></tbody>
                 </table>
             </div>
         </div>

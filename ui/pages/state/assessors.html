@@ -7,6 +7,7 @@
         </div>
         <div class="sq-state-filters">
             <input type="search" class="sq-form-control" id="assessorSearch" placeholder="Search DPO code, login user or user ID" aria-label="Search DPO">
+            <button class="sq-btn sq-btn-light" id="assessorCredentialLog" type="button" hidden>Credential Log</button>
             <button class="sq-btn sq-btn-primary" id="assessorRefresh" type="button">Refresh</button>
         </div>
     </div>
@@ -20,29 +21,23 @@
             <div class="sq-card-body">
                 <form id="assessorForm" class="sq-assessor-form">
                     <input type="hidden" name="assessor_id" id="assessorId">
-                    <label>
-                        <span>Assessor Code</span>
-                        <input class="sq-form-control" name="assessor_code" id="assessorCode" placeholder="Example: ASM001" required>
-                    </label>
+                    <input name="assessor_code" id="assessorCode" type="hidden">
                     <label>
                         <span>Assessor Name</span>
-                        <input class="sq-form-control" name="assessor_name" id="assessorName" required>
+                        <input class="sq-form-control" name="assessor_name" id="assessorName" required minlength="3" maxlength="120" pattern="[A-Za-z .'-]+" title="Use letters, spaces, apostrophes, hyphens, and periods only.">
                     </label>
-                    <label>
-                        <span>Linked User ID</span>
-                        <input class="sq-form-control" name="user_id" id="assessorUserId" type="number" min="1" placeholder="Auto-created if blank">
-                    </label>
+                    <input name="user_id" id="assessorUserId" type="hidden">
                     <label>
                         <span>Designation</span>
-                        <input class="sq-form-control" name="designation" id="assessorDesignation" placeholder="Assessor / Quality Consultant">
+                        <input class="sq-form-control" name="designation" id="assessorDesignation" maxlength="120" pattern="[A-Za-z .'-]*" placeholder="Assessor / Quality Consultant" title="Use letters, spaces, apostrophes, hyphens, and periods only.">
                     </label>
                     <label>
                         <span>Mobile</span>
-                        <input class="sq-form-control" name="mobile_no" id="assessorMobile" inputmode="tel">
+                        <input class="sq-form-control" name="mobile_no" id="assessorMobile" inputmode="numeric" pattern="[0-9]{10}" maxlength="10" required title="Enter a valid 10-digit mobile number.">
                     </label>
                     <label>
                         <span>Email</span>
-                        <input class="sq-form-control" name="mail_id" id="assessorEmail" type="email">
+                        <input class="sq-form-control" name="mail_id" id="assessorEmail" type="email" required maxlength="120" title="Enter a valid email address.">
                     </label>
                     <label>
                         <span>Status</span>

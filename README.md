@@ -10,6 +10,24 @@ SaQshi is aligned with the digital workflow needs of healthcare quality assessme
 
 This public release is scoped to healthcare quality assessment and monitoring, with NQAS as the primary reference framework. SaQshi implements this as a configurable healthcare application: facility and framework data are loaded through JSON and APIs, assessment responses are stored against an assessment, CQI tracks gaps and revised scores, performance monitoring captures monthly KPI/outcome data, and state-level dashboards provide aggregated monitoring. See [Project Overview and NQAS Alignment](docs/architecture/project_overview.md).
 
+## WHO and WCAG Readiness
+
+SaQshi is designed to support key WHO digital-health expectations: operation in
+low-bandwidth environments, scalable deployment, configurable programmes and
+standards-based data exchange. The current implementation includes an offline
+web shell and response queue, selectable background-worker modes, configurable
+deployment profiles, OpenAPI/CSV exports and a facility-scoped FHIR R4
+assessment-summary export.
+
+The web interface is also maintained against WCAG 2.2 accessibility guidance.
+These are implementation-readiness statements, not WHO endorsement or formal
+WCAG/WHO certification. The detailed evidence and test scope are available at:
+
+- [WHO Digital Health Compatibility](docs/compliance/who_digital_health_compatibility.md)
+- [WHO Compatibility Test Execution Report](docs/testing/who_compatibility_test_execution_2026_08_03.md)
+- [WCAG and Web Platform Compliance](docs/testing/saqshi_wcag_web_platform_compliance.md)
+- [Accessibility Test Execution Report](docs/testing/accessibility_test_execution_report_2026_07_17.md)
+
 ## Data Scope Notice
 
 SaQshi is not a patient record system and is not designed to collect, process, or store patient-level personal health information. The application handles facility quality assessment, CQI, certification, performance-monitoring, reporting and administrative user data.
@@ -148,6 +166,10 @@ Main entry points:
 {main_url}/ui/login.html
 {main_url}/ui/dashboard.html
 ```
+
+The public landing page is profile-aware: `{main_url}/index.html` shows the
+healthcare landing page for the healthcare profile and redirects to
+`{main_url}/education-index.html` when the education profile is active.
 
 Detailed UI deployment, routing, static asset and verification guidance is available here:
 

@@ -80,6 +80,7 @@ function adminUsersRow(array $row): array
         'role_id_fk' => isset($row['role_id_fk']) ? (int)$row['role_id_fk'] : null,
         'role_name' => (string)($row['role_name'] ?? ''),
         'fac_id_fk' => isset($row['fac_id_fk']) ? (int)$row['fac_id_fk'] : null,
+        'facility_code' => (string)($row['facility_code'] ?? ''),
         'dept_id' => isset($row['dept_id']) ? (int)$row['dept_id'] : null,
         'is_active' => (int)($row['is_active'] ?? 0)
     ];
@@ -143,10 +144,13 @@ function adminUsersFind(mysqli $con, int $userId): ?array
             u.mob_no,
             u.mail_id,
             u.user_type,
-            r.role_name
+            r.role_name,
+            f.NIN_no AS facility_code
         FROM s_user u
         LEFT JOIN u_role r
             ON r.role_id = u.role_id_fk
+        LEFT JOIN facilities f
+            ON f.fac_id = u.fac_id_fk
         WHERE u.u_id = ?
         LIMIT 1
     ";

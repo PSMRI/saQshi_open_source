@@ -8,6 +8,10 @@
     "login_app_tagline": "Digital School Quality Assessment Platform",
     "login_kicker": "School Quality Platform",
     "login_title": "Structured assessments for school improvement.",
+    "login_logo_1": "/ui/assets/images/bihar-education-department-logo.jpeg?v=20260806-1",
+    "login_logo_1_alt": "Education Department, Government of Bihar",
+    "login_logo_2": "/ui/assets/images/logo.png",
+    "login_logo_2_alt": "SaQshi",
     "login_description": "Manage school assessment workflows with section activation, question scoring and improvement tracking."
   },
   "content": {

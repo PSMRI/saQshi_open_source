@@ -369,6 +369,12 @@
                 await loadJs(js);
             }
 
+            // IIS can occasionally retain an older manifest asset list for this State route.
+            // Ensure its data module is always present before page initialization.
+            if (name === "state/assessment-progress" && !SQ.stateAssessmentProgress) {
+                await loadJs("/ui/pages/state/assessment-progress.js?v=20260805-school-drilldown-3");
+            }
+
             state.currentRoute = name;
             state.currentManifest = manifest;
 
@@ -442,12 +448,18 @@
             console.error("[SQ Router Error]", error);
 
             const root = document.querySelector(CONFIG.rootSelector) || document.body;
+            const networkError = !navigator.onLine || /network|fetch|timeout/i.test(String(error?.message || ""));
+            const assessmentOffline = networkError && String(name || "").startsWith("assessment/");
+            const title = assessmentOffline ? "You're offline" : "Page Load Failed";
+            const message = assessmentOffline
+                ? "Saved responses will sync when connected."
+                : (error.message || error);
 
             root.innerHTML = `
-                <div class="sq-alert sq-alert-danger sq-m-5">
+                <div class="sq-alert sq-alert-${assessmentOffline ? "warning" : "danger"} sq-m-5">
                     <div class="sq-alert-content">
-                        <div class="sq-alert-title">Page Load Failed</div>
-                        <div class="sq-alert-text">${escapeHtml(error.message || error)}</div>
+                        <div class="sq-alert-title">${title}</div>
+                        <div class="sq-alert-text">${escapeHtml(message)}</div>
                     </div>
                 </div>
             `;

@@ -1,0 +1,13 @@
+{
+  "education": {
+    "label": "Class",
+    "facility_types": {
+      "1": [{ "dept_id": 1, "dept_name": "Class 9" }, { "dept_id": 2, "dept_name": "Class 10" }, { "dept_id": 3, "dept_name": "Class 11" }, { "dept_id": 4, "dept_name": "Class 12" }],
+      "3": [{ "dept_id": 1, "dept_name": "Class 9" }, { "dept_id": 2, "dept_name": "Class 10" }, { "dept_id": 3, "dept_name": "Class 11" }, { "dept_id": 4, "dept_name": "Class 12" }],
+      "5": [{ "dept_id": 1, "dept_name": "Class 9" }, { "dept_id": 2, "dept_name": "Class 10" }, { "dept_id": 3, "dept_name": "Class 11" }, { "dept_id": 4, "dept_name": "Class 12" }],
+      "6": [{ "dept_id": 1, "dept_name": "Class 9" }, { "dept_id": 2, "dept_name": "Class 10" }],
+      "8": [{ "dept_id": 1, "dept_name": "Class 9" }, { "dept_id": 2, "dept_name": "Class 10" }],
+      "10": [{ "dept_id": 1, "dept_name": "Class 9" }, { "dept_id": 2, "dept_name": "Class 10" }, { "dept_id": 3, "dept_name": "Class 11" }, { "dept_id": 4, "dept_name": "Class 12" }]
+    }
+  }
+}

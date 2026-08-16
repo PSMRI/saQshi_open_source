@@ -125,6 +125,23 @@ paths:
       responses:
         "200":
           description: Assessment list
+  /assessment/v1/fhir_measure_reports.php:
+    get:
+      tags: [Assessment]
+      summary: Export facility assessment summaries as a FHIR R4 MeasureReport Bundle
+      parameters:
+        - name: assessment_id
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: FHIR R4 Bundle with facility-scoped MeasureReport resources
+          content:
+            application/fhir+json:
+              schema:
+                type: object
   /assessment/v1/active_assessment.php:
     get:
       tags: [Assessment]

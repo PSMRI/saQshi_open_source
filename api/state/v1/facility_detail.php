@@ -8,7 +8,7 @@ Security::requireMethod('GET');
 
 try {
     if (strtolower((string)($_GET['mode'] ?? '')) === 'hierarchy') {
-        Response::success('Facility hierarchy loaded', StateDashboardService::facilityHierarchy($_GET));
+        Response::success('Facility hierarchy loaded', StateDashboardService::facilityHierarchy($con, $_GET));
     }
 
     $facilityId = Security::int($_GET['fac_id'] ?? 0);

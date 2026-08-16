@@ -49,6 +49,18 @@
         debug: true
     };
 
+    function registerOfflineShell() {
+        if (!('serviceWorker' in navigator) || !window.isSecureContext && window.location.hostname !== 'localhost') {
+            return;
+        }
+
+        window.addEventListener('load', function () {
+            navigator.serviceWorker.register('/ui/sw.js?v=20260806-mobile-sidebar-1').catch(function (error) {
+                console.warn('SaQshi offline shell could not be registered.', error);
+            });
+        });
+    }
+
     function configureApi() {
         if (!SQ.api) {
             return;
@@ -207,6 +219,7 @@
     }
 
     function init() {
+        registerOfflineShell();
         configureApi();
         configureAuth();
         initTheme();

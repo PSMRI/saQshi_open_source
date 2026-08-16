@@ -22,6 +22,12 @@
 
     const statuses = ["CONDITIONAL", "CERTIFIED"];
 
+    function domainLabel(key, fallback) {
+        return SQ.deployment && typeof SQ.deployment.label === "function"
+            ? SQ.deployment.label(key, fallback)
+            : fallback;
+    }
+
     function esc(value) {
         return String(value ?? "")
             .replace(/&/g, "&amp;")
@@ -105,8 +111,8 @@
             ? `<table class="sq-state-table">
                 <thead>
                     <tr>
-                        <th>Facility</th>
-                        <th>NIN</th>
+                        <th>${esc(domainLabel("facility", "Facility"))}</th>
+                        <th>${esc(domainLabel("facility_code", "NIN"))}</th>
                         <th>Location</th>
                         <th>Status</th>
                         <th>Certification</th>
@@ -118,7 +124,7 @@
                 </thead>
                 <tbody>${visibleRows.map(row => `
                     <tr>
-                        <td><strong>${esc(row.fac_name || "-")}</strong><br><small>${esc(row.facility_type || "-")} | ID ${esc(row.fac_id || "-")}</small></td>
+                        <td><strong>${esc(row.fac_name || "-")}</strong><br><small>${esc(row.facility_type || "-")}</small></td>
                         <td>${esc(row.fac_nin || "-")}</td>
                         <td>${esc(row.district || "-")}<br><small>${esc(row.block || "")}</small></td>
                         <td><span class="sq-state-badge">${esc(row.status || "NOT CERTIFIED")}</span></td>
@@ -256,9 +262,8 @@
     function downloadCsv() {
         const rows = state.facilities;
         const header = [
-            "Facility ID",
-            "Facility Name",
-            "NIN",
+            domainLabel("facility_code", "NIN"),
+            domainLabel("facility", "Facility") + " Name",
             "Division",
             "District",
             "Block",
@@ -277,9 +282,8 @@
             "Remarks"
         ];
         const body = rows.map(row => [
-            row.fac_id,
-            row.fac_name,
             row.fac_nin,
+            row.fac_name,
             row.division,
             row.district,
             row.block,
@@ -309,6 +313,10 @@
     }
 
     async function init() {
+        if (SQ.deployment && typeof SQ.deployment.load === "function") {
+            await SQ.deployment.load();
+            SQ.deployment.applyLabels(document);
+        }
         document.getElementById("stateCertRefresh")?.addEventListener("click", load);
         let searchTimer = null;
         document.getElementById("stateCertSearch")?.addEventListener("input", function () {

@@ -1,0 +1,18 @@
+{
+  "queue_driver": "database",
+  "execution_mode": "scheduled-task",
+  "poll_seconds": 5,
+  "scheduled_task": {
+    "task_name": "SaQshi Background Worker",
+    "interval_minutes": 1
+  },
+  "windows_service": {
+    "service_name": "SaQshiBackgroundWorker",
+    "manager": "nssm"
+  },
+  "redis_coordinated_worker": {
+    "enabled": false,
+    "lock_key": "saqshi:background-worker:lock",
+    "lock_ttl_seconds": 30
+  }
+}

@@ -4,7 +4,7 @@ This is the source-of-truth checklist for endpoint documentation. It contains
 all endpoint implementation files under `api/*/v1`. Files prefixed with `_` are
 internal helpers, not callable endpoints.
 
-## Assessment (31)
+## Assessment (32)
 
 `action_plan`, `action_plan_closure`, `action_plan_save`, `action_plan_update`,
 `active_assessment`, `assessor_info_get`, `assessor_info_save`,
@@ -12,7 +12,7 @@ internal helpers, not callable endpoints.
 `complete-department`, `create_assessment`, `dashboard_insights`,
 `department/list`, `department/save`, `department-status/list`,
 `department-status/save`, `gap_analysis`, `get_checkpoint`, `get-cycle`,
-`list`, `next_checkpoint`, `previous_checkpoint`, `progress`, `resume`,
+`fhir_measure_reports`, `list`, `next_checkpoint`, `previous_checkpoint`, `progress`, `resume`,
 `resume_department`, `save-response`, `score`, `start`, `start_cycle`,
 `start_department`.
 

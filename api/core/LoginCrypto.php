@@ -79,6 +79,32 @@ class LoginCrypto
     }
 
     /**
+     * Confirms that the stored public key was derived from the stored private key.
+     */
+    private static function keyPairIsValid(): bool
+    {
+        if (!is_file(self::privateKeyPath()) || !is_file(self::publicKeyPath())) {
+            return false;
+        }
+
+        $privatePem = (string)@file_get_contents(self::privateKeyPath());
+        $publicPem = trim((string)@file_get_contents(self::publicKeyPath()));
+        if ($privatePem === '' || $publicPem === '') {
+            return false;
+        }
+
+        $privateKey = @openssl_pkey_get_private($privatePem);
+        if (!$privateKey) {
+            return false;
+        }
+
+        $details = openssl_pkey_get_details($privateKey);
+        return is_array($details)
+            && isset($details['key'])
+            && hash_equals(trim((string)$details['key']), $publicPem);
+    }
+
+    /**
      * Handles public key processing for this API workflow.
      */
     public static function publicKey(): string
@@ -127,7 +153,20 @@ class LoginCrypto
             throw new RuntimeException('Login key directory could not be created');
         }
 
-        if (is_file(self::privateKeyPath()) && is_file(self::publicKeyPath())) {
+        if (self::keyPairIsValid()) {
+            return;
+        }
+
+        $lockPath = $dir . '/login_keys.lock';
+        $lock = @fopen($lockPath, 'c');
+        if (!$lock || !flock($lock, LOCK_EX)) {
+            if (is_resource($lock)) fclose($lock);
+            throw new RuntimeException('Login key storage is not writable');
+        }
+
+        if (self::keyPairIsValid()) {
+            flock($lock, LOCK_UN);
+            fclose($lock);
             return;
         }
 
@@ -159,10 +198,18 @@ class LoginCrypto
 
         if (!$exported || $privateKey === '' || $publicKey === '') {
             $details = self::opensslErrors();
+            flock($lock, LOCK_UN);
+            fclose($lock);
             throw new RuntimeException('Login key pair export failed' . ($details ? ': ' . $details : ''));
         }
 
-        file_put_contents(self::privateKeyPath(), $privateKey, LOCK_EX);
-        file_put_contents(self::publicKeyPath(), $publicKey, LOCK_EX);
+        $privateWritten = file_put_contents(self::privateKeyPath(), $privateKey, LOCK_EX);
+        $publicWritten = file_put_contents(self::publicKeyPath(), $publicKey, LOCK_EX);
+        flock($lock, LOCK_UN);
+        fclose($lock);
+
+        if ($privateWritten === false || $publicWritten === false || !self::keyPairIsValid()) {
+            throw new RuntimeException('Login key pair could not be stored');
+        }
     }
 }

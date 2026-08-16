@@ -40,10 +40,10 @@
 
     "assets": {
         "css": [
-            "/ui/pages/login/login.css?v=20260702-2"
+            "/ui/pages/login/login.css?v=20260806-bihar-education-logo-1"
         ],
         "js": [
-            "/ui/pages/login/login.js?v=20260731-1"
+            "/ui/pages/login/login.js?v=20260807-captcha-session-1"
         ]
     },
 

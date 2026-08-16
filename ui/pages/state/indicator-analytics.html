@@ -3,11 +3,11 @@
     <div class="sq-state-toolbar">
         <div>
             <h3>Indicator Analytics</h3>
-            <p data-domain-template="Find checklist checkpoints where the maximum number of {facilities} scored 0.">Find checklist checkpoints where the maximum number of facilities scored 0.</p>
+            <p>Checklist indicators ranked by schools in the lowest configured score band.</p>
         </div>
         <div class="sq-state-filters">
-            <input type="search" class="sq-form-control" id="stateIndicatorSearch" placeholder="Search facility, NIN, district or block" aria-label="Search Facility, NIN, District Or Block" data-domain-placeholder="Search {facility}, {facility_code}, district or block" data-domain-aria-label="Search {facility}, {facility_code}, district or block">
-            <input type="number" class="sq-form-control" id="stateIndicatorMinFacilities" min="1" value="1" title="Minimum facilities" data-domain-title="Minimum {facilities}">
+            <input type="search" class="sq-form-control" id="stateIndicatorSearch" placeholder="Search school, UDISE code, district or block" aria-label="Search School, UDISE Code, District Or Block">
+            <input type="number" class="sq-form-control" id="stateIndicatorMinFacilities" min="1" value="1" title="Minimum schools">
             <button class="sq-btn sq-btn-primary" id="stateIndicatorRefresh">Refresh</button>
         </div>
     </div>
@@ -16,7 +16,7 @@
 
     <div class="sq-card">
         <div class="sq-card-header">
-            <h3>Checklist Indicators With Highest 0 Score</h3>
+            <h3>Checklist Indicators With Most Low-Score Schools</h3>
             <div id="stateIndicatorPager"></div>
         </div>
         <div class="sq-card-body" id="stateAssessmentIndicators"></div>

@@ -95,6 +95,14 @@
             return "Cancelled";
         }
 
+        if (value === "CLOSED") {
+            return "Closed";
+        }
+
+        if (value === "NOT_STARTED") {
+            return "Not Started";
+        }
+
         return value || "-";
     }
 
@@ -111,6 +119,14 @@
 
         if (value === "cancelled") {
             return "is-cancelled";
+        }
+
+        if (value === "closed") {
+            return "is-closed";
+        }
+
+        if (value === "not_started" || value === "not started") {
+            return "is-not-started";
         }
 
         return "";
@@ -254,7 +270,7 @@
                     </td>
                     <td>
                         ${escapeHtml(assessment.start_date || "-")}
-                        <span class="sq-report-subtext">to ${escapeHtml(assessment.end_date || "-")}</span>
+                        <span class="sq-report-subtext">Planned end ${escapeHtml(assessment.end_date || "-")}${assessment.completed_on ? ` | Completed ${escapeHtml(assessment.completed_on)}` : ""}${assessment.cancelled_on ? ` | Cancelled ${escapeHtml(assessment.cancelled_on)}` : ""}</span>
                     </td>
                     <td>
                         <div class="sq-report-row-actions">${actionButton(assessment)}</div>

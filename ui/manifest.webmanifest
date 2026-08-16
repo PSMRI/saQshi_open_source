@@ -1,0 +1,16 @@
+{
+  "name": "SaQshi Digital Quality Assessment",
+  "short_name": "SaQshi",
+  "start_url": "/ui/dashboard.html",
+  "scope": "/ui/",
+  "display": "standalone",
+  "background_color": "#f6f8fc",
+  "theme_color": "#2563eb",
+  "icons": [
+    {
+      "src": "/ui/assets/images/logo.png",
+      "sizes": "any",
+      "type": "image/png"
+    }
+  ]
+}

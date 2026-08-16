@@ -1,7 +1,25 @@
 [
   {
     "fac_dept_id": 1,
-    "dept_name": "Classroom Observation and Teaching",
+    "dept_name": "Class 9",
+    "active_status": 1,
+    "program_tag": "NQAS"
+  },
+  {
+    "fac_dept_id": 2,
+    "dept_name": "Class 10",
+    "active_status": 1,
+    "program_tag": "NQAS"
+  },
+  {
+    "fac_dept_id": 3,
+    "dept_name": "Class 11",
+    "active_status": 1,
+    "program_tag": "NQAS"
+  },
+  {
+    "fac_dept_id": 4,
+    "dept_name": "Class 12",
     "active_status": 1,
     "program_tag": "NQAS"
   }

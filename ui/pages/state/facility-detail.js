@@ -58,7 +58,23 @@
         return id;
     }
 
-    function renderToggleRow(id, label, count, level) {
+    function categoryBadge(category, percentage) {
+        const name = String(category?.name || "");
+        if (!name) return "";
+        const css = name.toLowerCase() === "abhilasha" ? "is-abhilasha" : name.toLowerCase() === "pragati" ? "is-pragati" : "is-jagriti";
+        const score = Number.isFinite(Number(percentage)) ? ` ${Number(percentage).toFixed(2).replace(/\.00$/, "")}%` : "";
+        return `<span class="sq-score-category ${css}">${esc(name + score)}</span>`;
+    }
+
+    function domainLink(id, node, force) {
+        return (force || (Array.isArray(node?.domains) && node.domains.length))
+            ? `<button class="sq-state-domain-link" type="button" data-hierarchy-domain="${esc(id)}">View domain-wise scores</button>`
+            : "";
+    }
+
+    function renderToggleRow(id, node, level) {
+        const label = node?.name;
+        const count = node?.count;
         return `
             <div class="sq-state-block-row sq-state-tree-row" style="margin-left:${level * 10}px">
                 <button class="sq-state-plus" type="button" data-tree-toggle="${esc(id)}" aria-expanded="false">+</button>
@@ -66,19 +82,23 @@
                     <strong>${esc(label || "-")}</strong>
                     <small>${esc(count || 0)} ${esc(domainLabel("facilities", "facilities").toLowerCase())}</small>
                 </div>
+                ${categoryBadge(node?.category, node?.score_percent)}
+                ${domainLink(id, node)}
             </div>
             <div id="${esc(id)}" class="sq-state-tree-children" hidden></div>
         `;
     }
 
-    function renderFacilityRow(facility, level) {
+    function renderFacilityRow(id, facility, level) {
         return `
-            <button class="sq-state-block-row sq-state-tree-row sq-state-facility-row" type="button" data-facility-id="${esc(facility.fac_id)}" style="margin-left:${level * 10}px">
+            <div class="sq-state-block-row sq-state-tree-row sq-state-facility-row" data-facility-id="${esc(facility.fac_id)}" style="margin-left:${level * 10}px">
                 <div>
                     <strong>${esc(facility.fac_name || "-")}</strong>
-                    <small>${esc(facility.facility_type || "-")} | NIN ${esc(facility.nin || "-")}</small>
+                    <small>${esc(facility.facility_type || "-")} | ${esc(domainLabel("facility_code", "NIN"))} ${esc(facility.nin || "-")}</small>
                 </div>
-            </button>
+                ${categoryBadge(facility.category, facility.score_percent)}
+                ${domainLink(id, facility, true)}
+            </div>
         `;
     }
 
@@ -89,26 +109,29 @@
         if (entry.type === "state") {
             return (entry.node.divisions || []).map((division, index) => {
                 const childId = registerNode(nodeId("division", [id, index]), "division", division);
-                return renderToggleRow(childId, division.name, division.count, 1);
+                return renderToggleRow(childId, division, 1);
             }).join("") || empty("No divisions found.");
         }
 
         if (entry.type === "division") {
             return (entry.node.districts || []).map((district, index) => {
                 const childId = registerNode(nodeId("district", [id, index]), "district", district);
-                return renderToggleRow(childId, district.name, district.count, 2);
+                return renderToggleRow(childId, district, 2);
             }).join("") || empty("No districts found.");
         }
 
         if (entry.type === "district") {
             return (entry.node.blocks || []).map((block, index) => {
                 const childId = registerNode(nodeId("block", [id, index]), "block", block);
-                return renderToggleRow(childId, block.name, block.count, 3);
+                return renderToggleRow(childId, block, 3);
             }).join("") || empty("No blocks found.");
         }
 
         if (entry.type === "block") {
-            return (entry.node.facilities || []).map(facility => renderFacilityRow(facility, 4)).join("") || empty("No facilities found.");
+            return (entry.node.facilities || []).map((facility, index) => {
+                const childId = registerNode(nodeId("facility", [id, index]), "facility", facility);
+                return renderFacilityRow(childId, facility, 4);
+            }).join("") || empty("No facilities found.");
         }
 
         return empty("No child records found.");
@@ -119,23 +142,56 @@
         html("stateFacilityTree", state.hierarchy.length
             ? `<div class="sq-state-block-list">${state.hierarchy.map((item, index) => {
                 const id = registerNode(nodeId("state", [index]), "state", item);
-                return renderToggleRow(id, item.name, item.count, 0);
+                return renderToggleRow(id, item, 0);
             }).join("")}</div>`
             : empty("No facility hierarchy found."));
     }
 
-    async function loadHierarchy() {
+    function openDomainDialog(node) {
+        if (!node?.domains?.length) return;
+        document.getElementById("stateHierarchyDomainDialog")?.remove();
+        const value = Math.max(0, Math.min(100, Number(node.score_percent || 0)));
+        const modal = document.createElement("div");
+        modal.id = "stateHierarchyDomainDialog";
+        modal.className = "sq-state-modal";
+        modal.setAttribute("role", "dialog");
+        modal.setAttribute("aria-modal", "true");
+        modal.innerHTML = `<div class="sq-state-modal-panel sq-state-domain-dialog"><div class="sq-card-header"><div><h3>${esc(node.name || "School")} Domain-wise Scores</h3><p>Latest completed assessment round aggregate</p></div><button type="button" class="sq-btn sq-btn-light" data-close-hierarchy-dialog>Close</button></div><div class="sq-card-body">${node.domains.map((domain, index) => { const percent = Math.max(0, Math.min(100, Number(domain.percentage || 0))); return `<div class="sq-domain-score ${["is-domain-blue","is-domain-teal","is-domain-purple","is-domain-orange","is-domain-red"][index % 5]}"><div class="sq-domain-score-title"><strong>${esc(domain.model_name)}</strong><b>${esc(percent.toFixed(2).replace(/\.00$/, ""))}%</b></div><div class="sq-domain-score-bar"><span style="width:${percent}%"></span></div><div class="sq-domain-score-meta">${esc(Number(domain.obtained_score || 0).toFixed(2))} / ${esc(Number(domain.total_score || 0).toFixed(2))} score</div><div class="sq-domain-score-category">${esc(domain.category?.name || "-")}</div></div>`; }).join("")}<div class="sq-domain-score-total"><span>Overall category</span><strong>${esc(value.toFixed(2))}% · ${esc(node.category?.name || "-")}</strong></div></div></div>`;
+        document.body.appendChild(modal);
+        modal.addEventListener("click", event => { if (event.target === modal || event.target.closest("[data-close-hierarchy-dialog]")) modal.remove(); });
+    }
+
+    async function loadFacilityDomains(facility) {
         const response = await SQ.api.get("/state/v1/facility_detail.php", {
             mode: "hierarchy",
-            search: document.getElementById("stateFacilitySearch")?.value || ""
-        }, {
-            loader: false,
-            showError: false
-        });
-        const data = response.data || {};
-        state.hierarchy = data.states || [];
-        text("stateFacilityTreeCount", `${data.total_facilities || 0} ${domainLabel("facilities", "facilities").toLowerCase()}`);
-        renderTree();
+            search: facility.nin || facility.fac_id,
+            include_domains: 1
+        }, { loader: false, showError: false });
+        const stateNode = response.data?.states?.[0];
+        const school = stateNode?.divisions?.[0]?.districts?.[0]?.blocks?.[0]?.facilities?.[0];
+        if (school?.domains?.length) openDomainDialog(school);
+    }
+
+    async function loadHierarchy() {
+        text("stateFacilityTreeCount", `Loading ${domainLabel("facilities", "facilities").toLowerCase()}...`);
+        try {
+            const response = await SQ.api.get("/state/v1/facility_detail.php", {
+                mode: "hierarchy",
+                search: document.getElementById("stateFacilitySearch")?.value || ""
+            }, {
+                loader: false,
+                showError: false
+            });
+            const data = response.data || {};
+            state.hierarchy = data.states || [];
+            text("stateFacilityTreeCount", `${data.total_facilities || 0} ${domainLabel("facilities", "facilities").toLowerCase()}`);
+            renderTree();
+        } catch (error) {
+            state.hierarchy = [];
+            text("stateFacilityTreeCount", `Unable to load ${domainLabel("facilities", "facilities").toLowerCase()}`);
+            html("stateFacilityTree", empty(error.message || "School hierarchy could not be loaded."));
+            SQ.notification?.error(error.message || "Unable to load school hierarchy.");
+        }
     }
 
     function renderFacilityInfo(facility) {
@@ -180,7 +236,7 @@
                                     <td>${esc(item.assessment_id)}</td>
                                     <td>${esc(item.assessment_name)}</td>
                                     <td><span class="sq-state-badge">${esc(item.status)}</span></td>
-                                    <td>${esc(item.start_date || "-")} to ${esc(item.end_date || "-")}</td>
+                                    <td>Start ${esc(item.start_date || "-")}<br><small>Planned end ${esc(item.end_date || "-")}</small>${item.completed_on ? `<br><small>Completed ${esc(item.completed_on)}</small>` : ""}${item.cancelled_on ? `<br><small>Cancelled ${esc(item.cancelled_on)}</small>` : ""}</td>
                                 </tr>
                             `).join("")}</tbody>
                         </table>`
@@ -221,6 +277,18 @@
 
     function bindTree() {
         document.getElementById("stateFacilityTree")?.addEventListener("click", function (event) {
+            const domainButton = event.target.closest("[data-hierarchy-domain]");
+            if (domainButton) {
+                event.preventDefault();
+                event.stopPropagation();
+                const entry = state.nodeMap.get(domainButton.getAttribute("data-hierarchy-domain"));
+                if (entry?.type === "facility") {
+                    loadFacilityDomains(entry.node).catch(error => html("stateFacilityInfo", empty(error.message || "Unable to load school domain scores.")));
+                } else {
+                    openDomainDialog(entry?.node);
+                }
+                return;
+            }
             const toggle = event.target.closest("[data-tree-toggle]");
             if (toggle) {
                 const id = toggle.getAttribute("data-tree-toggle");
@@ -260,10 +328,12 @@
                 loadHierarchy();
             }
         });
-        html("stateFacilityInfo", empty("Select a facility from the hierarchy."));
+        html("stateFacilityInfo", empty("Select a school from the hierarchy."));
         html("stateFacilitySummary", "");
         html("stateFacilityAssessments", "");
         await loadHierarchy();
+        const selectedFacilityId = Number(new URLSearchParams(window.location.search).get("fac_id") || 0);
+        if (selectedFacilityId > 0) await loadFacility(selectedFacilityId);
     }
 
     SQ.stateFacilityDetail = { init };

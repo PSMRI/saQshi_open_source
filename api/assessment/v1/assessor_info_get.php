@@ -199,6 +199,9 @@ try {
             assessee_designation,
             assessee_mobile,
             assessee_email,
+            teacher_code,
+            subject_name,
+            class_section,
 
             remarks,
             saved_by,
@@ -291,6 +294,9 @@ try {
                 'assessor_email' => $info['assessor_email'],
 
                 'assessee_name' => $info['assessee_name'],
+                'teacher_code' => $info['teacher_code'] ?? '',
+                'subject_name' => $info['subject_name'] ?? '',
+                'class_section' => $info['class_section'] ?? '',
                 'assessee_designation' => $info['assessee_designation'],
                 'assessee_mobile' => $info['assessee_mobile'],
                 'assessee_email' => $info['assessee_email'],

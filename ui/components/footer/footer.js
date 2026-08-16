@@ -44,7 +44,7 @@
 
         license: "GPL-3.0",
 
-        supportEmail: "support@saqshi.org"
+        supportEmail: "tech4gov@piramalswasthya.org"
 
     };
 
@@ -172,9 +172,9 @@
 
             "sq-footer-support",
 
-            "mailto:" + (app.support_email || DEFAULTS.supportEmail),
+            "mailto:" + DEFAULTS.supportEmail,
 
-            app.support_email || DEFAULTS.supportEmail
+            DEFAULTS.supportEmail
 
         );
 

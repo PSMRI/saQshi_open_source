@@ -27,6 +27,7 @@
  *   "assessee_designation": "Department In-charge",
  *   "assessee_mobile": "9876543211",
  *   "assessee_email": "rManish_kumar@example.com",
+ *   "class_section": "A",
  *
  *   "remarks": "Optional remarks"
  * }
@@ -162,10 +163,19 @@ try {
         $assessorEmail = trim((string)$currentAssessor['assessor_email']);
     }
 
+    // Profile email is optional for assessment entry. Older mentor records may
+    // contain legacy invalid values; omit those rather than blocking class work.
+    if ($assessorEmail !== '' && !filter_var($assessorEmail, FILTER_VALIDATE_EMAIL)) {
+        $assessorEmail = '';
+    }
+
     $assesseeName = trim($request['assessee_name'] ?? '');
     $assesseeDesignation = trim($request['assessee_designation'] ?? '');
     $assesseeMobile = trim($request['assessee_mobile'] ?? '');
     $assesseeEmail = trim($request['assessee_email'] ?? '');
+    $teacherCode = trim($request['teacher_code'] ?? '');
+    $subjectName = trim($request['subject_name'] ?? '');
+    $classSection = trim($request['class_section'] ?? '');
 
     $remarks = trim($request['remarks'] ?? '');
 
@@ -218,6 +228,22 @@ try {
         Response::validation([
             'assessee_name' => 'assessee_name is required'
         ]);
+    }
+
+    if (!preg_match('/^[\p{L}\s]+$/u', $assessorName) || !preg_match('/^[\p{L}\s]+$/u', $assesseeName)) {
+        Response::validation([
+            'name' => 'Names may contain letters and spaces only.'
+        ]);
+    }
+
+    if ($teacherCode !== '' && !preg_match('/^[A-Za-z0-9]+$/', $teacherCode)) {
+        Response::validation([
+            'teacher_code' => 'Teacher ID may contain letters and digits only. Special characters are not allowed.'
+        ]);
+    }
+
+    if (mb_strlen($classSection) > 100) {
+        Response::validation(['class_section' => 'Class section must not exceed 100 characters.']);
     }
 
     if ($assessorEmail !== '' && !filter_var($assessorEmail, FILTER_VALIDATE_EMAIL)) {
@@ -337,6 +363,9 @@ try {
                 assessee_designation = ?,
                 assessee_mobile = ?,
                 assessee_email = ?,
+                teacher_code = ?,
+                subject_name = ?,
+                class_section = ?,
                 remarks = ?,
                 saved_by = ?
             WHERE info_id = ?
@@ -349,7 +378,7 @@ try {
         }
 
         $stmt->bind_param(
-            'sssssssssssii',
+            'ssssssssssssssii',
             $assessmentDate,
             $assessmentType,
             $encryptedPersonalFields['assessor_name'],
@@ -360,6 +389,9 @@ try {
             $assesseeDesignation,
             $encryptedPersonalFields['assessee_mobile'],
             $encryptedPersonalFields['assessee_email'],
+            $teacherCode,
+            $subjectName,
+            $classSection,
             $remarks,
             $userId,
             $existingId
@@ -390,6 +422,9 @@ try {
                     'assessee_designation' => $assesseeDesignation,
                     'assessee_mobile' => $assesseeMobile,
                     'assessee_email' => $assesseeEmail,
+                    'teacher_code' => $teacherCode,
+                    'subject_name' => $subjectName,
+                    'class_section' => $classSection,
                     'remarks' => $remarks,
                     'saved_by' => $userId
                 ]
@@ -419,6 +454,9 @@ try {
                 assessee_designation,
                 assessee_mobile,
                 assessee_email,
+                teacher_code,
+                subject_name,
+                class_section,
 
                 remarks,
                 saved_by
@@ -428,7 +466,7 @@ try {
                 ?, ?, ?, ?, ?,
                 ?, ?, ?, ?,
                 ?, ?, ?, ?,
-                ?, ?
+                ?, ?, ?, ?, ?
             )
     ";
 
@@ -439,7 +477,7 @@ try {
     }
 
     $stmt->bind_param(
-        'iiisssssssssssi',
+        'iiissssssssssssssi',
         $assessmentId,
         $facId,
         $deptId,
@@ -455,6 +493,9 @@ try {
         $assesseeDesignation,
         $encryptedPersonalFields['assessee_mobile'],
         $encryptedPersonalFields['assessee_email'],
+        $teacherCode,
+        $subjectName,
+        $classSection,
 
         $remarks,
         $userId
@@ -486,6 +527,9 @@ try {
                 'assessee_designation' => $assesseeDesignation,
                 'assessee_mobile' => $assesseeMobile,
                 'assessee_email' => $assesseeEmail,
+                'teacher_code' => $teacherCode,
+                'subject_name' => $subjectName,
+                'class_section' => $classSection,
                 'remarks' => $remarks,
                 'saved_by' => $userId
             ]

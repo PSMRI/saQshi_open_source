@@ -192,7 +192,9 @@
                     </td>
                     <td>
                         <div>${escapeHtml(assessment.start_date || "-")}</div>
-                        <div class="sq-table-subtext">to ${escapeHtml(assessment.end_date || "-")}</div>
+                        <div class="sq-table-subtext">Planned end ${escapeHtml(assessment.end_date || "-")}</div>
+                        ${assessment.completed_on ? `<div class="sq-table-subtext">Completed ${escapeHtml(assessment.completed_on)}</div>` : ""}
+                        ${assessment.cancelled_on ? `<div class="sq-table-subtext">Cancelled ${escapeHtml(assessment.cancelled_on)}</div>` : ""}
                     </td>
                     <td>
                         <div>${completedDepartments}/${activeDepartments}</div>

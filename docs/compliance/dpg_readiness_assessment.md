@@ -1,7 +1,7 @@
 # SaQshi DPG Readiness Assessment
 
-Version: 1.5  
-Assessed: 2026-07-19  
+Version: 1.6  
+Assessed: 2026-08-03  
 Project license: GPL-3.0  
 
 ## Verdict
@@ -12,7 +12,7 @@ evidence remain part of the pre-nomination review.
 
 This assessment applies to the current healthcare/NQAS release of SaQshi. Future module expansion, if any, should be assessed separately before it is included in public release material.
 
-The project now has strong evidence for open licensing, healthcare public-good relevance, architecture, API/UI documentation, testing, accessibility, privacy, non-PII data handling, evidence/log retention, data redistribution decisions, governance guidance, open standards, and production hardening.
+The project now has strong evidence for open licensing, healthcare public-good relevance, architecture, API/UI documentation, testing, WCAG accessibility evidence, WHO digital-health compatibility, privacy, non-PII data handling, evidence/log retention, data redistribution decisions, governance guidance, open standards, and production hardening.
 
 The remaining work is mostly formal release assurance:
 
@@ -61,11 +61,11 @@ Closed since the earlier review:
 | 1. SDG Relevance | Done / target-level documented | `docs/compliance/sdg_mapping.md`, `docs/architecture/use_cases.md`, project overview | Keep SDG wording synchronized with future module changes and final nomination language. |
 | 2. Open Licensing | Mostly ready | `LICENSE`, `NOTICE`, `docs/compliance/license_consistency_before_after.md`, `docs/compliance/third_party_licenses.md`, `docs/compliance/data_redistribution_approval.md` | Complete final owner/legal sign-off for release governance. |
 | 3. Clear Ownership | Done for current public package | `docs/compliance/governance_and_ownership.md`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `MAINTAINERS.md` | Keep Tech4Gov Team contact current and monitored. |
-| 4. Platform Independence | Mostly ready | PHP/MySQL/HTML/CSS/JS stack, deployment guide, IIS/Apache/Nginx/cloud guidance, sanitized base schema and clean-schema validation note, `docs/security/production_hardening.md` | Repeat validation in final UAT/production-like environment before release tagging. |
-| 5. Documentation | Good | GitBook, API docs, use cases, architecture, deployment, testing, accessibility and release docs | Keep docs updated with each module change. |
+| 4. Platform Independence | Mostly ready | PHP/MySQL/HTML/CSS/JS stack, deployment guide, IIS/Apache/Nginx/cloud guidance, sanitized base schema, selectable worker modes and deployment readiness check | Repeat validation in final UAT/production-like environment before release tagging. |
+| 5. Documentation | Good | GitBook, API docs, use cases, architecture, deployment, WHO/WCAG compatibility, testing, accessibility and release docs | Keep docs updated with each module change. |
 | 6. Non-PII Data Extraction | Done for current public package | `docs/compliance/non_pii_data_export_import.md`, `docs/compliance/sample_exports/`, report/export features, facility master redistribution policy | Keep sample exports synchronized with future report schema changes. |
 | 7. Privacy & Applicable Laws | Guidance done / formal sign-off pending | `docs/compliance/data_privacy_policy.md`, `docs/compliance/privacy_data_protection.md`, `docs/compliance/non_pii_data_export_import.md`, `docs/compliance/legal_privacy_confirmation.md`, `docs/security/evidence_upload_and_log_retention.md`, security docs | Complete legal/privacy review for the intended deployment jurisdiction. |
-| 8. Open Standards & Best Practices | Documented | `docs/compliance/open_standards_mapping.md`, OpenAPI, Postman, JSON/CSV/XLSX sample exports, WCAG docs | Keep OpenAPI and Postman collection synchronized with API changes. |
+| 8. Open Standards & Best Practices | Implemented foundation / validation pending | `docs/compliance/open_standards_mapping.md`, OpenAPI, Postman, JSON/CSV/XLSX sample exports, FHIR R4 `MeasureReport` export, WCAG and WHO compatibility docs | Keep API contracts synchronized; validate external exchange and low-bandwidth deployment with the receiving/target environment. |
 | 9A. Data Privacy & Security | Improved / source-guarded | `SECURITY.md`, SQL injection review, VAPT notes, role matrix, production hardening, evidence/log retention policy, event log redaction, release readiness checker | Complete final active VAPT retest and audit-log verification before public release. |
 | 9B. Inappropriate & Illegal Content | Low risk / documented | File upload/evidence rules, patient-level PHI exclusion, production hardening guide, evidence retention policy | Add antivirus/malware scanning and authenticated evidence download in production if sensitive evidence uploads are enabled. |
 | 9C. Protection from Harassment | Not applicable / documented | SaQshi has no public social/user-to-user interaction workflow | Reassess if public comments, chat or public collaboration features are added. |
@@ -99,6 +99,8 @@ Closed since the earlier review:
 - `docs/compliance/third_party_licenses.md`
 - `docs/compliance/release_versioning_policy.md`
 - `docs/security/evidence_upload_and_log_retention.md`
+- `docs/compliance/who_digital_health_compatibility.md`
+- `docs/testing/who_compatibility_test_execution_2026_08_03.md`
 
 ## Current DPG Strengths
 
@@ -110,6 +112,7 @@ Closed since the earlier review:
 - Security, privacy, role access, production hardening, VAPT notes and SQL injection review are documented.
 - Evidence upload retention, log retention and event redaction are documented.
 - Release readiness checker automates checks for required docs, secret hygiene, missing page assets, raw error exposure patterns, private artifacts and large release files.
+- WHO-oriented delivery foundations are documented: offline shell/response queue, scalable worker options, configurable profiles and facility-scoped FHIR R4 exchange. This is not a WHO endorsement or certification claim.
 
 ## Remaining Gaps Blocking Final Nomination
 
@@ -118,6 +121,7 @@ Closed since the earlier review:
 | Governance contact monitoring | Public releases need accountable maintainers, release approvers and escalation contacts to stay current. | `MAINTAINERS.md`, `docs/compliance/governance_and_ownership.md` | Confirm Tech4Gov Team mailbox monitoring before each release. |
 | Legal/privacy sign-off | Public-sector health deployments need confirmed data/legal ownership and handling approval. | `docs/compliance/legal_privacy_confirmation.md` | Complete sign-off rows for project owner, data owner, legal/compliance and security contact. |
 | Final security/UAT evidence | Source-level scan is not the same as active deployment validation. | `docs/security/release_security_scan_2026_07_16.md`, VAPT docs, `docs/security/evidence_upload_and_log_retention.md` | Run final UAT VAPT/security retest, confirm upload/log retention configuration and record results. |
+| Low-bandwidth and worker-topology validation | Offline features and configurable worker modes require real deployment evidence. | `docs/compliance/who_digital_health_compatibility.md`, `docs/testing/who_compatibility_test_execution_2026_08_03.md` | Test offline response synchronization, expected load and worker failover on target devices/network. |
 | Large release image review | Large image files are allowed but should be intentionally retained and source-approved. | Release checker large-file warnings | Confirm owner approval or compress/replace images. |
 
 ## Evidence Pending for DPG Nomination

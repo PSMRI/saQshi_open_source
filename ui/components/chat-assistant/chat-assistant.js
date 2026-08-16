@@ -85,7 +85,12 @@
             });
         });
     }
-    function init() {
+    async function init() {
+        if (SQ.deployment?.load) await SQ.deployment.load();
+        if (SQ.deployment?.current?.domain?.profile_code === "education" || SQ.deployment?.current?.modules?.active_profile === "education") {
+            $("sqAiChat")?.remove();
+            return;
+        }
         if (state.initialized || !$("sqAiChat")) return;
         state.initialized = true;
         bind();

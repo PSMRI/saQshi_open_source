@@ -21,6 +21,7 @@ License : GPL-3.0
         </div>
 
         <div class="sq-card-body">
+            <div id="offlineSyncStatus" class="sq-offline-sync-status" hidden aria-live="polite"></div>
             <div class="sq-assessment-summary">
                 <div class="sq-summary-item">
                     <label>Assessment</label>
@@ -53,27 +54,27 @@ License : GPL-3.0
         <div class="sq-card-body">
             <div class="sq-checklist-view-switch" role="tablist" aria-label="Checklist view">
                 <button type="button" class="sq-view-tab is-active" data-checklist-view="detailed" role="tab" aria-selected="true">Detailed View</button>
-                <button type="button" class="sq-view-tab" data-checklist-view="concern" role="tab" aria-selected="false">Area of Concern View</button>
+                <button type="button" class="sq-view-tab" data-checklist-view="concern" role="tab" aria-selected="false" data-domain-template="{area_of_concern} View">Area of Concern View</button>
             </div>
             <div class="sq-filter-grid">
                 <div class="sq-form-group">
-                    <label for="deptSelect">Department</label>
+                    <label for="deptSelect" data-domain-label="department">Department</label>
                     <select id="deptSelect" class="sq-form-control" aria-label="Dept Select">
                         <option value="">Loading departments...</option>
                     </select>
                 </div>
 
                 <div class="sq-form-group sq-detailed-only">
-                    <label for="concernSelect">Area of Concern</label>
+                    <label for="concernSelect" data-domain-label="area_of_concern">Area of Concern</label>
                     <select id="concernSelect" class="sq-form-control" disabled aria-label="Concern Select">
-                        <option value="">Select department first</option>
+                        <option value="" data-domain-template="Select {department} first">Select department first</option>
                     </select>
                 </div>
 
                 <div class="sq-form-group sq-detailed-only">
                     <label for="subtypeSelect">Subtype</label>
                     <select id="subtypeSelect" class="sq-form-control" disabled aria-label="Subtype Select">
-                        <option value="">Select concern first</option>
+                        <option value="" data-domain-template="Select {area_of_concern} first">Select concern first</option>
                     </select>
                 </div>
 
@@ -96,17 +97,17 @@ License : GPL-3.0
     <div id="concernChecklistPanel" class="sq-card sq-hidden">
         <div class="sq-card-header">
             <div>
-                <h3>Area of Concern Checklist</h3>
-                <p>Choose an area, save work as a draft, then submit it after all mandatory checkpoints are answered.</p>
+                <h3 data-domain-template="{area_of_concern} Checklist">Area of Concern Checklist</h3>
+                <p data-domain-template="Choose a {area_of_concern}, save work as a draft, then submit it after all mandatory checkpoints are answered.">Choose an area, save work as a draft, then submit it after all mandatory checkpoints are answered.</p>
             </div>
         </div>
         <div class="sq-card-body">
-            <div id="concernTabs" class="sq-concern-tabs" role="tablist" aria-label="Areas of concern"></div>
+            <div id="concernTabs" class="sq-concern-tabs" role="tablist" data-domain-aria-label="{areas_of_concern}" aria-label="Areas of concern"></div>
             <div id="concernChecklistContent" class="sq-concern-checklist-content"></div>
         </div>
         <div class="sq-card-footer sq-concern-actions">
             <button type="button" class="sq-btn sq-btn-secondary" id="btnSaveConcernDraft">Save Draft</button>
-            <button type="button" class="sq-btn sq-btn-primary" id="btnSubmitConcern">Submit Area of Concern</button>
+            <button type="button" class="sq-btn sq-btn-primary" id="btnSubmitConcern" data-domain-template="Submit {area_of_concern}">Submit Area of Concern</button>
         </div>
     </div>
 

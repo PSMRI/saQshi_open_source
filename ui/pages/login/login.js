@@ -24,6 +24,39 @@
         if (element && value) element.textContent = value;
     }
 
+    function setLoginLogos(branding) {
+        const container = document.getElementById("loginBrandLogos");
+        const defaultLogo = document.getElementById("loginDefaultLogo");
+        const logos = [
+            { element: document.getElementById("loginBrandLogo1"), url: branding.login_logo_1, alt: branding.login_logo_1_alt || "Organisation logo" },
+            { element: document.getElementById("loginBrandLogo2"), url: branding.login_logo_2, alt: branding.login_logo_2_alt || "Partner organisation logo" }
+        ];
+
+        if (!container || !defaultLogo) return;
+
+        let configured = 0;
+        logos.forEach(function (logo) {
+            if (!logo.element || !String(logo.url || "").trim()) return;
+
+            logo.element.src = String(logo.url).trim();
+            logo.element.alt = logo.alt;
+            logo.element.hidden = false;
+            logo.element.addEventListener("error", function () {
+                logo.element.hidden = true;
+                if (!container.querySelector("img:not([hidden])")) {
+                    container.hidden = true;
+                    defaultLogo.hidden = false;
+                }
+            }, { once: true });
+            configured += 1;
+        });
+
+        if (configured) {
+            container.hidden = false;
+            defaultLogo.hidden = true;
+        }
+    }
+
     async function loadLoginBranding() {
         try {
             const config = (await SQ.api.get("/config/v1/public_deployment.php", {}, {
@@ -38,6 +71,7 @@
             setText("loginBrandKicker", branding.login_kicker);
             setText("loginBrandTitle", branding.login_title);
             setText("loginBrandDescription", branding.login_description);
+            setLoginLogos(branding);
         } catch (error) {
             // Keep the HTML defaults if public deployment configuration is unavailable.
             console.warn("Login branding could not be loaded.", error);
@@ -289,8 +323,12 @@
 
             window.location.href = user && user.password_must_change
                 ? "/ui/dashboard.html?route=facilityusers/users&force_password=1"
+                : Number(user && user.role_id) === 11
+                ? "/ui/dashboard.html?route=state/users"
                 : Number(user && user.role_id) === 9
                 ? "/ui/dashboard.html?route=state/dashboard"
+                : (Number(user && user.role_id) === 10 || /assessor|mentor/i.test(String(user && user.role_name || "")))
+                ? "/ui/dashboard.html?route=assessor/facilities"
                 : "/ui/dashboard.html";
 
         } catch (error) {
@@ -354,13 +392,18 @@
         }
     }
 
-    function init() {
+    async function init() {
         bindEvents();
-        loadLoginBranding();
-        // Fetch in parallel with CAPTCHA so submitting login has no extra key request.
-        loadLoginPublicKey().catch(function () {});
-        loadCaptcha();
         focusUsername();
+
+        // These public requests each establish a PHP session on a first visit.
+        // Load the CAPTCHA last so its answer is stored in the session cookie
+        // the browser will use for the login request.
+        await Promise.all([
+            loadLoginBranding(),
+            loadLoginPublicKey().catch(function () {})
+        ]);
+        await loadCaptcha();
     }
 
     SQ.login = {

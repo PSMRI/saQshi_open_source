@@ -5,9 +5,8 @@
  * -------------------------------------------------------
  * Returns active assessment for logged-in user's facility.
  *
- * Rule:
- * - One facility can have only one ACTIVE assessment.
- * - If no active assessment exists, return has_active = false.
+ * Facility users receive their own active assessment. Assessor-led cycles
+ * are kept separate so they do not block the facility self-assessment flow.
  *
  * Method:
  * GET
@@ -26,6 +25,7 @@ try {
 
     $facId  = SessionManager::facilityId();
     $userId = SessionManager::userId();
+    $requestedAssessmentId = isset($_GET['assessment_id']) ? (int)$_GET['assessment_id'] : 0;
 
     if ($facId <= 0) {
         Response::error('Facility not assigned to logged-in user');
@@ -34,6 +34,20 @@ try {
     if ($userId <= 0) {
         Response::error('User session not found');
     }
+
+    $isAssessorSession = (int)($_SESSION['assessor_id'] ?? 0) > 0
+        || str_contains(strtolower((string)($_SESSION['role_name'] ?? $_SESSION['user_type'] ?? '')), 'assessor');
+    $assessorId = (int)($_SESSION['assessor_id'] ?? 0);
+
+    $scopeSql = $isAssessorSession
+        ? "AND (assigned_assessor_id IS NOT NULL OR UPPER(COALESCE(assessment_source, '')) = 'STATE_ASSESSOR')"
+        : "AND (assigned_assessor_id IS NULL OR assigned_assessor_id = 0)
+           AND (assessment_source IS NULL OR UPPER(assessment_source) <> 'STATE_ASSESSOR')";
+    $assessorSql = $isAssessorSession && $assessorId > 0 ? ' AND assigned_assessor_id = ?' : '';
+    $assessmentIdSql = $requestedAssessmentId > 0 ? ' AND assessment_id = ?' : '';
+    // PENDING is an assessor-only draft used while choosing a class.  It is
+    // intentionally not shown as active work on the assessor dashboard.
+    $statusSql = $isAssessorSession ? "AND status IN ('ACTIVE', 'PENDING')" : "AND status = 'ACTIVE'";
 
     $sql = "
         SELECT
@@ -53,7 +67,10 @@ try {
             cancelled_on
         FROM assessment_master
         WHERE fac_id_fk = ?
-          AND status = 'ACTIVE'
+          {$statusSql}
+          {$scopeSql}
+          {$assessorSql}
+          {$assessmentIdSql}
         ORDER BY assessment_id DESC
         LIMIT 1
     ";
@@ -64,7 +81,15 @@ try {
         Response::serverError('Prepare failed: ' . $con->error);
     }
 
-    $stmt->bind_param('i', $facId);
+    if ($assessorSql !== '' && $assessmentIdSql !== '') {
+        $stmt->bind_param('iii', $facId, $assessorId, $requestedAssessmentId);
+    } elseif ($assessorSql !== '') {
+        $stmt->bind_param('ii', $facId, $assessorId);
+    } elseif ($assessmentIdSql !== '') {
+        $stmt->bind_param('ii', $facId, $requestedAssessmentId);
+    } else {
+        $stmt->bind_param('i', $facId);
+    }
     $stmt->execute();
 
     $result = $stmt->get_result();
@@ -94,6 +119,7 @@ try {
                 'status'          => $row['status'],
                 'created_by'      => (int)$row['created_by'],
                 'is_assessor_led' => (int)($row['assigned_assessor_id'] ?? 0) > 0 || strtoupper((string)($row['assessment_source'] ?? '')) === 'STATE_ASSESSOR',
+                'is_assessor_session' => $isAssessorSession,
                 'created_on'      => $row['created_on'],
                 'updated_on'      => $row['updated_on'],
                 'completed_on'    => $row['completed_on'],

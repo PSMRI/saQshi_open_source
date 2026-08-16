@@ -12,6 +12,8 @@
     gap:.35rem;
 }
 
+.sq-offline-sync-status{margin:0 0 .4rem;padding:.35rem .55rem;border:1px solid #fbbf24;border-radius:6px;background:#fffbeb;color:#92400e;font-size:.72rem;font-weight:700}
+
 body:has(.sq-checklist-page) .sq-page-content,
 body:has(.sq-checklist-page) .sq-content{
     padding:6px 10px !important;
@@ -132,12 +134,27 @@ body:has(.sq-checklist-page) .sq-content{
     align-items:center;
     gap:.4rem;
     text-align:left;
+    background:var(--sq-checklist-pending-bg, #fff3e0);
+    border-color:var(--sq-checklist-pending-border, #f2b66d);
+    color:var(--sq-checklist-pending-text, #7a4808);
 }
 
 .sq-concern-tab small{
     font-size:.62rem;
     opacity:.8;
     white-space:nowrap;
+}
+
+.sq-concern-tab.is-complete{
+    background:var(--sq-checklist-complete-bg, #e6f6eb) !important;
+    border-color:var(--sq-checklist-complete-border, #299657) !important;
+    color:var(--sq-checklist-complete-text, #176b3b) !important;
+}
+
+.sq-concern-tab.is-complete.is-active{
+    background:#299657 !important;
+    border-color:#299657 !important;
+    color:#fff !important;
 }
 
 #checklistScopeCard.is-aoc-mode .sq-detailed-only{
@@ -179,6 +196,26 @@ body:has(.sq-checklist-page) .sq-content{
 .sq-aoc-checkpoint{
     padding:.55rem;
     border-top:1px solid var(--sq-border);
+}
+
+.sq-aoc-checkpoint.is-answered,
+#checkpointPanel.is-answered .sq-checkpoint-box,
+#checkpointPanel.is-answered .sq-response-control{
+    background:var(--sq-checklist-complete-bg, #e6f6eb);
+    color:var(--sq-checklist-complete-text, inherit);
+}
+
+.sq-aoc-checkpoint.is-unanswered,
+#checkpointPanel.is-unanswered .sq-checkpoint-box,
+#checkpointPanel.is-unanswered .sq-response-control{
+    background:var(--sq-checklist-pending-bg, #fff3e0);
+    color:var(--sq-checklist-pending-text, inherit);
+}
+
+.sq-aoc-checkpoint.is-view-only,
+#checkpointPanel.is-view-only .sq-checkpoint-box,
+#checkpointPanel.is-view-only .sq-response-control{
+    box-shadow:inset 3px 0 0 #7c8795;
 }
 
 .sq-aoc-control{
@@ -331,6 +368,34 @@ body:has(.sq-checklist-page) .sq-content{
     box-shadow:0 0 0 3px rgba(37,99,235,.12);
 }
 
+/* Disabled native radios are normally rendered with a very faint centre dot.
+   Keep the selected answer unmistakable while the view remains read-only. */
+.is-view-only .sq-score-option:has(input:checked){
+    background:var(--sq-checklist-selected-bg, #dbeafe);
+    border:2px solid var(--sq-checklist-selected-border, #1d4ed8);
+    box-shadow:0 0 0 3px var(--sq-checklist-selected-ring, rgba(29,78,216,.2));
+}
+
+.is-view-only .sq-score-option input[type="radio"]:checked:disabled{
+    opacity:1;
+    accent-color:var(--sq-checklist-selected-border, #1d4ed8);
+    filter:contrast(1.7) saturate(1.8);
+}
+
+/* Status colours use dark, saturated surfaces in dark mode so the white theme
+   text remains readable and the answer state is still immediately visible. */
+[data-theme="dark"] .sq-checklist-page{
+    --sq-checklist-pending-bg:#4a2b08;
+    --sq-checklist-pending-border:#f6ad55;
+    --sq-checklist-pending-text:#fff7e8;
+    --sq-checklist-complete-bg:#123d2b;
+    --sq-checklist-complete-border:#4ade80;
+    --sq-checklist-complete-text:#f0fdf4;
+    --sq-checklist-selected-bg:#172f61;
+    --sq-checklist-selected-border:#7dd3fc;
+    --sq-checklist-selected-ring:rgba(125,211,252,.38);
+}
+
 .sq-empty-state{
     color:var(--sq-text-muted);
     padding:.2rem 0;
@@ -390,12 +455,9 @@ body:has(.sq-checklist-page) .sq-content{
 
     .sq-card-footer,
     .sq-checkpoint-actions{
-        flex-direction:column-reverse;
-    }
-
-    .sq-card-footer .sq-btn{
-        width:100%;
-        justify-content:center;
+        flex-direction:row;
+        flex-wrap:wrap;
+        justify-content:flex-end;
     }
 
     .sq-completed-state{
@@ -403,9 +465,7 @@ body:has(.sq-checklist-page) .sq-content{
         flex-direction:column;
     }
 
-    .sq-completed-actions,
-    .sq-completed-actions .sq-btn{
-        width:100%;
-        justify-content:center;
+    .sq-completed-actions{
+        justify-content:flex-start;
     }
 }

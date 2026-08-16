@@ -409,20 +409,21 @@ class Auth
                 )
         ";
 
-        $stmt = $this->db->prepare($sql);
+        try {
+            $this->limitAuditLockWait();
+            $stmt = $this->db->prepare($sql);
 
-        if (!$stmt) {
-            return;
+            if (!$stmt) {
+                return;
+            }
+
+            $stmt->bind_param('sss', $username, $ip, $status);
+            $stmt->execute();
+        } catch (Throwable $e) {
+            // Login auditing must never make an authenticated user wait for
+            // a database lock. The next request can continue normally.
+            error_log('SaQshi login attempt audit skipped: ' . $e->getMessage());
         }
-
-        $stmt->bind_param(
-            'sss',
-            $username,
-            $ip,
-            $status
-        );
-
-        $stmt->execute();
     }
 
     /**
@@ -440,14 +441,19 @@ class Auth
               AND status = 'FAILED'
         ";
 
-        $stmt = $this->db->prepare($sql);
+        try {
+            $this->limitAuditLockWait();
+            $stmt = $this->db->prepare($sql);
 
-        if (!$stmt) {
-            return;
+            if (!$stmt) {
+                return;
+            }
+
+            $stmt->bind_param('s', $username);
+            $stmt->execute();
+        } catch (Throwable $e) {
+            error_log('SaQshi failed-login cleanup skipped: ' . $e->getMessage());
         }
-
-        $stmt->bind_param('s', $username);
-        $stmt->execute();
     }
 
     /**
@@ -468,6 +474,15 @@ class Auth
         $exists = $result && $result->num_rows > 0;
 
         return $exists;
+    }
+
+    /**
+     * Keep optional login-attempt audit operations from waiting for MySQL's
+     * default 50-second InnoDB lock timeout during an interactive sign-in.
+     */
+    private function limitAuditLockWait(): void
+    {
+        $this->db->query('SET SESSION innodb_lock_wait_timeout = 3');
     }
 
     /**

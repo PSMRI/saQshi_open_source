@@ -6,28 +6,24 @@
             <p data-domain-label="map_summary">Certified facilities with geo coordinates.</p>
         </div>
         <div class="sq-state-filters">
+            <select class="sq-form-control" id="stateMapMode" aria-label="Map display mode"><option value="facility">Facility plotting</option><option value="domain">Domain categorisation</option></select>
+            <select class="sq-form-control" id="stateMapDomain" aria-label="Assessment domain" disabled><option value="">Select domain</option></select>
             <input type="search" class="sq-form-control" id="stateMapSearch" placeholder="Search facility or NIN" aria-label="Search Facility Or NIN" data-domain-placeholder="Search {facility} or {facility_code}" data-domain-aria-label="Search {facility} or {facility_code}">
+            <button class="sq-btn sq-btn-muted" id="stateMapOpenFull" type="button"><i class="bi bi-arrows-fullscreen"></i> Open Full Map</button>
             <button class="sq-btn sq-btn-primary" id="stateMapRefresh"><i class="bi bi-arrow-clockwise"></i> Refresh</button>
         </div>
     </div>
 
-    <div class="sq-card">
+    <div class="sq-card" id="stateMapViewCard">
         <div class="sq-card-header"><h3>Map View</h3></div>
         <div class="sq-card-body">
             <p id="stateMapSummary" class="sq-help-text" aria-live="polite">Map data summary will appear after loading.</p>
             <div id="stateMapCanvas" class="sq-state-map" role="img" aria-label="Certification map showing certified facilities by location" aria-describedby="stateMapSummary"></div>
+            <div id="stateMapLegend" class="sq-state-map-legend" hidden></div>
         </div>
     </div>
 
-    <div class="sq-card">
-        <div class="sq-card-header"><h3 data-domain-label="map_categories">Certification Categorisation</h3></div>
-        <div class="sq-card-body">
-            <div class="sq-state-map-categories" id="stateMapCategories"></div>
-            <div class="sq-state-map-status" id="stateMapStatus"></div>
-        </div>
-    </div>
-
-    <div class="sq-card">
+    <div class="sq-card" id="stateMapListCard">
         <div class="sq-card-header"><h3 data-domain-label="mapped_facilities">Mapped Facilities</h3></div>
         <div class="sq-card-body" id="stateMapList"></div>
     </div>

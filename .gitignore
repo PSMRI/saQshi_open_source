@@ -24,6 +24,7 @@ tools/observability/
 
 .codex_tmp/
 node_modules/
+tools/
 vendor/
 api/config/frameworks/saqshi-education.json
 api/config/frameworks/saqshi-nqas_health.json

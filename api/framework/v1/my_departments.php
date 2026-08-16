@@ -31,6 +31,12 @@ try {
     $frameworkCode = $_GET['framework'] ?? 'saqshi-nqas';
     $frameworkCode = trim($frameworkCode);
 
+    $domainPath = __DIR__ . '/../../config/domain.json';
+    $domain = is_file($domainPath) ? json_decode((string)file_get_contents($domainPath), true) : [];
+    if (($domain['profile_code'] ?? $domain['domain'] ?? '') === 'education') {
+        $frameworkCode = 'saqshi-education';
+    }
+
     if ($frameworkCode === '') {
         Response::validation([
             'framework' => 'Framework code is required'
@@ -115,7 +121,25 @@ try {
      */
     $engine = FrameworkEngine::load($frameworkCode);
 
-    $departments = $engine->getDepartments($facTypeId);
+    // Education class scope is maintained in the master file.  The framework
+    // remains the source for its Domains, questions and answer options.
+    $departments = [];
+    if (($domain['profile_code'] ?? $domain['domain'] ?? '') === 'education') {
+        $departmentMasterPath = __DIR__ . '/../../config/masters/department.json';
+        $departmentMaster = is_file($departmentMasterPath)
+            ? json_decode((string)file_get_contents($departmentMasterPath), true)
+            : [];
+        $departments = $departmentMaster['education']['facility_types'][(string)$facTypeId] ?? [];
+    }
+
+    if (!is_array($departments) || !$departments) {
+        $departments = $engine->getDepartments($facTypeId);
+    }
+
+    $frameworkDepartments = [];
+    foreach ($engine->getDepartments($facTypeId) as $frameworkDepartment) {
+        $frameworkDepartments[(int)($frameworkDepartment['fac_dept_id'] ?? $frameworkDepartment['dept_id'] ?? 0)] = $frameworkDepartment;
+    }
 
     $departmentList = [];
 
@@ -140,7 +164,7 @@ foreach ($departments as $department) {
         'fac_dept_id'   => $deptId,
         'dept_name'     => $deptName,
         'department_name' => $deptName,
-        'concern_count' => count($department['concerns'] ?? [])
+        'concern_count' => count($frameworkDepartments[$deptId]['concerns'] ?? $department['concerns'] ?? [])
     ];
 }
 

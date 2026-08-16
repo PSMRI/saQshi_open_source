@@ -107,8 +107,10 @@ menus. A facility user should not see full state administration menus.
 
 ## State-Led Assessor Workflow
 
-This workflow is used when state administration wants one assessor to assess
-multiple facilities.
+This workflow supports one assessor assessing multiple facilities and multiple
+assessors sharing work at the same facility. For shared work, each assessor
+claims a different class; the same class cannot be assessed by two assessors
+simultaneously.
 
 For state admin:
 
@@ -117,6 +119,8 @@ For state admin:
 3. Leave linked user ID blank if SaQshi should create the assessor login automatically.
 4. SaQshi uses assessor code as username, generates a temporary password and sends it through configured email/SMS service.
 5. Search and assign one or more facilities to that assessor.
+6. To share a facility, select each additional assessor and assign the same
+   facility. Allocate a different class to each assessor.
 
 Before giving login details to the assessor, confirm that a matching user row
 exists in `s_user` with `u_name` equal to assessor code, role `Assessor`, active
@@ -129,9 +133,19 @@ For assessor:
 3. Open `Assessor Dashboard` or `Assigned Facilities`.
 4. Select the facility to assess.
 5. SaQshi creates or reuses the active assessment for that facility.
-6. If only one department applies, SaQshi activates it automatically.
-7. If multiple departments apply, SaQshi opens department activation.
+6. If only one class applies, SaQshi makes it available automatically.
+7. If multiple classes apply, claim the assigned class before entering its
+   checklist. Another assessor cannot claim the same class at the same time.
 8. Continue with assessor info, checklist, CQI and reports.
+
+For shared work, each assessor has an independent assessment record but may
+claim only an available Class/Department. If another assessor is working on a
+Class/Department, SaQshi labels it as in progress and prevents a second claim.
+After a class is claimed, **Continue Assessment** opens its checklist directly.
+
+Assessment reports group overall results by shared School/Facility round rather
+than by assessor start date. They show completed Classes/Departments out of the
+total, weighted overall score, round status and baseline comparison.
 
 If department activation and assessor information are already completed, the
 assessor dashboard shows `Start Checklist` or `Continue Checklist` directly.

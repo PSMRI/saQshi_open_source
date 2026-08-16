@@ -16,10 +16,11 @@
 
     "assets": {
         "css": [
-            "/ui/pages/assessment/checklist.css?v=20260801-1"
+            "/ui/pages/assessment/checklist.css?v=20260807-mobile-actions-1"
         ],
         "js": [
-            "/ui/pages/assessment/checklist.js?v=20260802-1"
+            "/ui/assets/js/core/offline-response-queue.js?v=20260803-1",
+            "/ui/pages/assessment/checklist.js?v=20260806-education-wording-1"
         ]
     },
 

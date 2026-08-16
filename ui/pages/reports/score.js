@@ -66,6 +66,10 @@
         return num(value).toFixed(2).replace(/\.00$/, "") + "%";
     }
 
+    function categoryName(category) {
+        return category?.name || category?.name_hi || "-";
+    }
+
     function statusLabel(status) {
         const value = String(status || "").toUpperCase();
 
@@ -169,6 +173,10 @@
         setText("scoreGainRaw", num(improvement.score_gain).toFixed(2) + " points");
         setText("scoreAnsweredCheckpoints", num(overall.answered_checkpoints));
         setText("scoreRevisedCheckpoints", num(overall.revised_checkpoints));
+
+        const roundScore = state.score?.round_score?.school_score;
+        setText("scoreRoundCategory", roundScore ? categoryName(roundScore.original_category || roundScore.original_level) : "-");
+        setText("scoreRoundPercent", roundScore ? percent(roundScore.original_percentage) + " round score" : "No completed class/department");
     }
 
     function renderRows() {
@@ -193,6 +201,7 @@
             const original = row.original || {};
             const improved = row.improved || {};
             const improvement = row.improvement || {};
+            const modelScore = row.model_score?.weighted_score || {};
 
             return `
                 <tr>
@@ -217,12 +226,36 @@
                         <span class="sq-score-subtext">${num(improved.obtained_score).toFixed(2)} / ${num(improved.total_score).toFixed(2)}</span>
                     </td>
                     <td>
+                        <span class="sq-score-pill">${percent(modelScore.original_percentage)}</span>
+                        <span class="sq-score-subtext">${escapeHtml(categoryName(modelScore.original_category || modelScore.original_level))}</span>
+                    </td>
+                    <td>
                         <span class="sq-score-pill is-gain">${percent(improvement.percentage_gain)}</span>
                         <span class="sq-score-subtext">${num(improvement.score_gain).toFixed(2)} points</span>
                     </td>
                     <td>${num(row.revised_checkpoints)}</td>
                 </tr>
             `;
+        }).join("");
+    }
+
+    function renderRoundHistory() {
+        const target = $("scoreRoundRows");
+        if (!target) return;
+        const rounds = state.score?.round_history || [];
+        if (!rounds.length) {
+            target.innerHTML = `<tr><td colspan="5" class="sq-text-center sq-text-muted">No round score available.</td></tr>`;
+            return;
+        }
+        target.innerHTML = rounds.map(function (round) {
+            const schoolScore = round.school_score;
+            return `<tr>
+                <td><strong>Round ${escapeHtml(round.round_no || round.round_id)}</strong></td>
+                <td><span class="sq-score-status ${statusClass(round.status)}">${escapeHtml(statusLabel(round.status))}</span></td>
+                <td>${num(round.completed_classes?.length)}</td>
+                <td>${schoolScore ? `<span class="sq-score-pill">${percent(schoolScore.original_percentage)}</span>` : "-"}</td>
+                <td>${schoolScore ? escapeHtml(categoryName(schoolScore.original_category || schoolScore.original_level)) : "-"}</td>
+            </tr>`;
         }).join("");
     }
 
@@ -234,8 +267,10 @@
         const target = $("scoreDepartmentRows");
 
         if (target) {
-            target.innerHTML = `<tr><td colspan="7" class="sq-text-center sq-text-muted">${escapeHtml(message || "Select assessment to view score.")}</td></tr>`;
+            target.innerHTML = `<tr><td colspan="8" class="sq-text-center sq-text-muted">${escapeHtml(message || "Select assessment to view score.")}</td></tr>`;
         }
+        const roundTarget = $("scoreRoundRows");
+        if (roundTarget) roundTarget.innerHTML = `<tr><td colspan="5" class="sq-text-center sq-text-muted">${escapeHtml(message || "Select assessment to view round score.")}</td></tr>`;
     }
 
     async function loadAssessments() {
@@ -270,7 +305,7 @@
         const target = $("scoreDepartmentRows");
 
         if (target) {
-            target.innerHTML = `<tr><td colspan="7" class="sq-text-center sq-text-muted">Loading score report...</td></tr>`;
+            target.innerHTML = `<tr><td colspan="8" class="sq-text-center sq-text-muted">Loading score report...</td></tr>`;
         }
 
         const response = await apiGet(API.score, {
@@ -281,6 +316,7 @@
         renderContext();
         renderSummary();
         renderRows();
+        renderRoundHistory();
     }
 
     function bindEvents() {

@@ -57,10 +57,28 @@ class StateReportService extends StateDashboardService
     public static function exportCatalog(): array
     {
         $labels = self::domainLabels();
+        $summaryAreas = [$labels['facilities'], $labels['assessments']];
+        if (self::moduleEnabled('cqi')) {
+            $summaryAreas[] = 'CQI';
+        }
+        if (self::moduleEnabled('performance')) {
+            $summaryAreas[] = 'performance';
+        }
+        if (self::moduleEnabled('certification')) {
+            $summaryAreas[] = 'certification';
+        }
+
+        $assessmentDescription = 'All ' . $labels['assessment'] . ' records with status, '
+            . $labels['departments'] . ', checkpoints';
+        if (self::moduleEnabled('cqi')) {
+            $assessmentDescription .= ', action plans';
+        }
+        $assessmentDescription .= ' and score fields.';
+
         $reports = [
-            ['key' => 'summary', 'title' => 'State Summary', 'description' => 'Summary counts for facilities, assessments, CQI, performance and certification.'],
-            ['key' => 'facilities', 'title' => 'All ' . $labels['facility'] . ' List', 'description' => $labels['facility'] . ' master list with state, division, district, block, type, ' . $labels['facility_code'] . ' and coordinates.'],
-            ['key' => 'assessments', 'title' => 'Assessment Details', 'description' => 'All assessment records with status, departments, checkpoints, action plans and score fields.'],
+            ['key' => 'summary', 'title' => 'State Summary', 'description' => 'Summary counts for ' . self::humanList($summaryAreas) . '.'],
+            ['key' => 'facilities', 'title' => 'All ' . $labels['facility'] . ' List', 'description' => $labels['facility'] . ' master list with state, division, district, block, ' . $labels['facility'] . ' type, ' . $labels['facility_code'] . ' and coordinates.'],
+            ['key' => 'assessments', 'title' => 'Assessment Details', 'description' => $assessmentDescription],
             ['key' => 'assessor_activity', 'title' => $labels['assessor'] . ' Activity', 'description' => 'Completed assessment count and assessment-level details for each ' . $labels['assessor'] . '.'],
         ];
 
@@ -84,23 +102,25 @@ class StateReportService extends StateDashboardService
         $labels = self::domainLabels();
         $facility = self::facilityCategory($con, $filters);
         $assessment = self::assessmentProgress($con, $filters, true);
-        $cqi = self::cqiSummary($con, $filters);
-        $performance = self::performanceSummary($con, $filters);
-        $certification = self::certificationSummary($con, $filters);
+        $cqi = self::moduleEnabled('cqi') ? self::cqiSummary($con, $filters) : [];
+        $performance = self::moduleEnabled('performance') ? self::performanceSummary($con, $filters) : [];
+        $certification = self::moduleEnabled('certification') ? self::certificationSummary($con, $filters) : [];
 
         self::csvRow($out, ['Report', 'Metric', 'Value']);
         self::csvRow($out, [$labels['facilities'], 'Total ' . $labels['facilities'], $facility['total_facilities'] ?? 0]);
         foreach (($facility['facility_types'] ?? []) as $row) {
             self::csvRow($out, [$labels['facilities'], $labels['facility'] . ' Type - ' . ($row['facility_type'] ?? ''), $row['count'] ?? 0]);
         }
-        self::csvRow($out, ['Assessments', 'Total', $assessment['total'] ?? 0]);
-        self::csvRow($out, ['Assessments', 'Active', $assessment['active'] ?? 0]);
-        self::csvRow($out, ['Assessments', 'Completed', $assessment['completed'] ?? 0]);
-        self::csvRow($out, ['Assessments', 'Cancelled', $assessment['cancelled'] ?? 0]);
-        self::csvRow($out, ['CQI', 'Facilities With Action Plan', $cqi['facilities_with_action_plan'] ?? 0]);
-        self::csvRow($out, ['CQI', 'Completed', $cqi['completed'] ?? 0]);
-        self::csvRow($out, ['CQI', 'Pending', $cqi['pending'] ?? 0]);
-        self::csvRow($out, ['CQI', 'Overdue', $cqi['overdue'] ?? 0]);
+        self::csvRow($out, [$labels['assessments'], 'Total', $assessment['total'] ?? 0]);
+        self::csvRow($out, [$labels['assessments'], 'Active', $assessment['active'] ?? 0]);
+        self::csvRow($out, [$labels['assessments'], 'Completed', $assessment['completed'] ?? 0]);
+        self::csvRow($out, [$labels['assessments'], 'Cancelled', $assessment['cancelled'] ?? 0]);
+        if (self::moduleEnabled('cqi')) {
+            self::csvRow($out, ['CQI', $labels['facilities'] . ' With Action Plan', $cqi['facilities_with_action_plan'] ?? 0]);
+            self::csvRow($out, ['CQI', 'Completed', $cqi['completed'] ?? 0]);
+            self::csvRow($out, ['CQI', 'Pending', $cqi['pending'] ?? 0]);
+            self::csvRow($out, ['CQI', 'Overdue', $cqi['overdue'] ?? 0]);
+        }
         if (self::moduleEnabled('performance')) {
             self::csvRow($out, ['Performance', 'Facilities', $performance['summary']['facilities'] ?? 0]);
             self::csvRow($out, ['Performance', 'Performance Entries', $performance['summary']['performance_entries'] ?? 0]);
@@ -121,10 +141,12 @@ class StateReportService extends StateDashboardService
     {
         $labels = self::domainLabels();
         self::csvRow($out, [
-            $labels['facility'] . ' ID', 'State', 'Division', 'District', 'Block', $labels['facility'] . ' Name',
-            $labels['facility'] . ' Type ID', $labels['facility_code'], 'Latitude', 'Longitude', 'Active'
+            'State', 'Division', 'District', 'Block', $labels['facility'] . ' Name',
+            $labels['facility'] . ' Type', $labels['facility_code'], 'Latitude', 'Longitude', 'Active',
+            'Class-wise Completion', 'Round-wise Class Completion'
         ]);
 
+        $classCompletion = self::schoolClassCompletion($con);
         $masterRows = self::facilityMasterRows();
         if ($masterRows !== []) {
             foreach ($masterRows as $row) {
@@ -132,9 +154,11 @@ class StateReportService extends StateDashboardService
                     continue;
                 }
                 self::csvRow($out, [
-                    $row['fac_id'], $row['state_name'], $row['division'], $row['district'],
-                    $row['block'], $row['fac_name'], $row['facility_type'], $row['nin_no'],
-                    $row['latitude'], $row['longitude'], '1'
+                    $row['state_name'], $row['division'], $row['district'],
+                    $row['block'], $row['fac_name'], self::facilityTypeName($row['facility_type'] ?? ''), $row['nin_no'],
+                    $row['latitude'], $row['longitude'], '1',
+                    $classCompletion[(int)($row['fac_id'] ?? 0)]['by_class'] ?? '',
+                    $classCompletion[(int)($row['fac_id'] ?? 0)]['by_round'] ?? ''
                 ]);
             }
             return;
@@ -154,14 +178,104 @@ class StateReportService extends StateDashboardService
             ORDER BY f.state_name, f.division, f.Dist_Name, f.Block_Name, f.fac_name
         ";
 
-        self::streamQuery($con, $sql, $where['types'], $where['params'], $out, function (array $row): array {
+        self::streamQuery($con, $sql, $where['types'], $where['params'], $out, function (array $row) use ($classCompletion): array {
+            $completion = $classCompletion[(int)($row['fac_id'] ?? 0)] ?? [];
             return [
-                $row['fac_id'] ?? '', $row['state_name'] ?? '', $row['division'] ?? '',
+                $row['state_name'] ?? '', $row['division'] ?? '',
                 $row['Dist_Name'] ?? '', $row['Block_Name'] ?? '', $row['fac_name'] ?? '',
-                $row['Health_facilty_type'] ?? '', $row['NIN_no'] ?? '', $row['lat'] ?? '',
-                $row['longit'] ?? '', $row['is_active'] ?? ''
+                self::facilityTypeName($row['Health_facilty_type'] ?? ''), $row['NIN_no'] ?? '', $row['lat'] ?? '',
+                $row['longit'] ?? '', $row['is_active'] ?? '',
+                $completion['by_class'] ?? '', $completion['by_round'] ?? ''
             ];
         });
+    }
+
+    /** Creates compact class and round completion summaries for the school-list CSV. */
+    private static function schoolClassCompletion(mysqli $con): array
+    {
+        if (!self::tableExistsLocal($con, 'assessment_master') || !self::tableExistsLocal($con, 'assessment_department')) {
+            return [];
+        }
+        $hasRounds = self::tableExistsLocal($con, 'facility_assessment_round');
+        $roundJoin = $hasRounds ? 'LEFT JOIN facility_assessment_round fr ON fr.round_id = a.round_id' : '';
+        $roundNo = $hasRounds ? 'fr.round_no' : 'NULL';
+        $rows = self::reportRows($con, "
+            SELECT a.fac_id_fk, a.framework_code, f.Health_facilty_type AS facility_type_id,
+                   d.dept_id, d.status AS class_status, a.status AS assessment_status,
+                   {$roundNo} AS round_no
+            FROM assessment_master a
+            JOIN assessment_department d ON d.assessment_id = a.assessment_id AND d.is_active = 1
+            LEFT JOIN facilities f ON f.fac_id = a.fac_id_fk
+            {$roundJoin}
+            WHERE UPPER(COALESCE(a.status, '')) <> 'PENDING'
+            ORDER BY a.fac_id_fk, COALESCE({$roundNo}, 0), d.dept_id
+        ");
+
+        $byFacility = [];
+        foreach ($rows as $row) {
+            $facilityId = (int)($row['fac_id_fk'] ?? 0);
+            $deptId = (int)($row['dept_id'] ?? 0);
+            if ($facilityId <= 0 || $deptId <= 0) continue;
+            $round = (int)($row['round_no'] ?? 0);
+            $roundLabel = $round > 0 ? 'Round ' . $round : 'No round';
+            $className = self::reportClassName(
+                (string)($row['framework_code'] ?? ''),
+                (int)($row['facility_type_id'] ?? 0),
+                $deptId
+            );
+            $status = strtoupper(trim((string)($row['class_status'] ?? '')));
+            if ($status === '') $status = strtoupper(trim((string)($row['assessment_status'] ?? 'NOT STARTED')));
+            $byFacility[$facilityId]['classes'][$className][] = $roundLabel . ': ' . $status;
+            $byFacility[$facilityId]['rounds'][$roundLabel][] = $className . ': ' . $status;
+        }
+
+        $result = [];
+        foreach ($byFacility as $facilityId => $summary) {
+            $classParts = [];
+            foreach (($summary['classes'] ?? []) as $className => $entries) {
+                $classParts[] = $className . ' (' . implode('; ', array_unique($entries)) . ')';
+            }
+            $roundParts = [];
+            foreach (($summary['rounds'] ?? []) as $roundLabel => $entries) {
+                $roundParts[] = $roundLabel . ' (' . implode('; ', array_unique($entries)) . ')';
+            }
+            $result[$facilityId] = ['by_class' => implode(' | ', $classParts), 'by_round' => implode(' | ', $roundParts)];
+        }
+        return $result;
+    }
+
+    private static function reportClassName(string $frameworkCode, int $facilityTypeId, int $deptId): string
+    {
+        static $names = [];
+        $frameworkCode = $frameworkCode ?: 'saqshi-education';
+        $key = $frameworkCode . ':' . $facilityTypeId . ':' . $deptId;
+        if (isset($names[$key])) {
+            return $names[$key];
+        }
+        try {
+            $engine = FrameworkEngine::load($frameworkCode);
+            foreach ($engine->getDepartments($facilityTypeId) as $department) {
+                if ((int)($department['fac_dept_id'] ?? $department['dept_id'] ?? 0) === $deptId) {
+                    return $names[$key] = (string)($department['dept_name'] ?? ('Class ' . $deptId));
+                }
+            }
+        } catch (Throwable $e) { }
+        return $names[$key] = 'Class/Department ' . $deptId;
+    }
+
+    /** Fetches unfiltered internal report rows for a small grouped summary query. */
+    private static function reportRows(mysqli $con, string $sql): array
+    {
+        $result = $con->query($sql);
+        if (!$result) {
+            throw new RuntimeException('School completion report query failed: ' . $con->error);
+        }
+        $rows = [];
+        while ($row = $result->fetch_assoc()) {
+            $rows[] = $row;
+        }
+        $result->free();
+        return $rows;
     }
 
     /**
@@ -176,8 +290,9 @@ class StateReportService extends StateDashboardService
 
         $labels = self::domainLabels();
         self::csvRow($out, [
-            $labels['facility'] . ' ID', $labels['facility_code'], $labels['facility'], 'District', 'Block', 'Assessment ID',
-            'Assessment Name', 'Framework', 'Start Date', 'End Date', 'Status',
+            $labels['facility_code'], $labels['facility'], 'District', 'Block', 'Assessment ID',
+            'Assessment Name', 'Framework', 'Start Date', 'Planned End Date', 'Actual Completion Date', 'Cancellation Date', 'Status',
+            $labels['assessor'] . ' Name', 'Class / Subject Teacher Name', 'Teacher ID', 'Subject', 'Class Section',
             'Checkpoint Done', 'Original Score', 'Final Score', 'Action Plans',
             'Completed Action Plans', 'Last Updated'
         ]);
@@ -218,11 +333,23 @@ class StateReportService extends StateDashboardService
             "
             : '';
 
+        // One assessment can contain class-level details. Keep each saved
+        // class record visible rather than dropping any teacher/section data.
+        $hasAssessorInfo = self::tableExistsLocal($con, 'assessment_assessor_info');
+        $hasClassSection = $hasAssessorInfo && self::columnExistsLocal($con, 'assessment_assessor_info', 'class_section');
+        $assessorInfoJoin = $hasAssessorInfo
+            ? 'LEFT JOIN assessment_assessor_info ai ON ai.assessment_id = a.assessment_id'
+            : '';
+        $assessorInfoSelect = $hasAssessorInfo
+            ? "ai.dept_id AS class_id, ai.assessor_name, ai.assessee_name, ai.teacher_code, ai.subject_name, " . ($hasClassSection ? 'ai.class_section' : "''") . ' AS class_section,'
+            : "NULL AS class_id, '' AS assessor_name, '' AS assessee_name, '' AS teacher_code, '' AS subject_name, '' AS class_section,";
+
         $where = self::facilityWhereLocal($filters, 'f');
         $sql = "
             SELECT f.fac_id, f.NIN_no, f.fac_name, f.Dist_Name, f.Block_Name,
                    a.assessment_id, a.assessment_name, a.framework_code, a.start_date,
-                   a.end_date, a.status, COALESCE(rs.checkpoint_done, 0) AS checkpoint_done,
+                   a.end_date, a.completed_on, a.cancelled_on, a.status, COALESCE(rs.checkpoint_done, 0) AS checkpoint_done,
+                   {$assessorInfoSelect}
                    COALESCE(rs.original_score, 0) AS original_score,
                    COALESCE(rs.final_score, 0) AS final_score,
                    COALESCE(aps.action_plans, 0) AS action_plans,
@@ -230,18 +357,23 @@ class StateReportService extends StateDashboardService
                    COALESCE(aps.last_action_update, '') AS last_action_update
             FROM assessment_master a
             LEFT JOIN facilities f ON f.fac_id = a.fac_id_fk
+            {$assessorInfoJoin}
             {$responseJoin}
             {$actionJoin}
             {$where['sql']}
-            ORDER BY f.Dist_Name, f.Block_Name, f.fac_name, a.assessment_id DESC
+            ORDER BY f.Dist_Name, f.Block_Name, f.fac_name, a.assessment_id DESC, class_id
         ";
 
         self::streamQuery($con, $sql, $where['types'], $where['params'], $out, function (array $row): array {
             return [
-                $row['fac_id'] ?? '', $row['NIN_no'] ?? '', $row['fac_name'] ?? '',
+                $row['NIN_no'] ?? '', $row['fac_name'] ?? '',
                 $row['Dist_Name'] ?? '', $row['Block_Name'] ?? '', $row['assessment_id'] ?? '',
                 $row['assessment_name'] ?? '', $row['framework_code'] ?? '', $row['start_date'] ?? '',
-                $row['end_date'] ?? '', $row['status'] ?? '', $row['checkpoint_done'] ?? 0,
+                $row['end_date'] ?? '', $row['completed_on'] ?? '', $row['cancelled_on'] ?? '', $row['status'] ?? '',
+                Crypto::decrypt((string)($row['assessor_name'] ?? '')),
+                Crypto::decrypt((string)($row['assessee_name'] ?? '')),
+                $row['teacher_code'] ?? '', $row['subject_name'] ?? '', $row['class_section'] ?? '',
+                $row['checkpoint_done'] ?? 0,
                 $row['original_score'] ?? 0, $row['final_score'] ?? 0, $row['action_plans'] ?? 0,
                 $row['completed_action_plans'] ?? 0, $row['last_action_update'] ?? ''
             ];
@@ -413,7 +545,7 @@ class StateReportService extends StateDashboardService
 
         $labels = self::domainLabels();
         self::csvRow($out, [
-            'History ID', $labels['facility'] . ' ID', $labels['facility_code'], $labels['facility'], 'District', 'Block',
+            'History ID', $labels['facility_code'], $labels['facility'], 'District', 'Block',
             'Status', 'Certification Type', 'Assessment Mode', 'Certification Date',
             'Valid From', 'Expiry Date', 'Score', 'Renewal Status', 'Remarks',
             'Action Type', 'Action By', 'Action On'
@@ -433,7 +565,7 @@ class StateReportService extends StateDashboardService
             $payload = json_decode((string)($row['new_data_json'] ?? ''), true);
             $payload = is_array($payload) ? $payload : [];
             return [
-                $row['history_id'] ?? '', $row['fac_id_fk'] ?? '', $row['fac_nin'] ?? '',
+                $row['history_id'] ?? '', $row['fac_nin'] ?? '',
                 $row['fac_name'] ?? '', $row['Dist_Name'] ?? '', $row['Block_Name'] ?? '',
                 $payload['status'] ?? $payload['Cert_status'] ?? '',
                 $payload['certification_type'] ?? $payload['certification_level'] ?? $payload['type_of_ass'] ?? '',
@@ -501,8 +633,8 @@ class StateReportService extends StateDashboardService
         self::csvRow($out, [
             $assessorLabel . ' ID', $assessorLabel . ' Code', $assessorLabel . ' Name',
             'Completed Assessments', 'Assessment ID', 'Assessment Name', 'Framework',
-            $labels['facility'] . ' ID', $labels['facility_code'], $labels['facility'] . ' Name',
-            'District', 'Block', 'Start Date', 'End Date', 'Assessment Status'
+            $labels['facility_code'], $labels['facility'] . ' Name',
+            'District', 'Block', 'Start Date', 'Planned End Date', 'Actual Completion Date', 'Cancellation Date', 'Assessment Status'
         ]);
 
         $where = self::facilityWhereLocal($filters, 'f');
@@ -526,8 +658,8 @@ class StateReportService extends StateDashboardService
         $sql = "
             SELECT {$assessorId} AS assessor_id, {$assessorCode} AS assessor_code,
                    {$assessorName} AS assessor_name, COALESCE(ac.completed_assessments, 0) AS completed_assessments,
-                   a.assessment_id, a.assessment_name, a.framework_code, a.start_date, a.end_date, a.status,
-                   f.fac_id, f.NIN_no, f.fac_name, f.Dist_Name, f.Block_Name
+                   a.assessment_id, a.assessment_name, a.framework_code, a.start_date, a.end_date, a.completed_on, a.cancelled_on, a.status,
+                   f.NIN_no, f.fac_name, f.Dist_Name, f.Block_Name
             FROM assessment_master a
             LEFT JOIN facilities f ON f.fac_id = a.fac_id_fk
             {$assessorJoin}
@@ -542,9 +674,9 @@ class StateReportService extends StateDashboardService
                 Crypto::decrypt((string) ($row['assessor_name'] ?? '')),
                 $row['completed_assessments'] ?? 0, $row['assessment_id'] ?? '',
                 $row['assessment_name'] ?? '', $row['framework_code'] ?? '',
-                $row['fac_id'] ?? '', $row['NIN_no'] ?? '', $row['fac_name'] ?? '',
+                $row['NIN_no'] ?? '', $row['fac_name'] ?? '',
                 $row['Dist_Name'] ?? '', $row['Block_Name'] ?? '', $row['start_date'] ?? '',
-                $row['end_date'] ?? '', $row['status'] ?? ''
+                $row['end_date'] ?? '', $row['completed_on'] ?? '', $row['cancelled_on'] ?? '', $row['status'] ?? ''
             ];
         });
     }
@@ -567,8 +699,30 @@ class StateReportService extends StateDashboardService
             'facilities' => (string) ($configured['facilities'] ?? 'Facilities'),
             'facility_code' => (string) ($configured['facility_code'] ?? 'NIN'),
             'assessor' => (string) ($configured['assessor'] ?? 'Assessor'),
+            'assessment' => (string) ($configured['assessment'] ?? 'Assessment'),
+            'assessments' => (string) ($configured['assessments'] ?? 'Assessments'),
+            'department' => (string) ($configured['department'] ?? 'Department'),
+            'departments' => (string) ($configured['departments'] ?? 'Departments'),
         ];
         return $labels;
+    }
+
+    /**
+     * Formats a short, human-readable list for report descriptions.
+     */
+    private static function humanList(array $items): string
+    {
+        $items = array_values(array_filter($items, static fn ($item): bool => trim((string) $item) !== ''));
+        $count = count($items);
+        if ($count < 2) {
+            return (string) ($items[0] ?? 'the enabled modules');
+        }
+        if ($count === 2) {
+            return $items[0] . ' and ' . $items[1];
+        }
+
+        $last = array_pop($items);
+        return implode(', ', $items) . ' and ' . $last;
     }
 
     /**

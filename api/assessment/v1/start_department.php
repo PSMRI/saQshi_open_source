@@ -29,6 +29,8 @@
 require_once __DIR__ . '/../../auth_api.php';
 require_once __DIR__ . '/../../assets/conn/db.php';
 require_once __DIR__ . '/../../core/AssessmentAccess.php';
+require_once __DIR__ . '/../../core/ApiCache.php';
+require_once __DIR__ . '/../../service/AssessmentSectionAssignmentService.php';
 
 Security::requireMethod('POST');
 
@@ -82,6 +84,7 @@ try {
     }
 
     AssessmentAccess::requireEditableByCurrentUser($con, $assessmentId, $facId);
+    AssessmentSectionAssignmentService::requireOwner($con, $assessmentId, $deptId);
 
     /*
      * 1. Validate active assessment
@@ -407,6 +410,8 @@ try {
     $stmt->execute();
 
     $countRow = $stmt->get_result()->fetch_assoc();
+
+    ApiCache::forget('assessment:list:facility:' . $facId);
 
     Response::success(
         'Department assessment started successfully',

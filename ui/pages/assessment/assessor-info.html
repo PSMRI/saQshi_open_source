@@ -16,7 +16,7 @@ License : GPL-3.0
         <div class="sq-card-header">
             <div>
                 <h2>Assessor Information</h2>
-                <p>Capture department-wise assessment team details before checklist entry.</p>
+                <p id="assessorInfoIntro">Save department-wise assessor and assessee details.</p>
             </div>
         </div>
 
@@ -48,15 +48,15 @@ License : GPL-3.0
     <div class="sq-card">
         <div class="sq-card-header">
             <div>
-                <h3>Department</h3>
-                <p>Select an activated department to view or fill assessor details.</p>
+                <h3 id="assessorInfoUnitTitle">Department</h3>
+                <p id="assessorInfoUnitDescription">Select an activated department to view or fill assessor details.</p>
             </div>
         </div>
 
         <div class="sq-card-body">
             <div class="sq-form-row">
                 <div class="sq-form-group">
-                    <label for="deptSelect">Activated Department</label>
+                    <label for="deptSelect" id="assessorInfoUnitLabel">Activated Department</label>
                     <select id="deptSelect" class="sq-form-control" aria-label="Dept Select">
                         <option value="">Loading departments...</option>
                     </select>
@@ -67,7 +67,7 @@ License : GPL-3.0
 
     <div id="assessorInfoState" class="sq-card">
         <div class="sq-card-body">
-            <div class="sq-empty-state">Select an activated department.</div>
+                <div class="sq-empty-state" id="assessorInfoEmptyState">Select an activated department.</div>
         </div>
     </div>
 
@@ -75,7 +75,7 @@ License : GPL-3.0
         <div class="sq-card-header">
             <div>
                 <h3>Saved Details</h3>
-                <p>Assessor information has already been submitted for this department.</p>
+                <p id="assessorInfoSavedDescription">Assessor information has already been submitted for this department.</p>
             </div>
         </div>
 
@@ -93,7 +93,7 @@ License : GPL-3.0
         <div class="sq-card-header">
             <div>
                 <h3>Fill Assessor Details</h3>
-                <p>Enter assessor and assessee details for the selected department.</p>
+                <p id="assessorInfoFormDescription">Enter assessor and assessee details for the selected department.</p>
             </div>
         </div>
 
@@ -101,13 +101,23 @@ License : GPL-3.0
             <div class="sq-form-grid">
                 <div class="sq-form-group">
                     <label for="assessor_name">Assessor Name</label>
-                    <input id="assessor_name" name="assessor_name" class="sq-form-control" type="text" required aria-label="Assessor Name">
+                    <input id="assessor_name" name="assessor_name" class="sq-form-control" type="text" required aria-label="Assessor Name" data-person-name>
                     <small id="assessorNameHint" class="sq-form-hint sq-hidden">Using logged-in assessor profile.</small>
                 </div>
 
                 <div class="sq-form-group">
-                    <label for="assessee_name">Assessee Name</label>
-                    <input id="assessee_name" name="assessee_name" class="sq-form-control" type="text" required aria-label="Assessee Name">
+                    <label for="assessee_name" id="assesseeNameLabel">Assessee Name</label>
+                    <input id="assessee_name" name="assessee_name" class="sq-form-control" type="text" required aria-label="Assessee Name" data-person-name>
+                </div>
+
+                <div class="sq-form-group" id="teacherCodeField" hidden>
+                    <label for="teacher_code">Teacher ID</label>
+                    <input id="teacher_code" name="teacher_code" class="sq-form-control" type="text" maxlength="50" pattern="[A-Za-z0-9]+" aria-label="Teacher ID" title="Use letters and digits only">
+                </div>
+
+                <div class="sq-form-group" id="subjectNameField" hidden>
+                    <label for="subject_name">Subject</label>
+                    <input id="subject_name" name="subject_name" class="sq-form-control" type="text" maxlength="150" aria-label="Subject">
                 </div>
 
                 <div class="sq-form-group">
@@ -115,14 +125,9 @@ License : GPL-3.0
                     <input id="assessment_date" name="assessment_date" class="sq-form-control" type="date" required aria-label="Assessment Date">
                 </div>
 
-                <div class="sq-form-group">
-                    <label for="assessment_type">Assessment Type</label>
-                    <select id="assessment_type" name="assessment_type" class="sq-form-control" required aria-label="Assessment Type">
-                        <option value="INTERNAL">Internal</option>
-                        <option value="EXTERNAL">External</option>
-                        <option value="MOCK">Mock</option>
-                        <option value="REASSESSMENT">Reassessment</option>
-                    </select>
+                <div class="sq-form-group" id="classSectionField" hidden>
+                    <label for="class_section">Class Section <span class="sq-text-muted">(optional)</span></label>
+                    <input id="class_section" name="class_section" class="sq-form-control" type="text" maxlength="100" placeholder="For example: A" aria-label="Class section">
                 </div>
             </div>
         </div>

@@ -18,7 +18,7 @@
         ],
 
         "js": [
-            "/ui/pages/assessment/departments.js?v=20260718-2"
+            "/ui/pages/assessment/departments.js?v=20260805-domain-page-title-1"
         ]
 
     },
@@ -31,7 +31,8 @@
 
         "status": "/assessment/v1/department-status/list.php",
 
-        "save": "/assessment/v1/department-status/save.php"
+        "save": "/assessment/v1/department-status/save.php",
+        "assignments": "/assessment/v1/section_assignment.php"
 
     }
 

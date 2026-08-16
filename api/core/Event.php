@@ -198,16 +198,27 @@ class Event
      */
     private static function safeSessionValue(string $method): ?int
     {
-        if (!class_exists('SessionManager') || !method_exists('SessionManager', $method)) {
+        /*
+         * State reporting endpoints release their session lock before doing
+         * database work.  At shutdown the session values are still available
+         * in $_SESSION, but calling SessionManager here would try to start a
+         * new session after Response has written JSON.  PHP then raises a
+         * "headers already sent" warning, which our global error handler can
+         * promote into a 500 response.  Event metadata must therefore be
+         * passive and never change the request's session state.
+         */
+        $key = match ($method) {
+            'userId' => 'u_id',
+            'facilityId' => 'fac_id',
+            default => null
+        };
+
+        if ($key === null || !isset($_SESSION[$key])) {
             return null;
         }
 
-        try {
-            $value = SessionManager::$method();
-            return is_numeric($value) ? (int)$value : null;
-        } catch (Throwable) {
-            return null;
-        }
+        $value = $_SESSION[$key];
+        return is_numeric($value) ? (int)$value : null;
     }
 
     /**

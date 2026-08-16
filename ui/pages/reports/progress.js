@@ -162,7 +162,9 @@
             </div>
             <div>
                 <span>Period</span>
-                <strong>${escapeHtml(assessment.start_date || "-")} to ${escapeHtml(assessment.end_date || "-")}</strong>
+                <strong>Start ${escapeHtml(assessment.start_date || "-")} | Planned end ${escapeHtml(assessment.end_date || "-")}</strong>
+                ${assessment.completed_on ? `<span class="sq-progress-subtext">Completed ${escapeHtml(assessment.completed_on)}</span>` : ""}
+                ${assessment.cancelled_on ? `<span class="sq-progress-subtext">Cancelled ${escapeHtml(assessment.cancelled_on)}</span>` : ""}
             </div>
         `;
     }

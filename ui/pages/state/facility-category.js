@@ -13,6 +13,20 @@
     window.SQ = window.SQ || {};
     const SQ = window.SQ;
 
+    function domainLabel(key, fallback) {
+        return SQ.deployment && typeof SQ.deployment.label === "function"
+            ? SQ.deployment.label(key, fallback)
+            : fallback;
+    }
+
+    function facilityTypeLabel() {
+        return `${domainLabel("facility", "Facility")} Type`;
+    }
+
+    function facilityTypesLabel() {
+        return `${domainLabel("facility", "Facility")} Types`;
+    }
+
     function esc(value) {
         return String(value ?? "")
             .replace(/&/g, "&amp;")
@@ -28,8 +42,8 @@
 
     function renderFacilityTypes(rows) {
         setHtml("stateFacilityTypeRows", rows && rows.length
-            ? `<table class="sq-state-table">
-                <thead><tr><th>Facility Type</th><th>Count</th><th>%</th></tr></thead>
+            ? `<table class="sq-state-table sq-state-category-type-table">
+                <thead><tr><th>${esc(facilityTypeLabel())}</th><th>Count</th><th>%</th></tr></thead>
                 <tbody>${rows.map(row => `
                     <tr>
                         <td>${esc(row.facility_type || "-")}</td>
@@ -38,13 +52,13 @@
                     </tr>
                 `).join("")}</tbody>
             </table>`
-            : `<div class="sq-state-empty">No facility type data available.</div>`);
+            : `<div class="sq-state-empty">No ${esc(facilityTypeLabel().toLowerCase())} data available.</div>`);
     }
 
     function renderDistricts(rows) {
         setHtml("stateDistrictRows", rows && rows.length
             ? `<table class="sq-state-table sq-state-district-table">
-                <thead><tr><th></th><th>District</th><th>Total Facilities</th></tr></thead>
+                <thead><tr><th></th><th>District</th><th>Total ${esc(domainLabel("facilities", "Facilities"))}</th></tr></thead>
                 <tbody>${rows.map((row, index) => renderDistrictRow(row, index)).join("")}</tbody>
             </table>`
             : `<div class="sq-state-empty">No district data available.</div>`);
@@ -76,7 +90,7 @@
                     <div class="sq-state-block-row">
                         <div>
                             <strong>${esc(block.block || "-")}</strong>
-                            <small>${esc(block.count || 0)} facilities</small>
+                            <small>${esc(block.count || 0)} ${esc(domainLabel("facilities", "Facilities").toLowerCase())}</small>
                         </div>
                         <div class="sq-state-type-chips">${renderTypeChips(block.facility_types)}</div>
                     </div>
@@ -141,6 +155,8 @@
             await SQ.deployment.load();
             SQ.deployment.applyLabels(document);
         }
+        const typeTitle = document.getElementById("stateFacilityTypeTitle");
+        if (typeTitle) typeTitle.textContent = facilityTypesLabel();
         bindDistrictToggle();
         document.getElementById("stateFacilityRefresh")?.addEventListener("click", load);
         bindSearch();

@@ -14,6 +14,12 @@
     const SQ = window.SQ;
     const state = { pager: null };
 
+    function domainLabel(key, fallback) {
+        return SQ.deployment && typeof SQ.deployment.label === "function"
+            ? SQ.deployment.label(key, fallback)
+            : fallback;
+    }
+
     function esc(value) {
         return String(value ?? "")
             .replace(/&/g, "&amp;")
@@ -37,7 +43,7 @@
                 <thead>
                     <tr>
                         <th></th>
-                        <th>Facility</th>
+                        <th>${esc(domainLabel("facility", "Facility"))}</th>
                         <th>District</th>
                         <th>Block</th>
                         <th>Type</th>
@@ -60,7 +66,7 @@
                 <td class="sq-state-toggle-cell">
                     <button class="sq-state-plus" type="button" data-state-performance-toggle="${esc(targetId)}" aria-expanded="false">+</button>
                 </td>
-                <td><strong>${esc(row.fac_name || "-")}</strong><br><small>ID ${esc(row.fac_id || "-")}</small></td>
+                <td><strong>${esc(row.fac_name || "-")}</strong><br><small>${esc(domainLabel("facility_code", "NIN"))} ${esc(row.fac_nin || row.NIN_no || "-")}</small></td>
                 <td>${esc(row.district || "-")}</td>
                 <td>${esc(row.block || "-")}</td>
                 <td>${esc(row.facility_type || "-")}<br><small>${esc(row.effective_indicator_label || row.effective_indicator_type || "KPI")}</small></td>

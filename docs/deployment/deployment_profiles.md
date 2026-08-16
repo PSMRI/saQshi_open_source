@@ -22,6 +22,38 @@ api/config/domain.json
 api/config/modules.json
 ```
 
+## First Deployment Profile Selection
+
+Before users are created, the deployer can select the operating profile without
+manually editing configuration files:
+
+```powershell
+php api/cli/configure-deployment-profile.php
+```
+
+Available options are `healthcare`, `education`, and `generic-inspection`.
+For unattended deployment, specify the choice directly:
+
+```powershell
+php api/cli/configure-deployment-profile.php --profile=healthcare
+```
+
+The command writes `api/config/domain.json` and `api/config/modules.json`.
+Choose the profile before creating assessments; existing assessments retain the
+framework that was selected when they were created.
+
+## Readiness Check
+
+Before go-live, run the read-only readiness check:
+
+```powershell
+php api/cli/deployment-readiness.php
+```
+
+It validates deployment/profile JSON, required PHP extensions, database
+connectivity, the background-jobs table and the selected worker mode. Use
+`--json` for automated deployment pipelines.
+
 Healthcare copy-ready examples are stored in:
 
 ```text

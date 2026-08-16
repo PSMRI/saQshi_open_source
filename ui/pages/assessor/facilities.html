@@ -2,20 +2,30 @@
 <section class="sq-assessor-page">
     <div class="sq-assessor-toolbar">
         <div>
-            <h3>Assigned Facilities</h3>
-            <p>Choose the facility where you will perform assessment.</p>
+            <h3 data-domain-label="assigned_facilities">Assigned Facilities</h3>
+            <p data-domain-template="Choose the {facility} where you will perform assessment.">Choose the facility where you will perform assessment.</p>
         </div>
         <button class="sq-btn sq-btn-primary" id="assessorDashboardRefresh" type="button">Refresh</button>
     </div>
     <div class="sq-card">
         <div class="sq-card-header">
-            <h3>Mapped Facilities</h3>
-            <p>Only facilities assigned by state administration are visible.</p>
+            <h3 data-domain-template="Mapped {facilities}">Mapped Facilities</h3>
+            <p data-domain-template="Only {facilities} assigned by state administration are visible.">Only facilities assigned by state administration are visible.</p>
         </div>
         <div class="sq-card-body" id="assessorFacilityRows"></div>
     </div>
+    <div class="sq-card sq-assessor-card sq-assessor-card--summary" id="assessorFacilitySummaryCard" hidden>
+        <div class="sq-card-header sq-assessor-summary-header">
+            <div>
+                <h3 id="assessorFacilitySummaryTitle" data-domain-template="{facility} Details">Facility Details</h3>
+                <p id="assessorFacilitySummaryMeta">Assessment history.</p>
+            </div>
+            <button class="sq-btn sq-btn-muted" id="assessorFacilitySummaryClose" type="button">Close</button>
+        </div>
+        <div class="sq-card-body" id="assessorFacilitySummaryBody"></div>
+    </div>
     <div class="sq-assessor-kpis" hidden>
-        <div><span>Assigned Facilities</span><strong id="assessorTotalFacilities">0</strong></div>
+        <div><span data-domain-label="assigned_facilities">Assigned Facilities</span><strong id="assessorTotalFacilities">0</strong></div>
         <div><span>Total Assessments</span><strong id="assessorTotalAssessments">0</strong></div>
         <div><span>Completed</span><strong id="assessorCompletedAssessments">0</strong></div>
         <div><span>In Progress</span><strong id="assessorInProgressAssessments">0</strong></div>

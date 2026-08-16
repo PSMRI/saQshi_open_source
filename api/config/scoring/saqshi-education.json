@@ -1,0 +1,58 @@
+{
+  "framework_code": "saqshi-education",
+  "scope": {
+    "unit": "class",
+    "overall": "school",
+    "model_aggregation": "total_obtained_over_total_possible",
+    "overall_aggregation": "average_of_completed_class_scores_in_round"
+  },
+  "domain_source": "concern_name",
+  "domains": [
+    {
+      "domain_name": "Teaching Planning and Preparedness",
+      "weight_percent": 100
+    },
+    {
+      "domain_name": "Students' Engagement",
+      "weight_percent": 100
+    },
+    {
+      "domain_name": "Assessment and Feedback",
+      "weight_percent": 100
+    },
+    {
+      "domain_name": "Classroom Learning Environment & Culture",
+      "weight_percent": 100
+    },
+    {
+      "domain_name": "Learning Closure and Reflection",
+      "weight_percent": 100
+    }
+  ],
+  "performance_levels": [
+    {
+      "name": "Abhilasha",
+      "name_hi": "अभिलाषा",
+      "points": 1,
+      "min_percent": 0,
+      "max_percent": 60,
+      "max_inclusive": false
+    },
+    {
+      "name": "Pragati",
+      "name_hi": "प्रगति",
+      "points": 2,
+      "min_percent": 60,
+      "min_inclusive": true,
+      "max_percent": 75,
+      "max_inclusive": true
+    },
+    {
+      "name": "Jagriti",
+      "name_hi": "जागृति",
+      "points": 3,
+      "min_percent": 75,
+      "min_inclusive": false
+    }
+  ]
+}

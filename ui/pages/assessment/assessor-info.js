@@ -122,6 +122,37 @@
         `;
     }
 
+    function applyUnitLabels() {
+        const unit = label("department", "Department");
+        const unitLower = unit.toLowerCase();
+        const education = unitLower === "class";
+
+        const intro = `Save ${unitLower}-wise assessor and assessee details.`;
+        if ($("sq-page-subtitle")) $("sq-page-subtitle").textContent = intro;
+        if ($("assessorInfoIntro")) $("assessorInfoIntro").textContent = intro;
+        if ($("assessorInfoUnitTitle")) $("assessorInfoUnitTitle").textContent = unit;
+        if ($("assessorInfoUnitDescription")) $("assessorInfoUnitDescription").textContent = `Select an activated ${unitLower} to view or fill assessor details.`;
+        if ($("assessorInfoUnitLabel")) $("assessorInfoUnitLabel").textContent = `Activated ${unit}`;
+        if ($("deptSelect")) $("deptSelect").setAttribute("aria-label", `Select activated ${unitLower}`);
+        if ($("assessorInfoEmptyState")) $("assessorInfoEmptyState").textContent = `Select an activated ${unitLower}.`;
+        if ($("assessorInfoSavedDescription")) $("assessorInfoSavedDescription").textContent = `Assessor information has already been submitted for this ${unitLower}.`;
+        if ($("assessorInfoFormDescription")) $("assessorInfoFormDescription").textContent = `Enter assessor and assessee details for the selected ${unitLower}.`;
+        if ($("classSectionField")) $("classSectionField").hidden = !education;
+        if ($("teacherCodeField")) $("teacherCodeField").hidden = !education;
+        if ($("subjectNameField")) $("subjectNameField").hidden = !education;
+        if ($("assessmentTypeField")) {
+            if (education) {
+                $("assessmentTypeField").remove();
+            } else {
+                $("assessmentTypeField").hidden = false;
+                $("assessmentTypeField").classList.remove("sq-hidden");
+            }
+        }
+        if ($("assesseeNameLabel")) $("assesseeNameLabel").textContent = education ? "Class / Subject Teacher's Name" : "Assessee Name";
+        if ($("assessee_name")) $("assessee_name").setAttribute("aria-label", education ? "Class or Subject Teacher's Name" : "Assessee Name");
+        if (education && $("assessorInfoFormDescription")) $("assessorInfoFormDescription").textContent = "Enter assessor and school details for the selected class.";
+    }
+
     function renderAssessment() {
         const assessment = state.assessment || {};
 
@@ -182,9 +213,11 @@
             return;
         }
 
+        const education = label("department", "Department").toLowerCase() === "class";
         const rows = [
             ["Assessor Name", info.assessor_name],
-            ["Assessee Name", info.assessee_name],
+            [education ? "Class / Subject Teacher's Name" : "Assessee Name", info.assessee_name],
+            ...(education ? [["Teacher ID", info.teacher_code], ["Subject", info.subject_name], ["Class Section", info.class_section]] : []),
             ["Date of Assessment", info.assessment_date],
             ["Assessment Type", info.assessment_type],
             ["Saved On", info.saved_on || "-"]
@@ -262,6 +295,9 @@
         if ($("assessee_name")) {
             $("assessee_name").value = info.assessee_name || "";
         }
+        if ($("teacher_code")) $("teacher_code").value = info.teacher_code || "";
+        if ($("subject_name")) $("subject_name").value = info.subject_name || "";
+        if ($("class_section")) $("class_section").value = info.class_section || "";
 
         if ($("assessment_date")) {
             $("assessment_date").value = info.assessment_date || new Date().toISOString().slice(0, 10);
@@ -401,8 +437,11 @@
             dept_id: state.selectedDeptId,
             assessor_name: String(data.get("assessor_name") || "").trim(),
             assessee_name: String(data.get("assessee_name") || "").trim(),
+            teacher_code: String(data.get("teacher_code") || "").trim(),
+            subject_name: String(data.get("subject_name") || "").trim(),
+            class_section: String(data.get("class_section") || "").trim(),
             assessment_date: String(data.get("assessment_date") || "").trim(),
-            assessment_type: String(data.get("assessment_type") || "INTERNAL").trim().toUpperCase(),
+            assessment_type: label("department", "Department").toLowerCase() === "class" ? "INTERNAL" : String(data.get("assessment_type") || "INTERNAL").trim().toUpperCase(),
             assessor_designation: String(state.currentAssessor?.assessor_designation || "").trim(),
             assessor_mobile: String(state.currentAssessor?.assessor_mobile || "").trim(),
             assessor_email: String(state.currentAssessor?.assessor_email || "").trim(),
@@ -422,9 +461,19 @@
         }
 
         const payload = getFormPayload();
+        const education = label("department", "Department").toLowerCase() === "class";
+        const validPersonName = value => /^[\p{L}\s]+$/u.test(String(value || "").trim());
 
         if (!payload.assessor_name || !payload.assessee_name || !payload.assessment_date) {
-            notify("warning", "Please fill assessor name, assessee name and assessment date.");
+            notify("warning", `Please fill assessor name, ${label("department", "Department").toLowerCase() === "class" ? "class teacher's name" : "assessee name"} and assessment date.`);
+            return;
+        }
+        if (!validPersonName(payload.assessor_name) || !validPersonName(payload.assessee_name)) {
+            notify("warning", "Names may contain letters and spaces only. Special characters and digits are not allowed.");
+            return;
+        }
+        if (education && payload.teacher_code && !/^[A-Za-z0-9]+$/.test(payload.teacher_code)) {
+            notify("warning", "Teacher ID may contain letters and digits only. Special characters are not allowed.");
             return;
         }
 
@@ -515,6 +564,7 @@
             await SQ.deployment.load();
             SQ.deployment.applyLabels(document);
         }
+        applyUnitLabels();
         bindEvents();
         setStateMessage("Loading assessor information...");
 

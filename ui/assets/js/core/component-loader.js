@@ -51,7 +51,7 @@
 
     const CONFIG = {
         basePath: "/ui/components",
-        assetVersion: "20260730-logo-fallback-1",
+        assetVersion: "20260807-notification-dropdown-1",
         attribute: "data-component",
         cache: false,
         debug: true,
