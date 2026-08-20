@@ -663,18 +663,14 @@
         const url = hidden?.value.trim() || "";
 
         if (!url) {
-            if (button) {
-                button.hidden = true;
-            }
+            button.hidden = true;
             return;
         }
 
-        const originalText = button?.textContent;
+        const originalText = button.textContent;
 
-        if (button) {
-            button.disabled = true;
-            button.textContent = "Deleting...";
-        }
+        button.disabled = true;
+        button.textContent = "Deleting...";
 
         try {
             if (SQ.upload && typeof SQ.upload.delete === "function") {
@@ -689,9 +685,7 @@
                 status.innerHTML = "<span>No evidence uploaded</span>";
             }
 
-            if (button) {
-                button.hidden = true;
-            }
+            button.hidden = true;
 
             notify("success", "Evidence removed.");
 
@@ -700,10 +694,8 @@
             notify("error", error.message || "Unable to delete evidence.");
 
         } finally {
-            if (button) {
-                button.disabled = false;
-                button.textContent = originalText || "Delete";
-            }
+            button.disabled = false;
+            button.textContent = originalText || "Delete";
         }
     }
 

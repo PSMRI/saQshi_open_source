@@ -38,8 +38,7 @@
     }
 
     function filenameFor(key) {
-        const extension = key === "class_indicator_answers" ? "xlsx" : "csv";
-        return `saqshi-state-${String(key || "summary").replace(/_/g, "-")}-${new Date().toISOString().slice(0, 10)}.${extension}`;
+        return `saqshi-state-${String(key || "summary").replace(/_/g, "-")}-${new Date().toISOString().slice(0, 10)}.csv`;
     }
 
     function renderExports(exports) {
@@ -95,7 +94,7 @@
             }), filenameFor(key));
         } catch (error) {
             if (SQ.toast) {
-                SQ.toast(error.message || "Report download failed. Please try again.", "danger");
+                SQ.toast("Report download failed. Please try again.", "danger");
             }
         }
     }

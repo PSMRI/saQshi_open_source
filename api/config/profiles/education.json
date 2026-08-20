@@ -3,9 +3,6 @@
   "profile_name": "Education / School Assessment",
   "recommended_for": "Schools, education department inspections, school infrastructure and teacher/student data capture.",
   "default_framework": "saqshi-education",
-  "assessment_policy": {
-    "reassessment_interval_days": 30
-  },
   "branding": {
     "login_app_name": "SaQshi",
     "login_app_tagline": "Digital School Quality Assessment Platform",
@@ -38,8 +35,8 @@
     "facilities": "Schools",
     "facility_user": "School User",
     "facility_code": "UDISE Code",
-    "assessor": "Assessor",
-    "assessor_dashboard": "Assessor Dashboard",
+    "assessor": "DPO",
+    "assessor_dashboard": "DPO Dashboard",
     "assigned_facilities": "Assigned Schools",
     "department": "Section",
     "departments": "Sections",
@@ -49,7 +46,7 @@
     "assessments": "School Assessments",
     "assessment_list": "School Assessment List",
     "create_assessment": "Create School Assessment",
-    "assessor_info": "Assessor Info",
+    "assessor_info": "DPO Info",
     "assessment_progress": "Assessment Progress",
     "checkpoint": "Question",
     "checkpoints": "Questions",
@@ -64,8 +61,8 @@
     "facility_hierarchy": "School Hierarchy",
     "facility_details": "School Details",
     "field_analytics": "Field Analytics",
-    "assessor_management": "Assessor Management",
-    "assessor_profile": "Assessor Profile",
+    "assessor_management": "DPO Management",
+    "assessor_profile": "DPO Profile",
     "assessor_mapping": "School Mapping",
     "state_reports": "State Reports",
     "evidence": "Document / Photo"

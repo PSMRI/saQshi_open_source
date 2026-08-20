@@ -345,13 +345,12 @@
 <body>
 <header class="site-header">
     <nav class="container nav">
-        <a class="brand" href="developer.php"><span class="mark">S</span>SaQshi <span class="badge">GitBook</span></a>
+        <a class="brand" href="index.html"><span class="mark">S</span>SaQshi <span class="badge">GitBook</span></a>
         <div class="links">
-            <a href="developer.php">Developer Home</a>
+            <a href="index.html">SaQshi Home</a>
             <a href="gitbook.html?doc=README.md">Overview</a>
             <a href="gitbook.html?doc=docs/gitbook.md">Publishing Guide</a>
         </div>
-        <a class="button primary" href="login.php">Open application</a>
     </nav>
 </header>
 
@@ -425,6 +424,7 @@
                 ["Deployment Guide", "docs/deployment/deployment_guide.md"],
                 ["Memurai (Redis) Session Configuration", "docs/deployment/memurai_session_configuration.md"],
                 ["Local Log Monitoring (Grafana, Loki and Alloy)", "docs/observability.md"],
+                ["Local Docker Deployment", "docs/deployment/docker_local_guide.md"],
                 ["System Requirements for UAT and Production", "docs/deployment/system_requirements.md"],
                 ["UI Deployment Guide", "docs/deployment/ui_deployment_guide.md"],
                 ["Healthcare Deployment Configuration", "docs/deployment/deployment_profiles.md"],
@@ -467,7 +467,7 @@
         {
             title: "Legal and Governance",
             items: [
-                ["License", "LICENSE.txt"],
+                ["License", "LICENSE"],
                 ["Notice", "NOTICE.txt"],
                 ["Security Policy", "SECURITY.md"],
                 ["Code of Conduct", "CODE_OF_CONDUCT.md"],
@@ -523,7 +523,7 @@
     function normalizeDoc(doc) {
         let clean = String(doc || "README.md").replace(/\\/g, "/").replace(/^\/+/, "");
         if (clean === "LICENSE") {
-            clean = "LICENSE.txt";
+            clean = "LICENSE";
         }
         if (clean === "NOTICE") {
             clean = "NOTICE.txt";
@@ -565,7 +565,7 @@
             "CODE_OF_CONDUCT.md",
             "MAINTAINERS.md",
             "LICENSE",
-            "LICENSE.txt",
+            "LICENSE",
             "NOTICE",
             "NOTICE.txt"
         ];
@@ -632,9 +632,10 @@
     }
 
     function renderTable(lines) {
-        const rows = lines.map(line => line.trim().replace(/^\||\|$/g, "").split("|").map(cell => inlineMarkdown(cell.trim())));
+        const rawRows = lines.map(line => line.trim().replace(/^\||\|$/g, "").split("|").map(cell => cell.trim()));
+        const rows = rawRows.map(row => row.map(inlineMarkdown));
         const head = rows.shift() || [];
-        if (rows.length && rows[0].every(cell => /^:?-{3,}:?$/.test(cell.replace(/<[^>]+>/g, "")))) {
+        if (rawRows.length > 1 && rawRows[1].every(cell => /^:?-{3,}:?$/.test(cell))) {
             rows.shift();
         }
         return "<table><thead><tr>" + head.map(cell => `<th>${cell}</th>`).join("") +

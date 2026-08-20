@@ -28,7 +28,7 @@ This project follows a practical release log format inspired by Keep a Changelog
 
 ### Changed
 
-- License metadata aligned to GPL-3.0 across SaQshi-owned UI/config files to match `LICENSE.txt`.
+- License metadata aligned to GPL-3.0 across SaQshi-owned UI/config files to match `LICENSE`.
 - Dashboard/header accessibility controls now include text-size controls, screen reader mode, read page and stop speech.
 - Screen reader mode now automatically speaks page content after route navigation.
 - Error handling was improved to show friendlier messages instead of raw PHP/database errors in newer API paths.

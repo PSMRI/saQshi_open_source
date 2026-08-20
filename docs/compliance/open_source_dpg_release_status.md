@@ -25,7 +25,7 @@ php tools/release_readiness_check.php
 
 | Area | Status | Evidence |
 |---|---|---|
-| GPL-3.0 license alignment | Done | `LICENSE`, `LICENSE.txt`, `docs/compliance/license_consistency_before_after.md` |
+| GPL-3.0 license alignment | Done | `LICENSE`, `docs/compliance/license_consistency_before_after.md` |
 | Contribution guidance | Done | `CONTRIBUTING.md` |
 | Security policy | Done | `SECURITY.md` |
 | Maintainer/contact structure | Done for current public package | `MAINTAINERS.md` records Tech4Gov Team, Piramal Swasthya, `tech4gov@piramalswasthya.org`. |

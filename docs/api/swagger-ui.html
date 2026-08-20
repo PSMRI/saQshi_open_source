@@ -67,7 +67,7 @@
                 }
 
                 const specText = await specResponse.text();
-                const parser = window.jsyaml || window.jsyaml;
+                const parser = window.jsyaml;
                 if (!parser) {
                     throw new Error("YAML parser not loaded.");
                 }

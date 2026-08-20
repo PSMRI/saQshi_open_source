@@ -347,7 +347,7 @@
             return false;
         }
 
-        return response;
+        return true;
     }
 
     async function loadDepartments() {

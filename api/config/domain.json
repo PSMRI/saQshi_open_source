@@ -3,12 +3,6 @@
   "profile_code": "education",
   "profile_name": "Education / School Assessment",
   "default_framework": "saqshi-education",
-<<<<<<< Updated upstream
-  "assessment_policy": {
-    "reassessment_interval_days": 30
-  },
-=======
->>>>>>> Stashed changes
   "branding": {
     "login_app_name": "SaQshi",
     "login_app_tagline": "Digital  Quality Assessment Platform",
@@ -28,11 +22,7 @@
   "labels": {
     "facility": "School", "facilities": "Schools", "facility_user": "School User", "facility_code": "UDISE Code",
     "assessor": "Assessor", "assessor_dashboard": "Assessor Dashboard", "assigned_facilities": "Assigned Schools",
-<<<<<<< Updated upstream
-    "department": "Section", "departments": "Sections", "area_of_concern": "Domain", "areas_of_concern": "Domains", "assessment": "School Assessment", "assessments": "School Assessments",
-=======
     "department": "Class", "departments": "Classes", "area_of_concern": "Domain", "areas_of_concern": "Domains", "assessment": "School Assessment", "assessments": "School Assessments",
->>>>>>> Stashed changes
     "assessment_list": "School Assessment List", "create_assessment": "Create School Assessment", "assessor_info": "Assessor Info",
     "assessment_progress": "Assessment Progress", "checkpoint": "Question", "checkpoints": "Questions", "checklist": "Questionnaire",
     "facility_profile": "School Profile", "map": "School Map", "map_summary": "Schools with geo coordinates.",
