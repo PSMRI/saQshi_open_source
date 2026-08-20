@@ -156,6 +156,21 @@ CREATE TABLE IF NOT EXISTS facilities (
 -- Assessment core
 -- ----------------------------------------------------------
 
+CREATE TABLE IF NOT EXISTS facility_assessment_round (
+    round_id BIGINT NOT NULL AUTO_INCREMENT,
+    fac_id INT NOT NULL,
+    round_no INT NOT NULL DEFAULT 1,
+    status VARCHAR(20) NOT NULL DEFAULT 'OPEN',
+    started_on TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    completed_on TIMESTAMP NULL,
+    PRIMARY KEY (round_id),
+    UNIQUE KEY uq_round_facility_number (fac_id, round_no),
+    KEY idx_round_facility_status (fac_id, status),
+    CONSTRAINT fk_round_facility
+        FOREIGN KEY (fac_id) REFERENCES facilities (fac_id)
+        ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 CREATE TABLE IF NOT EXISTS assessment_master (
     assessment_id BIGINT NOT NULL AUTO_INCREMENT,
     assessment_name VARCHAR(255) NOT NULL,
@@ -169,6 +184,7 @@ CREATE TABLE IF NOT EXISTS assessment_master (
     remarks TEXT NULL,
     assigned_assessor_id BIGINT NULL,
     assessment_source VARCHAR(30) NULL,
+    round_id BIGINT NULL,
     created_by INT NULL,
     updated_by INT NULL,
     created_on TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
@@ -179,8 +195,14 @@ CREATE TABLE IF NOT EXISTS assessment_master (
     KEY idx_assessment_framework (framework_code),
     KEY idx_assessment_dates (start_date, end_date),
     KEY idx_assessment_assessor (assigned_assessor_id),
+    KEY idx_assessment_facility_status_recent (fac_id_fk, status, assessment_id),
+    KEY idx_assessment_completed_round_facility (status, round_id, fac_id_fk),
     CONSTRAINT fk_assessment_facility
         FOREIGN KEY (fac_id_fk) REFERENCES facilities (fac_id)
+        ON DELETE CASCADE,
+    CONSTRAINT fk_assessment_round
+        FOREIGN KEY (round_id) REFERENCES facility_assessment_round (round_id)
+        ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS assessment_department_status (
@@ -200,6 +222,8 @@ CREATE TABLE IF NOT EXISTS assessment_department_status (
     KEY idx_dept_status_facility (fac_id_fk),
     KEY idx_dept_status_active (is_active, status),
     KEY idx_dept_status_assessment_id (assessment_id),
+    KEY idx_dept_status_ass_period (ass_period_id),
+    KEY idx_dept_status_scope_active (fac_id_fk, assessment_id, is_active, dept_id),
     CONSTRAINT fk_dept_status_assessment
         FOREIGN KEY (ass_period_id) REFERENCES assessment_master (assessment_id)
         ON DELETE CASCADE
@@ -257,6 +281,7 @@ CREATE TABLE IF NOT EXISTS assessment_department (
     UNIQUE KEY uq_assessment_department (assessment_id, dept_id),
     KEY idx_assessment_department_facility (fac_id_fk),
     KEY idx_assessment_department_status (status, is_active),
+    KEY idx_assessment_department_scope_status (assessment_id, fac_id_fk, is_active, status, dept_id),
     CONSTRAINT fk_assessment_department_master
         FOREIGN KEY (assessment_id) REFERENCES assessment_master (assessment_id)
         ON DELETE CASCADE
@@ -278,6 +303,7 @@ CREATE TABLE IF NOT EXISTS assessment_assessor_info (
     assessee_mobile TEXT NULL,
     assessee_email TEXT NULL,
     teacher_code VARCHAR(50) NULL,
+    head_master_name TEXT NULL,
     subject_name VARCHAR(150) NULL,
     class_section VARCHAR(100) NULL,
     remarks TEXT NULL,
@@ -308,11 +334,15 @@ CREATE TABLE IF NOT EXISTS assessment_response (
     evidence_url VARCHAR(500) NULL,
     updated_by INT NULL,
     updated_on TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    submission_source VARCHAR(20) NOT NULL DEFAULT 'ONLINE',
+    offline_queued_at DATETIME NULL,
+    synchronized_at DATETIME NULL,
     PRIMARY KEY (response_id),
     UNIQUE KEY uq_assessment_response (assessment_id, dept_id, checkpoint_id),
     KEY idx_response_assessment_dept (assessment_id, dept_id),
     KEY idx_response_checkpoint (checkpoint_id),
     KEY idx_response_score (score, max_score, score_status),
+    KEY idx_response_assessment_checkpoint (assessment_id, checkpoint_id),
     CONSTRAINT fk_response_assessment
         FOREIGN KEY (assessment_id) REFERENCES assessment_master (assessment_id)
         ON DELETE CASCADE
@@ -600,6 +630,71 @@ CREATE TABLE IF NOT EXISTS assessor_facility_mapping (
         ON DELETE CASCADE,
     CONSTRAINT fk_assessor_mapping_facility
         FOREIGN KEY (fac_id) REFERENCES facilities (fac_id)
+        ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Records the most recent assessor-led update of a school profile.
+CREATE TABLE IF NOT EXISTS assessor_facility_profile_update (
+    fac_id INT NOT NULL,
+    assessor_id INT NOT NULL,
+    updated_on DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (fac_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Durable queue used by asynchronous reports, analytics and notifications.
+CREATE TABLE IF NOT EXISTS background_jobs (
+    job_id BIGINT NOT NULL AUTO_INCREMENT,
+    job_type VARCHAR(100) NOT NULL,
+    payload_json LONGTEXT NULL,
+    status VARCHAR(20) NOT NULL DEFAULT 'QUEUED',
+    attempts INT NOT NULL DEFAULT 0,
+    max_attempts INT NOT NULL DEFAULT 3,
+    available_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    started_at DATETIME NULL,
+    completed_at DATETIME NULL,
+    failed_at DATETIME NULL,
+    error_message TEXT NULL,
+    created_by INT NULL,
+    created_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (job_id),
+    KEY idx_background_jobs_next (status, available_at, job_id),
+    KEY idx_background_jobs_type_status (job_type, status)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- One active class claim per school/class and per assessor.  Completed rows
+-- remain as assessment history; the Education assessment-period policy checks
+-- that history before allowing a reassessment.
+CREATE TABLE IF NOT EXISTS assessment_section_assignee (
+    assignment_id BIGINT NOT NULL AUTO_INCREMENT,
+    assessment_id BIGINT NOT NULL,
+    fac_id_fk INT NOT NULL,
+    dept_id INT NOT NULL,
+    assessor_id BIGINT NOT NULL,
+    assessment_date DATE NOT NULL,
+    status VARCHAR(20) NOT NULL DEFAULT 'IN_PROGRESS',
+    assigned_on TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    completed_on TIMESTAMP NULL,
+    released_on TIMESTAMP NULL,
+    active_claim_key TINYINT GENERATED ALWAYS AS (
+        CASE WHEN UPPER(status) = 'IN_PROGRESS' THEN 1 ELSE NULL END
+    ) STORED,
+    active_assessor_claim_key TINYINT GENERATED ALWAYS AS (
+        CASE WHEN UPPER(status) = 'IN_PROGRESS' THEN 1 ELSE NULL END
+    ) STORED,
+    PRIMARY KEY (assignment_id),
+    UNIQUE KEY uq_assessment_section (assessment_id, dept_id),
+    UNIQUE KEY uq_active_facility_section_claim (fac_id_fk, dept_id, active_claim_key),
+    UNIQUE KEY uq_active_facility_assessor_claim (fac_id_fk, assessor_id, active_assessor_claim_key),
+    KEY idx_section_assessor (assessor_id, status),
+    CONSTRAINT fk_section_assignment_assessment
+        FOREIGN KEY (assessment_id) REFERENCES assessment_master (assessment_id)
+        ON DELETE CASCADE,
+    CONSTRAINT fk_section_assignment_facility
+        FOREIGN KEY (fac_id_fk) REFERENCES facilities (fac_id)
+        ON DELETE CASCADE,
+    CONSTRAINT fk_section_assignment_assessor
+        FOREIGN KEY (assessor_id) REFERENCES assessor_master (assessor_id)
         ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
