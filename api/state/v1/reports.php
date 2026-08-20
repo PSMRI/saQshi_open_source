@@ -16,6 +16,9 @@ Security::requireMethod('GET');
 
 try {
     if (isset($_GET['download'])) {
+        if ((string)$_GET['download'] === 'class_indicator_answers') {
+            StateReportService::streamClassIndicatorWorkbook($con, $_GET);
+        }
         StateReportService::streamCsv($con, (string)$_GET['download'], $_GET);
     }
 
