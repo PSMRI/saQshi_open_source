@@ -40,6 +40,8 @@
         setText("deploymentActiveProfile", domain.profile_name || modules.active_profile || domain.profile_code || "-");
         setText("deploymentDomain", domain.domain || modules.domain || "-");
         setText("deploymentFramework", domain.default_framework || modules.default_framework || "-");
+        const interval = document.getElementById("reassessmentIntervalDays");
+        if (interval) interval.value = Number(domain.assessment_policy?.reassessment_interval_days ?? 0);
 
         document.getElementById("deploymentProfileRows").innerHTML = profiles.length
             ? profiles.map(profile => `
@@ -53,6 +55,25 @@
                 </article>
             `).join("")
             : `<div class="sq-empty-state">No deployment profiles found.</div>`;
+    }
+
+    async function saveAssessmentPeriod(event) {
+        event.preventDefault();
+        const input = document.getElementById("reassessmentIntervalDays");
+        const days = Number(input?.value);
+        if (!Number.isInteger(days) || days < 0 || days > 3650) {
+            SQ.notification?.error("Enter a whole number between 0 and 3650 days.");
+            return;
+        }
+        try {
+            const response = await SQ.api.post("/config/v1/assessment_policy.php", {
+                reassessment_interval_days: days
+            }, { loader: true, showError: false });
+            SQ.notification?.success(response.message || "Assessment period saved.");
+            await load(true);
+        } catch (error) {
+            SQ.notification?.error(error.message || "Unable to save assessment period.");
+        }
     }
 
     async function load(force = false) {
@@ -90,6 +111,7 @@
         document.getElementById("deploymentProfileRefresh")?.addEventListener("click", function () {
             load(true);
         });
+        document.getElementById("assessmentPeriodForm")?.addEventListener("submit", saveAssessmentPeriod);
         document.getElementById("deploymentProfileRows")?.addEventListener("click", function (event) {
             const button = event.target.closest("[data-apply-profile]");
             if (button) applyProfile(button.getAttribute("data-apply-profile"));

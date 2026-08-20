@@ -3,6 +3,9 @@
   "profile_code": "education",
   "profile_name": "Education / School Assessment",
   "default_framework": "saqshi-education",
+  "assessment_policy": {
+    "reassessment_interval_days": 30
+  },
   "branding": {
     "login_app_name": "SaQshi",
     "login_app_tagline": "Digital  Quality Assessment Platform",

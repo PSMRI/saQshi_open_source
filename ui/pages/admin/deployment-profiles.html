@@ -14,6 +14,16 @@
                 <div><span>Domain</span><strong id="deploymentDomain">-</strong></div>
                 <div><span>Default Framework</span><strong id="deploymentFramework">-</strong></div>
             </div>
+            <form id="assessmentPeriodForm" class="sq-deployment-current" autocomplete="off">
+                <div>
+                    <label for="reassessmentIntervalDays">Class reassessment interval (days)</label>
+                    <input id="reassessmentIntervalDays" type="number" min="0" max="3650" step="1" required>
+                    <small>Set 0 to allow immediate reassessment.</small>
+                </div>
+                <div>
+                    <button type="submit" class="sq-btn sq-btn-primary">Save assessment period</button>
+                </div>
+            </form>
             <div id="deploymentProfileRows" class="sq-deployment-profiles"></div>
         </div>
     </div>

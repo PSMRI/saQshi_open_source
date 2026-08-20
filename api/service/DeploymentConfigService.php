@@ -43,6 +43,9 @@ class DeploymentConfigService
             'profile_code' => (string)($profile['profile_code'] ?? $profileCode),
             'profile_name' => (string)($profile['profile_name'] ?? $profileCode),
             'default_framework' => (string)($profile['default_framework'] ?? ''),
+            'assessment_policy' => is_array($profile['assessment_policy'] ?? null)
+                ? $profile['assessment_policy']
+                : [],
             'labels' => array_replace(
                 self::defaultDomain()['labels'],
                 is_array($profile['labels'] ?? null) ? $profile['labels'] : []
@@ -91,6 +94,33 @@ class DeploymentConfigService
 
         self::writeJson(__DIR__ . '/../config/domain.json', $domain);
         self::writeJson(__DIR__ . '/../config/modules.json', $currentModules);
+
+        return self::current();
+    }
+
+    /** Updates the education reassessment interval used when a class is claimed. */
+    public static function updateAssessmentPolicy(array $policy, int $userId): array
+    {
+        $domainPath = __DIR__ . '/../config/domain.json';
+        $domain = self::readJson($domainPath, self::defaultDomain());
+
+        if (($domain['profile_code'] ?? $domain['domain'] ?? '') !== 'education') {
+            throw new RuntimeException('Assessment period configuration is available only for the Education profile.');
+        }
+
+        $days = filter_var($policy['reassessment_interval_days'] ?? null, FILTER_VALIDATE_INT, [
+            'options' => ['min_range' => 0, 'max_range' => 3650]
+        ]);
+        if ($days === false) {
+            throw new InvalidArgumentException('Reassessment interval must be a whole number between 0 and 3650 days.');
+        }
+
+        $domain['assessment_policy'] = [
+            'reassessment_interval_days' => (int)$days,
+            'updated_by' => $userId,
+            'updated_on' => date('c')
+        ];
+        self::writeJson($domainPath, $domain);
 
         return self::current();
     }
