@@ -1,5 +1,5 @@
 {
-  "default_state": "Bihar",
+  "default_state": "Jharkhand",
   "settings": {
     "tile_url": "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
     "attribution": "&copy; OpenStreetMap contributors",
@@ -21,6 +21,14 @@
       "center": [25.0961, 85.3131],
       "zoom": 7,
       "source": "/api/config/masters/biharmap.json",
+      "source_type": "topology"
+    },
+    "JHARKHAND": {
+      "label": "Jharkhand",
+      "aliases": ["JHARKHAND", "JH", "20"],
+      "center": [23.6102, 85.2799],
+      "zoom": 7,
+      "source": "/api/config/masters/jh.json",
       "source_type": "topology"
     }
   }

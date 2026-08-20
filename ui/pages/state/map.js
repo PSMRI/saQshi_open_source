@@ -148,7 +148,7 @@
             if (boundaryLayer) map.removeLayer(boundaryLayer);
             boundaryLayer = L.geoJSON(data, {
                 style: function (feature) {
-                    const district = feature?.properties?.district || feature?.properties?.DISTRICT || "";
+                    const district = feature?.properties?.district || feature?.properties?.DISTRICT || feature?.properties?.Dist_Name || feature?.properties?.DIST_NAME || "";
                     const score = districtScoreMap[districtKey(district)];
                     return {
                         color: "#334155",
@@ -159,7 +159,7 @@
                 },
                 onEachFeature: function (feature, layer) {
                     if (activeMapMode !== "domain") return;
-                    const district = feature?.properties?.district || feature?.properties?.DISTRICT || "District";
+                    const district = feature?.properties?.district || feature?.properties?.DISTRICT || feature?.properties?.Dist_Name || feature?.properties?.DIST_NAME || "District";
                     const score = districtScoreMap[districtKey(district)];
                     const details = score
                         ? `<strong>${esc(district)}</strong><br>${esc(activeDomain)}<br>Score: <b>${esc(score.percentage)}%</b><br>Category: <b>${esc(score.category?.name || "-")}</b><br>Schools assessed: <b>${esc(score.school_count)}</b>`
