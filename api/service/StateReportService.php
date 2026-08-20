@@ -240,8 +240,11 @@ class StateReportService extends StateDashboardService
             ['key' => 'summary', 'title' => 'State Summary', 'description' => 'Summary counts for ' . self::humanList($summaryAreas) . '.'],
             ['key' => 'facilities', 'title' => 'All ' . $labels['facility'] . ' List', 'description' => $labels['facility'] . ' master list with state, division, district, block, ' . $labels['facility'] . ' type, ' . $labels['facility_code'] . ' and coordinates.'],
             ['key' => 'assessments', 'title' => 'Assessment Details', 'description' => $assessmentDescription],
+<<<<<<< Updated upstream
             ['key' => 'class_indicator_report', 'title' => 'School Class Assessment Report', 'description' => 'One row per school class with UDISE, assessor and assessee details, class teacher, subject, dates, indicator completion, marks and status.'],
             ['key' => 'class_indicator_answers', 'title' => 'Class-wise Indicator Answers', 'description' => 'Excel workbook with Class 9, 10, 11 and 12 tabs; each tab includes school, assessor, teacher, completion and 38 indicator answers.'],
+=======
+>>>>>>> Stashed changes
             ['key' => 'assessor_activity', 'title' => $labels['assessor'] . ' Activity', 'description' => 'Completed assessment count and assessment-level details for each ' . $labels['assessor'] . '.'],
         ];
 
@@ -305,8 +308,12 @@ class StateReportService extends StateDashboardService
         $labels = self::domainLabels();
         self::csvRow($out, [
             'State', 'Division', 'District', 'Block', $labels['facility'] . ' Name',
+<<<<<<< Updated upstream
             $labels['facility'] . ' Type', $labels['facility_code'], 'Latitude', 'Longitude', 'Active',
             'Class-wise Completion', 'Round-wise Class Completion'
+=======
+            $labels['facility'] . ' Type', $labels['facility_code'], 'Latitude', 'Longitude', 'Active'
+>>>>>>> Stashed changes
         ]);
 
         $classCompletion = self::schoolClassCompletion($con);
@@ -319,9 +326,13 @@ class StateReportService extends StateDashboardService
                 self::csvRow($out, [
                     $row['state_name'], $row['division'], $row['district'],
                     $row['block'], $row['fac_name'], self::facilityTypeName($row['facility_type'] ?? ''), $row['nin_no'],
+<<<<<<< Updated upstream
                     $row['latitude'], $row['longitude'], '1',
                     $classCompletion[(int)($row['fac_id'] ?? 0)]['by_class'] ?? '',
                     $classCompletion[(int)($row['fac_id'] ?? 0)]['by_round'] ?? ''
+=======
+                    $row['latitude'], $row['longitude'], '1'
+>>>>>>> Stashed changes
                 ]);
             }
             return;
@@ -347,8 +358,12 @@ class StateReportService extends StateDashboardService
                 $row['state_name'] ?? '', $row['division'] ?? '',
                 $row['Dist_Name'] ?? '', $row['Block_Name'] ?? '', $row['fac_name'] ?? '',
                 self::facilityTypeName($row['Health_facilty_type'] ?? ''), $row['NIN_no'] ?? '', $row['lat'] ?? '',
+<<<<<<< Updated upstream
                 $row['longit'] ?? '', $row['is_active'] ?? '',
                 $completion['by_class'] ?? '', $completion['by_round'] ?? ''
+=======
+                $row['longit'] ?? '', $row['is_active'] ?? ''
+>>>>>>> Stashed changes
             ];
         });
     }

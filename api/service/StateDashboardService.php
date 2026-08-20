@@ -1920,32 +1920,24 @@ class StateDashboardService
     private static function latestCompletedFacilityScores(mysqli $con): array
     {
         if (!self::tableExists($con, 'assessment_master') || !self::tableExists($con, 'assessment_response') || !self::tableExists($con, 'facility_assessment_round')) return [];
-        // A school's official category is based on its latest *fully completed*
-        // school round.  A class can be reassessed independently, so MAX(round_no)
-        // across completed assessments can otherwise select a newer round containing
-        // only one class.  facility_assessment_round is marked COMPLETED only once
-        // all framework classes for that school round are complete.
-        //
-        // Legacy data may predate the round-status update.  In that case the
-        // compatible check below confirms that all configured class IDs have
-        // completed records in the same round.
-        $latestRoundIds = self::latestFullyCompletedRoundIds($con);
-        if (!$latestRoundIds) return [];
-        $roundIds = array_values($latestRoundIds);
-        $placeholders = implode(',', array_fill(0, count($roundIds), '?'));
-
-        // Keep this as a grouped query for every selected school round;
-        // calling roundModelCategory per school would time out at State scale.
+        // One grouped query for every school. Do not call roundModelCategory here:
+        // that performs per-school framework/response queries and times out at State scale.
         $rows = self::rows($con, "
             SELECT a.fac_id_fk, a.framework_code, r.checkpoint_id,
                    COALESCE(SUM(r.score), 0) AS obtained_score,
                    COALESCE(SUM(r.max_score), 0) AS total_score
             FROM assessment_master a
+            JOIN facility_assessment_round fr ON fr.round_id = a.round_id
+            JOIN (
+                SELECT am.fac_id_fk, MAX(far.round_no) AS latest_round_no
+                FROM assessment_master am
+                JOIN facility_assessment_round far ON far.round_id = am.round_id
+                WHERE UPPER(am.status) = 'COMPLETED'
+                GROUP BY am.fac_id_fk
+            ) latest ON latest.fac_id_fk = a.fac_id_fk AND latest.latest_round_no = fr.round_no
             LEFT JOIN assessment_response r ON r.assessment_id = a.assessment_id
             WHERE UPPER(a.status) = 'COMPLETED'
-              AND a.round_id IN ({$placeholders})
-            GROUP BY a.fac_id_fk, a.framework_code, r.checkpoint_id",
-            str_repeat('i', count($roundIds)), $roundIds);
+            GROUP BY a.fac_id_fk, a.framework_code, r.checkpoint_id");
         $map = [];
         $checkpointDomains = self::frameworkCheckpointDomains('saqshi-education');
         foreach ($rows as $row) {
@@ -1977,57 +1969,6 @@ class StateDashboardService
         }
         unset($score);
         return $map;
-    }
-
-    /** Latest complete school round per facility, including legacy round records. */
-    private static function latestFullyCompletedRoundIds(mysqli $con): array
-    {
-        if (!self::tableExists($con, 'assessment_department')) return [];
-        $rows = self::rows($con, "
-            SELECT fr.round_id, fr.fac_id, fr.round_no, fr.status AS round_status,
-                   a.framework_code, f.Health_facilty_type AS facility_type_id,
-                   GROUP_CONCAT(DISTINCT CASE
-                       WHEN UPPER(a.status) = 'COMPLETED'
-                        AND d.is_active = 1
-                        AND UPPER(d.status) = 'COMPLETED'
-                       THEN d.dept_id END) AS completed_department_ids
-            FROM facility_assessment_round fr
-            JOIN assessment_master a ON a.round_id = fr.round_id
-            LEFT JOIN assessment_department d ON d.assessment_id = a.assessment_id
-            LEFT JOIN facilities f ON f.fac_id = fr.fac_id
-            GROUP BY fr.round_id, fr.fac_id, fr.round_no, fr.status,
-                     a.framework_code, f.Health_facilty_type
-            ORDER BY fr.fac_id, fr.round_no DESC, fr.round_id DESC");
-
-        $latest = [];
-        $engines = [];
-        foreach ($rows as $row) {
-            $facilityId = (int)($row['fac_id'] ?? 0);
-            if ($facilityId <= 0 || isset($latest[$facilityId])) continue;
-
-            $isMarkedComplete = strtoupper((string)($row['round_status'] ?? '')) === 'COMPLETED';
-            $isCompleteFromClasses = false;
-            $frameworkCode = (string)($row['framework_code'] ?? '');
-            $facilityTypeId = (int)($row['facility_type_id'] ?? 0);
-            try {
-                if (!isset($engines[$frameworkCode])) $engines[$frameworkCode] = FrameworkEngine::load($frameworkCode);
-                $expectedIds = array_values(array_filter(array_map(
-                    static fn(array $department): int => (int)($department['fac_dept_id'] ?? $department['dept_id'] ?? 0),
-                    $engines[$frameworkCode]->getDepartments($facilityTypeId)
-                )));
-                $completedIds = array_values(array_filter(array_map('intval', explode(',', (string)($row['completed_department_ids'] ?? '')))));
-                $isCompleteFromClasses = $expectedIds
-                    && !array_diff($expectedIds, $completedIds);
-            } catch (Throwable $e) {
-                // A marked complete round remains valid when its old framework
-                // configuration is no longer present locally.
-            }
-
-            if ($isMarkedComplete || $isCompleteFromClasses) {
-                $latest[$facilityId] = (int)$row['round_id'];
-            }
-        }
-        return $latest;
     }
 
     private static function frameworkCheckpointDomains(string $frameworkCode): array

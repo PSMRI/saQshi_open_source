@@ -12,7 +12,7 @@
   },
   "assets": {
     "css": ["/ui/pages/admin/deployment-profiles.css?v=20260718-1"],
-    "js": ["/ui/pages/admin/deployment-profiles.js?v=20260820-1"]
+    "js": ["/ui/pages/admin/deployment-profiles.js?v=20260718-1"]
   },
   "breadcrumb": [
     {"label": "Dashboard", "url": "/ui/dashboard.html"},

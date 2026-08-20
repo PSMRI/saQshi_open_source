@@ -30,7 +30,6 @@ final class AssessmentSectionAssignmentService
     {
         self::ensureSchema($con);
         $date = $date !== '' ? $date : date('Y-m-d');
-        self::enforceEducationReassessmentInterval($con, $facilityId, $deptId, $assessorId);
         $completed = $con->prepare("SELECT 1 FROM assessment_department WHERE assessment_id = ? AND fac_id_fk = ? AND dept_id = ? AND is_active = 1 AND status = 'COMPLETED' LIMIT 1");
         if ($completed) {
             $completed->bind_param('iii', $assessmentId, $facilityId, $deptId);
@@ -106,35 +105,6 @@ final class AssessmentSectionAssignmentService
         $rename = $con->prepare("UPDATE assessment_master SET assessment_name = ? WHERE assessment_id = ?");
         if ($rename) { $rename->bind_param('si', $name, $assessmentId); $rename->execute(); }
         return ['assessment_id' => $assessmentId, 'dept_id' => $deptId, 'assessor_id' => $assessorId, 'status' => 'IN_PROGRESS', 'is_reassessment' => $isReassessment];
-    }
-
-    /** Prevents rapid repeat assessments of the same school class by one assessor. */
-    private static function enforceEducationReassessmentInterval(mysqli $con, int $facilityId, int $deptId, int $assessorId): void
-    {
-        $domainPath = __DIR__ . '/../config/domain.json';
-        $domain = is_file($domainPath) ? (json_decode((string)file_get_contents($domainPath), true) ?: []) : [];
-        if (($domain['profile_code'] ?? $domain['domain'] ?? '') !== 'education') return;
-
-        $days = (int)($domain['assessment_policy']['reassessment_interval_days'] ?? 0);
-        if ($days <= 0) return;
-
-        $stmt = $con->prepare("SELECT COALESCE(asa.completed_on, am.completed_on) AS completed_on
-            FROM assessment_section_assignee asa
-            INNER JOIN assessment_master am ON am.assessment_id = asa.assessment_id
-            WHERE asa.fac_id_fk = ? AND asa.dept_id = ? AND asa.assessor_id = ?
-              AND asa.status = 'COMPLETED' AND UPPER(am.status) = 'COMPLETED'
-            ORDER BY COALESCE(asa.completed_on, am.completed_on) DESC LIMIT 1");
-        $stmt->bind_param('iii', $facilityId, $deptId, $assessorId);
-        $stmt->execute();
-        $last = $stmt->get_result()->fetch_assoc();
-        $completedOn = (string)($last['completed_on'] ?? '');
-        if ($completedOn === '') return;
-
-        $eligibleAt = (new DateTimeImmutable($completedOn))->modify('+' . $days . ' days');
-        if ($eligibleAt > new DateTimeImmutable('now')) {
-            throw new RuntimeException('This class was already assessed by you on ' . $completedOn
-                . '. It can be reassessed after ' . $eligibleAt->format('d M Y H:i') . ' (' . $days . ' day interval).');
-        }
     }
 
     /** Get the facility type from the JSON master, which is authoritative for deployments without a facilities DB table. */
