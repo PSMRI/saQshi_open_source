@@ -1,5 +1,5 @@
 {
-    "domain": "education",
+    "domain": "healthcare",
     "description": "Controls optional SaQshi education modules for school assessment, reporting, field analytics and map features.",
     "modules": {
         "assessment": {
@@ -7,23 +7,23 @@
             "label": "Assessment"
         },
         "cqi": {
-            "enabled": false,
+            "enabled": true,
             "label": "CQI / Gap Closure"
         },
         "performance": {
-            "enabled": false,
+            "enabled": true,
             "label": "Performance Monitoring"
         },
         "kpi": {
-            "enabled": false,
+            "enabled": true,
             "label": "KPI"
         },
         "outcome": {
-            "enabled": false,
+            "enabled": true,
             "label": "Outcome"
         },
         "certification": {
-            "enabled": false,
+            "enabled": true,
             "label": "Certification"
         },
         "reports": {
@@ -43,11 +43,29 @@
         "assessor": [
             "assessment"
         ],
-        "facility": ["assessment", "reports", "field_analytics", "map"],
+        "facility": [
+            "assessment",
+            "cqi",
+            "performance",
+            "kpi",
+            "outcome",
+            "certification",
+            "reports",
+            "field_analytics",
+            "map"
+        ],
         "state": [
-            "assessment", "reports", "field_analytics", "map"
+            "assessment",
+            "cqi",
+            "performance",
+            "kpi",
+            "outcome",
+            "certification",
+            "reports",
+            "field_analytics",
+            "map"
         ]
     },
-    "active_profile": "education",
-    "default_framework": "saqshi-education"
+    "active_profile": "healthcare",
+    "default_framework": "saqshi-nqas"
 }
