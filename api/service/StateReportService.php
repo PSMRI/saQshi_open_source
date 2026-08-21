@@ -37,6 +37,7 @@ class StateReportService extends StateDashboardService
             match ($report) {
                 'facilities' => self::writeFacilities($con, $out, $filters),
                 'assessments' => self::writeAssessments($con, $out, $filters),
+                'class_assessment_scores' => self::writeClassAssessmentScores($con, $out, $filters),
                 'assessor_activity' => self::writeAssessorActivity($con, $out, $filters),
                 'cqi' => self::writeCqi($con, $out, $filters),
                 'performance' => self::writePerformance($con, $out, $filters),
@@ -79,6 +80,7 @@ class StateReportService extends StateDashboardService
             ['key' => 'summary', 'title' => 'State Summary', 'description' => 'Summary counts for ' . self::humanList($summaryAreas) . '.'],
             ['key' => 'facilities', 'title' => 'All ' . $labels['facility'] . ' List', 'description' => $labels['facility'] . ' master list with state, division, district, block, ' . $labels['facility'] . ' type, ' . $labels['facility_code'] . ' and coordinates.'],
             ['key' => 'assessments', 'title' => 'Assessment Details', 'description' => $assessmentDescription],
+            ['key' => 'class_assessment_scores', 'title' => 'Class-wise Assessment Scores', 'description' => 'One row per assessed class with indicator, marks, status and configured domain-wise percentage scores.'],
             ['key' => 'assessor_activity', 'title' => $labels['assessor'] . ' Activity', 'description' => 'Completed assessment count and assessment-level details for each ' . $labels['assessor'] . '.'],
         ];
 
@@ -611,6 +613,150 @@ class StateReportService extends StateDashboardService
             'departments' => (string) ($configured['departments'] ?? 'Departments'),
         ];
         return $labels;
+    }
+
+    /** Writes the education-friendly, one-row-per-class assessment score export. */
+    private static function writeClassAssessmentScores(mysqli $con, $out, array $filters): void
+    {
+        if (!self::tableExistsLocal($con, 'assessment_master') || !self::tableExistsLocal($con, 'assessment_department')) {
+            self::csvRow($out, ['Class assessment tables are not available.']);
+            return;
+        }
+
+        $hasInfo = self::tableExistsLocal($con, 'assessment_assessor_info');
+        $classSection = $hasInfo && self::columnExistsLocal($con, 'assessment_assessor_info', 'class_section') ? 'ai.class_section' : "''";
+        $infoJoin = $hasInfo ? 'LEFT JOIN assessment_assessor_info ai ON ai.assessment_id = a.assessment_id AND ai.dept_id = ad.dept_id' : '';
+        $infoFields = $hasInfo
+            ? self::selectColumn($con, 'assessment_assessor_info', 'assessor_name', 'ai') . ' AS assessor_name, '
+                . self::selectColumn($con, 'assessment_assessor_info', 'assessee_name', 'ai') . ' AS assessee_name, '
+                . self::selectColumn($con, 'assessment_assessor_info', 'head_master_name', 'ai') . ' AS head_master_name, '
+                . self::selectColumn($con, 'assessment_assessor_info', 'subject_name', 'ai') . ' AS subject_name, '
+                . "{$classSection} AS class_section,"
+            : "'' AS assessor_name, '' AS assessee_name, '' AS head_master_name, '' AS subject_name, '' AS class_section,";
+        $where = self::facilityWhereLocal($filters, 'f');
+        $sql = "
+            SELECT f.Dist_Name, f.Block_Name, f.fac_name, f.NIN_no, f.Health_facilty_type,
+                   a.assessment_id, a.assessment_name, a.framework_code, a.start_date, a.end_date, a.status AS assessment_status,
+                   ad.dept_id, ad.started_on AS class_start_date, ad.completed_on AS class_end_date, ad.status AS class_status,
+                   {$infoFields}
+                   COALESCE(r.completed_indicators, 0) AS completed_indicators,
+                   COALESCE(r.obtained_marks, 0) AS obtained_marks
+            FROM assessment_master a
+            INNER JOIN assessment_department ad ON ad.assessment_id = a.assessment_id AND ad.fac_id_fk = a.fac_id_fk AND ad.is_active = 1
+            LEFT JOIN facilities f ON f.fac_id = a.fac_id_fk
+            {$infoJoin}
+            LEFT JOIN (
+                SELECT assessment_id, dept_id, COUNT(DISTINCT checkpoint_id) AS completed_indicators, SUM(COALESCE(score, 0)) AS obtained_marks
+                FROM assessment_response GROUP BY assessment_id, dept_id
+            ) r ON r.assessment_id = a.assessment_id AND r.dept_id = ad.dept_id
+            {$where['sql']}
+            ORDER BY f.Dist_Name, f.Block_Name, f.fac_name, a.assessment_id DESC, ad.dept_id
+        ";
+        $stmt = self::prepareAndBind($con, $sql, $where['types'], $where['params']);
+        $stmt->execute();
+        $rows = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        // Read all response scores for the selected report scope in one query.
+        // This keeps large state exports from issuing one database query per class.
+        $responseScores = [];
+        $responseSql = "SELECT r.assessment_id, r.dept_id, r.checkpoint_id, COALESCE(r.score, 0) AS score
+            FROM assessment_response r
+            INNER JOIN assessment_master a ON a.assessment_id = r.assessment_id
+            LEFT JOIN facilities f ON f.fac_id = a.fac_id_fk
+            {$where['sql']}";
+        $responseStmt = self::prepareAndBind($con, $responseSql, $where['types'], $where['params']);
+        $responseStmt->execute();
+        foreach ($responseStmt->get_result() as $response) {
+            $responseScores[(int)$response['assessment_id'] . ':' . (int)$response['dept_id']][(int)$response['checkpoint_id']] = (float)$response['score'];
+        }
+        $responseStmt->close();
+
+        $domains = [];
+        foreach ($rows as &$row) {
+            $map = self::classDomainMap((string)($row['framework_code'] ?: 'saqshi-education'), (int)$row['Health_facilty_type'], (int)$row['dept_id']);
+            $row['_domain_map'] = $map;
+            foreach ($map['domains'] as $name => $_) $domains[$name] = true;
+        }
+        unset($row);
+        $domainNames = array_keys($domains);
+        natcasesort($domainNames);
+        $domainNames = array_values($domainNames);
+
+        self::csvRow($out, array_merge([
+            'District', 'Block', 'School Name', 'UDISE Code', 'Assessment ID', 'Assessment Name',
+            'Assessor Name', 'Assessee Name', 'Class', 'Class Teacher Name', 'Subject Name', 'Section',
+            'Assessment Start Date', 'Assessment End Date', 'Class Start Date', 'Class End Date',
+            'Total Indicators', 'Completed Indicators', 'Total Marks', 'Obtained Marks',
+            'Assessment Status', 'Class Status', 'Row Score %'
+        ], array_map(static fn (string $name): string => $name . ' Score %', $domainNames)));
+
+        foreach ($rows as $row) {
+            $map = $row['_domain_map'];
+            $assesseeName = Crypto::decrypt((string)($row['assessee_name'] ?? ''));
+            // Older records do not have a separately captured class-teacher
+            // field. In that case the recorded assessee is the best available
+            // class contact and keeps the export useful for existing data.
+            $classTeacherName = trim((string)($row['head_master_name'] ?? '')) ?: $assesseeName;
+            $classResponseScores = $responseScores[(int)$row['assessment_id'] . ':' . (int)$row['dept_id']] ?? [];
+            $totalMarks = 0.0;
+            $domainObtained = array_fill_keys($domainNames, 0.0);
+            $domainTotal = array_fill_keys($domainNames, 0.0);
+            foreach ($map['checkpoints'] as $checkpointId => $checkpoint) {
+                $max = (float)$checkpoint['max_score'];
+                $domain = $checkpoint['domain'];
+                $totalMarks += $max;
+                $domainTotal[$domain] = ($domainTotal[$domain] ?? 0) + $max;
+                if (isset($classResponseScores[$checkpointId])) {
+                    $domainObtained[$domain] = ($domainObtained[$domain] ?? 0) + $classResponseScores[$checkpointId];
+                }
+            }
+            $obtained = (float)$row['obtained_marks'];
+            $rowScore = $totalMarks > 0 ? round(($obtained / $totalMarks) * 100, 2) : 0;
+            $domainScores = array_map(static fn (string $domain): string => ($domainTotal[$domain] ?? 0) > 0
+                ? (string)round((($domainObtained[$domain] ?? 0) / $domainTotal[$domain]) * 100, 2) : '', $domainNames);
+            self::csvRow($out, array_merge([
+                $row['Dist_Name'] ?? '', $row['Block_Name'] ?? '', $row['fac_name'] ?? '', $row['NIN_no'] ?? '',
+                $row['assessment_id'] ?? '', $row['assessment_name'] ?? '', Crypto::decrypt((string)($row['assessor_name'] ?? '')),
+                $assesseeName, self::className((int)$row['dept_id']), $classTeacherName, $row['subject_name'] ?? '', $row['class_section'] ?? '',
+                $row['start_date'] ?? '', $row['end_date'] ?? '', $row['class_start_date'] ?? '', $row['class_end_date'] ?? '',
+                count($map['checkpoints']), $row['completed_indicators'] ?? 0, round($totalMarks, 2), round($obtained, 2),
+                $row['assessment_status'] ?? '', $row['class_status'] ?? '', $rowScore
+            ], $domainScores));
+        }
+    }
+
+    /** Returns configured checkpoint and domain metadata for one class. */
+    private static function classDomainMap(string $frameworkCode, int $facilityTypeId, int $deptId): array
+    {
+        static $cache = [];
+        $key = $frameworkCode . ':' . $facilityTypeId . ':' . $deptId;
+        if (isset($cache[$key])) return $cache[$key];
+        $path = __DIR__ . '/../config/frameworks/' . preg_replace('/[^a-z0-9_-]/i', '', $frameworkCode) . '.json';
+        $framework = is_file($path) ? json_decode((string)file_get_contents($path), true) : [];
+        $result = ['domains' => [], 'checkpoints' => []];
+        foreach (is_array($framework) ? $framework : [] as $facilityType) {
+            if ((int)($facilityType['fac_type_id'] ?? 0) !== $facilityTypeId) continue;
+            foreach (($facilityType['departments'] ?? []) as $department) {
+                if ((int)($department['fac_dept_id'] ?? 0) !== $deptId) continue;
+                foreach (($department['concerns'] ?? []) as $concern) {
+                    $domain = trim((string)($concern['concern_name'] ?? $concern['concern_des'] ?? '')) ?: 'Uncategorised';
+                    $result['domains'][$domain] = true;
+                    foreach (($concern['subtypes'] ?? []) as $subtype) foreach (($subtype['checkpoints'] ?? []) as $checkpoint) {
+                        $id = (int)($checkpoint['csqa_id'] ?? 0);
+                        if ($id <= 0 || isset($result['checkpoints'][$id])) continue;
+                        $scores = array_map(static fn ($option): float => (float)($option['score'] ?? 0), is_array($checkpoint['response']['options'] ?? null) ? $checkpoint['response']['options'] : []);
+                        $result['checkpoints'][$id] = ['domain' => $domain, 'max_score' => $scores ? max($scores) : 2];
+                    }
+                }
+            }
+        }
+        return $cache[$key] = $result;
+    }
+
+    private static function className(int $deptId): string
+    {
+        return self::departmentMap()[$deptId] ?? ('Class ' . $deptId);
     }
 
     /**
