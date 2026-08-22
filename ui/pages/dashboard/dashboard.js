@@ -78,7 +78,10 @@
 
         renderActiveAssessment();
 
-        const dashboardAssessment = state.activeAssessment || state.assessorAssessment;
+        const latestAssessment = state.assessments.find(item =>
+            String(item.status || "").toUpperCase() !== "CANCELLED"
+        ) || null;
+        const dashboardAssessment = state.activeAssessment || state.assessorAssessment || latestAssessment;
         if (dashboardAssessment?.assessment_id) {
             await Promise.all([
                 loadProgress(dashboardAssessment.assessment_id),
@@ -386,13 +389,30 @@
         }
 
         const rows = state.insights?.area_concerns || [];
+        const filter = document.getElementById("areaConcernDepartmentFilter");
 
         if (!rows.length) {
             target.innerHTML = `<div class="sq-empty-message">No area of concern status available.</div>`;
             return;
         }
 
-        target.innerHTML = rows.slice(0, 12).map(row => {
+        const departments = Object.values(rows.reduce((all, row) => {
+            const key = String(row.dept_id || 0);
+            if (!all[key]) all[key] = { id: key, name: row.dept_name || `Department ${row.dept_id}` };
+            return all;
+        }, {}));
+        if (filter) {
+            const selected = filter.value;
+            filter.innerHTML = `<option value="">All departments</option>${departments.map(dept => `<option value="${escapeHtml(dept.id)}">${escapeHtml(dept.name)}</option>`).join("")}`;
+            filter.value = departments.some(dept => dept.id === selected) ? selected : "";
+        }
+        const selectedDept = filter?.value || "";
+
+        const visibleRows = selectedDept ? rows.filter(row => String(row.dept_id) === selectedDept) : rows;
+        const overallTotal = visibleRows.reduce((sum, row) => sum + Number(row.total_checkpoints || 0), 0);
+        const overallCompleted = visibleRows.reduce((sum, row) => sum + Number(row.completed_checkpoints || 0), 0);
+        const groups = visibleRows.reduce((all, row) => { const key = String(row.dept_id || 0); if (!all[key]) all[key] = { name: row.dept_name || `Department ${row.dept_id}`, rows: [] }; all[key].rows.push(row); return all; }, {});
+        const card = row => {
             const total = Number(row.total_checkpoints || 0);
             const completed = Number(row.completed_checkpoints || 0);
             const pending = Number(row.pending_checkpoints || 0);
@@ -402,7 +422,7 @@
                 <div class="sq-area-status-row">
                     <div class="sq-area-status-main">
                         <strong>${escapeHtml(row.area_name || "Area of Concern")}</strong>
-                        <span>Department ${escapeHtml(row.dept_id || "-")} | ${completed}/${total} completed</span>
+                    <span>${completed}/${total} completed</span>
                     </div>
                     <div class="sq-area-status-counts">
                         <span class="is-complete">${completed} completed</span>
@@ -413,7 +433,12 @@
                     </div>
                 </div>
             `;
-        }).join("");
+        };
+        if (!selectedDept) {
+            target.innerHTML = `<div class="sq-area-overall"><strong>Assessment — Department Progress</strong><span>${overallCompleted}/${overallTotal} completed</span></div>${Object.values(groups).map(group => { const total = group.rows.reduce((sum, row) => sum + Number(row.total_checkpoints || 0), 0); const completed = group.rows.reduce((sum, row) => sum + Number(row.completed_checkpoints || 0), 0); const pending = Math.max(total - completed, 0); const percent = total > 0 ? (completed / total) * 100 : 0; return `<section class="sq-area-department"><div class="sq-area-status-row"><div class="sq-area-status-main"><strong>${escapeHtml(group.name)}</strong><span>${completed}/${total} completed</span></div><div class="sq-area-status-counts"><span class="is-complete">${completed} completed</span><span class="is-pending">${pending} pending</span></div><div class="sq-area-status-bar"><span style="width:${Math.max(0, Math.min(percent, 100))}%"></span></div></div></section>`; }).join("")}`;
+            return;
+        }
+        target.innerHTML = `<div class="sq-area-overall"><strong>${escapeHtml(groups[selectedDept]?.name || "Department")} — Area of Concern Progress</strong><span>${overallCompleted}/${overallTotal} completed</span></div><div class="sq-area-status-list">${visibleRows.map(card).join("")}</div>`;
     }
 
     function shortMonth(period) {
@@ -548,6 +573,7 @@
     async function init() {
         try {
             bindQuickActions();
+            document.getElementById("areaConcernDepartmentFilter")?.addEventListener("change", renderAreaConcerns);
 
             if (SQ.breadcrumb) {
                 SQ.breadcrumb.render([

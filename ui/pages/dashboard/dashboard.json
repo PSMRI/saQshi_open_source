@@ -62,11 +62,11 @@
     "assets": {
 
         "css": [
-            "/ui/pages/dashboard/dashboard.css?v=20260706-3"
+            "/ui/pages/dashboard/dashboard.css?v=20260822-colour-card-headings-1"
         ],
 
         "js": [
-            "/ui/pages/dashboard/dashboard.js?v=20260803-1"
+            "/ui/pages/dashboard/dashboard.js?v=20260822-department-filter-1"
         ]
 
     },

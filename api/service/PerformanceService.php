@@ -185,6 +185,7 @@ class PerformanceService
             'fac_id' => $facId,
             'fac_type_id' => 0,
             'fac_name' => '',
+            'nin_no' => '',
             'facility_type' => ''
         ];
 
@@ -204,6 +205,7 @@ class PerformanceService
                                     'fac_id' => $facId,
                                     'fac_type_id' => (int)($facility['fac_type_id'] ?? 0),
                                     'fac_name' => (string)($facility['fac_name'] ?? ''),
+                                    'nin_no' => (string)($facility['nin_no'] ?? $facility['NIN_no'] ?? $facility['fac_nin'] ?? ''),
                                     'facility_type' => (string)($facility['facilities_type'] ?? '')
                                 ];
                             }

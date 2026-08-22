@@ -289,6 +289,10 @@
                         <td class="value" colspan="${Math.max(1, colCount - 3)}">${excelText(reportTime)}</td>
                     </tr>
                     <tr>
+                        <td class="label">Facility NIN No</td>
+                        <td class="value" colspan="${colCount - 1}">${excelText(state.facility?.nin_no || state.facility?.NIN_no || state.facility?.fac_nin || "-")}</td>
+                    </tr>
+                    <tr>
                         <td class="label">Report Type</td>
                         <td class="report" colspan="${colCount - 1}">${excelText(title)}</td>
                     </tr>

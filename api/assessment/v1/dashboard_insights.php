@@ -122,6 +122,8 @@ try {
     $areas = [];
 
     foreach ($deptIds as $deptId) {
+        $department = $engine->getDepartmentById($facTypeId, $deptId) ?? [];
+        $departmentName = trim((string)($department['dept_name'] ?? $department['department_name'] ?? ''));
         foreach ($engine->getCheckpoints($facTypeId, $deptId) as $checkpoint) {
             $checkpointId = (string)($checkpoint['csqa_id'] ?? '');
 
@@ -137,6 +139,7 @@ try {
             if (!isset($areas[$key])) {
                 $areas[$key] = [
                     'dept_id' => $deptId,
+                    'dept_name' => $departmentName !== '' ? $departmentName : ('Department ' . $deptId),
                     'concern_id' => $concernId,
                     'area_name' => $name !== '' ? $name : ($description !== '' ? $description : 'Area ' . $concernId),
                     'total_checkpoints' => 0,
