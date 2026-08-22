@@ -179,6 +179,7 @@ Existing legacy schema names should not be renamed casually. Rename only with mi
 | Area | SaQshi Handling |
 | --- | --- |
 | Passwords | Passwords must be hashed, not stored as plain text. Legacy plain passwords are converted during login/update flow where supported. |
+| Mandatory password change | When `password_must_change` is set, `ui/assets/js/core/router.js` redirects every protected route to `facilityusers/users?force_password=1`. `api/auth_api.php` blocks all authenticated API calls except auth/session and the self-profile endpoint until the password is changed. `Auth::me()` refreshes the flag from the database so an administrator reset takes effect for an already logged-in user. |
 | Sensitive profile fields | User name, mobile and email use encryption helpers when saved through current profile APIs. |
 | Assessor/assessee names | Encrypted because they are personal names. |
 | CSRF | CSRF endpoint and token validation are used for protected requests. |

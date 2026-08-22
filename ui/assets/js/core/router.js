@@ -228,12 +228,14 @@
             manifest.authentication.required === true;
 
         if (!required) {
-            return;
+            return null;
         }
 
         if (SQ.auth && typeof SQ.auth.requireAuth === "function") {
-            await SQ.auth.requireAuth();
+            return SQ.auth.requireAuth();
         }
+
+        return null;
     }
 
     function setPageMeta(manifest) {
@@ -339,7 +341,18 @@
             debugLog("[SQ Router] CSS assets:", manifest.assets?.css || []);
             debugLog("[SQ Router] JS assets:", manifest.assets?.js || []);
 
-            await checkAuth(manifest);
+            const currentUser = await checkAuth(manifest);
+            const passwordChangeRoute = "facilityusers/users";
+            if (
+                manifest.authentication?.required === true &&
+                currentUser?.password_must_change &&
+                name !== passwordChangeRoute
+            ) {
+                // Do not allow a mandatory first-login password change to be
+                // bypassed through the sidebar, browser history or a route URL.
+                window.location.replace(routeUrl(passwordChangeRoute, { force_password: 1 }));
+                return;
+            }
             await loadLayout(manifest.layout || "dashboard");
 
             for (const css of manifest.assets?.css || []) {

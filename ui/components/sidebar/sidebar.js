@@ -229,6 +229,7 @@
 
         const roleId = Number(user && user.role_id);
         const isManagementRole = roleId === 11;
+        const isStateAdmin = roleId === 9;
         const isMonitoringRole = [4, 5, 8, 9].indexOf(roleId) !== -1;
         const isAssessorRole =
             roleId === 10 ||
@@ -250,7 +251,7 @@
                 const managementItem = item.hasAttribute("data-role11-management");
                 const hiddenByRole = isManagementRole
                     ? !managementItem
-                    : !isMonitoringRole;
+                    : (!isMonitoringRole || (managementItem && !isStateAdmin));
                 item.dataset.roleHidden = hiddenByRole ? "1" : "0";
                 item.hidden = item.hasAttribute("data-sidebar-disabled") || hiddenByRole;
             });

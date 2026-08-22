@@ -578,12 +578,50 @@ When a facility is opened, it can show:
 
 ## User Administration
 
-For monitoring/admin users, user administration can:
+State Admin can open **State Monitoring → User Administration** to create and
+manage healthcare users. Choose **Create User**, then select the role and its
+scope.
+
+| Role | What to select | Scope assigned by SaQshi |
+|---|---|---|
+| Facility User | Select district, block and facility | The matching facility and its block, district and division |
+| Block User | Select a block | All facilities in that block |
+| District User | Select a district | All facilities in that district |
+| Division User | Select a division | All facilities in that division |
+
+For a Facility User, SaQshi automatically sets both the username and the
+initial password to the selected Facility NIN. The administrator does not enter
+personal details for this role; the user completes them after the first login.
+All other user roles use an administrator-provided unique username and a
+temporary password. New users are active when created and must change their
+temporary password at their first login. Administrator-provided passwords must
+have at least eight characters and include upper-case, lower-case, number and
+special-character characters.
+
+While a password change is required, SaQshi locks all dashboard pages and
+other application actions. Selecting a sidebar item, using browser history or
+opening another dashboard URL redirects the user back to **My Profile** until
+the password is changed.
+
+User administration can also:
 
 - search users,
 - view user details,
 - activate user,
-- deactivate user.
+- deactivate user (except State Admin accounts),
+- reset a user's password from the **Reset Password** action.
+
+Only State Admin (and the restricted legacy management role, where enabled)
+can create Facility, Block, District and Division accounts. State Admin
+accounts are not created from this module. Block, district and division users
+retain monitoring-only access and cannot create users outside their assigned
+scope. State Admin accounts cannot be deactivated by any user.
+State Admin can reset a user's password; the recipient must change the reset
+password at their next login.
+
+SaQshi permits only one user for each role and scope: one Facility User per
+facility, one Block User per block, one District User per district and one
+Division User per division. Attempting to create a duplicate is rejected.
 
 ## AI Chat Assistant
 

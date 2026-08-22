@@ -76,15 +76,16 @@ Source directory: `api/performance/v1/`
 
 Source directory: `api/reports/v1/`
 
-## State (17 endpoints, 1 helper)
+## State (22 endpoints, 2 helpers)
 
 Endpoints: `assessment_history`, `assessment_progress`, `boundary`,
 `certification_summary`, `certification_update`, `cqi_summary`, `dashboard`,
 `facility_category`, `facility_detail`, `facility_progress`,
-`indicator_analytics`, `map`, `performance_summary`, `reports`, `user_save`,
-`user_status`, `users`.
+`facility_reference`, `indicator_analytics`, `map`, `performance_summary`,
+`reports`, `credential_delivery_log`, `user_create`, `user_password_reset`,
+`user_save`, `user_scope_options`, `user_status`, `users`.
 
-Internal helper: `_bootstrap`.
+Internal helpers: `_bootstrap`, `_management_bootstrap`.
 
 Source directory: `api/state/v1/`
 

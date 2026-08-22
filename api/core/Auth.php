@@ -111,8 +111,16 @@ class Auth
             return $this->error('Unauthorized');
         }
 
+        // Refresh this flag from the database on every session check. A State
+        // Admin can reset another user's password while that user is online.
+        // Their existing session must immediately become restricted as well.
+        $user = SessionManager::user();
+        $mustChangePassword = $this->passwordMustChange((int)($user['u_id'] ?? 0));
+        $_SESSION['password_must_change'] = $mustChangePassword;
+        $user['password_must_change'] = $mustChangePassword;
+
         return $this->success('User fetched successfully', [
-            'user' => SessionManager::user()
+            'user' => $user
         ]);
     }
 

@@ -285,10 +285,17 @@
 
         state.isLoading = true;
         if (SQ.deployment && typeof SQ.deployment.load === "function") {
-            await SQ.deployment.load();
-            SQ.deployment.applyLabels(document);
-            const facilityLabel = SQ.deployment.label ? SQ.deployment.label("facility", "Facility") : "Facility";
-            setText("sq-page-subtitle", `Update your ${String(facilityLabel).toLowerCase()} user details and password.`);
+            try {
+                await SQ.deployment.load();
+                SQ.deployment.applyLabels(document);
+                const facilityLabel = SQ.deployment.label ? SQ.deployment.label("facility", "Facility") : "Facility";
+                setText("sq-page-subtitle", `Update your ${String(facilityLabel).toLowerCase()} user details and password.`);
+            } catch (error) {
+                // During a forced password change the API gate deliberately
+                // blocks non-profile calls. Labels are optional; the editable
+                // profile form must still be available.
+                console.warn("Deployment labels unavailable during profile setup.", error);
+            }
         }
         bindEvents();
         renderPasswordRules();

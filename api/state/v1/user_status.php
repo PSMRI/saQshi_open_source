@@ -30,6 +30,16 @@ try {
         }
     }
 
+    if ($isActive === 0) {
+        $target = $con->prepare('SELECT role_id_fk FROM s_user WHERE u_id = ? LIMIT 1');
+        $target->bind_param('i', $userId);
+        $target->execute();
+        $targetRoleId = (int)(($target->get_result()->fetch_assoc() ?: [])['role_id_fk'] ?? 0);
+        if ($targetRoleId === 9) {
+            Response::forbidden('State Admin accounts cannot be deactivated.');
+        }
+    }
+
     if ($userId === SessionManager::userId() && $isActive === 0) {
         Response::validation(['u_id' => 'You cannot deactivate your own logged-in account.']);
     }

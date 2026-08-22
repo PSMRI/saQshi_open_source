@@ -198,7 +198,6 @@ class StateReportService extends StateDashboardService
         self::csvRow($out, [
             $labels['facility_code'], $labels['facility'], 'District', 'Block', 'Assessment ID',
             'Assessment Name', 'Framework', 'Start Date', 'Planned End Date', 'Actual Completion Date', 'Cancellation Date', 'Status',
-            $labels['assessor'] . ' Name', 'Class / Subject Teacher Name', 'Teacher ID', 'Subject', 'Class Section',
             'Checkpoint Done', 'Original Score', 'Final Score', 'Action Plans',
             'Completed Action Plans', 'Last Updated'
         ]);
@@ -239,23 +238,11 @@ class StateReportService extends StateDashboardService
             "
             : '';
 
-        // One assessment can contain class-level details. Keep each saved
-        // class record visible rather than dropping any teacher/section data.
-        $hasAssessorInfo = self::tableExistsLocal($con, 'assessment_assessor_info');
-        $hasClassSection = $hasAssessorInfo && self::columnExistsLocal($con, 'assessment_assessor_info', 'class_section');
-        $assessorInfoJoin = $hasAssessorInfo
-            ? 'LEFT JOIN assessment_assessor_info ai ON ai.assessment_id = a.assessment_id'
-            : '';
-        $assessorInfoSelect = $hasAssessorInfo
-            ? "ai.dept_id AS class_id, ai.assessor_name, ai.assessee_name, ai.teacher_code, ai.subject_name, " . ($hasClassSection ? 'ai.class_section' : "''") . ' AS class_section,'
-            : "NULL AS class_id, '' AS assessor_name, '' AS assessee_name, '' AS teacher_code, '' AS subject_name, '' AS class_section,";
-
         $where = self::facilityWhereLocal($filters, 'f');
         $sql = "
             SELECT f.fac_id, f.NIN_no, f.fac_name, f.Dist_Name, f.Block_Name,
                    a.assessment_id, a.assessment_name, a.framework_code, a.start_date,
                    a.end_date, a.completed_on, a.cancelled_on, a.status, COALESCE(rs.checkpoint_done, 0) AS checkpoint_done,
-                   {$assessorInfoSelect}
                    COALESCE(rs.original_score, 0) AS original_score,
                    COALESCE(rs.final_score, 0) AS final_score,
                    COALESCE(aps.action_plans, 0) AS action_plans,
@@ -263,11 +250,10 @@ class StateReportService extends StateDashboardService
                    COALESCE(aps.last_action_update, '') AS last_action_update
             FROM assessment_master a
             LEFT JOIN facilities f ON f.fac_id = a.fac_id_fk
-            {$assessorInfoJoin}
             {$responseJoin}
             {$actionJoin}
             {$where['sql']}
-            ORDER BY f.Dist_Name, f.Block_Name, f.fac_name, a.assessment_id DESC, class_id
+            ORDER BY f.Dist_Name, f.Block_Name, f.fac_name, a.assessment_id DESC
         ";
 
         self::streamQuery($con, $sql, $where['types'], $where['params'], $out, function (array $row): array {
@@ -276,9 +262,6 @@ class StateReportService extends StateDashboardService
                 $row['Dist_Name'] ?? '', $row['Block_Name'] ?? '', $row['assessment_id'] ?? '',
                 $row['assessment_name'] ?? '', $row['framework_code'] ?? '', $row['start_date'] ?? '',
                 $row['end_date'] ?? '', $row['completed_on'] ?? '', $row['cancelled_on'] ?? '', $row['status'] ?? '',
-                Crypto::decrypt((string)($row['assessor_name'] ?? '')),
-                Crypto::decrypt((string)($row['assessee_name'] ?? '')),
-                $row['teacher_code'] ?? '', $row['subject_name'] ?? '', $row['class_section'] ?? '',
                 $row['checkpoint_done'] ?? 0,
                 $row['original_score'] ?? 0, $row['final_score'] ?? 0, $row['action_plans'] ?? 0,
                 $row['completed_action_plans'] ?? 0, $row['last_action_update'] ?? ''
