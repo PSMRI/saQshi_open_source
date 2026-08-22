@@ -506,7 +506,10 @@ class StateDashboardService
             }
 
             $status = self::normalizeCertStatus($facility['status'] ?? '') ?: 'NOT CERTIFIED';
-            if (!in_array($status, ['CERTIFIED', 'CONDITIONAL'], true) && empty($filters['all_status'])) {
+            // Healthcare map is a certified-facility locator. Conditional and
+            // non-certified facilities remain in certification lists but are
+            // not plotted here.
+            if ($status !== 'CERTIFIED') {
                 continue;
             }
 
@@ -909,6 +912,36 @@ class StateDashboardService
         $responseMap = self::assessmentResponseProgress($con, $assessmentIds);
         $actionPlanMap = self::assessmentActionPlanProgress($con, $assessmentIds);
         $engineCache = [];
+        $healthAssessmentScores = [];
+        $healthRoundScores = [];
+
+        if (!self::isEducationDomain()) {
+            $frameworkByAssessment = [];
+            $roundMembers = [];
+            $roundIds = [];
+            foreach ($rows as $progressRow) {
+                if (strtoupper((string)($progressRow['status'] ?? '')) !== 'COMPLETED') continue;
+                $assessmentId = (int)($progressRow['assessment_id'] ?? 0);
+                if ($assessmentId > 0) $frameworkByAssessment[$assessmentId] = (string)($progressRow['framework_code'] ?: 'saqshi-nqas');
+                $roundId = (int)($progressRow['round_id'] ?? 0);
+                if ($roundId > 0) $roundIds[$roundId] = true;
+            }
+            if ($roundIds) {
+                $roundList = array_keys($roundIds);
+                $placeholders = implode(',', array_fill(0, count($roundList), '?'));
+                $roundRows = self::rows($con, "SELECT assessment_id, round_id, framework_code FROM assessment_master WHERE round_id IN ({$placeholders}) AND UPPER(status) = 'COMPLETED'", str_repeat('i', count($roundList)), $roundList);
+                foreach ($roundRows as $roundRow) {
+                    $assessmentId = (int)$roundRow['assessment_id'];
+                    $roundId = (int)$roundRow['round_id'];
+                    $frameworkByAssessment[$assessmentId] = (string)($roundRow['framework_code'] ?: 'saqshi-nqas');
+                    $roundMembers[$roundId][] = $assessmentId;
+                }
+            }
+            $healthAssessmentScores = self::healthcareAreaScoresByAssessment($con, $frameworkByAssessment);
+            foreach ($roundMembers as $roundId => $memberIds) {
+                $healthRoundScores[$roundId] = self::combineHealthcareAreaScores(array_intersect_key($healthAssessmentScores, array_flip($memberIds)));
+            }
+        }
 
         foreach ($rows as &$row) {
             $assessmentId = (int)($row['assessment_id'] ?? 0);
@@ -924,20 +957,21 @@ class StateDashboardService
                 'checkpoint_done' => 0,
                 'obtained_score' => 0,
                 'final_obtained_score' => 0,
+                'total_score' => 0,
                 'revised_checkpoints' => 0
             ];
             $actionProgress = $actionPlanMap[$assessmentId] ?? [
                 'total_action_plans' => 0,
                 'completed_action_plans' => 0
             ];
-            $scoreBase = self::assessmentScoreBase(
+            $checkpointDone = (int)$responseProgress['checkpoint_done'];
+            $scoreBase = self::isEducationDomain() ? self::assessmentScoreBase(
                 (string)($row['framework_code'] ?: 'saqshi-nqas'),
                 $facTypeId,
                 $deptProgress['dept_ids'],
                 $engineCache
-            );
+            ) : ['total_checkpoints' => $checkpointDone, 'total_score' => (float)($responseProgress['total_score'] ?? 0)];
             $totalCheckpoints = (int)$scoreBase['total_checkpoints'];
-            $checkpointDone = (int)$responseProgress['checkpoint_done'];
             $totalScore = (float)$scoreBase['total_score'];
             $originalObtained = (float)$responseProgress['obtained_score'];
             $finalObtained = (float)$responseProgress['final_obtained_score'];
@@ -961,10 +995,17 @@ class StateDashboardService
             $row['baseline_score_percent'] = $totalScore > 0 ? round(($originalObtained / $totalScore) * 100, 2) : 0;
             $row['revised_checkpoints'] = (int)$responseProgress['revised_checkpoints'];
             $completedUnitIds = array_values($deptProgress['completed_dept_ids'] ?? $deptProgress['dept_ids']);
-            $row['model_score'] = strtoupper((string)($row['status'] ?? '')) === 'COMPLETED'
-                ? self::assessmentModelCategory($con, $assessmentId, (string)($row['framework_code'] ?: 'saqshi-nqas'), $facTypeId, $completedUnitIds)
-                : null;
-            $row['round_score'] = self::roundModelCategory($con, (int)($row['round_id'] ?? 0), (string)($row['framework_code'] ?: 'saqshi-nqas'), $facTypeId);
+            $frameworkCode = (string)($row['framework_code'] ?: 'saqshi-nqas');
+            if (strtoupper((string)($row['status'] ?? '')) === 'COMPLETED') {
+                $row['model_score'] = self::isEducationDomain()
+                    ? self::assessmentModelCategory($con, $assessmentId, $frameworkCode, $facTypeId, $completedUnitIds)
+                    : ($healthAssessmentScores[$assessmentId] ?? null);
+            } else {
+                $row['model_score'] = null;
+            }
+            $row['round_score'] = self::isEducationDomain()
+                ? self::roundModelCategory($con, (int)($row['round_id'] ?? 0), $frameworkCode, $facTypeId)
+                : ($healthRoundScores[(int)($row['round_id'] ?? 0)] ?? null);
 
             // One assessor record represents one claimed Class/Department.
             // Display the configured label, never the old numeric fallback.
@@ -997,21 +1038,26 @@ class StateDashboardService
     private static function assessmentUnitName(string $frameworkCode, int $facilityTypeId, int $deptId): string
     {
         if ($deptId <= 0) return '';
+        static $unitNames = [];
+        static $frameworks = [];
+        $cacheKey = $frameworkCode . ':' . $facilityTypeId . ':' . $deptId;
+        if (array_key_exists($cacheKey, $unitNames)) return $unitNames[$cacheKey];
         $domainPath = __DIR__ . '/../config/domain.json';
         $domain = is_file($domainPath) ? (json_decode((string)file_get_contents($domainPath), true) ?: []) : [];
         if (($domain['profile_code'] ?? $domain['domain'] ?? '') === 'education') {
             $masterPath = __DIR__ . '/../config/masters/department.json';
             $master = is_file($masterPath) ? (json_decode((string)file_get_contents($masterPath), true) ?: []) : [];
             foreach (($master['education']['facility_types'][(string)$facilityTypeId] ?? []) as $unit) {
-                if ((int)($unit['dept_id'] ?? 0) === $deptId) return (string)($unit['dept_name'] ?? '');
+                if ((int)($unit['dept_id'] ?? 0) === $deptId) return $unitNames[$cacheKey] = (string)($unit['dept_name'] ?? '');
             }
         }
         try {
-            foreach (FrameworkEngine::load($frameworkCode)->getDepartments($facilityTypeId) as $unit) {
-                if ((int)($unit['dept_id'] ?? $unit['fac_dept_id'] ?? 0) === $deptId) return (string)($unit['dept_name'] ?? '');
+            if (!isset($frameworks[$frameworkCode])) $frameworks[$frameworkCode] = FrameworkEngine::load($frameworkCode);
+            foreach ($frameworks[$frameworkCode]->getDepartments($facilityTypeId) as $unit) {
+                if ((int)($unit['dept_id'] ?? $unit['fac_dept_id'] ?? 0) === $deptId) return $unitNames[$cacheKey] = (string)($unit['dept_name'] ?? '');
             }
         } catch (Throwable $e) { }
-        return '';
+        return $unitNames[$cacheKey] = '';
     }
 
     private static function assessmentDepartmentProgress(mysqli $con, array $assessmentIds): array
@@ -1118,6 +1164,7 @@ class StateDashboardService
                 COUNT(DISTINCT r.checkpoint_id) AS checkpoint_done,
                 ROUND(COALESCE(SUM(r.score), 0), 2) AS obtained_score,
                 ROUND(COALESCE(SUM({$finalScore}), 0), 2) AS final_obtained_score,
+                ROUND(COALESCE(SUM(r.max_score), 0), 2) AS total_score,
                 SUM({$revisedFlag}) AS revised_checkpoints
             FROM {$responseTable} r
             {$actionJoin}
@@ -1131,6 +1178,7 @@ class StateDashboardService
                 'checkpoint_done' => (int)($row['checkpoint_done'] ?? 0),
                 'obtained_score' => (float)($row['obtained_score'] ?? 0),
                 'final_obtained_score' => (float)($row['final_obtained_score'] ?? 0),
+                'total_score' => (float)($row['total_score'] ?? 0),
                 'revised_checkpoints' => (int)($row['revised_checkpoints'] ?? 0)
             ];
         }
@@ -1294,6 +1342,110 @@ class StateDashboardService
             $percentage = $totalPossible > 0 ? round(($totalObtained / $totalPossible) * 100, 2) : 0;
             return ['percentage' => $percentage, 'category' => $categoryFor($percentage), 'models' => $models];
         } catch (Throwable $e) { return null; }
+    }
+
+    /** Builds Area of Concern scorecards for many assessments in one response query. */
+    private static function healthcareAreaScoresByAssessment(mysqli $con, array $frameworkByAssessment): array
+    {
+        $ids = array_values(array_unique(array_filter(array_map('intval', array_keys($frameworkByAssessment)))));
+        if (!$ids) return [];
+        $placeholders = implode(',', array_fill(0, count($ids), '?'));
+        $rows = self::rows($con, "SELECT assessment_id, checkpoint_id, COALESCE(SUM(score), 0) AS obtained_score, COALESCE(SUM(max_score), 0) AS total_score, COUNT(*) AS answered_checkpoints FROM assessment_response WHERE assessment_id IN ({$placeholders}) GROUP BY assessment_id, checkpoint_id", str_repeat('i', count($ids)), $ids);
+        $areaMaps = [];
+        $scores = [];
+        foreach ($rows as $row) {
+            $assessmentId = (int)$row['assessment_id'];
+            $framework = (string)($frameworkByAssessment[$assessmentId] ?? 'saqshi-nqas');
+            if (!isset($areaMaps[$framework])) $areaMaps[$framework] = self::frameworkCheckpointDomains($framework);
+            $area = $areaMaps[$framework][(int)($row['checkpoint_id'] ?? 0)] ?? '';
+            $total = (float)($row['total_score'] ?? 0);
+            if ($area === '' || $total <= 0) continue;
+            if (!isset($scores[$assessmentId])) $scores[$assessmentId] = ['obtained_score' => 0.0, 'total_score' => 0.0, '_models' => []];
+            if (!isset($scores[$assessmentId]['_models'][$area])) $scores[$assessmentId]['_models'][$area] = ['model_name' => $area, 'obtained_score' => 0.0, 'total_score' => 0.0, 'answered_checkpoints' => 0, 'total_checkpoints' => 0, 'category' => null];
+            $model = &$scores[$assessmentId]['_models'][$area];
+            $model['obtained_score'] += (float)($row['obtained_score'] ?? 0);
+            $model['total_score'] += $total;
+            $model['answered_checkpoints'] += (int)($row['answered_checkpoints'] ?? 0);
+            $model['total_checkpoints']++;
+            unset($model);
+            $scores[$assessmentId]['obtained_score'] += (float)($row['obtained_score'] ?? 0);
+            $scores[$assessmentId]['total_score'] += $total;
+        }
+        foreach ($scores as &$score) {
+            $score['percentage'] = round(($score['obtained_score'] / $score['total_score']) * 100, 2);
+            foreach ($score['_models'] as &$model) $model['percentage'] = round(($model['obtained_score'] / $model['total_score']) * 100, 2);
+            unset($model);
+            $score['models'] = array_values($score['_models']);
+            $score['category'] = null;
+            unset($score['_models']);
+        }
+        unset($score);
+        return $scores;
+    }
+
+    /** Combines completed assessment Area of Concern scorecards into a round scorecard. */
+    private static function combineHealthcareAreaScores(array $scores): ?array
+    {
+        $combined = ['obtained_score' => 0.0, 'total_score' => 0.0, '_models' => []];
+        foreach ($scores as $score) {
+            $combined['obtained_score'] += (float)($score['obtained_score'] ?? 0);
+            $combined['total_score'] += (float)($score['total_score'] ?? 0);
+            foreach (($score['models'] ?? []) as $model) {
+                $name = (string)($model['model_name'] ?? '');
+                if ($name === '') continue;
+                if (!isset($combined['_models'][$name])) $combined['_models'][$name] = ['model_name' => $name, 'obtained_score' => 0.0, 'total_score' => 0.0, 'answered_checkpoints' => 0, 'total_checkpoints' => 0, 'category' => null];
+                $combined['_models'][$name]['obtained_score'] += (float)($model['obtained_score'] ?? 0);
+                $combined['_models'][$name]['total_score'] += (float)($model['total_score'] ?? 0);
+                $combined['_models'][$name]['answered_checkpoints'] += (int)($model['answered_checkpoints'] ?? 0);
+                $combined['_models'][$name]['total_checkpoints'] += (int)($model['total_checkpoints'] ?? 0);
+            }
+        }
+        if ($combined['total_score'] <= 0) return null;
+        foreach ($combined['_models'] as &$model) $model['percentage'] = round(($model['obtained_score'] / $model['total_score']) * 100, 2);
+        unset($model);
+        return ['percentage' => round(($combined['obtained_score'] / $combined['total_score']) * 100, 2), 'obtained_score' => $combined['obtained_score'], 'total_score' => $combined['total_score'], 'category' => null, 'models' => array_values($combined['_models']), 'completed_classes_departments' => count($scores)];
+    }
+
+    /** Calculates healthcare Area of Concern scores from saved assessment responses. */
+    private static function healthcareAreaScore(mysqli $con, array $assessmentIds, string $frameworkCode): ?array
+    {
+        $assessmentIds = array_values(array_unique(array_filter(array_map('intval', $assessmentIds))));
+        if (!$assessmentIds) return null;
+        $placeholders = implode(',', array_fill(0, count($assessmentIds), '?'));
+        $types = str_repeat('i', count($assessmentIds));
+        $rows = self::rows($con, "SELECT checkpoint_id, COALESCE(SUM(score), 0) AS obtained_score, COALESCE(SUM(max_score), 0) AS total_score, COUNT(*) AS answered_checkpoints FROM assessment_response WHERE assessment_id IN ({$placeholders}) GROUP BY checkpoint_id", $types, $assessmentIds);
+        $areas = self::frameworkCheckpointDomains($frameworkCode);
+        $models = [];
+        $obtained = 0.0;
+        $possible = 0.0;
+        foreach ($rows as $row) {
+            $area = $areas[(int)($row['checkpoint_id'] ?? 0)] ?? '';
+            $total = (float)($row['total_score'] ?? 0);
+            if ($area === '' || $total <= 0) continue;
+            if (!isset($models[$area])) {
+                $models[$area] = ['model_name' => $area, 'obtained_score' => 0.0, 'total_score' => 0.0, 'answered_checkpoints' => 0, 'total_checkpoints' => 0, 'category' => null];
+            }
+            $models[$area]['obtained_score'] += (float)($row['obtained_score'] ?? 0);
+            $models[$area]['total_score'] += $total;
+            $models[$area]['answered_checkpoints'] += (int)($row['answered_checkpoints'] ?? 0);
+            $models[$area]['total_checkpoints'] += 1;
+            $obtained += (float)($row['obtained_score'] ?? 0);
+            $possible += $total;
+        }
+        if ($possible <= 0) return null;
+        foreach ($models as &$model) {
+            $model['percentage'] = round(($model['obtained_score'] / $model['total_score']) * 100, 2);
+        }
+        unset($model);
+        return ['percentage' => round(($obtained / $possible) * 100, 2), 'obtained_score' => $obtained, 'total_score' => $possible, 'category' => null, 'models' => array_values($models), 'completed_classes_departments' => count($assessmentIds)];
+    }
+
+    /** Calculates one healthcare Area of Concern scorecard for a completed round. */
+    private static function healthcareRoundAreaScore(mysqli $con, int $roundId, string $frameworkCode): ?array
+    {
+        if ($roundId <= 0) return null;
+        $rows = self::rows($con, "SELECT assessment_id FROM assessment_master WHERE round_id = ? AND UPPER(status) = 'COMPLETED'", 'i', [$roundId]);
+        return self::healthcareAreaScore($con, array_column($rows, 'assessment_id'), $frameworkCode);
     }
 
     /** Whole School/Facility category for one round, based on completed classes/departments. */
@@ -1919,6 +2071,9 @@ class StateDashboardService
 
     private static function latestCompletedFacilityScores(mysqli $con): array
     {
+        if (!self::isEducationDomain()) {
+            return self::latestCompletedHealthcareFacilityScores($con);
+        }
         if (!self::tableExists($con, 'assessment_master') || !self::tableExists($con, 'assessment_response') || !self::tableExists($con, 'facility_assessment_round')) return [];
         // One grouped query for every school. Do not call roundModelCategory here:
         // that performs per-school framework/response queries and times out at State scale.
@@ -1971,8 +2126,91 @@ class StateDashboardService
         return $map;
     }
 
+    /**
+     * Returns scores for the latest completed healthcare assessment at each
+     * facility, grouped by its configured Area of Concern.
+     */
+    private static function latestCompletedHealthcareFacilityScores(mysqli $con): array
+    {
+        if (!self::tableExists($con, 'assessment_master') || !self::tableExists($con, 'assessment_response')) return [];
+
+        $rows = self::rows($con, "
+            SELECT a.fac_id_fk, a.assessment_id, a.framework_code, r.checkpoint_id,
+                   COALESCE(SUM(r.score), 0) AS obtained_score,
+                   COALESCE(SUM(r.max_score), 0) AS total_score
+            FROM assessment_master a
+            INNER JOIN (
+                SELECT fac_id_fk, MAX(assessment_id) AS assessment_id
+                FROM assessment_master
+                WHERE UPPER(status) = 'COMPLETED'
+                GROUP BY fac_id_fk
+            ) latest ON latest.assessment_id = a.assessment_id
+            INNER JOIN assessment_response r ON r.assessment_id = a.assessment_id
+            WHERE UPPER(a.status) = 'COMPLETED'
+            GROUP BY a.fac_id_fk, a.assessment_id, a.framework_code, r.checkpoint_id
+        ");
+
+        $map = [];
+        $areaMaps = [];
+        foreach ($rows as $row) {
+            $facilityId = (int)($row['fac_id_fk'] ?? 0);
+            $framework = (string)($row['framework_code'] ?? 'saqshi-nqas');
+            $obtained = (float)($row['obtained_score'] ?? 0);
+            $possible = (float)($row['total_score'] ?? 0);
+            if ($facilityId <= 0 || $possible <= 0) continue;
+
+            if (!isset($areaMaps[$framework])) {
+                $areaMaps[$framework] = self::frameworkCheckpointDomains($framework);
+            }
+            $area = $areaMaps[$framework][(int)($row['checkpoint_id'] ?? 0)] ?? '';
+            if ($area === '') continue;
+
+            if (!isset($map[$facilityId])) {
+                $map[$facilityId] = [
+                    'framework_code' => $framework,
+                    'obtained_score' => 0.0,
+                    'total_score' => 0.0,
+                    '_areas' => []
+                ];
+            }
+            $map[$facilityId]['obtained_score'] += $obtained;
+            $map[$facilityId]['total_score'] += $possible;
+            if (!isset($map[$facilityId]['_areas'][$area])) {
+                $map[$facilityId]['_areas'][$area] = ['obtained_score' => 0.0, 'total_score' => 0.0];
+            }
+            $map[$facilityId]['_areas'][$area]['obtained_score'] += $obtained;
+            $map[$facilityId]['_areas'][$area]['total_score'] += $possible;
+        }
+
+        foreach ($map as &$score) {
+            $score['percentage'] = $score['total_score'] > 0
+                ? round(($score['obtained_score'] / $score['total_score']) * 100, 2)
+                : 0.0;
+            $score['category'] = self::configuredCategory($score['framework_code'], $score['percentage']);
+            $score['models'] = [];
+            foreach ($score['_areas'] as $area => $values) {
+                $total = (float)$values['total_score'];
+                if ($total <= 0) continue;
+                $percentage = round(((float)$values['obtained_score'] / $total) * 100, 2);
+                $score['models'][] = [
+                    'model_name' => $area,
+                    'percentage' => $percentage,
+                    'obtained_score' => (float)$values['obtained_score'],
+                    'total_score' => $total,
+                    'category' => self::configuredCategory($score['framework_code'], $percentage)
+                ];
+            }
+            unset($score['_areas']);
+        }
+        unset($score);
+
+        return $map;
+    }
+
     private static function frameworkCheckpointDomains(string $frameworkCode): array
     {
+        static $cache = [];
+        if (isset($cache[$frameworkCode])) return $cache[$frameworkCode];
         $map = [];
         try {
             $engine = FrameworkEngine::load($frameworkCode);
@@ -1985,8 +2223,8 @@ class StateDashboardService
                     }
                 }
             }
-        } catch (Throwable $e) { return []; }
-        return $map;
+        } catch (Throwable $e) { return $cache[$frameworkCode] = []; }
+        return $cache[$frameworkCode] = $map;
     }
 
     /** Add the configured colour/category to a hierarchy aggregate. */

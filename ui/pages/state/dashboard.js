@@ -221,6 +221,11 @@
         return !SQ.deployment || typeof SQ.deployment.moduleEnabled !== "function" || SQ.deployment.moduleEnabled(key);
     }
 
+    function isEducationProfile() {
+        const profile = SQ.deployment?.current?.domain?.profile_code || SQ.deployment?.current?.modules?.active_profile || "";
+        return String(profile).toLowerCase() === "education";
+    }
+
     function applyMonitoringTitle() {
         const user = SQ.auth && typeof SQ.auth.getUser === "function" ? SQ.auth.getUser() : null;
         const roleId = Number(user && user.role_id);
@@ -244,6 +249,13 @@
     function applyModuleVisibility() {
         const certificationCard = document.getElementById("stateCertificationCard");
         if (certificationCard) certificationCard.hidden = !moduleEnabled("certification");
+
+        // Abhilasha/Pragati/Jagriti are education assessment categories.
+        // They are not applicable to the healthcare dashboard.
+        ["stateSchoolCategoryCards", "stateCategoryBreakdown", "stateCategoryGraphs"].forEach(function (id) {
+            const section = document.getElementById(id);
+            if (section) section.hidden = !isEducationProfile();
+        });
     }
 
     async function load() {
@@ -263,7 +275,9 @@
             setText("stateMonthAssessmentStarted", assessmentSummary.total || 0);
             setText("stateMonthAssessmentProgress", assessmentSummary.active || 0);
             setText("stateMonthAssessmentCompleted", assessmentSummary.completed || 0);
-            renderSchoolCategoryCards(data.school_category_summary || {});
+            if (isEducationProfile()) {
+                renderSchoolCategoryCards(data.school_category_summary || {});
+            }
 
             setHtml("stateFacilityTypes", list(data.facility_category?.facility_types || [], "facility_type", "count"));
             setHtml("stateCertification", list(data.certification_summary?.status || [], "status", "count"));
@@ -290,7 +304,7 @@
             setHtml("stateFacilityTypes", empty(error.message || "State dashboard API failed."));
             setHtml("stateCertification", empty("Unable to load certification summary."));
             setHtml("statePerformance", empty("Unable to load performance summary."));
-            renderSchoolCategoryCards({});
+            if (isEducationProfile()) renderSchoolCategoryCards({});
             if (SQ.notification) SQ.notification.error(error.message || "Unable to load state dashboard.");
         }
     }

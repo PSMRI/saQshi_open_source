@@ -24,6 +24,15 @@
         return domainLabel("departments", "Departments");
     }
 
+    function isEducationProfile() {
+        const profile = SQ.deployment?.current?.domain?.profile_code || SQ.deployment?.current?.modules?.active_profile || "";
+        return String(profile).toLowerCase() === "education";
+    }
+
+    function scoreDimensionLabel() {
+        return isEducationProfile() ? "Domain" : "Area of Concern";
+    }
+
     function esc(value) {
         return String(value ?? "")
             .replace(/&/g, "&amp;")
@@ -76,6 +85,7 @@
     }
 
     function categoryBadge(category) {
+        if (!isEducationProfile()) return "";
         const name = String(category?.name || "-");
         const key = name.toLowerCase();
         const css = key === "jagriti" ? "is-jagriti" : (key === "pragati" ? "is-pragati" : (key === "abhilasha" ? "is-abhilasha" : ""));
@@ -92,14 +102,19 @@
         modal.className = "sq-state-modal";
         modal.setAttribute("role", "dialog");
         modal.setAttribute("aria-modal", "true");
+        const dimension = scoreDimensionLabel();
+        const title = showRound ? `Assessment Round ${dimension}-wise Scores` : `${dimension}-wise Scores`;
+        const overall = isEducationProfile()
+            ? `${showRound ? "Whole School / Facility round average" : "Class domain average"}</span><strong>${esc(number(modelScore.percentage).toFixed(2))}% · ${esc(modelScore.category?.name || "-")}`
+            : `Overall assessment score</span><strong>${esc(number(modelScore.percentage).toFixed(2))}%`;
         modal.innerHTML = `<div class="sq-state-modal-panel sq-state-domain-dialog">
-            <div class="sq-card-header"><div><h3>${showRound ? "Round-wise Domain Scores" : "Class-wise Domain Scores"}</h3><p>${esc(row.fac_name || "School / Facility")} · ${showRound ? `Round ${esc(row.round_no || row.round_id || "-")}` : esc(row.assessment_name || "Assessment")}</p></div><button type="button" class="sq-btn sq-btn-light" data-close-domain-dialog>Close</button></div>
+            <div class="sq-card-header"><div><h3>${esc(title)}</h3><p>${esc(row.fac_name || "School / Facility")} · ${showRound ? `Round ${esc(row.round_no || row.round_id || "-")}` : esc(row.assessment_name || "Assessment")}</p></div><button type="button" class="sq-btn sq-btn-light" data-close-domain-dialog>Close</button></div>
             <div class="sq-card-body">${modelScore.models.map(function (model, index) {
                 const value = Math.max(0, Math.min(100, number(model.percentage)));
                 const checkpoints = model.total_checkpoints !== undefined ? `${number(model.answered_checkpoints)} / ${number(model.total_checkpoints)} checkpoints` : "Round aggregate";
                 const score = model.total_score !== undefined ? `${number(model.obtained_score).toFixed(2)} / ${number(model.total_score).toFixed(2)} score` : "";
-                return `<div class="sq-domain-score ${domainClass(index)}"><div class="sq-domain-score-title"><strong>${esc(model.model_name)}</strong><b>${esc(value.toFixed(2).replace(/\.00$/, ""))}%</b></div><div class="sq-domain-score-bar"><span style="width:${value}%"></span></div><div class="sq-domain-score-meta">${esc(checkpoints)}${score ? ` · ${esc(score)}` : ""}</div><div class="sq-domain-score-category">${esc(model.category?.name || "-")}</div></div>`;
-            }).join("")}<div class="sq-domain-score-total"><span>${showRound ? "Whole School / Facility round average" : "Class domain average"}</span><strong>${esc(number(modelScore.percentage).toFixed(2))}% · ${esc(modelScore.category?.name || "-")}</strong></div></div>
+                return `<div class="sq-domain-score ${domainClass(index)}"><div class="sq-domain-score-title"><strong>${esc(model.model_name)}</strong><b>${esc(value.toFixed(2).replace(/\.00$/, ""))}%</b></div><div class="sq-domain-score-bar"><span style="width:${value}%"></span></div><div class="sq-domain-score-meta">${esc(checkpoints)}${score ? ` · ${esc(score)}` : ""}</div>${isEducationProfile() ? `<div class="sq-domain-score-category">${esc(model.category?.name || "-")}</div>` : ""}</div>`;
+            }).join("")}<div class="sq-domain-score-total"><span>${overall}</strong></div></div>
         </div>`;
         document.body.appendChild(modal);
         modal.addEventListener("click", function (event) {
@@ -155,7 +170,10 @@
                     const entries = school.rounds[round];
                     const completed = entries.filter(function (row) { return String(row.status || "").toUpperCase() === "COMPLETED"; });
                     const roundScore = completed[0]?.round_score;
-                    return `<details class="sq-state-round-drill"><summary>Assessment Round ${esc(round)} · ${esc(completed.length)} assessed ${esc(assessmentUnitLabel())} ${roundScore ? categoryBadge(roundScore.category) : ""}</summary><div class="sq-state-round-items">${completed.length ? `<button type="button" class="sq-btn sq-btn-light" data-round-domain-dialog="${esc(completed[0].assessment_id)}">View Assessment Round ${esc(round)} Domains</button>` : ""}${entries.map(function (row) { const done = String(row.status || "").toUpperCase() === "COMPLETED"; return `<div><strong>${esc(row.assessment_name || "Assessment")}</strong><span>${esc(row.status || "-")} · ${esc(number(row.score_percent).toFixed(2))}% ${done ? categoryBadge(row.model_score?.category) : ""}</span>${done ? `<button type="button" class="sq-btn sq-btn-light" data-model-dialog="${esc(row.assessment_id)}">View class domains</button>` : ""}</div>`; }).join("")}</div></details>`;
+                    const label = scoreDimensionLabel();
+                    const roundButton = isEducationProfile() ? `View Assessment Round ${esc(round)} Domains` : `View Assessment Round ${esc(round)} ${esc(label)} Scores`;
+                    const itemButton = isEducationProfile() ? "View class domains" : `View ${esc(label)} scores`;
+                    return `<details class="sq-state-round-drill"><summary>Assessment Round ${esc(round)} · ${esc(completed.length)} assessed ${esc(assessmentUnitLabel())} ${roundScore ? categoryBadge(roundScore.category) : ""}</summary><div class="sq-state-round-items">${completed.length ? `<button type="button" class="sq-btn sq-btn-light" data-round-domain-dialog="${esc(completed[0].assessment_id)}">${roundButton}</button>` : ""}${entries.map(function (row) { const done = String(row.status || "").toUpperCase() === "COMPLETED"; return `<div><strong>${esc(row.assessment_name || "Assessment")}</strong><span>${esc(row.status || "-")} · ${esc(number(row.score_percent).toFixed(2))}% ${done ? categoryBadge(row.model_score?.category) : ""}</span>${done ? `<button type="button" class="sq-btn sq-btn-light" data-model-dialog="${esc(row.assessment_id)}">${itemButton}</button>` : ""}</div>`; }).join("")}</div></details>`;
                 }).join("")}</details>`;
             }).join("")}</div>`
             : `<div class="sq-state-empty">No School assessment records available.</div>`;

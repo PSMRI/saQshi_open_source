@@ -49,6 +49,15 @@
         return !SQ.deployment || typeof SQ.deployment.moduleEnabled !== "function" || SQ.deployment.moduleEnabled(key);
     }
 
+    function isEducationProfile() {
+        const profile = SQ.deployment?.current?.domain?.profile_code || SQ.deployment?.current?.modules?.active_profile || "";
+        return String(profile).toLowerCase() === "education";
+    }
+
+    function scoreDimensionLabel() {
+        return isEducationProfile() ? "domain-wise" : "Area of Concern-wise";
+    }
+
     function nodeId(prefix, path) {
         return `${prefix}-${path.join("-").replace(/[^a-zA-Z0-9_-]/g, "_")}`;
     }
@@ -68,7 +77,7 @@
 
     function domainLink(id, node, force) {
         return (force || (Array.isArray(node?.domains) && node.domains.length))
-            ? `<button class="sq-state-domain-link" type="button" data-hierarchy-domain="${esc(id)}">View domain-wise scores</button>`
+            ? `<button class="sq-state-domain-link" type="button" data-hierarchy-domain="${esc(id)}">View ${esc(scoreDimensionLabel())} scores</button>`
             : "";
     }
 
@@ -156,7 +165,9 @@
         modal.className = "sq-state-modal";
         modal.setAttribute("role", "dialog");
         modal.setAttribute("aria-modal", "true");
-        modal.innerHTML = `<div class="sq-state-modal-panel sq-state-domain-dialog"><div class="sq-card-header"><div><h3>${esc(node.name || "School")} Domain-wise Scores</h3><p>Latest completed assessment round aggregate</p></div><button type="button" class="sq-btn sq-btn-light" data-close-hierarchy-dialog>Close</button></div><div class="sq-card-body">${node.domains.map((domain, index) => { const percent = Math.max(0, Math.min(100, Number(domain.percentage || 0))); return `<div class="sq-domain-score ${["is-domain-blue","is-domain-teal","is-domain-purple","is-domain-orange","is-domain-red"][index % 5]}"><div class="sq-domain-score-title"><strong>${esc(domain.model_name)}</strong><b>${esc(percent.toFixed(2).replace(/\.00$/, ""))}%</b></div><div class="sq-domain-score-bar"><span style="width:${percent}%"></span></div><div class="sq-domain-score-meta">${esc(Number(domain.obtained_score || 0).toFixed(2))} / ${esc(Number(domain.total_score || 0).toFixed(2))} score</div><div class="sq-domain-score-category">${esc(domain.category?.name || "-")}</div></div>`; }).join("")}<div class="sq-domain-score-total"><span>Overall category</span><strong>${esc(value.toFixed(2))}% · ${esc(node.category?.name || "-")}</strong></div></div></div>`;
+        const dimension = scoreDimensionLabel();
+        const overall = isEducationProfile() ? `Overall category</span><strong>${esc(value.toFixed(2))}% · ${esc(node.category?.name || "-")}` : `Overall score</span><strong>${esc(value.toFixed(2))}%`;
+        modal.innerHTML = `<div class="sq-state-modal-panel sq-state-domain-dialog"><div class="sq-card-header"><div><h3>${esc(node.name || domainLabel("facility", "Facility"))} ${esc(dimension)} Scores</h3><p>Latest completed assessment</p></div><button type="button" class="sq-btn sq-btn-light" data-close-hierarchy-dialog>Close</button></div><div class="sq-card-body">${node.domains.map((domain, index) => { const percent = Math.max(0, Math.min(100, Number(domain.percentage || 0))); return `<div class="sq-domain-score ${["is-domain-blue","is-domain-teal","is-domain-purple","is-domain-orange","is-domain-red"][index % 5]}"><div class="sq-domain-score-title"><strong>${esc(domain.model_name)}</strong><b>${esc(percent.toFixed(2).replace(/\.00$/, ""))}%</b></div><div class="sq-domain-score-bar"><span style="width:${percent}%"></span></div><div class="sq-domain-score-meta">${esc(Number(domain.obtained_score || 0).toFixed(2))} / ${esc(Number(domain.total_score || 0).toFixed(2))} score</div>${isEducationProfile() ? `<div class="sq-domain-score-category">${esc(domain.category?.name || "-")}</div>` : ""}</div>`; }).join("")}<div class="sq-domain-score-total"><span>${overall}</strong></div></div></div>`;
         document.body.appendChild(modal);
         modal.addEventListener("click", event => { if (event.target === modal || event.target.closest("[data-close-hierarchy-dialog]")) modal.remove(); });
     }
@@ -283,7 +294,7 @@
                 event.stopPropagation();
                 const entry = state.nodeMap.get(domainButton.getAttribute("data-hierarchy-domain"));
                 if (entry?.type === "facility") {
-                    loadFacilityDomains(entry.node).catch(error => html("stateFacilityInfo", empty(error.message || "Unable to load school domain scores.")));
+                    loadFacilityDomains(entry.node).catch(error => html("stateFacilityInfo", empty(error.message || `Unable to load ${scoreDimensionLabel()} scores.`)));
                 } else {
                     openDomainDialog(entry?.node);
                 }
@@ -328,7 +339,7 @@
                 loadHierarchy();
             }
         });
-        html("stateFacilityInfo", empty("Select a school from the hierarchy."));
+        html("stateFacilityInfo", empty(`Select a ${domainLabel("facility", "facility").toLowerCase()} from the hierarchy.`));
         html("stateFacilitySummary", "");
         html("stateFacilityAssessments", "");
         await loadHierarchy();

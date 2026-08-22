@@ -77,6 +77,10 @@
     }
 
     function isSchool() { return String(SQ.deployment?.label?.("facility", "Facility") || "Facility").toLowerCase() === "school"; }
+    function isEducationProfile() {
+        const profile = SQ.deployment?.current?.domain?.profile_code || SQ.deployment?.current?.modules?.active_profile || "";
+        return String(profile).toLowerCase() === "education";
+    }
     function facilityLabel() { return SQ.deployment?.label?.("facility", "Facility") || "Facility"; }
     function facilityCodeLabel() { return SQ.deployment?.label?.("facility_code", "NIN") || "NIN"; }
 
@@ -92,9 +96,10 @@
                 <span>${esc(point.facility_type || "-")} | ${esc(facilityCodeLabel())} ${esc(point.fac_nin || "-")}</span>
                 <span>${esc(point.district || "-")} ${point.block ? " / " + esc(point.block) : ""}</span>
                 <span>Status: <b>${esc(point.status || "-")}</b></span>
-                ${isSchool() ? `<span>Assessment: <b>${esc(point.assessment_name || "Not started")}</b></span><span>Assessment status: <b>${esc(point.assessment_status || "NOT STARTED")}</b></span><button class="sq-btn sq-btn-primary sq-state-map-detail-btn" type="button" data-map-facility="${esc(point.fac_id)}">Open ${esc(facilityLabel())} Details</button>` : ""}
+                ${isSchool() ? `<span>Assessment: <b>${esc(point.assessment_name || "Not started")}</b></span><span>Assessment status: <b>${esc(point.assessment_status || "NOT STARTED")}</b></span>` : ""}
                 <span>Score: <b>${point.score !== null && point.score !== undefined ? esc(point.score) : "-"}</b></span>
                 <span>Valid To: <b>${esc(point.valid_to || "-")}</b></span>
+                <button class="sq-btn sq-btn-primary sq-state-map-detail-btn" type="button" data-map-facility="${esc(point.fac_id)}">Open ${esc(facilityLabel())} Details</button>
             </div>
         `;
     }
@@ -253,7 +258,7 @@
                 <thead><tr><th>${esc(facilityLabel())}</th><th>Status</th><th>District</th><th>Coordinates</th></tr></thead>
                 <tbody>${pagePoints.map(point => `
                     <tr>
-                        <td><strong>${esc(point.fac_name)}</strong><br><small>${esc(facilityCodeLabel())} ${esc(point.fac_nin || "-")}</small></td>
+                        <td><strong>${esc(point.fac_name)}</strong><br><small>${esc(facilityCodeLabel())} ${esc(point.fac_nin || "-")}</small><br><button class="sq-btn sq-btn-light sq-state-map-list-detail" type="button" data-map-facility="${esc(point.fac_id)}">View details</button></td>
                         <td><span class="sq-state-badge">${esc(point.status)}</span></td>
                         <td>${esc(point.district || "-")}<br><small>${esc(point.block || "")}</small></td>
                         <td>${esc(point.lat)}, ${esc(point.longit)}</td>
@@ -339,7 +344,7 @@
 
     async function load() {
         try {
-            activeMapMode = document.getElementById("stateMapMode")?.value || "facility";
+            activeMapMode = isEducationProfile() ? (document.getElementById("stateMapMode")?.value || "facility") : "facility";
             activeDomain = document.getElementById("stateMapDomain")?.value || "";
             const response = await SQ.api.get("/state/v1/map.php", {
                 _: Date.now(),
@@ -376,6 +381,12 @@
             SQ.deployment.applyLabels(document);
         }
         resetMap();
+        const mapMode = document.getElementById("stateMapMode");
+        const domainSelect = document.getElementById("stateMapDomain");
+        if (!isEducationProfile()) {
+            if (mapMode) mapMode.hidden = true;
+            if (domainSelect) domainSelect.hidden = true;
+        }
         const fullMap = new URLSearchParams(window.location.search).get("full") === "1";
         document.querySelector(".sq-state-map-page")?.classList.toggle("is-full-map", fullMap);
         document.getElementById("stateMapCanvas")?.addEventListener("click", function (event) {
@@ -384,9 +395,13 @@
         });
         document.getElementById("stateMapList")?.addEventListener("click", function (event) {
             const button = event.target.closest("[data-map-page]");
-            if (!button || button.disabled) return;
-            mapListPage = Number(button.getAttribute("data-map-page"));
-            renderList(mapListPoints);
+            if (button && !button.disabled) {
+                mapListPage = Number(button.getAttribute("data-map-page"));
+                renderList(mapListPoints);
+                return;
+            }
+            const facilityButton = event.target.closest("[data-map-facility]");
+            if (facilityButton && SQ.router?.navigate) SQ.router.navigate("state/facility-detail", { fac_id: Number(facilityButton.getAttribute("data-map-facility")) });
         });
         document.getElementById("stateMapRefresh")?.addEventListener("click", function () { mapListPage = 1; load(); });
         document.getElementById("stateMapMode")?.addEventListener("change", function () {

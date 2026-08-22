@@ -40,3 +40,17 @@
 #stateMapViewCard .sq-state-map{min-height:520px}
 @media(max-width:720px){#stateMapViewCard .sq-state-map{min-height:360px}}
 .sq-state-map-legend{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:10px;padding:10px 12px;border:1px solid var(--sq-border,#d8e1ef);border-radius:8px;background:var(--sq-soft-bg,#f5f7fb);font-size:12px}.sq-state-map-legend[hidden]{display:none}.sq-state-map-legend span{display:inline-flex;align-items:center;gap:6px}.sq-state-map-legend i{display:inline-block;width:14px;height:14px;border-radius:3px;border:1px solid rgba(15,23,42,.18)}
+
+/* Healthcare dashboard colour accents. */
+.sq-state-page:not(.sq-state-map-page)>.sq-state-kpis>div{position:relative;overflow:hidden;border:0;border-top:0;color:#fff;box-shadow:0 5px 14px rgba(15,23,42,.12)}
+.sq-state-page:not(.sq-state-map-page)>.sq-state-kpis>div::after{content:"";position:absolute;right:-21px;top:-32px;width:92px;height:92px;border-radius:50%;background:rgba(255,255,255,.15)}
+.sq-state-page:not(.sq-state-map-page)>.sq-state-kpis>div span{position:relative;z-index:1;color:rgba(255,255,255,.84);font-weight:700}
+.sq-state-page:not(.sq-state-map-page)>.sq-state-kpis>div strong{position:relative;z-index:1;color:#fff}
+.sq-state-page:not(.sq-state-map-page)>.sq-state-kpis>div:nth-child(1){background:linear-gradient(135deg,#155e75,#0891b2)}
+.sq-state-page:not(.sq-state-map-page)>.sq-state-kpis>div:nth-child(2){background:linear-gradient(135deg,#1d4ed8,#2563eb)}
+.sq-state-page:not(.sq-state-map-page)>.sq-state-kpis>div:nth-child(3){background:linear-gradient(135deg,#b45309,#f59e0b)}
+.sq-state-page:not(.sq-state-map-page)>.sq-state-kpis>div:nth-child(4){background:linear-gradient(135deg,#15803d,#22c55e)}
+.sq-state-page:not(.sq-state-map-page)>.sq-state-grid>.sq-card{overflow:hidden;border-color:#dbe7f4;box-shadow:0 4px 12px rgba(15,23,42,.06)}
+.sq-state-page:not(.sq-state-map-page)>.sq-state-grid>.sq-card:nth-child(1) .sq-card-header{background:#e0f2fe;border-left:4px solid #0284c7}
+.sq-state-page:not(.sq-state-map-page)>.sq-state-grid>.sq-card:nth-child(2) .sq-card-header{background:#fef3c7;border-left:4px solid #d97706}
+.sq-state-page:not(.sq-state-map-page)>.sq-state-grid>.sq-card:nth-child(3) .sq-card-header{background:#dcfce7;border-left:4px solid #16a34a}

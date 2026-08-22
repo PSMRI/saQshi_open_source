@@ -37,6 +37,7 @@
         departmentStarted: false,
         readOnly: false,
         concernReadOnly: false,
+        assessmentLocked: false,
         selected: {
             deptId: 0,
             concernId: 0,
@@ -243,9 +244,9 @@
                         <p>${escapeHtml(concern)} has ${total} completed checkpoint${total === 1 ? "" : "s"}.</p>
                     </div>
                     <div class="sq-completed-actions">
-                        <button type="button" class="sq-btn sq-btn-primary" data-sq-edit-completed>
+                        ${state.assessmentLocked ? "" : `<button type="button" class="sq-btn sq-btn-primary" data-sq-edit-completed>
                             Edit / Update Responses
-                        </button>
+                        </button>`}
                         <button type="button" class="sq-btn sq-btn-light" data-sq-view-completed>
                             View Responses
                         </button>
@@ -341,7 +342,12 @@
         }
 
         state.assessment = assessment;
+        state.assessmentLocked = String(assessment.status || "").toUpperCase() === "COMPLETED";
         renderAssessment();
+        if (state.assessmentLocked) {
+            setStateMessage("This assessment is completed and its responses are locked.");
+            return false;
+        }
         if (assessment.is_assessor_led && !assessment.is_assessor_session) {
             setStateMessage("This assessor-led assessment is read-only for facility users. Use Assessment Progress or Reports to view it.");
             return false;
@@ -911,6 +917,10 @@
     }
 
     async function saveCurrentResponse() {
+        if (state.assessmentLocked) {
+            notify("error", "This assessment is completed and responses cannot be changed.");
+            return false;
+        }
         if (!state.current || !state.selected.checkpointId) {
             notify("warning", "No checkpoint loaded.");
             return false;
@@ -1192,6 +1202,10 @@
     }
 
     async function saveActiveConcern(submit) {
+        if (state.assessmentLocked) {
+            notify("error", "This assessment is completed and responses cannot be changed.");
+            return;
+        }
         const item = state.concernChecklist.find(function (row) { return Number(row.concern.concern_id) === Number(state.activeConcernId); });
         if (!item) return;
         const entries = item.groups.flatMap(function (group) { return group.checkpoints; }).map(function (checkpoint) {
