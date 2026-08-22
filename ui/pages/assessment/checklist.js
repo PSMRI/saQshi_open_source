@@ -31,6 +31,7 @@
         concerns: [],
         checklistView: "detailed",
         concernChecklist: [],
+        loadingConcernIds: new Set(),
         activeConcernId: 0,
         current: null,
         scopeCheckpoints: [],
@@ -422,6 +423,7 @@
         state.selected.checkpointId = 0;
         state.scopeCheckpoints = [];
         state.currentIndex = 0;
+        state.loadingConcernIds.clear();
         state.departmentStarted = false;
         state.readOnly = false;
         state.concernReadOnly = false;
@@ -1068,39 +1070,61 @@
         if (target) target.innerHTML = '<div class="sq-empty-state">Loading areas of concern...</div>';
 
         try {
-            await startDepartment();
             const concerns = state.concerns.length ? state.concerns : (await apiGet(API.concerns, {
                 framework: state.assessment.framework_code || "saqshi-nqas",
                 dept_id: state.selected.deptId
             }))?.data?.concerns || [];
             state.concerns = concerns;
-
-            state.concernChecklist = await Promise.all(concerns.map(async function (concern) {
-                const subtypeResponse = await apiGet(API.subtypes, {
-                    framework: state.assessment.framework_code || "saqshi-nqas",
-                    dept_id: state.selected.deptId,
-                    concern_id: concern.concern_id
-                });
-                const subtypes = subtypeResponse?.data?.subtypes || [];
-                const groups = await Promise.all(subtypes.map(async function (subtype) {
-                    const response = await apiGet(API.checkpoints, {
-                        assessment_id: state.assessment.assessment_id,
-                        framework: state.assessment.framework_code || "saqshi-nqas",
-                        dept_id: state.selected.deptId,
-                        concern_id: concern.concern_id,
-                        subtype_id: subtype.c_subtype_id
-                    });
-                    return { subtype: subtype, checkpoints: response?.data?.checkpoints || [] };
-                }));
-                return { concern: concern, groups: groups };
-            }));
-
-            state.activeConcernId = 0;
+            state.concernChecklist = concerns.map(function (concern) { return { concern: concern, groups: [] }; });
+            state.activeConcernId = Number(concerns[0]?.concern_id || 0);
             renderConcernTabs();
+            if (state.activeConcernId) await loadConcernGroups(state.activeConcernId);
         } catch (error) {
             console.error(error);
             renderConcernMessage(error.message || "Unable to load Areas of Concern.");
             notify("error", error.message || "Unable to load Areas of Concern.");
+        }
+    }
+
+    async function loadConcernGroups(concernId) {
+        const item = state.concernChecklist.find(function (row) {
+            return Number(row.concern?.concern_id) === Number(concernId);
+        });
+        if (!item || item.groups.length || state.loadingConcernIds.has(Number(concernId))) return;
+
+        state.loadingConcernIds.add(Number(concernId));
+        if (Number(state.activeConcernId) === Number(concernId)) {
+            const target = $("concernChecklistContent");
+            if (target) target.innerHTML = '<div class="sq-empty-state">Loading checklist...</div>';
+        }
+
+        try {
+            await startDepartment();
+            const subtypeResponse = await apiGet(API.subtypes, {
+                framework: state.assessment.framework_code || "saqshi-nqas",
+                dept_id: state.selected.deptId,
+                concern_id: concernId
+            });
+            const subtypes = subtypeResponse?.data?.subtypes || [];
+            item.groups = await Promise.all(subtypes.map(async function (subtype) {
+                const response = await apiGet(API.checkpoints, {
+                    assessment_id: state.assessment.assessment_id,
+                    framework: state.assessment.framework_code || "saqshi-nqas",
+                    dept_id: state.selected.deptId,
+                    concern_id: concernId,
+                    subtype_id: subtype.c_subtype_id
+                });
+                return { subtype: subtype, checkpoints: response?.data?.checkpoints || [] };
+            }));
+            renderConcernTabs();
+        } catch (error) {
+            console.error(error);
+            if (Number(state.activeConcernId) === Number(concernId)) {
+                renderConcernMessage(error.message || "Unable to load this Area of Concern.");
+            }
+            notify("error", error.message || "Unable to load Area of Concern.");
+        } finally {
+            state.loadingConcernIds.delete(Number(concernId));
         }
     }
 
@@ -1337,7 +1361,7 @@
         $("btnSaveCheckpoint")?.addEventListener("click", handleSave);
         $("btnNextCheckpoint")?.addEventListener("click", handleNext);
         $("btnPreviousCheckpoint")?.addEventListener("click", handlePrevious);
-        $("concernTabs")?.addEventListener("click", function (event) {
+        $("concernTabs")?.addEventListener("click", async function (event) {
             const tab = event.target.closest("[data-concern-tab]");
             if (!tab) return;
             state.activeConcernId = Number(tab.dataset.concernTab || 0);
@@ -1347,6 +1371,7 @@
                 ? !window.confirm("This Domain is complete. Select OK to Edit / Update responses, or Cancel to View responses only.")
                 : false;
             renderConcernTabs();
+            await loadConcernGroups(state.activeConcernId);
         });
         $("btnSaveConcernDraft")?.addEventListener("click", function () { saveActiveConcern(false); });
         $("btnSubmitConcern")?.addEventListener("click", function () { saveActiveConcern(true); });

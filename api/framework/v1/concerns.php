@@ -15,6 +15,7 @@
  */
 
 require_once __DIR__ . '/../../auth_api.php';
+require_once __DIR__ . '/../../assets/conn/db.php';
 require_once __DIR__ . '/../../core/FrameworkEngine.php';
 
 require_once __DIR__ . '/../../core/Response.php';
@@ -43,24 +44,45 @@ try {
         ]);
     }
 
-    $facilityJsonPath = __DIR__ . '/../../config/masters/facilities.json';
-
-    if (!file_exists($facilityJsonPath)) {
-        Response::serverError('facilities.json not found');
-    }
-
-    $states = json_decode(
-        file_get_contents($facilityJsonPath),
-        true
-    );
-
-    if (!is_array($states)) {
-        Response::serverError('Invalid facilities.json format');
-    }
-
+    // The database lookup avoids parsing the 1.2 MB facility master JSON for
+    // every Area of Concern selection. Keep JSON as a compatibility fallback.
     $facilityData = null;
+    $facilityStmt = $con->prepare('SELECT fac_id, fac_name, Health_facilty_type, block_id, Block_Name, dist_id, Dist_Name, division_id, division, state_id, state_name, NIN_no FROM facilities WHERE fac_id = ? LIMIT 1');
+    if ($facilityStmt) {
+        $facilityStmt->bind_param('i', $facId);
+        $facilityStmt->execute();
+        $facilityRow = $facilityStmt->get_result()->fetch_assoc();
+        if ($facilityRow) {
+            $facilityData = [
+                'fac_id' => (int)$facilityRow['fac_id'],
+                'fac_name' => $facilityRow['fac_name'] ?? '',
+                'fac_type_id' => (int)($facilityRow['Health_facilty_type'] ?? 0),
+                'facilities_type' => (string)($facilityRow['Health_facilty_type'] ?? ''),
+                'block_id' => (int)($facilityRow['block_id'] ?? 0),
+                'block_name' => $facilityRow['Block_Name'] ?? '',
+                'dist_id' => (int)($facilityRow['dist_id'] ?? 0),
+                'dist_name' => $facilityRow['Dist_Name'] ?? '',
+                'division_id' => (int)($facilityRow['division_id'] ?? 0),
+                'division_name' => $facilityRow['division'] ?? '',
+                'state_id' => (int)($facilityRow['state_id'] ?? 0),
+                'state_name' => $facilityRow['state_name'] ?? ''
+            ];
+        }
+    }
 
-    foreach ($states as $state) {
+    if (!$facilityData) {
+        $facilityJsonPath = __DIR__ . '/../../config/masters/facilities.json';
+
+        if (!file_exists($facilityJsonPath)) {
+            Response::serverError('facilities.json not found');
+        }
+
+        $states = json_decode(file_get_contents($facilityJsonPath), true);
+        if (!is_array($states)) {
+            Response::serverError('Invalid facilities.json format');
+        }
+
+        foreach ($states as $state) {
 
         $stateId = $state['state_id'] ?? $state['stateid'] ?? null;
         $stateName = $state['state_name'] ?? $state['statename'] ?? '';
@@ -92,6 +114,7 @@ try {
                     }
                 }
             }
+        }
         }
     }
 
