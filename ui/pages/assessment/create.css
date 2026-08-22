@@ -281,12 +281,25 @@ textarea.sq-form-control {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
     gap: .55rem;
     padding: .55rem;
     border: 1px solid #fecaca;
     border-radius: var(--sq-radius-lg);
     background: #fef2f2;
     min-width: 0;
+}
+
+.sq-danger-zone > div {
+    flex: 1 1 260px;
+    min-width: 0;
+}
+
+.sq-danger-zone .sq-btn-danger {
+    flex: 0 1 auto;
+    max-width: 100%;
+    white-space: normal;
+    text-align: center;
 }
 
 .sq-danger-title {

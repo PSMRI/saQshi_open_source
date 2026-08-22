@@ -15,10 +15,10 @@
 
     "assets": {
         "css": [
-            "/ui/pages/assessment/create.css?v=20260702-16"
+            "/ui/pages/assessment/create.css?v=20260822-cancel-button-wrap-1"
         ],
         "js": [
-            "/ui/pages/assessment/create.js?v=20260803-1"
+            "/ui/pages/assessment/create.js?v=20260822-auto-name-date-1"
         ]
     },
 

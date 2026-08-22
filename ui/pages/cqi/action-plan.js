@@ -409,7 +409,8 @@
                 <article class="sq-ap-item" data-sq-plan-card>
                     <div class="sq-ap-item-head">
                         <div class="sq-ap-title">
-                            <strong>${escapeHtml(checkpoint.Checkpoint || checkpoint.Measurable_Element || ("Checkpoint " + plan.checkpoint_id))}</strong>
+                            <div class="sq-ap-measurable"><strong>Measurable Element:</strong> ${escapeHtml(checkpoint.Measurable_Element || "-")}</div>
+                            <div class="sq-ap-checkpoint"><strong>Checkpoint:</strong> ${escapeHtml(checkpoint.Checkpoint || ("Checkpoint " + plan.checkpoint_id))}</div>
                             <span class="sq-ap-subtext">
                                 ${escapeHtml(department.dept_name || ("Dept " + plan.dept_id))}
                                 ${concern.concern_name || concern.concern_des ? " | " + escapeHtml(concern.concern_name || concern.concern_des) : ""}

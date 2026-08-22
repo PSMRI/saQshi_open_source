@@ -101,6 +101,15 @@ The values have defaults, but name and framework must be non-empty. Dates must b
 
 `assessment_id`, `dept_id`, `checkpoint_id`, and a valid response are required. The browser should not decide the score. `save-response.php` loads the checkpoint response definition from framework JSON and calculates `score`, `max_score` and `score_status` on the server.
 
+## Bulk save checklist responses
+
+**Source:** `api/assessment/v1/save-responses-bulk.php`
+
+**Method:** `POST`
+**Why:** Saves all changed responses for one department in a single transaction, which keeps large Area of Concern checklists responsive.
+
+The request contains `assessment_id`, `dept_id`, and a `responses` array. Each array item uses the same response fields as the single checkpoint endpoint. The server validates every checkpoint and calculates every score from the framework JSON; if any item is invalid, none of the items are saved. Department and assessment completion are evaluated only after the whole batch is stored.
+
 Supported response styles:
 
 | Type | Payload |

@@ -20,7 +20,7 @@
         ],
         "js": [
             "/ui/assets/js/core/offline-response-queue.js?v=20260803-1",
-            "/ui/pages/assessment/checklist.js?v=20260822-completed-lock-1"
+            "/ui/pages/assessment/checklist.js?v=20260822-bulk-response-save-1"
         ]
     },
 

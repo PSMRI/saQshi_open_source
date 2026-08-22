@@ -26,8 +26,7 @@
     const state = {
         user: null,
         facility: null,
-        activeAssessment: null,
-        assessmentNameEdited: false
+        activeAssessment: null
     };
 
     function $(id) {
@@ -41,6 +40,12 @@
             .replace(/>/g, "&gt;")
             .replace(/"/g, "&quot;")
             .replace(/'/g, "&#039;");
+    }
+
+    function domainLabel(key, fallback) {
+        return SQ.deployment && typeof SQ.deployment.label === "function"
+            ? SQ.deployment.label(key, fallback)
+            : fallback;
     }
 
     async function apiGet(url) {
@@ -145,17 +150,19 @@
         return "NQAS";
     }
 
-    function monthYear(value) {
+    function assessmentDateLabel(value) {
         const date = value ? new Date(value) : new Date();
 
         if (Number.isNaN(date.getTime())) {
             return new Date().toLocaleDateString("en-IN", {
+                day: "2-digit",
                 month: "long",
                 year: "numeric"
             });
         }
 
         return date.toLocaleDateString("en-IN", {
+            day: "2-digit",
             month: "long",
             year: "numeric"
         });
@@ -171,19 +178,15 @@
             "Facility";
 
         const framework = frameworkLabel($("framework_code")?.value);
-        const period = monthYear($("start_date")?.value);
+        const period = assessmentDateLabel($("start_date")?.value);
 
         return `${facilityName} - ${framework} - ${period}`;
     }
 
-    function autoFillAssessmentName(force) {
+    function autoFillAssessmentName() {
         const input = $("assessment_name");
 
         if (!input) {
-            return;
-        }
-
-        if (!force && state.assessmentNameEdited) {
             return;
         }
 
@@ -538,14 +541,6 @@
             });
         }
 
-        const assessmentName = $("assessment_name");
-
-        if (assessmentName) {
-            assessmentName.addEventListener("input", function () {
-                state.assessmentNameEdited = String(assessmentName.value || "").trim() !== "";
-            });
-        }
-
         const framework = $("framework_code");
 
         if (framework) {
@@ -569,7 +564,7 @@
             SQ.deployment.applyLabels(document);
         }
         setDefaultDates();
-        autoFillAssessmentName(true);
+        autoFillAssessmentName();
         bindEvents();
 
         try {

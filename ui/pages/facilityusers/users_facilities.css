@@ -110,6 +110,34 @@
     margin-bottom:.55rem;
 }
 
+#btnUseBrowserLocation{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:.38rem;
+    border-color:#93c5fd;
+    background:#eff6ff;
+    color:#1d4ed8;
+    font-weight:700;
+}
+
+#btnUseBrowserLocation .bi{
+    font-size:.95rem;
+    color:#0f766e;
+}
+
+#btnUseBrowserLocation:not(:disabled):hover{
+    border-color:#2563eb;
+    background:#dbeafe;
+    color:#1e40af;
+}
+
+#btnUseBrowserLocation:disabled{
+    border-color:var(--sq-border);
+    background:var(--sq-bg-muted);
+    color:var(--sq-text-muted);
+}
+
 .sq-facility-location-head h4{
     margin:0;
     color:var(--sq-text-primary);

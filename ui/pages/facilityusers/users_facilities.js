@@ -196,7 +196,7 @@
 
         if (button) {
             button.disabled = true;
-            button.textContent = "Getting Location...";
+            button.innerHTML = '<i class="bi bi-geo-alt-fill" aria-hidden="true"></i><span>Getting Location...</span>';
         }
 
         navigator.geolocation.getCurrentPosition(
@@ -207,7 +207,7 @@
 
                 if (button) {
                     button.disabled = !state.editing;
-                    button.textContent = "Get Current Location";
+                    button.innerHTML = '<i class="bi bi-geo-alt-fill" aria-hidden="true"></i><span>Get Current Location</span>';
                 }
             },
             function () {
@@ -215,7 +215,7 @@
 
                 if (button) {
                     button.disabled = !state.editing;
-                    button.textContent = "Get Current Location";
+                    button.innerHTML = '<i class="bi bi-geo-alt-fill" aria-hidden="true"></i><span>Get Current Location</span>';
                 }
             },
             {

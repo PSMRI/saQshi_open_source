@@ -15,10 +15,10 @@
 
     "assets": {
         "css": [
-            "/ui/pages/cqi/action-plan.css?v=20260704-1"
+            "/ui/pages/cqi/action-plan.css?v=20260822-checkpoint-labels-1"
         ],
         "js": [
-            "/ui/pages/cqi/action-plan.js?v=20260704-1"
+            "/ui/pages/cqi/action-plan.js?v=20260822-checkpoint-labels-1"
         ]
     },
 

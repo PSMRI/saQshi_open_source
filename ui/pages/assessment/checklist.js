@@ -21,7 +21,8 @@
         methods: "/framework/v1/assessment_methods.php",
         checkpoints: "/framework/v1/checkpoints.php",
         startDepartment: "/assessment/v1/start_department.php",
-        saveResponse: "/assessment/v1/save-response.php"
+        saveResponse: "/assessment/v1/save-response.php",
+        saveResponsesBulk: "/assessment/v1/save-responses-bulk.php"
     };
 
     const state = {
@@ -54,7 +55,8 @@
     }
 
     function escapeHtml(value) {
-        return String(value || "")
+        // Keep a valid numeric zero visible (for example, "0 Non Compliant").
+        return String(value ?? "")
             .replace(/&/g, "&amp;")
             .replace(/</g, "&lt;")
             .replace(/>/g, "&gt;")
@@ -895,7 +897,10 @@
         ].filter(Boolean).join(" | ");
 
         $("checkpointReference").textContent = checkpoint.csqa_reference_id || checkpoint.csqa_id || "-";
-        $("checkpointText").textContent = checkpoint.Checkpoint || checkpoint.Measurable_Element || "-";
+        const measurableElement = String(checkpoint.Measurable_Element || "").trim();
+        $("checkpointMeasurableElementValue").textContent = measurableElement;
+        $("checkpointMeasurableElement").hidden = !measurableElement;
+        $("checkpointText").textContent = checkpoint.Checkpoint || measurableElement || "-";
         $("checkpointVerification").textContent = checkpoint.Means_of_Verification || "";
 
         $("checkpointPanel")?.classList.toggle("is-answered", hasSavedResponse(checkpoint));
@@ -1174,7 +1179,9 @@
             return `<section class="sq-aoc-subtype"><h4>${escapeHtml([subtype.Reference_No, subtype.area_of_con_subtypedeatils].filter(Boolean).join(" - ") || "Checklist")}</h4>${group.checkpoints.map(function (checkpoint, index) {
                 const id = checkpointId(checkpoint);
                 const answerState = hasSavedResponse(checkpoint) ? " is-answered" : " is-unanswered";
-                return `<article class="sq-aoc-checkpoint${answerState}${state.concernReadOnly ? " is-view-only" : ""}" data-aoc-checkpoint="${id}"><div class="sq-checkpoint-reference">${escapeHtml(checkpoint.csqa_reference_id || id || "-")}</div><div class="sq-checkpoint-text">${escapeHtml(checkpoint.Checkpoint || checkpoint.Measurable_Element || "-")}</div>${checkpoint.Means_of_Verification ? `<div class="sq-checkpoint-verification">${escapeHtml(checkpoint.Means_of_Verification)}</div>` : ""}<div class="sq-aoc-control">${renderConcernResponse(checkpoint)}</div></article>`;
+                const measurableElement = String(checkpoint.Measurable_Element || "").trim();
+                const measurableMarkup = measurableElement ? `<div class="sq-measurable-element"><strong>Measurable Element:</strong> ${escapeHtml(measurableElement)}</div>` : "";
+                return `<article class="sq-aoc-checkpoint${answerState}${state.concernReadOnly ? " is-view-only" : ""}" data-aoc-checkpoint="${id}"><div class="sq-checkpoint-reference">${escapeHtml(checkpoint.csqa_reference_id || id || "-")}</div>${measurableMarkup}<div class="sq-checkpoint-text"><strong>Checkpoint:</strong> ${escapeHtml(checkpoint.Checkpoint || measurableElement || "-")}</div>${checkpoint.Means_of_Verification ? `<div class="sq-checkpoint-verification">${escapeHtml(checkpoint.Means_of_Verification)}</div>` : ""}<div class="sq-aoc-control">${renderConcernResponse(checkpoint)}</div></article>`;
             }).join("")}</section>`;
         }).join("")}`;
         document.querySelectorAll("#concernChecklistContent input, #concernChecklistContent select, #concernChecklistContent textarea").forEach(function (input) {
@@ -1219,25 +1226,37 @@
         }
         try {
             await startDepartment();
+            const changedEntries = [];
+            entries.forEach(function (entry) {
+                const payload = concernPayload(entry.card, entry.checkpoint);
+                if (!payload) return;
+                const saved = entry.checkpoint.saved_response;
+                if (saved && String(saved.response_value ?? "") === String(payload.value)) return;
+                changedEntries.push({
+                    entry: entry,
+                    request: { assessment_id: state.assessment.assessment_id, dept_id: state.selected.deptId, checkpoint_id: checkpointId(entry.checkpoint), response_value: payload.value, response_json: payload.json, remarks: "", evidence_url: "" }
+                });
+            });
             let savedCount = 0;
             let queuedCount = 0;
-            for (const entry of entries) {
-                const payload = concernPayload(entry.card, entry.checkpoint);
-                if (!payload) continue;
-                const saved = entry.checkpoint.saved_response;
-                if (saved && String(saved.response_value ?? "") === String(payload.value)) continue;
-                const request = { assessment_id: state.assessment.assessment_id, dept_id: state.selected.deptId, checkpoint_id: checkpointId(entry.checkpoint), response_value: payload.value, response_json: payload.json, remarks: "", evidence_url: "" };
-                let response;
+            if (changedEntries.length) {
                 try {
-                    response = await apiPost(API.saveResponse, request);
+                    const response = await apiPost(API.saveResponsesBulk, {
+                        assessment_id: state.assessment.assessment_id,
+                        dept_id: state.selected.deptId,
+                        responses: changedEntries.map(function (item) { return item.request; })
+                    });
+                    const savedResponses = response?.data?.responses || [];
+                    changedEntries.forEach(function (item) {
+                        const saved = savedResponses.find(function (row) { return Number(row.checkpoint_id) === Number(item.request.checkpoint_id); }) || {};
+                        item.entry.checkpoint.saved_response = { response_value: saved.response_value ?? item.request.response_value, response_json: saved.response_json || item.request.response_json };
+                    });
+                    savedCount = changedEntries.length;
                 } catch (error) {
                     if (!isNetworkFailure(error) || !SQ.offlineResponseQueue) throw error;
-                    await SQ.offlineResponseQueue.enqueue(queueUserId(), request);
-                    response = { data: { offline_queued: true } };
-                    queuedCount++;
+                    for (const item of changedEntries) await SQ.offlineResponseQueue.enqueue(queueUserId(), item.request);
+                    queuedCount = changedEntries.length;
                 }
-                entry.checkpoint.saved_response = { response_value: response?.data?.response_value ?? payload.value, response_json: response?.data?.response_json || payload.json };
-                savedCount++;
             }
             if (submit) {
                 const next = state.concernChecklist.find(function (candidate) {
