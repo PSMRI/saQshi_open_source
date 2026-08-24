@@ -488,6 +488,23 @@ class PerformanceService
                     continue;
                 }
 
+                // KPIs are configured directly at facility-type level; outcomes can
+                // additionally be grouped by department.
+                foreach (($facilityType['indicators'] ?? []) as $indicator) {
+                    if (!(bool)($indicator['is_active'] ?? true)) {
+                        continue;
+                    }
+
+                    $rows[] = self::normalizeIndicator(
+                        $indicator,
+                        $type,
+                        $facTypeId,
+                        (string)($facilityType['facility_type_name'] ?? ''),
+                        0,
+                        ''
+                    );
+                }
+
                 foreach (($facilityType['departments'] ?? []) as $department) {
                     $deptId = (int)($department['department_id'] ?? $department['dept_id'] ?? 0);
 

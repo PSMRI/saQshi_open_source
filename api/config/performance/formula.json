@@ -23281,6 +23281,1171 @@
       "decimal_supported": true,
       "denominator_zero_allowed": false,
       "is_active": true
+    },
+    {
+      "formula_id": 6392,
+      "formula_code": "FORMULA_6392",
+      "formula_name": "CHC KPI Case 1",
+      "source_expression": "(((numerator/denominator)*100))",
+      "expression": "(((N/D)*100))",
+      "variables": [
+        "N",
+        "D"
+      ],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6393,
+      "formula_code": "FORMULA_6393",
+      "formula_name": "CHC KPI Case 2",
+      "source_expression": "((numerator) / (denominator))*100",
+      "expression": "((N)/(D))*100",
+      "variables": [
+        "N",
+        "D"
+      ],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6394,
+      "formula_code": "FORMULA_6394",
+      "formula_name": "CHC KPI Case 3",
+      "source_expression": "((numerator / denominator))*1000",
+      "expression": "((N/D))*1000",
+      "variables": [
+        "N",
+        "D"
+      ],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6395,
+      "formula_code": "FORMULA_6395",
+      "formula_name": "CHC KPI Case 4",
+      "source_expression": "((numerator/denominator))*100",
+      "expression": "((N/D))*100",
+      "variables": [
+        "N",
+        "D"
+      ],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6396,
+      "formula_code": "FORMULA_6396",
+      "formula_name": "CHC KPI Case 5",
+      "source_expression": "((numerator/denominator))*100",
+      "expression": "((N/D))*100",
+      "variables": [
+        "N",
+        "D"
+      ],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6397,
+      "formula_code": "FORMULA_6397",
+      "formula_name": "CHC KPI Case 6",
+      "source_expression": "((numerator/denominator))*100",
+      "expression": "((N/D))*100",
+      "variables": [
+        "N",
+        "D"
+      ],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6398,
+      "formula_code": "FORMULA_6398",
+      "formula_name": "CHC KPI Case 7",
+      "source_expression": "((numerator*100)/(denominator))",
+      "expression": "((N*100)/(D))",
+      "variables": [
+        "N",
+        "D"
+      ],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6399,
+      "formula_code": "FORMULA_6399",
+      "formula_name": "CHC KPI Case 8",
+      "source_expression": "((numerator*100)/(denominator))",
+      "expression": "((N*100)/(D))",
+      "variables": [
+        "N",
+        "D"
+      ],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6400,
+      "formula_code": "FORMULA_6400",
+      "formula_name": "CHC KPI Case 9",
+      "source_expression": "((numerator/denominator))",
+      "expression": "((N/D))",
+      "variables": [
+        "N",
+        "D"
+      ],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6401,
+      "formula_code": "FORMULA_6401",
+      "formula_name": "CHC KPI Case 10",
+      "source_expression": "(numerator  / denominator)*100",
+      "expression": "(N/D)*100",
+      "variables": [
+        "N",
+        "D"
+      ],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6402,
+      "formula_code": "FORMULA_6402",
+      "formula_name": "CHC KPI Case 11",
+      "source_expression": "(numerator*100)  / (denominator)",
+      "expression": "(N*100)/(D)",
+      "variables": [
+        "N",
+        "D"
+      ],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6403,
+      "formula_code": "FORMULA_6403",
+      "formula_name": "CHC KPI Case 12",
+      "source_expression": "(numerator/denominator)",
+      "expression": "(N/D)",
+      "variables": [
+        "N",
+        "D"
+      ],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6404,
+      "formula_code": "FORMULA_6404",
+      "formula_name": "CHC KPI Case 13",
+      "source_expression": "(((numerator) / (denominator)))",
+      "expression": "(((N)/(D)))",
+      "variables": [
+        "N",
+        "D"
+      ],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6405,
+      "formula_code": "FORMULA_6405",
+      "formula_name": "CHC KPI Case 14",
+      "source_expression": "((numerator*100)/(denominator))",
+      "expression": "((N*100)/(D))",
+      "variables": [
+        "N",
+        "D"
+      ],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6406,
+      "formula_code": "FORMULA_6406",
+      "formula_name": "CHC KPI Case 15",
+      "source_expression": "((numerator*100)/(denominator))",
+      "expression": "((N*100)/(D))",
+      "variables": [
+        "N",
+        "D"
+      ],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6407,
+      "formula_code": "FORMULA_6407",
+      "formula_name": "CHC KPI Case 16",
+      "source_expression": "((numerator*100)/(denominator))",
+      "expression": "((N*100)/(D))",
+      "variables": [
+        "N",
+        "D"
+      ],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6408,
+      "formula_code": "FORMULA_6408",
+      "formula_name": "CHC KPI Case 17",
+      "source_expression": "((numerator/denominator))*100",
+      "expression": "((N/D))*100",
+      "variables": [
+        "N",
+        "D"
+      ],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6409,
+      "formula_code": "FORMULA_6409",
+      "formula_name": "CHC KPI Case 18",
+      "source_expression": "((numerator*100)/(denominator))",
+      "expression": "((N*100)/(D))",
+      "variables": [
+        "N",
+        "D"
+      ],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6410,
+      "formula_code": "FORMULA_6410",
+      "formula_name": "CHC KPI Case 19",
+      "source_expression": "((numerator/denominator))*100",
+      "expression": "((N/D))*100",
+      "variables": [
+        "N",
+        "D"
+      ],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6411,
+      "formula_code": "FORMULA_6411",
+      "formula_name": "CHC KPI Case 20",
+      "source_expression": "((numerator*100)/(denominator))",
+      "expression": "((N*100)/(D))",
+      "variables": [
+        "N",
+        "D"
+      ],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6412,
+      "formula_code": "FORMULA_6412",
+      "formula_name": "CHC KPI Case 21",
+      "source_expression": "((numerator*100)/(denominator))",
+      "expression": "((N*100)/(D))",
+      "variables": [
+        "N",
+        "D"
+      ],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6413,
+      "formula_code": "FORMULA_6413",
+      "formula_name": "CHC KPI Case 22",
+      "source_expression": "((numerator))",
+      "expression": "((N))",
+      "variables": [
+        "N"
+      ],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6414,
+      "formula_code": "FORMULA_6414",
+      "formula_name": "CHC KPI Case 23",
+      "source_expression": "((numerator))",
+      "expression": "((N))",
+      "variables": [
+        "N"
+      ],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6415,
+      "formula_code": "FORMULA_6415",
+      "formula_name": "CHC KPI Case 24",
+      "source_expression": "((numerator))",
+      "expression": "((N))",
+      "variables": [
+        "N"
+      ],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6416,
+      "formula_code": "FORMULA_6416",
+      "formula_name": "CHC KPI Case 25",
+      "source_expression": "((numerator)/denominator)",
+      "expression": "((N)/D)",
+      "variables": [
+        "N",
+        "D"
+      ],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6417,
+      "formula_code": "FORMULA_6417",
+      "formula_name": "DH KPI Case 1",
+      "source_expression": "0",
+      "expression": "0",
+      "variables": [],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6418,
+      "formula_code": "FORMULA_6418",
+      "formula_name": "DH KPI Case 2",
+      "source_expression": "0",
+      "expression": "0",
+      "variables": [],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6419,
+      "formula_code": "FORMULA_6419",
+      "formula_name": "DH KPI Case 3",
+      "source_expression": "0",
+      "expression": "0",
+      "variables": [],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6420,
+      "formula_code": "FORMULA_6420",
+      "formula_name": "DH KPI Case 4",
+      "source_expression": "0",
+      "expression": "0",
+      "variables": [],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6421,
+      "formula_code": "FORMULA_6421",
+      "formula_name": "DH KPI Case 5",
+      "source_expression": "0",
+      "expression": "0",
+      "variables": [],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6422,
+      "formula_code": "FORMULA_6422",
+      "formula_name": "DH KPI Case 6",
+      "source_expression": "0",
+      "expression": "0",
+      "variables": [],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6423,
+      "formula_code": "FORMULA_6423",
+      "formula_name": "DH KPI Case 7",
+      "source_expression": "0",
+      "expression": "0",
+      "variables": [],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6424,
+      "formula_code": "FORMULA_6424",
+      "formula_name": "DH KPI Case 8",
+      "source_expression": "0",
+      "expression": "0",
+      "variables": [],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6425,
+      "formula_code": "FORMULA_6425",
+      "formula_name": "DH KPI Case 9",
+      "source_expression": "0",
+      "expression": "0",
+      "variables": [],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6426,
+      "formula_code": "FORMULA_6426",
+      "formula_name": "DH KPI Case 10",
+      "source_expression": "0",
+      "expression": "0",
+      "variables": [],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6427,
+      "formula_code": "FORMULA_6427",
+      "formula_name": "DH KPI Case 11",
+      "source_expression": "0",
+      "expression": "0",
+      "variables": [],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6428,
+      "formula_code": "FORMULA_6428",
+      "formula_name": "DH KPI Case 12",
+      "source_expression": "(numerator)",
+      "expression": "(N)",
+      "variables": [
+        "N"
+      ],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6429,
+      "formula_code": "FORMULA_6429",
+      "formula_name": "DH KPI Case 13",
+      "source_expression": "0",
+      "expression": "0",
+      "variables": [],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6430,
+      "formula_code": "FORMULA_6430",
+      "formula_name": "DH KPI Case 14",
+      "source_expression": "0",
+      "expression": "0",
+      "variables": [],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6431,
+      "formula_code": "FORMULA_6431",
+      "formula_name": "DH KPI Case 15",
+      "source_expression": "0",
+      "expression": "0",
+      "variables": [],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6432,
+      "formula_code": "FORMULA_6432",
+      "formula_name": "DH KPI Case 16",
+      "source_expression": "0",
+      "expression": "0",
+      "variables": [],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6433,
+      "formula_code": "FORMULA_6433",
+      "formula_name": "DH KPI Case 17",
+      "source_expression": "0",
+      "expression": "0",
+      "variables": [],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6434,
+      "formula_code": "FORMULA_6434",
+      "formula_name": "DH KPI Case 18",
+      "source_expression": "0",
+      "expression": "0",
+      "variables": [],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6435,
+      "formula_code": "FORMULA_6435",
+      "formula_name": "DH KPI Case 19",
+      "source_expression": "0",
+      "expression": "0",
+      "variables": [],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6436,
+      "formula_code": "FORMULA_6436",
+      "formula_name": "DH KPI Case 20",
+      "source_expression": "((numerator))",
+      "expression": "((N))",
+      "variables": [
+        "N"
+      ],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6437,
+      "formula_code": "FORMULA_6437",
+      "formula_name": "DH KPI Case 21",
+      "source_expression": "0",
+      "expression": "0",
+      "variables": [],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6438,
+      "formula_code": "FORMULA_6438",
+      "formula_name": "DH KPI Case 22",
+      "source_expression": "YES => 1; NO => 0",
+      "expression": "N",
+      "variables": [
+        "N"
+      ],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6439,
+      "formula_code": "FORMULA_6439",
+      "formula_name": "DH KPI Case 23",
+      "source_expression": "YES => 1; NO => 0",
+      "expression": "N",
+      "variables": [
+        "N"
+      ],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6440,
+      "formula_code": "FORMULA_6440",
+      "formula_name": "DH KPI Case 24",
+      "source_expression": "0",
+      "expression": "0",
+      "variables": [],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6441,
+      "formula_code": "FORMULA_6441",
+      "formula_name": "DH KPI Case 25",
+      "source_expression": "0",
+      "expression": "0",
+      "variables": [],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6442,
+      "formula_code": "FORMULA_6442",
+      "formula_name": "DH KPI Case 26",
+      "source_expression": "0",
+      "expression": "0",
+      "variables": [],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6443,
+      "formula_code": "FORMULA_6443",
+      "formula_name": "DH KPI Case 27",
+      "source_expression": "((numerator))",
+      "expression": "((N))",
+      "variables": [
+        "N"
+      ],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6444,
+      "formula_code": "FORMULA_6444",
+      "formula_name": "DH KPI Case 28",
+      "source_expression": "((numerator))",
+      "expression": "((N))",
+      "variables": [
+        "N"
+      ],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6445,
+      "formula_code": "FORMULA_6445",
+      "formula_name": "PHC KPI Case 1",
+      "source_expression": "((numerator ))",
+      "expression": "((N))",
+      "variables": [
+        "N"
+      ],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6446,
+      "formula_code": "FORMULA_6446",
+      "formula_name": "PHC KPI Case 2",
+      "source_expression": "((numerator * 100) / (denominator))",
+      "expression": "((N*100)/(D))",
+      "variables": [
+        "N",
+        "D"
+      ],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6447,
+      "formula_code": "FORMULA_6447",
+      "formula_name": "PHC KPI Case 3",
+      "source_expression": "((numerator * 100) / denominator)",
+      "expression": "((N*100)/D)",
+      "variables": [
+        "N",
+        "D"
+      ],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6448,
+      "formula_code": "FORMULA_6448",
+      "formula_name": "PHC KPI Case 4",
+      "source_expression": "((numerator * 100) / denominator)",
+      "expression": "((N*100)/D)",
+      "variables": [
+        "N",
+        "D"
+      ],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6449,
+      "formula_code": "FORMULA_6449",
+      "formula_name": "PHC KPI Case 5",
+      "source_expression": "((numerator * 100) / (denominator))",
+      "expression": "((N*100)/(D))",
+      "variables": [
+        "N",
+        "D"
+      ],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6450,
+      "formula_code": "FORMULA_6450",
+      "formula_name": "PHC KPI Case 6",
+      "source_expression": "((numerator * 100) / (denominator))",
+      "expression": "((N*100)/(D))",
+      "variables": [
+        "N",
+        "D"
+      ],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6451,
+      "formula_code": "FORMULA_6451",
+      "formula_name": "PHC KPI Case 7",
+      "source_expression": "((numerator * 100) / (denominator))",
+      "expression": "((N*100)/(D))",
+      "variables": [
+        "N",
+        "D"
+      ],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6452,
+      "formula_code": "FORMULA_6452",
+      "formula_name": "PHC KPI Case 8",
+      "source_expression": "(((numerator-denominator)*100) / (denominator))",
+      "expression": "(((N-D)*100)/(D))",
+      "variables": [
+        "N",
+        "D"
+      ],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6453,
+      "formula_code": "FORMULA_6453",
+      "formula_name": "PHC KPI Case 9",
+      "source_expression": "((numerator * 100) / (denominator))",
+      "expression": "((N*100)/(D))",
+      "variables": [
+        "N",
+        "D"
+      ],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6454,
+      "formula_code": "FORMULA_6454",
+      "formula_name": "PHC KPI Case 10",
+      "source_expression": "((numerator * 100) / (denominator))",
+      "expression": "((N*100)/(D))",
+      "variables": [
+        "N",
+        "D"
+      ],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6455,
+      "formula_code": "FORMULA_6455",
+      "formula_name": "PHC KPI Case 11",
+      "source_expression": "((numerator * 100) / (denominator))",
+      "expression": "((N*100)/(D))",
+      "variables": [
+        "N",
+        "D"
+      ],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6456,
+      "formula_code": "FORMULA_6456",
+      "formula_name": "PHC KPI Case 12",
+      "source_expression": "(numerator * 100) / denominator",
+      "expression": "(N*100)/D",
+      "variables": [
+        "N",
+        "D"
+      ],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6457,
+      "formula_code": "FORMULA_6457",
+      "formula_name": "PHC KPI Case 13",
+      "source_expression": "((numerator) / (denominator))",
+      "expression": "((N)/(D))",
+      "variables": [
+        "N",
+        "D"
+      ],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6458,
+      "formula_code": "FORMULA_6458",
+      "formula_name": "PHC KPI Case 14",
+      "source_expression": "((numerator) / (denominator))",
+      "expression": "((N)/(D))",
+      "variables": [
+        "N",
+        "D"
+      ],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6459,
+      "formula_code": "FORMULA_6459",
+      "formula_name": "PHC KPI Case 15",
+      "source_expression": "((numerator*100) / (denominator))",
+      "expression": "((N*100)/(D))",
+      "variables": [
+        "N",
+        "D"
+      ],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6460,
+      "formula_code": "FORMULA_6460",
+      "formula_name": "PHC KPI Case 16",
+      "source_expression": "((numerator) / (denominator))",
+      "expression": "((N)/(D))",
+      "variables": [
+        "N",
+        "D"
+      ],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6461,
+      "formula_code": "FORMULA_6461",
+      "formula_name": "PHC KPI Case 17",
+      "source_expression": "((numerator * 100) / (denominator))",
+      "expression": "((N*100)/(D))",
+      "variables": [
+        "N",
+        "D"
+      ],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6462,
+      "formula_code": "FORMULA_6462",
+      "formula_name": "PHC KPI Case 18",
+      "source_expression": "((numerator) / (denominator))",
+      "expression": "((N)/(D))",
+      "variables": [
+        "N",
+        "D"
+      ],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6463,
+      "formula_code": "FORMULA_6463",
+      "formula_name": "PHC KPI Case 19",
+      "source_expression": "((numerator) / (denominator))",
+      "expression": "((N)/(D))",
+      "variables": [
+        "N",
+        "D"
+      ],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
+    },
+    {
+      "formula_id": 6464,
+      "formula_code": "FORMULA_6464",
+      "formula_name": "PHC KPI Case 20",
+      "source_expression": "((numerator * 100) / (denominator))",
+      "expression": "((N*100)/(D))",
+      "variables": [
+        "N",
+        "D"
+      ],
+      "result_field": "R",
+      "precision": 2,
+      "rounding": "HALF_UP",
+      "decimal_supported": true,
+      "denominator_zero_allowed": false,
+      "is_active": true
     }
   ]
 }

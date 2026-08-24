@@ -2,5 +2,3534 @@
   "module": "Performance Monitoring",
   "config_type": "KPI Library",
   "version": "1.0.0",
-  "kpis": []
+  "description": "JSON-driven KPI configuration for SaQshi Performance Monitoring.",
+  "facility_type_count": 3,
+  "indicator_total": 73,
+  "facility_types": [
+    {
+      "facility_type_id": 1,
+      "facility_type_name": "CHC",
+      "indicators": [
+        {
+          "indicator_id": 151,
+          "indicator_code": "KPI_151",
+          "indicator_type": "KPI",
+          "indicator_name": "Bed Occupancy Rate",
+          "frequency": "MONTHLY",
+          "formula_id": 6392,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total Patient bed days\n(Midnight head count of each day added for the month of all patients)\n",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Product of Total number of functional beds in the hospital and days in the month",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 152,
+          "indicator_code": "KPI_152",
+          "indicator_type": "KPI",
+          "indicator_name": "Percentage of cases of High Risk Pregnancy/obstetric complication out of total registered pregnancies at FRU",
+          "frequency": "MONTHLY",
+          "formula_id": 6393,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total number of high risk pregnancies registered at the facility\nInclusion:-Severe Anaemia ,PPH, PIH/Eclampsia/Pre Eclampsia, Retained Placenta, HIV Positive Pregnant women, Septic Cases, Obstructed labour including C- Section \nExclude:- Referral without any interventions",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total ANC registration",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 153,
+          "indicator_code": "KPI_153",
+          "indicator_type": "KPI",
+          "indicator_name": "Lab test done per thousand patients",
+          "frequency": "MONTHLY",
+          "formula_id": 6394,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total number of tests done for both OPD and IPD  patients",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total number of patients attended during the month\nInclusion:- Both OPD and IPD cases",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 154,
+          "indicator_code": "KPI_154",
+          "indicator_type": "KPI",
+          "indicator_name": "Percentage of LSCS surgeries done in night",
+          "frequency": "MONTHLY",
+          "formula_id": 6395,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total LSCS deliveries conducted during night (8 PM to 8 AM)",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total LSCS deliveries conducted in Hospital (Day+Night)",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 155,
+          "indicator_code": "KPI_155",
+          "indicator_type": "KPI",
+          "indicator_name": "Percentage of C-Section out of total deliveries",
+          "frequency": "MONTHLY",
+          "formula_id": 6396,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total number of C-section delivery conducted.",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total deliveries conducted",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 156,
+          "indicator_code": "KPI_156",
+          "indicator_type": "KPI",
+          "indicator_name": "Percentage of new-born admitted to NBSU out of total live births at facility",
+          "frequency": "MONTHLY",
+          "formula_id": 6397,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total number of new born babies admission at NBSU\n",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total live births in the facility",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 157,
+          "indicator_code": "KPI_157",
+          "indicator_type": "KPI",
+          "indicator_name": "Blood transfusion done per 100 admission",
+          "frequency": "MONTHLY",
+          "formula_id": 6398,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total number of blood transfusion done at the facility",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total admission in the facility",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 158,
+          "indicator_code": "KPI_158",
+          "indicator_type": "KPI",
+          "indicator_name": "Percentage of referral in admitted patients out of total admissions",
+          "frequency": "MONTHLY",
+          "formula_id": 6399,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total number of patients referred from the facility\nInclusion:- Emergency and indoor cases\nExclusion:- Referral from OPD",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total admission in the facility",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 159,
+          "indicator_code": "KPI_159",
+          "indicator_type": "KPI",
+          "indicator_name": "OPD Per doctor",
+          "frequency": "MONTHLY",
+          "formula_id": 6400,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total number of patients attended in OPD",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total number of doctors available in the hospital\nInclusion: Regular, contractual, Part Time\nExclusion:- Doctors not engaged in OPD like MS, Radiologist, Microbiologist ",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 160,
+          "indicator_code": "KPI_160",
+          "indicator_type": "KPI",
+          "indicator_name": "Critical emergencies (Snake bites, Trauma, CVA) attended out of total emergency patients registered",
+          "frequency": "MONTHLY",
+          "formula_id": 6401,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total number of critical emergencies cases registered in emergency department\nInclusion:- Snake bites, Trauma, CVA",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total registered patients at emergency",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 161,
+          "indicator_code": "KPI_161",
+          "indicator_type": "KPI",
+          "indicator_name": "Percentage of stock out of vital drugs (RMNCH+A)",
+          "frequency": "MONTHLY",
+          "formula_id": 6402,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total stock outs occurred for essential commodities each day added for the month \nInclusion – List of vital drugs(RMNCH+A)\n\n",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Product of Total no. of Commodities and days in the month \n",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 162,
+          "indicator_code": "KPI_162",
+          "indicator_type": "KPI",
+          "indicator_name": "Emergency call attended per specialist per month",
+          "frequency": "MONTHLY",
+          "formula_id": 6403,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total number of emergency call attended by specialist during the month",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total number of specialist appointed at the facility\nInclusion:- Gynaecologist, Paediatrician, Anaesthetic",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 163,
+          "indicator_code": "KPI_163",
+          "indicator_type": "KPI",
+          "indicator_name": "Average length of stay",
+          "frequency": "MONTHLY",
+          "formula_id": 6404,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total Patient bed days\n(Midnight head count of each day added for the month of all patients)\n",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total number of discharges.\nInclusion:- Normal discharge, LAMA, Abscond, Referral, deaths",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 164,
+          "indicator_code": "KPI_164",
+          "indicator_type": "KPI",
+          "indicator_name": "Surgical site infection rate",
+          "frequency": "MONTHLY",
+          "formula_id": 6405,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total number of Surgical site infection detected (Any purulent discharge,absess, spreading cellulitis at surgical site during the month after the surgery)",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total number of surgeries conducted (major & minor surgeries)",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 165,
+          "indicator_code": "KPI_165",
+          "indicator_type": "KPI",
+          "indicator_name": "Failure rate of sterilization surgeries",
+          "frequency": "MONTHLY",
+          "formula_id": 6406,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total number of cases detected with sterilization failure\nInclusion:-Failure cases after issuing of certificates of sterilization for both male and female sterilization\n",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total number of family planning surgeries\nInclusion:- Both male and female",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 166,
+          "indicator_code": "KPI_166",
+          "indicator_type": "KPI",
+          "indicator_name": "Complication rate including death following sterilization ",
+          "frequency": "MONTHLY",
+          "formula_id": 6407,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total number of complications detected after male and female sterilization surgeries.",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total number of  sterilization operation conducted",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 167,
+          "indicator_code": "KPI_167",
+          "indicator_type": "KPI",
+          "indicator_name": "Percentage of normal deliveries having partograph recorded",
+          "frequency": "MONTHLY",
+          "formula_id": 6408,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total number of delivery cases where partograph filled completely\nExclusion:- Partial or incomplete filled partograph",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total number of deliveries conducted\nInclusion:- Cases shifted to OT",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 168,
+          "indicator_code": "KPI_168",
+          "indicator_type": "KPI",
+          "indicator_name": "Maternal death rate at the facility",
+          "frequency": "MONTHLY",
+          "formula_id": 6409,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total number of maternal deaths during the month",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total number of deliveries conducted\nInclusion:- Normal, Assisted and C-Section deliveries",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 169,
+          "indicator_code": "KPI_169",
+          "indicator_type": "KPI",
+          "indicator_name": "Percentage of AEFI cases reported",
+          "frequency": "MONTHLY",
+          "formula_id": 6410,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total number of AEFI cases reported",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total number of AEFI cases detected",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 170,
+          "indicator_code": "KPI_170",
+          "indicator_type": "KPI",
+          "indicator_name": "Percentage of DOT cases completed successfully",
+          "frequency": "MONTHLY",
+          "formula_id": 6411,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total successfully completed TB treatment, with or without bacteriological evidence of success ",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total  tuberculosis cases registered under a national tuberculosis control programme",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 171,
+          "indicator_code": "KPI_171",
+          "indicator_type": "KPI",
+          "indicator_name": "Left against Medical advice (LAMA) Rate",
+          "frequency": "MONTHLY",
+          "formula_id": 6412,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total number of LAMA patients from the facility\nExclusion:- Abscond and referral cases",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total admission in the facility",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 172,
+          "indicator_code": "KPI_172",
+          "indicator_type": "KPI",
+          "indicator_name": "Patient Satisfaction Score (OPD)",
+          "frequency": "MONTHLY",
+          "formula_id": 6413,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Average patien satisfaction score (OPD)",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "N/A",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 173,
+          "indicator_code": "KPI_173",
+          "indicator_type": "KPI",
+          "indicator_name": "Patient Satisfaction Score (IPD)",
+          "frequency": "MONTHLY",
+          "formula_id": 6414,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Average patien satisfaction score (IPD)",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "N/A",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 174,
+          "indicator_code": "KPI_174",
+          "indicator_type": "KPI",
+          "indicator_name": "Consultation time (OPD)",
+          "frequency": "MONTHLY",
+          "formula_id": 6415,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Avg. time lag for a patient from entering in queue for OPD Consultation to finally get consultation from doctor",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "N/A",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 175,
+          "indicator_code": "KPI_175",
+          "indicator_type": "KPI",
+          "indicator_name": "Linen Index",
+          "frequency": "MONTHLY",
+          "formula_id": 6416,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total number of bed sheets washed during the month\nInclusion:- Only bed sheet of indoor patients\nExclusion:- Table cloths, OT dress, Patients dress, Doctors dress, bed sheet used by hospital staff washed in laundry.",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total Patient bed days\n(Midnight head count of each day added for the month of all patients)\n",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        }
+      ],
+      "indicator_count": 25
+    },
+    {
+      "facility_type_id": 2,
+      "facility_type_name": "DH",
+      "indicators": [
+        {
+          "indicator_id": 101,
+          "indicator_code": "KPI_101",
+          "indicator_type": "KPI",
+          "indicator_name": "Bed Occupancy Rate",
+          "frequency": "MONTHLY",
+          "formula_id": 6417,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total Patient bed days\n(Midnight head count of each day added for the month of all patients)\nExclusion – New-borns in Maternity Wards and Day Care Patients ",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Product of Total number of functional beds in the hospital and days in the month\nExclusion:- Labour Room Tables and Observation Beds\n",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 102,
+          "indicator_code": "KPI_102",
+          "indicator_type": "KPI",
+          "indicator_name": "Lab test done per thousand patients",
+          "frequency": "MONTHLY",
+          "formula_id": 6418,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total number of tests done for both OPD and IPD  patients\nExclusion - Test done at Point of care ",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total number of patients attended during the month\nInclusion:- Both OPD and IPD cases",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 103,
+          "indicator_code": "KPI_103",
+          "indicator_type": "KPI",
+          "indicator_name": "Percentage of cases of High Risk Pregnancy/obstetric complication treated ",
+          "frequency": "MONTHLY",
+          "formula_id": 6419,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total number of high risk pregnancies registered at the facility\nInclusion:-Severe Anaemia ,PPH, PIH/Eclampsia/Pre Eclampsia, Retained Placenta, HIV Positive Pregnant women, Septic Cases, Obstructed labour including C- Section \nExclude:- Referral without any interventions",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total number of obstetric  cases admitted in the hospital \n",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 104,
+          "indicator_code": "KPI_104",
+          "indicator_type": "KPI",
+          "indicator_name": "Percentage of surgeries done at night (8 PM to 8 AM)",
+          "frequency": "MONTHLY",
+          "formula_id": 6420,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total major surgeries conducted during night including LSCS (8 PM to 8 AM)\nExclusion – Minor Surgeries",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total major surgeries conducted in Hospital (Day+Night)\nExclusion – Minor Surgeries",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 105,
+          "indicator_code": "KPI_105",
+          "indicator_type": "KPI",
+          "indicator_name": "LSCS Rate",
+          "frequency": "MONTHLY",
+          "formula_id": 6421,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total number of C-section delivery conducted",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total deliveries conducted",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 106,
+          "indicator_code": "KPI_106",
+          "indicator_type": "KPI",
+          "indicator_name": "Blood Transfusion Rate",
+          "frequency": "MONTHLY",
+          "formula_id": 6422,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total no of blood transfusion done in a facility",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total admission in the facility",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 107,
+          "indicator_code": "KPI_107",
+          "indicator_type": "KPI",
+          "indicator_name": "Percentage of NCD Cases managed in OPD",
+          "frequency": "MONTHLY",
+          "formula_id": 6423,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total number of NCD cases managed in OPD",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total number of cases managed in OPD",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 108,
+          "indicator_code": "KPI_108",
+          "indicator_type": "KPI",
+          "indicator_name": "Percentage of emergency cases admitted at night (8 PM to 8 AM )",
+          "frequency": "MONTHLY",
+          "formula_id": 6424,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total number of emergency cases admitted at night (8 PM to 8 AM )",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total number of emergency cases admitted (Day+Night)\n",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 109,
+          "indicator_code": "KPI_109",
+          "indicator_type": "KPI",
+          "indicator_name": "Percentage of Referral Out of Total Registered patient",
+          "frequency": "MONTHLY",
+          "formula_id": 6425,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total number of patients referred from the facility\nInclusion:- Emergency and indoor cases\nExclusion:- LAMA  & absconding \n",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total admission in the facility\nExclusion:- Day care Procedures",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 110,
+          "indicator_code": "KPI_110",
+          "indicator_type": "KPI",
+          "indicator_name": "No of major Surgeries per surgeon (in a month)",
+          "frequency": "MONTHLY",
+          "formula_id": 6426,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total number of major surgeries conducted",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total number of surgeons appointed in the facility\nInclusion:- Ortho, Gynae, Obs, General surgeon, EMOC trained doctors",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 111,
+          "indicator_code": "KPI_111",
+          "indicator_type": "KPI",
+          "indicator_name": "OPD Per Doctor",
+          "frequency": "MONTHLY",
+          "formula_id": 6427,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total number of patients attended in OPD",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total number of doctors available in the hospital\nInclusion: Regular, contractual, Part Time\nExclusion:- Doctors not engaged in OPD like MS, Radiologist, Microbiologist ",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 112,
+          "indicator_code": "KPI_112",
+          "indicator_type": "KPI",
+          "indicator_name": "Percentage of EQAS (I.E., VIS or Z score) with in normal limits (VIS < 200 and Z < +/-2)\n",
+          "frequency": "MONTHLY",
+          "formula_id": 6428,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Take Median of all scores obtained\n(Arrange scores in increasing order-\nPick the middle value if numbers are odd-\nTake average of middle two values if numbers are even)\n",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "N/A",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 113,
+          "indicator_code": "KPI_113",
+          "indicator_type": "KPI",
+          "indicator_name": "Percentage of stock outs as per EML ",
+          "frequency": "MONTHLY",
+          "formula_id": 6429,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total stock outs essential & vital as per EML each day added for the month \n\n",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Product of total no. of drugs as per EML and days in the month\n",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 114,
+          "indicator_code": "KPI_114",
+          "indicator_type": "KPI",
+          "indicator_name": "Percentage No of Maternal Deaths out of total admission during ANC, INC, PNC rate",
+          "frequency": "MONTHLY",
+          "formula_id": 6430,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total number of maternal deaths ",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total number of pregnant women admitted during ANC, INC, PNC rate during the month",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 115,
+          "indicator_code": "KPI_115",
+          "indicator_type": "KPI",
+          "indicator_name": "Percentage of neonatal Deaths  out of total live births and neonatal admission",
+          "frequency": "MONTHLY",
+          "formula_id": 6431,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total number of neonatal deaths\nInclusion – Neonate died during first 28 days while admitted in the hospital including  Out borns admitted in neonate ward/SNCU \nExclusion – Still Birth \n",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total no. of neonates admitted including live births in Hospital and  out born admissions  ",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 116,
+          "indicator_code": "KPI_116",
+          "indicator_type": "KPI",
+          "indicator_name": "Death Rate \n( Include all deaths except Maternal & Newborn)",
+          "frequency": "MONTHLY",
+          "formula_id": 6432,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total no. of deaths occurred in a hospital\n(Excluding Maternal & Newborn deaths)",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total no. of admissions in a hospital",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 117,
+          "indicator_code": "KPI_117",
+          "indicator_type": "KPI",
+          "indicator_name": "Percentage of cases for which death review is done ",
+          "frequency": "MONTHLY",
+          "formula_id": 6433,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total number of deaths review done during the month\n(Excluding Maternal & Newborn deaths)",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total number of  deaths occurred",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 118,
+          "indicator_code": "KPI_118",
+          "indicator_type": "KPI",
+          "indicator_name": "Average length of stay",
+          "frequency": "MONTHLY",
+          "formula_id": 6434,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total Patient bed days\n(Midnight head count of each day added for the month of all patients)\n",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total number of discharges.\nInclusion:- Normal discharge, LAMA, Abscond, Referral, deaths",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 119,
+          "indicator_code": "KPI_119",
+          "indicator_type": "KPI",
+          "indicator_name": "Percentage of Surgical Site Infection out of total surgeries",
+          "frequency": "MONTHLY",
+          "formula_id": 6435,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total number of Surgical site infection detected (Any purulent discharge,absess, spreading cellulitis at surgical site during the month after the surgery)",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total number of surgeries conducted (major & minor surgeries)",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 120,
+          "indicator_code": "KPI_120",
+          "indicator_type": "KPI",
+          "indicator_name": "No of needle stick injuries reported",
+          "frequency": "MONTHLY",
+          "formula_id": 6436,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total Number of needle stick injuries reported ",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "N/A",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 121,
+          "indicator_code": "KPI_121",
+          "indicator_type": "KPI",
+          "indicator_name": "Percentage of prescriptions with more than one anti-microbial agent (calculated using sampling methods)",
+          "frequency": "MONTHLY",
+          "formula_id": 6437,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "No of prescriptions with more than one anti-microbial agent",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total no of prescriptions ",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 122,
+          "indicator_code": "KPI_122",
+          "indicator_type": "KPI",
+          "indicator_name": "Family Planning Indicators (as per HMIS reporting)",
+          "frequency": "MONTHLY",
+          "formula_id": 6438,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Yes/No",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "N/A",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 123,
+          "indicator_code": "KPI_123",
+          "indicator_type": "KPI",
+          "indicator_name": "LaQshya Indicators\n(As per Annexure 'C of LaQshya Guidelines)",
+          "frequency": "MONTHLY",
+          "formula_id": 6439,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Yes/No",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "N/A",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 124,
+          "indicator_code": "KPI_124",
+          "indicator_type": "KPI",
+          "indicator_name": "Percentage of Left against Medical advice (LAMA) Rate out of Total Admission",
+          "frequency": "MONTHLY",
+          "formula_id": 6440,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total number of LAMA patients from the facility\nExclusion:- Abscond and referral cases",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total admission in the facility",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 125,
+          "indicator_code": "KPI_125",
+          "indicator_type": "KPI",
+          "indicator_name": "Patient Satisfaction Score for IPD",
+          "frequency": "MONTHLY",
+          "formula_id": 6441,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Sum of average satisfaction score of each respondent\n(Average satisfaction score = sum total of scores of attributes/number of total attributes)",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total number of respondents",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 126,
+          "indicator_code": "KPI_126",
+          "indicator_type": "KPI",
+          "indicator_name": "Patient Satisfaction Score for OPD",
+          "frequency": "MONTHLY",
+          "formula_id": 6442,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Sum of average satisfaction score of each respondent\n(Average satisfaction score = sum total of scores of attributes/number of total attributes)",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total number of respondents",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 127,
+          "indicator_code": "KPI_127",
+          "indicator_type": "KPI",
+          "indicator_name": "Registration to Drug time (average)",
+          "frequency": "MONTHLY",
+          "formula_id": 6443,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Time lag for a patient from entering in queue for OPD registration to finally getting drugs at Pharmacy counter ",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "N/A",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 128,
+          "indicator_code": "KPI_128",
+          "indicator_type": "KPI",
+          "indicator_name": "Consultation time in OPD (average)",
+          "frequency": "MONTHLY",
+          "formula_id": 6444,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Time lag for a patient from entering in queue for OPD Consultation to finally get consultation from doctor",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "N/A",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        }
+      ],
+      "indicator_count": 28
+    },
+    {
+      "facility_type_id": 3,
+      "facility_type_name": "PHC",
+      "indicators": [
+        {
+          "indicator_id": 1,
+          "indicator_code": "KPI_1",
+          "indicator_type": "KPI",
+          "indicator_name": "OPD Per Month",
+          "frequency": "MONTHLY",
+          "formula_id": 6445,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "N/A",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "N/A",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 2,
+          "indicator_code": "KPI_2",
+          "indicator_type": "KPI",
+          "indicator_name": "Percentage deliveries conducted out of expected",
+          "frequency": "MONTHLY",
+          "formula_id": 6446,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total number of deliveries conducted during the month",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total number of expected deliveries for the month",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 3,
+          "indicator_code": "KPI_3",
+          "indicator_type": "KPI",
+          "indicator_name": "Percentage of deliveries conducted in the night",
+          "frequency": "MONTHLY",
+          "formula_id": 6447,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total number of deliveries conducted during night time from 8PM to 8AM Inclusion: Normal, assisted, forceps. Exclusion- C-section conducted in OT",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total deliveries conducted",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 4,
+          "indicator_code": "KPI_4",
+          "indicator_type": "KPI",
+          "indicator_name": "Percentage of MTP Conducted",
+          "frequency": "MONTHLY",
+          "formula_id": 6448,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total number of MTP conducted ",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total number of registered clients for MTP",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 5,
+          "indicator_code": "KPI_5",
+          "indicator_type": "KPI",
+          "indicator_name": "Percentage of stock out of vital drugs (RMNCH+A)",
+          "frequency": "MONTHLY",
+          "formula_id": 6449,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total stock outs occurred for essential commodities each day added for the month \nInclusion – List of vital drugs(RMNCH+A)\n\n",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Product of Total no. of Commodities and days in the month \n",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 6,
+          "indicator_code": "KPI_6",
+          "indicator_type": "KPI",
+          "indicator_name": "Percentage of High risk pregnancy/ obstetric cases referred to FRU",
+          "frequency": "MONTHLY",
+          "formula_id": 6450,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total number of high risk pregnancies referred from the facility\n",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total number of high risk pregnancies registered at the facility\n",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 7,
+          "indicator_code": "KPI_7",
+          "indicator_type": "KPI",
+          "indicator_name": "Percentage of clients accepting limiting or long term contraception methods of contraception",
+          "frequency": "MONTHLY",
+          "formula_id": 6451,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total number of clients accepted limiting OR long term contraception method of contraception",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total number of clients counselled for limiting or long term methods of contraception",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 8,
+          "indicator_code": "KPI_8",
+          "indicator_type": "KPI",
+          "indicator_name": "Drop out rate of DPT vaccination",
+          "frequency": "MONTHLY",
+          "formula_id": 6452,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total number of children missed DPT 3 dose after DPT1",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total number of children received DPT1",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 9,
+          "indicator_code": "KPI_9",
+          "indicator_type": "KPI",
+          "indicator_name": "Percentage of High risk pregnancies detected",
+          "frequency": "MONTHLY",
+          "formula_id": 6453,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total number of high risk pregnancies registered at the facility\n",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total number of estimated high risk pregnancies for the month",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 10,
+          "indicator_code": "KPI_10",
+          "indicator_type": "KPI",
+          "indicator_name": "Percentage of women stayed for 48 hours after normal deliveries",
+          "frequency": "MONTHLY",
+          "formula_id": 6454,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total number of cases where mothers stayed 48 hours after normal deliveries",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total number of normal deliveries conducted",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 11,
+          "indicator_code": "KPI_11",
+          "indicator_type": "KPI",
+          "indicator_name": "IUCD rejection rate",
+          "frequency": "MONTHLY",
+          "formula_id": 6455,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total number of IUCD rejection cases reported ",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total number of IUCD inserted",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 12,
+          "indicator_code": "KPI_12",
+          "indicator_type": "KPI",
+          "indicator_name": "Percentage of anaemia cases treated successfully",
+          "frequency": "MONTHLY",
+          "formula_id": 6456,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total number of anaemia cases treated successfully\nInclusion:- ANC cases",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total number of Anaemia cases detected during ANC",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 13,
+          "indicator_code": "KPI_13",
+          "indicator_type": "KPI",
+          "indicator_name": "Percentage of deliveries having partograph recorded",
+          "frequency": "MONTHLY",
+          "formula_id": 6457,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total number of delivery cases where partograph filled completely\nExclusion:- Partial or incomplete filled partograph",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total number of deliveries conducted\nInclusion:- Cases shifted to OT",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 14,
+          "indicator_code": "KPI_14",
+          "indicator_type": "KPI",
+          "indicator_name": "Percentage of AEFI cases reported",
+          "frequency": "MONTHLY",
+          "formula_id": 6458,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total number of AEFI cases reported",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total number of AEFI cases detected",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 15,
+          "indicator_code": "KPI_15",
+          "indicator_type": "KPI",
+          "indicator_name": "Percentage of DOT cases completed successfully",
+          "frequency": "MONTHLY",
+          "formula_id": 6459,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total successfully completed TB treatment, with or without bacteriological evidence of success ",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total new tuberculosis cases registered under a national tuberculosis control programme",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 16,
+          "indicator_code": "KPI_16",
+          "indicator_type": "KPI",
+          "indicator_name": "Percentage of children with diarrhoea treated with ORS & Zinc",
+          "frequency": "MONTHLY",
+          "formula_id": 6460,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total number of children treated with ORS and Zinc after diarrhoea",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total number of children reported diarrhoea",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 17,
+          "indicator_code": "KPI_17",
+          "indicator_type": "KPI",
+          "indicator_name": "Left against Medical advice (LAMA) Rate",
+          "frequency": "MONTHLY",
+          "formula_id": 6461,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total number of LAMA patients from the facility\nExclusion:- Abscond and referral cases",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total admission in the facility",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 18,
+          "indicator_code": "KPI_18",
+          "indicator_type": "KPI",
+          "indicator_name": "Patient Satisfaction Score (OPD)",
+          "frequency": "MONTHLY",
+          "formula_id": 6462,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Sum of average satisfaction score of each respondent\n(Average satisfaction score = sum total of scores of attributes/number of total attributes)",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total number of respondents",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 19,
+          "indicator_code": "KPI_19",
+          "indicator_type": "KPI",
+          "indicator_name": "Patient Satisfaction Score (IPD)",
+          "frequency": "MONTHLY",
+          "formula_id": 6463,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Sum of average satisfaction score of each respondent\n(Average satisfaction score = sum total of scores of attributes/number of total attributes)",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total number of respondents",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        },
+        {
+          "indicator_id": 20,
+          "indicator_code": "KPI_20",
+          "indicator_type": "KPI",
+          "indicator_name": "Percentage of Women given drop back facilities",
+          "frequency": "MONTHLY",
+          "formula_id": 6464,
+          "precision": 2,
+          "result_readonly": true,
+          "allow_decimal": true,
+          "is_active": true,
+          "fields": [
+            {
+              "field_id": "N",
+              "field_name": "numerator",
+              "label": "Total No. of women provided drop back each day added for month \n Exclusion – Referral transport to higher Centre\n",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0
+            },
+            {
+              "field_id": "D",
+              "field_name": "denominator",
+              "label": "Total no. of deliveries conducted at the facility including C-Section \n",
+              "type": "decimal",
+              "required": true,
+              "readonly": false,
+              "min": 0,
+              "zero_allowed": false
+            },
+            {
+              "field_id": "R",
+              "field_name": "result",
+              "label": "Result",
+              "type": "decimal",
+              "required": false,
+              "readonly": true,
+              "calculated": true
+            }
+          ],
+          "validation": {
+            "numerator_required": true,
+            "denominator_required": true,
+            "denominator_zero_allowed": false,
+            "decimal_allowed": true
+          }
+        }
+      ],
+      "indicator_count": 20
+    }
+  ]
 }

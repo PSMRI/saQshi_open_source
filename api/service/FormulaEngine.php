@@ -84,14 +84,30 @@ class FormulaEngine
         $precision = (int)($formula['precision'] ?? 2);
         $zeroAllowed = (bool)($formula['denominator_zero_allowed'] ?? false);
 
+        $normalized = strtoupper(str_replace(' ', '', $expression));
+
+        if ($normalized === '0') {
+            return 0.0;
+        }
+
+        if (preg_match('/^\(*N\)*$/', $normalized)) {
+            return round($numerator, $precision);
+        }
+
         if ($denominator == 0.0) {
             return 0.0;
         }
 
-        $normalized = strtoupper(str_replace(' ', '', $expression));
+        if (str_contains($normalized, '(N-D)')) {
+            return round((($numerator - $denominator) / $denominator) * 100, $precision);
+        }
 
-        if (str_contains($normalized, '*100')) {
-            return round(($numerator / $denominator) * 100, $precision);
+        if (str_contains($normalized, '(D-N)')) {
+            return round((($denominator - $numerator) / $denominator) * 100, $precision);
+        }
+
+        if (preg_match('/\*([0-9]+(?:\.[0-9]+)?)/', $normalized, $match)) {
+            return round(($numerator / $denominator) * (float)$match[1], $precision);
         }
 
         return round($numerator / $denominator, $precision);
