@@ -7,10 +7,12 @@ CREATE TABLE assessment_department_status (
     activated_by INT NULL,
     activated_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    UNIQUE KEY uq_fac_period_dept (fac_id_fk, ass_period_id, dept_id);
+    UNIQUE KEY uq_fac_period_dept (fac_id_fk, ass_period_id, dept_id)
+);
 
 
 
+    
     SELECT 
   csc.csqa_id,
     aoc.concern_id,
@@ -21,9 +23,9 @@ CREATE TABLE assessment_department_status (
        aocs.Reference_No,
         csc.c_subtype_Reference_No_fk,
     csc.csqa_reference_id,
+    csc.Means_of_Verification,
     ft.fac_type_id,
-    ft.facilities_type, 
-   
+    ft.facilities_type,    
     csc.Measurable_Element,
     csc.Checkpoint,
     csc.Assessment_Method,
@@ -32,20 +34,20 @@ CREATE TABLE assessment_department_status (
     fd.dept_name,
     fd.program_tag
 
-FROM sarbsoft_nqa_up.area_of_concern aoc
+FROM area_of_concern aoc
 
-INNER JOIN sarbsoft_nqa_up.area_of_concern_subtype aocs
+INNER JOIN area_of_concern_subtype aocs
     ON aocs.area_of_con_id = aoc.concern_id
 
-INNER JOIN sarbsoft_nqa_up.concern_subtype_chklist csc
+INNER JOIN concern_subtype_chklist csc
     ON csc.area_of_con_id_fk = aoc.concern_id
    AND csc.c_subtype_id_fk = aocs.c_subtype_id
    AND csc.fac_type_id_fk = aocs.fac_type_id
 
-LEFT JOIN sarbsoft_nqa_up.facilities_type ft
+LEFT JOIN facilities_type ft
     ON ft.fac_type_id = csc.fac_type_id_fk
 
-LEFT JOIN sarbsoft_nqa_up.fac_department fd
+LEFT JOIN fac_department fd
     ON fd.fac_dept_id = csc.fac_dept_id_fk
 
 ORDER BY
@@ -54,7 +56,7 @@ ORDER BY
     aocs.Reference_No,
     csc.csqa_id;
 
-========================================================
+
     SELECT DISTINCT
     f.state_id,
     f.state_name,
