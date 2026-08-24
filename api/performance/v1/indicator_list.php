@@ -26,13 +26,18 @@ try {
     if (strtoupper($indicatorType) === 'KPI' && (!$rule['kpi_applicable'] || $rule['block_kpi_entry'])) {
         $indicatorType = 'OUTCOME';
     }
+    $departmentRequired = strtoupper($indicatorType) === 'KPI'
+        ? (bool)$rule['kpi_department_required']
+        : (bool)$rule['outcome_department_required'];
     $activeAssessment = PerformanceService::activeAssessment($con, $facId);
     $activeDepartments = PerformanceService::activeDepartmentIds($con, $facId);
     $items = IndicatorService::list($facilityTypeId, $departmentId, $indicatorType);
 
-    $items = PerformanceService::filterByDepartmentIds($items, $activeDepartments);
+    if ($departmentRequired) {
+        $items = PerformanceService::filterByDepartmentIds($items, $activeDepartments);
+    }
 
-    if ($departmentId > 0) {
+    if ($departmentRequired && $departmentId > 0) {
         $items = array_values(array_filter($items, fn($item) => (int)($item['department_id'] ?? 0) === $departmentId));
     }
 
@@ -40,6 +45,7 @@ try {
         'facility' => $facility,
         'rule' => $rule,
         'effective_indicator_type' => strtoupper($indicatorType),
+        'department_required' => $departmentRequired,
         'active_assessment' => $activeAssessment,
         'active_department_ids' => $activeDepartments,
         'items' => $items

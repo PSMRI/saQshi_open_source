@@ -64,6 +64,10 @@
         return state.effectiveIndicatorType || indicatorType();
     }
 
+    function departmentRequired() {
+        return state.departmentRequired !== false;
+    }
+
     function selectedPeriod() {
         const parts = ($("indicatorPeriodFilter")?.value || "").split("-");
         return { year: num(parts[0]), month: num(parts[1]) };
@@ -108,6 +112,15 @@
 
     function renderDepartments() {
         const select = $("indicatorDepartmentFilter");
+        if (!departmentRequired()) {
+            select.value = "";
+            select.innerHTML = '<option value="">Facility-level KPI</option>';
+            select.disabled = true;
+            select.hidden = true;
+            return;
+        }
+        select.hidden = false;
+        select.disabled = false;
         const existing = select.value;
         const departments = [...new Map(
             state.allItems.map(item => [String(item.department_id || 0), item.department_name || ("Department " + item.department_id)])
@@ -126,7 +139,7 @@
 
     function savedKey(indicatorId) {
         const period = selectedPeriod();
-        const deptId = $("indicatorDepartmentFilter")?.value || "";
+        const deptId = departmentRequired() ? ($("indicatorDepartmentFilter")?.value || "") : "0";
         return [deptId, indicatorId, period.month, period.year, effectiveIndicatorType()].join("|");
     }
 
@@ -167,7 +180,7 @@
 
     function renderHistory() {
         const period = selectedPeriod();
-        const deptId = $("indicatorDepartmentFilter")?.value || "";
+        const deptId = departmentRequired() ? ($("indicatorDepartmentFilter")?.value || "") : "0";
         const rows = state.history.filter(row =>
             String(row.dept_id || row.department_id || "") === String(deptId)
             && num(row.entry_month) === period.month
@@ -306,7 +319,7 @@
 
     async function loadHistory() {
         const period = selectedPeriod();
-        const deptId = $("indicatorDepartmentFilter")?.value || "";
+        const deptId = departmentRequired() ? ($("indicatorDepartmentFilter")?.value || "") : 0;
         const response = await SQ.api.get("/performance/v1/indicator_history.php", {
             indicator_type: effectiveIndicatorType(),
             month: period.month,
@@ -329,6 +342,7 @@
         state.facility = response?.data?.facility || {};
         state.rule = response?.data?.rule || {};
         state.effectiveIndicatorType = response?.data?.effective_indicator_type || indicatorType();
+        state.departmentRequired = response?.data?.department_required !== false;
         if ($("indicatorTypeFilter") && $("indicatorTypeFilter").value !== state.effectiveIndicatorType) {
             $("indicatorTypeFilter").value = state.effectiveIndicatorType;
         }
@@ -336,16 +350,18 @@
         state.activeDepartmentIds = response?.data?.active_department_ids || [];
         state.allItems = response?.data?.items || [];
 
-        if (!deptId) {
-            renderDepartments();
+        renderDepartments();
+        if (!departmentRequired()) {
+            deptId = "";
+        } else if (!deptId) {
             deptId = $("indicatorDepartmentFilter")?.value || "";
         }
 
-        state.items = deptId
+        state.items = departmentRequired() && deptId
             ? state.allItems.filter(item => String(item.department_id || "") === String(deptId))
-            : [];
+            : departmentRequired() ? [] : state.allItems;
 
-        if (!state.activeAssessment || !state.allItems.length) {
+        if ((departmentRequired() && !state.activeAssessment) || !state.allItems.length) {
             state.items = [];
         }
 

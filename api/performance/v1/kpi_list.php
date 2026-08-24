@@ -27,13 +27,10 @@ try {
     $items = [];
 
     if ($rule['kpi_applicable'] && !$rule['block_kpi_entry']) {
-        $items = PerformanceService::filterByDepartmentIds(
-            KPIService::list($facilityTypeId, $departmentId),
-            $activeDepartments
-        );
+        $items = KPIService::list($facilityTypeId, $departmentId);
     }
 
-    if ($departmentId > 0) {
+    if ($rule['kpi_department_required'] && $departmentId > 0) {
         $items = array_values(array_filter($items, fn($item) => (int)($item['department_id'] ?? 0) === $departmentId));
     }
 
@@ -41,6 +38,7 @@ try {
         'facility' => $facility,
         'rule' => $rule,
         'effective_indicator_type' => ($rule['kpi_applicable'] && !$rule['block_kpi_entry']) ? 'KPI' : 'OUTCOME',
+        'department_required' => (bool)$rule['kpi_department_required'],
         'active_assessment' => $activeAssessment,
         'active_department_ids' => $activeDepartments,
         'items' => $items

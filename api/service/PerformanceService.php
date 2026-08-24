@@ -93,7 +93,9 @@ class PerformanceService
         return self::readJson(__DIR__ . '/../config/performance/rules.json', [
             'default_rule' => [
                 'kpi_applicable' => true,
+                'kpi_department_required' => false,
                 'outcome_applicable' => true,
+                'outcome_department_required' => true,
                 'outcome_treated_as_kpi' => false,
                 'block_kpi_entry' => false,
                 'message' => ''
@@ -120,7 +122,9 @@ class PerformanceService
         return [
             'fac_type_id' => $facilityTypeId,
             'kpi_applicable' => (bool)($rule['kpi_applicable'] ?? true),
+            'kpi_department_required' => (bool)($rule['kpi_department_required'] ?? false),
             'outcome_applicable' => (bool)($rule['outcome_applicable'] ?? true),
+            'outcome_department_required' => (bool)($rule['outcome_department_required'] ?? true),
             'outcome_treated_as_kpi' => (bool)($rule['outcome_treated_as_kpi'] ?? false),
             'block_kpi_entry' => (bool)($rule['block_kpi_entry'] ?? false),
             'message' => (string)($rule['message'] ?? '')

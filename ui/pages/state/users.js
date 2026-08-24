@@ -12,7 +12,7 @@
 
     window.SQ = window.SQ || {};
     const SQ = window.SQ;
-    const state = { pager: null, rows: [], canEditProfiles: false, canCreateUsers: false, canResetPasswords: false, editingUserId: 0, scopeOptions: null };
+    const state = { pager: null, rows: [], canEditProfiles: false, canCreateUsers: false, canResetPasswords: false, editingUserId: 0, scopeOptions: null, creatingUser: false };
 
     function downloadCsv(filename, headers, rows) {
         const quote = value => `"${String(value ?? "").replace(/"/g, '""')}"`;
@@ -266,7 +266,10 @@
         const blockId = Number(document.getElementById("createUserFacilityBlock")?.value || 0);
         const select = document.getElementById("createUserFacilityNin");
         const rows = (state.scopeOptions?.facilities || []).filter(row => Number(row.block_id) === blockId);
-        select.innerHTML = `<option value="">Select facility</option>` + rows.map(row => `<option value="${esc(row.NIN_no)}">${esc(row.fac_name)} — NIN ${esc(row.NIN_no)}</option>`).join("");
+        select.innerHTML = `<option value="">Select facility</option>` + rows.map(row => {
+            const facilityType = row.facilities_type || row.facility_type || "Type not set";
+            return `<option value="${esc(row.NIN_no)}">${esc(row.fac_name)} — ${esc(facilityType)} — NIN ${esc(row.NIN_no)}</option>`;
+        }).join("");
         select.disabled = !blockId;
     }
 
@@ -280,6 +283,10 @@
 
     async function createUser(event) {
         event.preventDefault();
+        if (state.creatingUser) return;
+        state.creatingUser = true;
+        const submitButton = event.submitter || event.currentTarget?.querySelector('button[type="submit"]');
+        if (submitButton) submitButton.disabled = true;
         const roleId = Number(document.getElementById("createUserRole").value);
         const payload = {
             role_id: roleId,
@@ -293,12 +300,17 @@
             scope_id: Number(document.getElementById("createUserScope").value || 0)
         };
         try {
-            const response = await SQ.api.post("/state/v1/user_create.php", payload, { loader: true, showError: false });
+            const response = await SQ.api.post("/state/v1/user_create.php", payload, { loader: true, showError: false, timeout: 60000 });
             document.getElementById("stateUserCreateModal").hidden = true;
             event.target.reset(); renderCreateScope();
             SQ.notification?.success(response.message || `User ${response.data?.username || ""} created. Password change is required at first login.`);
             await load();
-        } catch (error) { SQ.notification?.error(error.message || "Unable to create user."); }
+        } catch (error) {
+            SQ.notification?.error(error.message || "Unable to create user.");
+        } finally {
+            state.creatingUser = false;
+            if (submitButton) submitButton.disabled = false;
+        }
     }
 
     function editUser(button) {
