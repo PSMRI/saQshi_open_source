@@ -4,6 +4,10 @@
     const SQ = window.SQ;
     let reportRows = [];
 
+    function domainLabel(key, fallback) {
+        return SQ.deployment?.label ? SQ.deployment.label(key, fallback) : fallback;
+    }
+
     function esc(value) {
         return String(value ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
     }
@@ -23,9 +27,11 @@
 
     function render(rows) {
         const target = document.getElementById("assessorReportRows");
-        target.innerHTML = rows.length ? `<table class="sq-assessor-table"><thead><tr><th>School / Facility</th><th>Assessment</th><th>Status</th><th>Checklist</th><th>Score</th><th>Period</th></tr></thead><tbody>${rows.map(row => `<tr>
+        const facilityLabel = domainLabel("facility", "Facility");
+        const departmentLabel = domainLabel("department", "Department");
+        target.innerHTML = rows.length ? `<table class="sq-assessor-table"><thead><tr><th>${esc(facilityLabel)}</th><th>Assessment</th><th>Status</th><th>Checklist</th><th>Score</th><th>Period</th></tr></thead><tbody>${rows.map(row => `<tr>
             <td><strong>${esc(row.fac_name)}</strong><small>${esc(row.fac_code || "-")} | ${esc(row.district || "-")}</small></td>
-            <td>${esc(row.assessment_name || "Not started")}<small>${esc(row.framework_code || "")}</small>${row.assessor_name ? `<small>Mentor: ${esc(row.assessor_name)}${row.assessor_code ? ` (${esc(row.assessor_code)})` : ""}</small>` : ""}${row.classes ? `<small>Class: ${esc(row.classes)}</small>` : ""}</td>
+            <td>${esc(row.assessment_name || "Not started")}<small>${esc(row.framework_code || "")}</small>${row.assessor_name ? `<small>Assessor: ${esc(row.assessor_name)}${row.assessor_code ? ` (${esc(row.assessor_code)})` : ""}</small>` : ""}${row.classes ? `<small>${esc(departmentLabel)}: ${esc(row.classes)}</small>` : ""}</td>
             <td>${statusBadge(row.status)}</td>
             <td>${esc(row.saved_checkpoints || 0)} / ${esc(row.total_checkpoints || 0)}</td>
             <td>${esc(row.score_percent || 0)}%</td>
@@ -37,8 +43,7 @@
     function renderTrends(rows) {
         const target = document.getElementById("assessorTrendRows");
         const overallTarget = document.getElementById("assessorOverallTrendRows");
-        const schoolLabel = SQ.deployment?.label ? SQ.deployment.label("facility", "Facility") : "Facility";
-        const classLabel = SQ.deployment?.label ? SQ.deployment.label("departments", "Departments") : "Departments";
+        const classLabel = domainLabel("departments", "Departments");
         const overallGroups = new Map();
         rows.filter(row => row.assessment_name).forEach(function (row) {
             const key = `${row.fac_name}|${row.fac_code}|${row.round_id || row.start_date}`;
@@ -61,8 +66,8 @@
         }).join("") || '<div class="sq-assessor-empty">Overall comparison appears after all relevant Classes/Departments are completed.</div>';
         const groups = new Map();
         rows.filter(row => row.assessment_name).forEach(function (row) {
-            // A baseline belongs to the same school and same Class/Department.
-            // A first assessment of another class must never be compared with it.
+            // A baseline belongs to the same facility and department.
+            // A first assessment of another department must never be compared with it.
             const key = `${row.fac_name}|${row.fac_code}|${row.classes || "unassigned"}`;
             if (!groups.has(key)) groups.set(key, []);
             groups.get(key).push(row);

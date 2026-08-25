@@ -2,7 +2,7 @@
     <div class="sq-assessor-toolbar">
         <div>
             <h3>Assessment Reports</h3>
-            <p>Assessment details for your assigned Schools/Facilities.</p>
+            <p data-domain-template="Assessment details for your assigned {facilities}.">Assessment details for your assigned facilities.</p>
         </div>
         <div class="sq-assessor-actions">
             <button class="sq-btn sq-btn-muted" id="assessorReportRefresh" type="button">Refresh</button>
@@ -11,7 +11,7 @@
     </div>
 
     <div class="sq-card">
-        <div class="sq-card-header"><h3 data-domain-template="Overall {facility} Score Trend">Overall School / Facility Score Trend</h3><p data-domain-template="Weighted score across completed {departments} in the same assessment date.">Weighted score across all completed Classes/Departments in the same assessment date.</p></div>
+        <div class="sq-card-header"><h3 data-domain-template="Overall {facility} Score Trend">Overall Facility Score Trend</h3><p data-domain-template="Weighted score across completed {departments} in the same assessment date.">Weighted score across all completed departments in the same assessment date.</p></div>
         <div class="sq-card-body" id="assessorOverallTrendRows"></div>
     </div>
 
@@ -22,8 +22,8 @@
 
     <div class="sq-card">
         <div class="sq-card-header">
-            <div><h3>Assessment Score Trend</h3><p>Compare assessment rounds for an assigned School or Facility.</p></div>
-            <input class="sq-form-control" id="assessorTrendSearch" type="search" placeholder="Search name or UDISE Code" aria-label="Search assessment score trend">
+            <div><h3>Assessment Score Trend</h3><p data-domain-template="Compare assessment rounds for an assigned {facility}.">Compare assessment rounds for an assigned facility.</p></div>
+            <input class="sq-form-control" id="assessorTrendSearch" type="search" placeholder="Search name or NIN" aria-label="Search assessment score trend" data-domain-placeholder="Search name or {facility_code}">
         </div>
         <div class="sq-card-body" id="assessorTrendRows"></div>
     </div>

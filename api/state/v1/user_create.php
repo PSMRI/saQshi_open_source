@@ -75,11 +75,19 @@ try {
     $scopeValues = [1 => $facilityId, 8 => $blockId, 4 => $districtId, 5 => $divisionId];
     $scopeColumn = $scopeColumns[$roleId];
     $scopeValue = $scopeValues[$roleId];
-    $existingScope = $con->prepare("SELECT u_id FROM s_user WHERE role_id_fk = ? AND {$scopeColumn} = ? LIMIT 1");
+    $existingScope = $con->prepare("SELECT u_id, u_name, is_active FROM s_user WHERE role_id_fk = ? AND {$scopeColumn} = ? LIMIT 1");
     $existingScope->bind_param('ii', $roleId, $scopeValue);
     $existingScope->execute();
-    if ($existingScope->get_result()->fetch_assoc()) {
-        Response::validation(['scope_id' => 'A ' . $scopeNames[$roleId] . ' user already exists for this assigned scope.']);
+    $existingScopeRow = $existingScope->get_result()->fetch_assoc();
+    if ($existingScopeRow) {
+        $accountState = (int)$existingScopeRow['is_active'] === 1 ? 'active' : 'inactive';
+        Response::validation(['scope_id' => sprintf(
+            'This %s is already assigned to user ID %d (%s, %s). Activate or update that account instead.',
+            $scopeNames[$roleId],
+            (int)$existingScopeRow['u_id'],
+            (string)$existingScopeRow['u_name'],
+            $accountState
+        )]);
     }
 
     $duplicate = $con->prepare('SELECT 1 FROM s_user WHERE u_name = ? LIMIT 1');
@@ -104,7 +112,34 @@ try {
     Response::success($message, ['u_id' => $con->insert_id, 'username' => $username, 'role_name' => $userType]);
 } catch (Throwable $e) {
     if ($e instanceof mysqli_sql_exception && (int)$e->getCode() === 1062) {
-        Response::validation(['scope_id' => 'A user already exists for this assigned scope.']);
+        $duplicate = $con->prepare('SELECT u_id, u_name FROM s_user WHERE u_name = ? LIMIT 1');
+        $duplicate->bind_param('s', $username);
+        $duplicate->execute();
+        $duplicateUser = $duplicate->get_result()->fetch_assoc();
+        if ($duplicateUser) {
+            Response::validation(['username' => sprintf(
+                'Username "%s" is already used by user ID %d.',
+                (string)$duplicateUser['u_name'],
+                (int)$duplicateUser['u_id']
+            )]);
+        }
+
+        $existingScope = $con->prepare("SELECT u_id, u_name, is_active FROM s_user WHERE role_id_fk = ? AND {$scopeColumn} = ? LIMIT 1");
+        $existingScope->bind_param('ii', $roleId, $scopeValue);
+        $existingScope->execute();
+        $existingScopeRow = $existingScope->get_result()->fetch_assoc();
+        if ($existingScopeRow) {
+            $accountState = (int)$existingScopeRow['is_active'] === 1 ? 'active' : 'inactive';
+            Response::validation(['scope_id' => sprintf(
+                'This %s is already assigned to user ID %d (%s, %s).',
+                $scopeNames[$roleId],
+                (int)$existingScopeRow['u_id'],
+                (string)$existingScopeRow['u_name'],
+                $accountState
+            )]);
+        }
+
+        Response::serverError('A duplicate database constraint prevented user creation. Please contact the system administrator.');
     }
     Response::serverError($e->getMessage());
 }

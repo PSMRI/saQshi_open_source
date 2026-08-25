@@ -1494,7 +1494,7 @@ class AssessorService
         );
     }
 
-    /** Uses the active deployment's facility master for mapping/search. */
+    /** Uses the shared facility master for assessor mapping and search. */
     private function usesJsonFacilities(): bool
     {
         return true;
@@ -1509,12 +1509,11 @@ class AssessorService
         }
 
         $rows = [];
-        $domainPath = __DIR__ . '/../config/domain.json';
-        $domain = is_file($domainPath) ? json_decode((string)file_get_contents($domainPath), true) : [];
-        $masterName = ($domain['domain'] ?? '') === 'healthcare'
-            ? 'facilities_health.json'
-            : 'facilities.json';
-        $path = __DIR__ . '/../config/masters/' . $masterName;
+        // Assessor searches and saved mappings must use the same master in
+        // every deployment. Do not switch to the healthcare sample master
+        // based on domain.json, as it can replace configured facilities with
+        // unrelated records (for example, Varanasi).
+        $path = __DIR__ . '/../config/masters/facilities.json';
         $states = is_file($path) ? json_decode((string)file_get_contents($path), true) : [];
         $typePath = __DIR__ . '/../config/masters/facility_types.json';
         $typeRows = is_file($typePath) ? json_decode((string)file_get_contents($typePath), true) : [];

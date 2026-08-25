@@ -141,6 +141,32 @@
         };
     }
 
+    function withValidationMessage(result) {
+        if (!result || String(result.message || "").toLowerCase() !== "validation failed") {
+            return result;
+        }
+
+        const errors = result.errors;
+        if (!errors || typeof errors !== "object") {
+            return result;
+        }
+
+        const message = Object.values(errors)
+            .flatMap(function (value) {
+                return Array.isArray(value) ? value : [value];
+            })
+            .map(function (value) {
+                return String(value || "").trim();
+            })
+            .find(Boolean);
+
+        if (message) {
+            result.message = message;
+        }
+
+        return result;
+    }
+
     async function ensureCsrfToken(forceRefresh = false) {
         if (!forceRefresh && getCsrfToken()) {
             return getCsrfToken();
@@ -246,6 +272,7 @@
             const response = await fetch(url, fetchOptions);
 
             const result = await parseResponse(response);
+            withValidationMessage(result);
 
             const newToken = extractCsrfToken(result);
 
