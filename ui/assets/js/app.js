@@ -55,7 +55,7 @@
         }
 
         window.addEventListener('load', function () {
-            navigator.serviceWorker.register('/ui/sw.js?v=20260806-mobile-sidebar-1').catch(function (error) {
+            navigator.serviceWorker.register('/ui/sw.js?v=20260825-network-first-1').catch(function (error) {
                 console.warn('SaQshi offline shell could not be registered.', error);
             });
         });
@@ -94,14 +94,19 @@
         document.documentElement.setAttribute("data-theme", savedTheme);
 
         document.querySelectorAll("[data-sq-theme-toggle]").forEach(function (btn) {
+            if (btn.dataset.sqThemeBound === "true") {
+                return;
+            }
+            btn.dataset.sqThemeBound = "true";
             btn.addEventListener("click", function () {
                 const currentTheme =
                     document.documentElement.getAttribute("data-theme") || APP.defaultTheme;
 
-                const nextTheme = currentTheme === "dark" ? "light" : "dark";
+                const nextTheme = currentTheme === "light" ? "dark" : (currentTheme === "dark" ? "green" : "light");
 
                 document.documentElement.setAttribute("data-theme", nextTheme);
                 SQ.storage.set("theme", nextTheme);
+                SQ.storage.set("sq-theme", nextTheme);
 
                 if (SQ.toast) {
                     SQ.toast("Theme changed to " + nextTheme, "info");

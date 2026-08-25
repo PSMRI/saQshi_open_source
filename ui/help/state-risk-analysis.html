@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>State Risk Overview: How to Analyse</title>
+    <link rel="stylesheet" href="/ui/assets/css/sq-ui.css">
+    <style>
+        body{background:linear-gradient(180deg,#eff6ff 0,#f4f7fb 360px);color:#172033}.sq-risk-guide{max-width:1020px;margin:32px auto;padding:0 18px 32px}.sq-risk-guide__hero,.sq-risk-guide__card{padding:22px;border:1px solid #d8e1ef;border-radius:12px;background:#fff;box-shadow:0 5px 18px rgba(15,23,42,.07)}.sq-risk-guide__hero{border:0;background:linear-gradient(135deg,#123f7c,#2563eb 58%,#0ea5a4);color:#fff}.sq-risk-guide__eyebrow{display:inline-flex;margin-bottom:10px;padding:5px 10px;border-radius:999px;background:rgba(255,255,255,.17);font-size:12px;font-weight:800;letter-spacing:.04em;text-transform:uppercase}.sq-risk-guide h1{margin:0 0 8px;font-size:30px}.sq-risk-guide h2{margin:0 0 10px;font-size:18px}.sq-risk-guide h3{margin:0 0 6px;font-size:15px}.sq-risk-guide p{line-height:1.55}.sq-risk-guide__hero p{max-width:760px;margin-bottom:0;color:#e0efff}.sq-risk-guide__start{display:flex;align-items:center;gap:12px;margin-top:16px;padding:12px 14px;border-radius:8px;background:#effcfb;color:#134e4a;font-weight:700}.sq-risk-guide__start span{display:grid;place-items:center;min-width:28px;height:28px;border-radius:50%;background:#0f766e;color:#fff}.sq-risk-guide__grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:14px}.sq-risk-guide__card ol,.sq-risk-guide__card ul{margin:0;padding-left:20px;line-height:1.65}.sq-risk-guide__note{margin-top:14px;padding:14px 16px;border-left:4px solid #d97706;border-radius:7px;background:#fffbeb}.sq-risk-guide__good{border-left-color:#15803d;background:#f0fdf4}.sq-risk-guide__back{display:inline-flex;margin-top:18px}.sq-risk-guide__table{width:100%;border-collapse:collapse;font-size:14px}.sq-risk-guide__table th,.sq-risk-guide__table td{padding:10px;border-bottom:1px solid #e4eaf2;text-align:left;vertical-align:top;line-height:1.45}.sq-risk-guide__table th{background:#f5f8fc;font-size:12px;text-transform:uppercase;color:#53657d}.sq-risk-guide__step{display:grid;grid-template-columns:38px 1fr;gap:12px;margin:8px 0;padding:13px;border-radius:8px;border:1px solid #dce8f8;background:#f8fbff}.sq-risk-guide__step:nth-of-type(3){background:#f0fdf4;border-color:#bbf7d0}.sq-risk-guide__step:nth-of-type(4){background:#fff7ed;border-color:#fed7aa}.sq-risk-guide__step:nth-of-type(5){background:#fdf4ff;border-color:#f5d0fe}.sq-risk-guide__step:nth-of-type(6){background:#fff7ed;border-color:#fde68a}.sq-risk-guide__step b{display:grid;place-items:center;width:32px;height:32px;border-radius:9px;background:#2563eb;color:#fff}.sq-risk-guide__step:nth-of-type(3) b{background:#15803d}.sq-risk-guide__step:nth-of-type(4) b{background:#ea580c}.sq-risk-guide__step:nth-of-type(5) b{background:#9333ea}.sq-risk-guide__step:nth-of-type(6) b{background:#ca8a04}.sq-risk-guide__step p{margin:3px 0 0}.sq-risk-guide__card+ .sq-risk-guide__card{margin-top:14px}.sq-risk-guide__click-note{margin:0 0 12px;padding:10px 12px;border-radius:7px;background:#e0f2fe;color:#075985;font-size:14px;font-weight:700}@media(max-width:680px){.sq-risk-guide{margin-top:16px}.sq-risk-guide__grid{grid-template-columns:1fr}.sq-risk-guide__table{font-size:13px}.sq-risk-guide h1{font-size:25px}}
+    </style>
+</head>
+<body>
+    <main class="sq-risk-guide">
+        <section class="sq-risk-guide__hero">
+            <span class="sq-risk-guide__eyebrow">State monitoring playbook</span>
+            <h1>State Risk Overview: How to Analyse</h1>
+            <p>Use State Risk Overview to identify quality issues affecting the greatest number of facilities, then narrow the result to the location, facility type, department and checkpoint that needs action. It is a prioritisation tool—not a replacement for facility verification or clinical review.</p>
+        </section>
+
+        <div class="sq-risk-guide__start"><span>1</span><div><strong>Start here:</strong> Open State Risk Overview, check Assessment Coverage, then click the highest Area of Concern to see its actual weak checkpoints.</div></div>
+
+        <section class="sq-risk-guide__grid">
+            <article class="sq-risk-guide__card">
+                <h2>What the page answers</h2>
+                <ul>
+                    <li>Which quality concern is weak in the most facilities?</li>
+                    <li>Which district, facility type and department should be reviewed first?</li>
+                    <li>Which exact checklist checkpoints explain the concern?</li>
+                    <li>Which facilities should receive a focused follow-up or support visit?</li>
+                </ul>
+            </article>
+
+            <article class="sq-risk-guide__card">
+                <h2>Before you start</h2>
+                <ul>
+                    <li>Select the reporting scope using search and drill-down filters.</li>
+                    <li>Confirm that the assessment data is current enough for the review meeting.</li>
+                    <li>Check Assessment Coverage before comparing locations or facility types.</li>
+                    <li>Use the minimum affected-facilities field to hide isolated issues when preparing a State-level review.</li>
+                </ul>
+            </article>
+        </section>
+
+        <section class="sq-risk-guide__card" style="margin-top:14px">
+            <h2>Recommended analysis workflow</h2>
+            <p class="sq-risk-guide__click-note">Follow the coloured steps in order. Each click on the overview narrows the result; use “Show All…” to remove a filter.</p>
+            <div class="sq-risk-guide__step"><b>1</b><div><h3>Check coverage</h3><p>Read <strong>Assessment Coverage</strong>. A concern seen in 20 of 20 assessed facilities is stronger evidence than one seen in 20 of 2,000 facilities.</p></div></div>
+            <div class="sq-risk-guide__step"><b>2</b><div><h3>Choose the priority Area of Concern</h3><p>Start with the concern having the most affected facilities. Click it to filter Priority Risk Details to its real Health checkpoints.</p></div></div>
+            <div class="sq-risk-guide__step"><b>3</b><div><h3>Locate the risk</h3><p>Click a district in Geographic Risk Breakdown. Then compare facility types to decide whether the issue is local, type-specific or widespread.</p></div></div>
+            <div class="sq-risk-guide__step"><b>4</b><div><h3>Identify the responsible service area</h3><p>Click the relevant department. The Priority Risk Details table now lists the actual checkpoint text, Department/Package and Area of Concern.</p></div></div>
+            <div class="sq-risk-guide__step"><b>5</b><div><h3>Act and verify</h3><p>Download the affected facilities for the checkpoint, assign an action owner and due date, then re-assess or verify evidence after corrective action.</p></div></div>
+        </section>
+
+        <section class="sq-risk-guide__card">
+            <h2>How to interpret each measure</h2>
+            <table class="sq-risk-guide__table">
+                <thead><tr><th>Measure</th><th>Meaning</th><th>Use it for</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Affected facilities</strong></td><td>Facilities with one or more responses in the lowest configured score band.</td><td>Primary prioritisation measure for State and district action.</td></tr>
+                    <tr><td><strong>Low-score checkpoints</strong></td><td>Distinct checklist items contributing to the risk.</td><td>Estimate the breadth of the quality problem.</td></tr>
+                    <tr><td><strong>Low-score responses</strong></td><td>Total recorded weak responses.</td><td>Supporting evidence when two groups affect similar numbers of facilities.</td></tr>
+                    <tr><td><strong>Assessment coverage</strong></td><td>Assessed facilities divided by total facilities in the active scope.</td><td>Judge confidence in the comparison and identify data-collection gaps.</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="sq-risk-guide__grid">
+            <article class="sq-risk-guide__card">
+                <h2>Using the drill-downs</h2>
+                <ul>
+                    <li><strong>Area of Concern:</strong> filters Priority Risk Details to related checkpoints.</li>
+                    <li><strong>District:</strong> filters all comparisons to that district.</li>
+                    <li><strong>Facility Type:</strong> identifies whether risk is concentrated in PHC, CHC, DH, AAM-SC or another type.</li>
+                    <li><strong>Department:</strong> narrows the checkpoint list to the responsible service area.</li>
+                    <li><strong>Show All… buttons:</strong> remove only the selected drill-down filter.</li>
+                </ul>
+            </article>
+            <article class="sq-risk-guide__card">
+                <h2>Suggested review decisions</h2>
+                <ul>
+                    <li><strong>Widespread:</strong> many districts and facility types affected—plan a State programme action.</li>
+                    <li><strong>District-specific:</strong> one or few districts dominate—assign a district support visit.</li>
+                    <li><strong>Type-specific:</strong> one facility type dominates—review its standards, supplies, staffing and training.</li>
+                    <li><strong>Department-specific:</strong> focus action with the concerned department lead.</li>
+                </ul>
+            </article>
+        </section>
+
+        <section class="sq-risk-guide__card">
+            <h2>From analysis to action</h2>
+            <p>For every selected priority, record: Area of Concern, checkpoint, affected facilities, responsible district/programme team, corrective action, due date, evidence required and verification date. Link the work to Gap Analysis and Action Plan so the next review can distinguish closed actions from repeated risk.</p>
+            <div class="sq-risk-guide__note sq-risk-guide__good"><strong>Good practice:</strong> compare the same scope and score band at each review. A drop in affected facilities is meaningful only when assessment coverage has stayed the same or improved.</div>
+            <div class="sq-risk-guide__note"><strong>Caution:</strong> Do not rank a district as low-performing only from raw response counts. Use affected facilities and coverage together, then verify results with the underlying facility list and evidence.</div>
+        </section>
+
+        <a class="sq-btn sq-btn-primary sq-risk-guide__back" href="/ui/dashboard.html?route=state%2Findicator-analytics">Open State Risk Overview</a>
+    </main>
+</body>
+</html>

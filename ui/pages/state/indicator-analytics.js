@@ -12,7 +12,7 @@
 
     window.SQ = window.SQ || {};
     const SQ = window.SQ;
-    const state = { pager: null };
+    const state = { pager: null, departmentId: 0, facilityTypeId: 0, district: "", areaOfConcern: "" };
 
     function domainLabel(key, fallback) {
         return SQ.deployment && typeof SQ.deployment.label === "function"
@@ -31,7 +31,11 @@
     function params() {
         return state.pager.params({
             search: document.getElementById("stateIndicatorSearch")?.value || "",
-            min_facilities: document.getElementById("stateIndicatorMinFacilities")?.value || 1
+            min_facilities: document.getElementById("stateIndicatorMinFacilities")?.value || 1,
+            department_id: state.departmentId || "",
+            facility_type: state.facilityTypeId || "",
+            district: state.district || "",
+            area_of_concern: state.areaOfConcern || ""
         });
     }
 
@@ -58,10 +62,104 @@
     function renderSummary(data) {
         const a = data.assessment?.summary || {};
         document.getElementById("stateIndicatorSummary").innerHTML = `
-            <div><span>Assessment Indicators</span><strong>${esc(a.indicators || 0)}</strong></div>
-            <div><span>Assessment Schools</span><strong>${esc(a.facilities || 0)}</strong></div>
-            <div><span>Total Responses</span><strong>${esc(a.responses || 0)}</strong></div>
-            <div><span>Minimum Schools</span><strong>${esc(document.getElementById("stateIndicatorMinFacilities")?.value || 1)}</strong></div>
+            <div><span>Low-Score Checkpoints</span><strong>${esc(a.indicators || 0)}</strong></div>
+            <div><span>Affected Facilities</span><strong>${esc(a.facilities || 0)}</strong></div>
+            <div><span>Low-Score Responses</span><strong>${esc(a.responses || 0)}</strong></div>
+            <div><span>Assessment Coverage</span><strong>${esc(a.assessed_facilities || 0)} / ${esc(a.total_facilities || 0)}</strong></div>
+        `;
+    }
+
+    function renderDepartmentRisks(rows) {
+        const target = document.getElementById("stateDepartmentRisks");
+        const clearButton = document.getElementById("stateIndicatorClearDepartment");
+        if (!target) return;
+        if (clearButton) clearButton.hidden = !state.departmentId;
+
+        if (!rows || !rows.length) {
+            target.innerHTML = `<div class="sq-state-empty">No department risks match the selected filters.</div>`;
+            return;
+        }
+
+        target.innerHTML = `
+            <div class="sq-state-list">
+                ${rows.map(row => `
+                    <button class="sq-state-risk-row" type="button" data-department-risk="${esc(row.dept_id)}">
+                        <span><strong>${esc(row.department_name)}</strong><small>${esc(row.low_score_checkpoints)} low-score checkpoints</small></span>
+                        <span class="sq-state-badge sq-state-danger">${esc(row.affected_facilities)} facilities</span>
+                        <span>${esc(row.low_score_responses)} responses</span>
+                    </button>
+                `).join("")}
+            </div>
+        `;
+    }
+
+    function renderFacilityTypeRisks(rows) {
+        const target = document.getElementById("stateFacilityTypeRisks");
+        const clearButton = document.getElementById("stateIndicatorClearFacilityType");
+        if (!target) return;
+        if (clearButton) clearButton.hidden = !state.facilityTypeId;
+
+        if (!rows || !rows.length) {
+            target.innerHTML = `<div class="sq-state-empty">No facility type risks match the selected filters.</div>`;
+            return;
+        }
+
+        target.innerHTML = `
+            <div class="sq-state-list">
+                ${rows.map(row => `
+                    <button class="sq-state-risk-row" type="button" data-facility-type-risk="${esc(row.facility_type_id)}">
+                        <span><strong>${esc(row.facility_type_name)}</strong><small>${esc(row.low_score_checkpoints)} low-score checkpoints</small></span>
+                        <span class="sq-state-badge sq-state-danger">${esc(row.affected_facilities)} facilities</span>
+                        <span>${esc(row.low_score_responses)} responses</span>
+                    </button>
+                `).join("")}
+            </div>
+        `;
+    }
+
+    function renderDistrictRisks(rows) {
+        const target = document.getElementById("stateDistrictRisks");
+        const clearButton = document.getElementById("stateIndicatorClearDistrict");
+        if (!target) return;
+        if (clearButton) clearButton.hidden = !state.district;
+
+        if (!rows || !rows.length) {
+            target.innerHTML = `<div class="sq-state-empty">No district risks match the selected filters.</div>`;
+            return;
+        }
+
+        target.innerHTML = `
+            <div class="sq-state-list">
+                ${rows.map(row => `
+                    <button class="sq-state-risk-row" type="button" data-district-risk="${esc(row.district_name)}">
+                        <span><strong>${esc(row.district_name)}</strong><small>${esc(row.low_score_checkpoints)} low-score checkpoints</small></span>
+                        <span class="sq-state-badge sq-state-danger">${esc(row.affected_facilities)} facilities</span>
+                        <span>${esc(row.low_score_responses)} responses</span>
+                    </button>
+                `).join("")}
+            </div>
+        `;
+    }
+
+    function renderAreaOfConcernRisks(rows) {
+        const target = document.getElementById("stateAreaOfConcernRisks");
+        const clearButton = document.getElementById("stateIndicatorClearArea");
+        if (!target) return;
+        if (clearButton) clearButton.hidden = !state.areaOfConcern;
+        if (!rows || !rows.length) {
+            target.innerHTML = `<div class="sq-state-empty">No Area of Concern risks match the selected filters.</div>`;
+            return;
+        }
+        target.innerHTML = `
+            <div class="sq-state-list">
+                ${rows.map(row => `
+                    <button class="sq-state-risk-row" type="button" data-area-of-concern-risk="${esc(row.area_of_concern)}">
+                        <span><strong>${esc(row.area_of_concern)}</strong><small>${esc(row.low_score_checkpoints)} low-score checkpoints</small></span>
+                        <span class="sq-state-badge sq-state-danger">${esc(row.affected_facilities)} facilities</span>
+                        <span>${esc(row.low_score_responses)} responses</span>
+                    </button>
+                `).join("")}
+            </div>
         `;
     }
 
@@ -75,9 +173,9 @@
             <table class="sq-state-table">
                 <thead>
                     <tr>
-                        <th>Checkpoint</th>
-                        <th>Class</th>
-                        <th>Schools in Lowest Score Band</th>
+                        <th>Risk Checkpoint</th>
+                        <th>Department / Package</th>
+                        <th>Affected Facilities</th>
                         <th>Low-Score Responses</th>
                         <th>Download</th>
                     </tr>
@@ -92,7 +190,7 @@
                                 <td>${esc(row.low_score_count || 0)}</td>
                                 <td>
                                     <button class="sq-btn sq-btn-primary" type="button" data-low-score-download="${esc(row.download_key || row.checkpoint_id)}">
-                                        Schools
+                                        Facilities
                                     </button>
                                 </td>
                             </tr>
@@ -104,14 +202,28 @@
     }
 
     async function load() {
-        const response = await SQ.api.get("/state/v1/indicator_analytics.php", params(), {
-            loader: false,
-            showError: false
-        });
-        const data = response.data || {};
-        renderSummary(data);
-        renderAssessment(data.assessment?.rows || []);
-        state.pager.set(data.assessment?.pagination || {}).render("stateIndicatorPager", "Showing indicators");
+        try {
+            const response = await SQ.api.get("/state/v1/indicator_analytics.php", params(), {
+                loader: false,
+                showError: false
+            });
+            const data = response.data || {};
+            renderSummary(data);
+            renderAreaOfConcernRisks(data.areas_of_concern || []);
+            renderDistrictRisks(data.districts || []);
+            renderFacilityTypeRisks(data.facility_types || []);
+            renderDepartmentRisks(data.departments || []);
+            renderAssessment(data.assessment?.rows || []);
+            state.pager.set(data.assessment?.pagination || {}).render("stateIndicatorPager", "Showing indicators");
+        } catch (error) {
+            const message = esc(error?.message || "Unable to load State risk data.");
+            document.getElementById("stateIndicatorSummary").innerHTML = "";
+            ["stateAreaOfConcernRisks", "stateDistrictRisks", "stateFacilityTypeRisks", "stateDepartmentRisks", "stateAssessmentIndicators"].forEach(function (id) {
+                const target = document.getElementById(id);
+                if (target) target.innerHTML = `<div class="sq-state-empty">${message}</div>`;
+            });
+            if (SQ.notification?.error) SQ.notification.error(error?.message || "Unable to load State risk data.");
+        }
     }
 
     async function downloadFacilities(checkpointId) {
@@ -140,6 +252,54 @@
             }, 350);
         });
         document.getElementById("stateIndicatorMinFacilities")?.addEventListener("change", function () {
+            state.pager.reset();
+            load();
+        });
+        document.getElementById("stateDepartmentRisks")?.addEventListener("click", function (event) {
+            const button = event.target.closest("[data-department-risk]");
+            if (!button) return;
+            state.departmentId = Number(button.getAttribute("data-department-risk")) || 0;
+            state.pager.reset();
+            load();
+        });
+        document.getElementById("stateFacilityTypeRisks")?.addEventListener("click", function (event) {
+            const button = event.target.closest("[data-facility-type-risk]");
+            if (!button) return;
+            state.facilityTypeId = Number(button.getAttribute("data-facility-type-risk")) || 0;
+            state.pager.reset();
+            load();
+        });
+        document.getElementById("stateDistrictRisks")?.addEventListener("click", function (event) {
+            const button = event.target.closest("[data-district-risk]");
+            if (!button) return;
+            state.district = button.getAttribute("data-district-risk") || "";
+            state.pager.reset();
+            load();
+        });
+        document.getElementById("stateAreaOfConcernRisks")?.addEventListener("click", function (event) {
+            const button = event.target.closest("[data-area-of-concern-risk]");
+            if (!button) return;
+            state.areaOfConcern = button.getAttribute("data-area-of-concern-risk") || "";
+            state.pager.reset();
+            load();
+        });
+        document.getElementById("stateIndicatorClearDepartment")?.addEventListener("click", function () {
+            state.departmentId = 0;
+            state.pager.reset();
+            load();
+        });
+        document.getElementById("stateIndicatorClearFacilityType")?.addEventListener("click", function () {
+            state.facilityTypeId = 0;
+            state.pager.reset();
+            load();
+        });
+        document.getElementById("stateIndicatorClearDistrict")?.addEventListener("click", function () {
+            state.district = "";
+            state.pager.reset();
+            load();
+        });
+        document.getElementById("stateIndicatorClearArea")?.addEventListener("click", function () {
+            state.areaOfConcern = "";
             state.pager.reset();
             load();
         });

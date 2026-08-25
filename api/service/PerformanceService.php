@@ -587,9 +587,12 @@ class PerformanceService
         $rule = self::facilityTypeRule($facilityTypeId);
         $effectiveType = self::effectivePerformanceType($facilityTypeId);
         $summary = self::summary($con, $facId);
+        $outcomeDepartmentStatus = self::outcomeDepartmentStatus($con, $facId, $facilityTypeId, $filters);
         $showAll = !empty($filters['all_indicators']) || (($filters['scope'] ?? '') === 'all');
         $trendLimit = $showAll ? 0 : 8;
-        $effectiveSeries = self::indicatorTrends($con, $facId, ['indicator_type' => $effectiveType, 'limit' => $trendLimit])['series'];
+        $departmentId = max(0, (int)($filters['department_id'] ?? $filters['dept_id'] ?? 0));
+        $trendFilters = ['indicator_type' => $effectiveType, 'limit' => $trendLimit, 'department_id' => $departmentId];
+        $effectiveSeries = self::indicatorTrends($con, $facId, $trendFilters)['series'];
 
         return [
             'facility' => $facility,
@@ -597,10 +600,12 @@ class PerformanceService
             'effective_indicator_type' => $effectiveType,
             'effective_indicator_label' => $effectiveType === 'OUTCOME' && !empty($rule['outcome_treated_as_kpi']) ? 'Outcome as KPI' : $effectiveType,
             'summary' => $summary,
-            'month_status' => self::monthlyStatus($con, $facId, ['indicator_type' => $effectiveType]),
+            'outcome_department_status' => $outcomeDepartmentStatus,
+            'month_status' => self::monthlyStatus($con, $facId, ['indicator_type' => $effectiveType, 'department_id' => $departmentId]),
+            'trend_departments' => self::trendDepartments($con, $facId),
             'indicator_trends' => [
                 'KPI' => $effectiveType === 'KPI' ? $effectiveSeries : [],
-                'OUTCOME' => $effectiveType === 'OUTCOME' ? $effectiveSeries : self::indicatorTrends($con, $facId, ['indicator_type' => 'OUTCOME', 'limit' => $trendLimit])['series'],
+                'OUTCOME' => $effectiveType === 'OUTCOME' ? $effectiveSeries : self::indicatorTrends($con, $facId, ['indicator_type' => 'OUTCOME', 'limit' => $trendLimit, 'department_id' => $departmentId])['series'],
                 'EFFECTIVE' => $effectiveSeries
             ],
             'trend' => self::trend($con, $facId, ['indicator_type' => $effectiveType])['series']
@@ -664,6 +669,13 @@ class PerformanceService
             $types .= 's';
         }
 
+        $departmentId = max(0, (int)($filters['department_id'] ?? $filters['dept_id'] ?? 0));
+        if ($departmentId > 0) {
+            $where .= ' AND dept_id = ?';
+            $params[] = $departmentId;
+            $types .= 'i';
+        }
+
         $stmt = $con->prepare("
             SELECT
                 entry_year,
@@ -717,6 +729,13 @@ class PerformanceService
             $types .= 's';
         }
 
+        $departmentId = max(0, (int)($filters['department_id'] ?? $filters['dept_id'] ?? 0));
+        if ($departmentId > 0) {
+            $where .= ' AND dept_id = ?';
+            $params[] = $departmentId;
+            $types .= 'i';
+        }
+
         $sql = "
             SELECT entry_year, entry_month, indicator_type, COUNT(*) AS entries
             FROM performance_entries
@@ -768,6 +787,13 @@ class PerformanceService
             $where .= ' AND indicator_type = ?';
             $params[] = $indicatorType;
             $types .= 's';
+        }
+
+        $departmentId = max(0, (int)($filters['department_id'] ?? $filters['dept_id'] ?? 0));
+        if ($departmentId > 0) {
+            $where .= ' AND dept_id = ?';
+            $params[] = $departmentId;
+            $types .= 'i';
         }
 
         $stmt = $con->prepare("
@@ -840,5 +866,102 @@ class PerformanceService
             'filters' => $filters,
             'series' => array_values($series)
         ];
+    }
+
+    /**
+     * Returns configured Outcome department completion for the selected month.
+     * This intentionally uses the framework configuration, not active assessment departments.
+     */
+    public static function outcomeDepartmentStatus(mysqli $con, int $facId, int $facilityTypeId, array $filters = []): array
+    {
+        self::ensureTable($con);
+        $period = trim((string)($filters['period'] ?? ''));
+        $year = (int)($filters['year'] ?? 0);
+        $month = (int)($filters['month'] ?? 0);
+
+        if (preg_match('/^(\\d{4})-(\\d{2})$/', $period, $matches)) {
+            $year = (int)$matches[1];
+            $month = (int)$matches[2];
+        }
+        if ($year < 2000 || $year > 2100 || $month < 1 || $month > 12) {
+            $year = (int)date('Y');
+            $month = (int)date('n');
+        }
+
+        $config = self::readJson(__DIR__ . '/../config/performance/outcome.json', []);
+        $items = self::flattenIndicators($config, 'OUTCOME', $facilityTypeId);
+        $targets = [];
+        foreach ($items as $item) {
+            $deptId = (int)($item['department_id'] ?? 0);
+            $indicatorId = (int)($item['indicator_id'] ?? 0);
+            if ($deptId > 0 && $indicatorId > 0) {
+                $targets[$deptId][$indicatorId] = true;
+            }
+        }
+
+        if (!$targets) {
+            return ['period' => sprintf('%04d-%02d', $year, $month), 'total_departments' => 0, 'completed_departments' => 0];
+        }
+
+        $stmt = $con->prepare('
+            SELECT dept_id, indicator_id
+            FROM performance_entries
+            WHERE fac_id = ? AND indicator_type = \'OUTCOME\' AND entry_year = ? AND entry_month = ?
+        ');
+        if (!$stmt) {
+            Response::serverError('Outcome department status prepare failed: ' . $con->error);
+        }
+        $stmt->bind_param('iii', $facId, $year, $month);
+        $stmt->execute();
+        $entered = [];
+        $result = $stmt->get_result();
+        while ($row = $result->fetch_assoc()) {
+            $deptId = (int)$row['dept_id'];
+            $indicatorId = (int)$row['indicator_id'];
+            if (isset($targets[$deptId][$indicatorId])) {
+                $entered[$deptId][$indicatorId] = true;
+            }
+        }
+
+        $completed = 0;
+        foreach ($targets as $deptId => $indicatorIds) {
+            if (count($entered[$deptId] ?? []) >= count($indicatorIds)) {
+                $completed++;
+            }
+        }
+
+        return [
+            'period' => sprintf('%04d-%02d', $year, $month),
+            'total_departments' => count($targets),
+            'completed_departments' => $completed
+        ];
+    }
+
+    /**
+     * Returns every department with saved performance entries for a facility.
+     */
+    public static function trendDepartments(mysqli $con, int $facId): array
+    {
+        self::ensureTable($con);
+        $stmt = $con->prepare('SELECT DISTINCT dept_id FROM performance_entries WHERE fac_id = ? ORDER BY dept_id ASC');
+
+        if (!$stmt) {
+            Response::serverError('Performance trend department prepare failed: ' . $con->error);
+        }
+
+        $stmt->bind_param('i', $facId);
+        $stmt->execute();
+        $rows = [];
+        $result = $stmt->get_result();
+
+        while ($row = $result->fetch_assoc()) {
+            $deptId = (int)($row['dept_id'] ?? 0);
+            $rows[] = [
+                'department_id' => $deptId,
+                'department_name' => $deptId === 0 ? 'Facility-level KPI' : self::departmentName($deptId)
+            ];
+        }
+
+        return $rows;
     }
 }

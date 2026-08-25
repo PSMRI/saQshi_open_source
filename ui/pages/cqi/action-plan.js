@@ -29,7 +29,8 @@
         subtypes: [],
         currentIndex: 0,
         editMode: false,
-        isLoading: false
+        isLoading: false,
+        eventsBound: false
     };
 
     function $(id) {
@@ -603,6 +604,15 @@
             return;
         }
 
+        const saveKey = String(payload.assessment_id) + ":" + String(payload.dept_id) + ":" + String(payload.checkpoint_id);
+        SQ.__actionPlanSavingKeys = SQ.__actionPlanSavingKeys || new Set();
+
+        if (SQ.__actionPlanSavingKeys.has(saveKey)) {
+            return;
+        }
+
+        SQ.__actionPlanSavingKeys.add(saveKey);
+
         const originalText = button?.textContent;
 
         if (button) {
@@ -633,10 +643,53 @@
                 button.disabled = false;
                 button.textContent = originalText || "Save Action Plan";
             }
+        } finally {
+            SQ.__actionPlanSavingKeys.delete(saveKey);
+        }
+    }
+
+    function handleDocumentClick(event) {
+        const copy = event.target.closest("[data-sq-copy-system]");
+        const save = event.target.closest("[data-sq-save-plan]");
+        const saveNext = event.target.closest("[data-sq-save-next]");
+
+        if (copy) {
+            const parts = String(copy.dataset.sqCopySystem || "").split(":");
+            copySystemPlan(parts[0], parts[1]);
+        }
+
+        if (save) {
+            const parts = String(save.dataset.sqSavePlan || "").split(":");
+            savePlan(parts[0], parts[1], save);
+        }
+
+        if (saveNext) {
+            const parts = String(saveNext.dataset.sqSaveNext || "").split(":");
+            savePlan(parts[0], parts[1], saveNext, true);
+        }
+
+        if (event.target.closest("#btnPreviousActionPlan")) {
+            state.currentIndex = Math.max(0, state.currentIndex - 1);
+            renderPlans(false);
+        }
+
+        if (event.target.closest("#btnNextActionPlan")) {
+            state.currentIndex = Math.min(state.filtered.length - 1, state.currentIndex + 1);
+            renderPlans(false);
+        }
+
+        if (event.target.closest("#btnEditCompletedActionPlans")) {
+            state.editMode = true;
+            state.currentIndex = 0;
+            renderPlans(false);
         }
     }
 
     function bindEvents() {
+        if (state.eventsBound) {
+            return;
+        }
+
         $("departmentFilter")?.addEventListener("change", function () {
             if ($("concernFilter")) {
                 $("concernFilter").value = "";
@@ -670,42 +723,13 @@
 
         $("btnRefreshActionPlans")?.addEventListener("click", loadActionPlans);
 
-        document.addEventListener("click", function (event) {
-            const copy = event.target.closest("[data-sq-copy-system]");
-            const save = event.target.closest("[data-sq-save-plan]");
-            const saveNext = event.target.closest("[data-sq-save-next]");
+        if (SQ.__actionPlanDocumentClickHandler) {
+            document.removeEventListener("click", SQ.__actionPlanDocumentClickHandler);
+        }
 
-            if (copy) {
-                const parts = String(copy.dataset.sqCopySystem || "").split(":");
-                copySystemPlan(parts[0], parts[1]);
-            }
-
-            if (save) {
-                const parts = String(save.dataset.sqSavePlan || "").split(":");
-                savePlan(parts[0], parts[1], save);
-            }
-
-            if (saveNext) {
-                const parts = String(saveNext.dataset.sqSaveNext || "").split(":");
-                savePlan(parts[0], parts[1], saveNext, true);
-            }
-
-            if (event.target.closest("#btnPreviousActionPlan")) {
-                state.currentIndex = Math.max(0, state.currentIndex - 1);
-                renderPlans(false);
-            }
-
-            if (event.target.closest("#btnNextActionPlan")) {
-                state.currentIndex = Math.min(state.filtered.length - 1, state.currentIndex + 1);
-                renderPlans(false);
-            }
-
-            if (event.target.closest("#btnEditCompletedActionPlans")) {
-                state.editMode = true;
-                state.currentIndex = 0;
-                renderPlans(false);
-            }
-        });
+        SQ.__actionPlanDocumentClickHandler = handleDocumentClick;
+        document.addEventListener("click", handleDocumentClick);
+        state.eventsBound = true;
     }
 
     async function init() {

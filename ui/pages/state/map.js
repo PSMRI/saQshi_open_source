@@ -21,8 +21,9 @@
     let boundaryBounds = null;
     let boundaryData = null;
     let districtScoreMap = {};
-    let activeMapMode = "facility";
-    let activeDomain = "";
+    let activeMapMode = "presence";
+    let activeArea = "";
+    let activeSubtype = "";
     let mapListPoints = [];
     let mapListPage = 1;
     // Keep the details panel compact so the map remains the focus of the page.
@@ -57,10 +58,22 @@
 
     function color(status) {
         const value = String(status || "").toUpperCase();
+        if (value === "CRITICAL") return "#dc2626";
+        if (value === "NEEDS IMPROVEMENT") return "#f59e0b";
+        if (value === "SATISFACTORY") return "#16a34a";
         if (value === "CERTIFIED") return "#16a34a";
         if (value === "CONDITIONAL") return "#f59e0b";
         if (value === "EXPIRED") return "#dc2626";
         return "#2563eb";
+    }
+
+    function facilityMarkerStyle(facilityType) {
+        const type = String(facilityType || "").trim().toUpperCase();
+        if (type === "DH" || type.includes("DISTRICT HOSPITAL")) return { shape: "triangle", color: "#dc2626", label: "DH" };
+        if (type === "CHC" || type.includes("COMMUNITY HEALTH")) return { shape: "circle", color: "#7c3aed", label: "CHC" };
+        if (type === "PHC" || type.includes("PRIMARY HEALTH")) return { shape: "square", color: "#2563eb", label: "PHC" };
+        if (type === "AAM" || type.includes("AAM")) return { shape: "diamond", color: "#ea580c", label: "AAM" };
+        return { shape: "hexagon", color: "#64748b", label: "Other" };
     }
 
     function categoryColor(category) {
@@ -126,7 +139,18 @@
             noWrap: true
         }).addTo(map);
 
-        markerLayer = L.layerGroup().addTo(map);
+        markerLayer = typeof L.markerClusterGroup === "function"
+            ? L.markerClusterGroup({
+                maxClusterRadius: 48,
+                disableClusteringAtZoom: 13,
+                showCoverageOnHover: false,
+                spiderfyOnMaxZoom: true,
+                removeOutsideVisibleBounds: true,
+                chunkedLoading: true,
+                chunkInterval: 80,
+                chunkDelay: 16
+            }).addTo(map)
+            : L.layerGroup().addTo(map);
 
         window.requestAnimationFrame(function () {
             if (map) map.invalidateSize();
@@ -155,21 +179,22 @@
                 style: function (feature) {
                     const district = feature?.properties?.district || feature?.properties?.DISTRICT || feature?.properties?.Dist_Name || feature?.properties?.DIST_NAME || "";
                     const score = districtScoreMap[districtKey(district)];
+                    const areaMode = activeMapMode === "area_of_concern" && activeArea;
                     return {
                         color: "#334155",
-                        weight: activeMapMode === "domain" ? 1.5 : 1,
-                        fillColor: activeMapMode === "domain" ? categoryColor(score?.category?.name) : "#dbeafe",
-                        fillOpacity: activeMapMode === "domain" ? (score ? 0.72 : 0.28) : 0.08
+                        weight: areaMode ? 1.5 : 1,
+                        fillColor: areaMode ? (score ? color(score.status) : "#cbd5e1") : "#dbeafe",
+                        fillOpacity: areaMode ? (score ? 0.5 : 0.14) : 0.08
                     };
                 },
                 onEachFeature: function (feature, layer) {
-                    if (activeMapMode !== "domain") return;
+                    if (activeMapMode !== "area_of_concern" || !activeArea) return;
                     const district = feature?.properties?.district || feature?.properties?.DISTRICT || feature?.properties?.Dist_Name || feature?.properties?.DIST_NAME || "District";
                     const score = districtScoreMap[districtKey(district)];
-                    const details = score
-                        ? `<strong>${esc(district)}</strong><br>${esc(activeDomain)}<br>Score: <b>${esc(score.percentage)}%</b><br>Category: <b>${esc(score.category?.name || "-")}</b><br>Schools assessed: <b>${esc(score.school_count)}</b>`
-                        : `<strong>${esc(district)}</strong><br>No score available for ${esc(activeDomain)}.`;
-                    layer.bindTooltip(details, { sticky: true, opacity: 0.96 });
+                    const detail = score
+                        ? `<strong>${esc(district)}</strong><br>${esc(activeArea)}<br>Latest-assessment score: <b>${esc(score.percentage)}%</b><br>Status: <b>${esc(score.status)}</b><br>Facilities assessed: <b>${esc(score.facility_count)}</b>`
+                        : `<strong>${esc(district)}</strong><br>No latest-assessment score for ${esc(activeArea)}.`;
+                    layer.bindTooltip(detail, { sticky: true, opacity: 0.96 });
                 }
             }).addTo(map);
             boundaryBounds = boundaryLayer.getBounds();
@@ -280,18 +305,21 @@
             const lng = Number(point.longit);
             if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
 
-            const marker = L.circleMarker([lat, lng], {
-                radius: 3,
-                color: "#ffffff",
-                weight: 0.75,
-                fillColor: color(point.status),
-                fillOpacity: 0.86,
-                opacity: 0.9
+            const facilityStyle = facilityMarkerStyle(point.facility_type);
+            const markerColor = activeMapMode === "area_of_concern" && activeArea
+                ? color(point.status)
+                : facilityStyle.color;
+            const marker = L.marker([lat, lng], {
+                icon: L.divIcon({
+                    className: "sq-state-map-icon",
+                    html: `<span class="sq-state-map-marker sq-state-map-marker--${facilityStyle.shape}" style="--marker-color:${markerColor}" aria-label="${esc(facilityStyle.label)}"></span>`,
+                    iconSize: [18, 18],
+                    iconAnchor: [9, 9],
+                    popupAnchor: [0, -10]
+                })
             }).bindPopup(popup(point));
 
-            if (isSchool()) {
-                marker.bindTooltip(`<strong>${esc(point.fac_name)}</strong><br>${esc(facilityCodeLabel())}: ${esc(point.fac_nin || "-")}<br>Assessment: ${esc(point.assessment_name || "Not started")}<br>Status: ${esc(point.assessment_status || "NOT STARTED")}`, { direction: "top", sticky: true, opacity: 0.95 });
-            }
+            marker.bindTooltip(`<strong>${esc(point.fac_name)}</strong><br>Type: ${esc(point.facility_type || facilityStyle.label)}<br>${esc(facilityCodeLabel())}: ${esc(point.fac_nin || "-")}<br>${activeMapMode === "area_of_concern" && activeArea ? `Score: ${esc(point.score ?? "-")}%<br>` : ""}Status: ${esc(point.status || "-")}`, { direction: "top", sticky: true, opacity: 0.95 });
 
             marker.addTo(markerLayer);
             bounds = bounds ? bounds.extend([lat, lng]) : L.latLngBounds([[lat, lng]]);
@@ -324,33 +352,45 @@
             : `<span class="sq-state-dot">No certified coordinates</span>`);
     }
 
-    function renderDomainLegend() {
+    function renderMapLegend() {
         const legend = document.getElementById("stateMapLegend");
         const listCard = document.getElementById("stateMapListCard");
         if (legend) {
-            legend.hidden = activeMapMode !== "domain";
-            legend.innerHTML = activeMapMode === "domain" ? `<strong>${esc(activeDomain)}</strong><span><i style="background:#dc2626"></i>Abhilasha (&lt;60%)</span><span><i style="background:#f59e0b"></i>Pragati (60-75%)</span><span><i style="background:#16a34a"></i>Jagriti (&gt;75%)</span><span><i style="background:#cbd5e1"></i>No score</span>` : "";
+            legend.hidden = false;
+            const typeLegend = `<strong>Facility type</strong><span><b class="sq-state-map-marker sq-state-map-marker--triangle" style="--marker-color:#dc2626"></b>DH</span><span><b class="sq-state-map-marker sq-state-map-marker--circle" style="--marker-color:#7c3aed"></b>CHC</span><span><b class="sq-state-map-marker sq-state-map-marker--square" style="--marker-color:#2563eb"></b>PHC</span><span><b class="sq-state-map-marker sq-state-map-marker--diamond" style="--marker-color:#ea580c"></b>AAM</span><span><b class="sq-state-map-marker sq-state-map-marker--hexagon" style="--marker-color:#64748b"></b>Other</span>`;
+            const scoreLegend = activeMapMode === "area_of_concern" ? `<strong>${esc(activeArea || "Area of Concern")} — latest assessment score (markers and districts)</strong><span><i style="background:#dc2626"></i>Critical (0-25%)</span><span><i style="background:#f59e0b"></i>Needs improvement (26-60%)</span><span><i style="background:#16a34a"></i>Satisfactory (&gt;60%)</span>` : "";
+            legend.innerHTML = typeLegend + scoreLegend;
         }
-        if (listCard) listCard.hidden = activeMapMode === "domain";
+        if (listCard) listCard.hidden = false;
     }
 
-    function populateDomains(domains) {
-        const select = document.getElementById("stateMapDomain");
-        if (!select || !Array.isArray(domains)) return;
-        const previous = select.value || activeDomain;
-        select.innerHTML = `<option value="">Select domain</option>${domains.map(name => `<option value="${esc(name)}">${esc(name)}</option>`).join("")}`;
-        if (domains.includes(previous)) select.value = previous;
+    function populateAreas(areas) {
+        const select = document.getElementById("stateMapArea");
+        if (!select || !Array.isArray(areas)) return;
+        const previous = select.value || activeArea;
+        select.innerHTML = `<option value="">Select Area of Concern</option>${areas.map(name => `<option value="${esc(name)}">${esc(name)}</option>`).join("")}`;
+        if (areas.includes(previous)) select.value = previous;
+    }
+
+    function populateSubtypes(subtypes) {
+        const select = document.getElementById("stateMapSubtype");
+        if (!select || !subtypes || typeof subtypes !== "object") return;
+        const previous = select.value || activeSubtype;
+        select.innerHTML = `<option value="">All subtypes</option>${Object.entries(subtypes).map(([value, label]) => `<option value="${esc(value)}">${esc(label)}</option>`).join("")}`;
+        if (Object.prototype.hasOwnProperty.call(subtypes, previous)) select.value = previous;
     }
 
     async function load() {
         try {
-            activeMapMode = isEducationProfile() ? (document.getElementById("stateMapMode")?.value || "facility") : "facility";
-            activeDomain = document.getElementById("stateMapDomain")?.value || "";
+            activeMapMode = document.getElementById("stateMapMode")?.value || "presence";
+            activeArea = document.getElementById("stateMapArea")?.value || "";
+            activeSubtype = document.getElementById("stateMapSubtype")?.value || "";
             const response = await SQ.api.get("/state/v1/map.php", {
                 _: Date.now(),
                 search: document.getElementById("stateMapSearch")?.value || "",
                 map_mode: activeMapMode,
-                domain: activeDomain
+                area_of_concern: activeArea,
+                area_subtype: activeSubtype
             }, {
                 loader: false,
                 showError: false
@@ -358,17 +398,22 @@
             const data = response.data || {};
             const points = data.map_points || [];
             const config = data.map_config || {};
-            populateDomains(data.domain_options || []);
+            populateAreas(data.area_options || []);
+            populateSubtypes(data.subtype_options || {});
             districtScoreMap = {};
-            (data.district_domain_scores || []).forEach(item => { districtScoreMap[districtKey(item.district)] = item; });
+            (data.district_area_scores || []).forEach(item => { districtScoreMap[districtKey(item.district)] = item; });
 
             ensureMap(config);
             await renderBoundary(config, true);
             const visiblePoints = configuredAreaPoints(points);
             renderMarkers(visiblePoints);
-            if (activeMapMode === "facility") renderList(visiblePoints);
-            else setHtml("stateMapSummary", `${esc(Object.keys(districtScoreMap).length)} districts are coloured by ${esc(activeDomain)} category. Hover over a district to view its score.`);
-            renderDomainLegend();
+            renderList(visiblePoints);
+            if (activeMapMode === "area_of_concern" && !activeArea) {
+                setHtml("stateMapSummary", "Choose an Area of Concern to show facility scores on the map.");
+            } else if (activeMapMode === "area_of_concern") {
+                setHtml("stateMapSummary", `${esc(visiblePoints.length)} mapped facilities are coloured by their ${esc(activeArea)} score.`);
+            }
+            renderMapLegend();
         } catch (error) {
             console.error("[State Map]", error);
             setHtml("stateMapList", `<div class="sq-state-empty">${esc(error.message || "Unable to load certification map.")}</div>`);
@@ -382,11 +427,8 @@
         }
         resetMap();
         const mapMode = document.getElementById("stateMapMode");
-        const domainSelect = document.getElementById("stateMapDomain");
-        if (!isEducationProfile()) {
-            if (mapMode) mapMode.hidden = true;
-            if (domainSelect) domainSelect.hidden = true;
-        }
+        const areaSelect = document.getElementById("stateMapArea");
+        const subtypeSelect = document.getElementById("stateMapSubtype");
         const fullMap = new URLSearchParams(window.location.search).get("full") === "1";
         document.querySelector(".sq-state-map-page")?.classList.toggle("is-full-map", fullMap);
         document.getElementById("stateMapCanvas")?.addEventListener("click", function (event) {
@@ -405,16 +447,17 @@
         });
         document.getElementById("stateMapRefresh")?.addEventListener("click", function () { mapListPage = 1; load(); });
         document.getElementById("stateMapMode")?.addEventListener("change", function () {
-            const domainSelect = document.getElementById("stateMapDomain");
-            const domainMode = this.value === "domain";
-            if (domainSelect) {
-                domainSelect.disabled = !domainMode;
-                if (domainMode && !domainSelect.value && domainSelect.options.length > 1) domainSelect.selectedIndex = 1;
+            const areaMode = this.value === "area_of_concern";
+            if (areaSelect) {
+                areaSelect.hidden = !areaMode;
+                areaSelect.disabled = !areaMode;
             }
+            if (subtypeSelect) { subtypeSelect.hidden = !areaMode; subtypeSelect.disabled = !areaMode; }
             mapListPage = 1;
             load();
         });
-        document.getElementById("stateMapDomain")?.addEventListener("change", function () { if (this.value) load(); });
+        areaSelect?.addEventListener("change", function () { if (subtypeSelect) subtypeSelect.value = ""; load(); });
+        subtypeSelect?.addEventListener("change", function () { load(); });
         document.getElementById("stateMapOpenFull")?.addEventListener("click", function () {
             window.open("/ui/dashboard.html?route=state%2Fmap&full=1", "_blank", "noopener");
         });

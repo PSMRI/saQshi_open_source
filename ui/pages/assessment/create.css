@@ -82,7 +82,8 @@ body:has(.sq-assessment-create-page) .sq-sidebar-link i {
     align-items: flex-start;
     padding: .35rem .55rem;
     border-bottom: 1px solid var(--sq-border);
-    background: var(--sq-bg-surface);
+    background: linear-gradient(100deg, var(--sq-color-primary-50), var(--sq-bg-surface) 62%);
+    border-left:4px solid var(--sq-color-primary-500);
 }
 
 .sq-card-title {

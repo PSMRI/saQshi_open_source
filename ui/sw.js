@@ -1,11 +1,11 @@
 /* SaQshi UI shell cache. Assessment and authentication API responses are never cached here. */
-const CACHE_NAME = "saqshi-ui-shell-20260806-mobile-sidebar-1";
+const CACHE_NAME = "saqshi-ui-shell-20260825-network-first-1";
 const APP_SHELL = [
     "/ui/dashboard.html",
     "/ui/login.html",
-    "/ui/assets/css/sq-ui.css?v=20260730-mobile-2",
+    "/ui/assets/css/sq-ui.css?v=20260824-page-header-soft-1",
     "/ui/assets/js/sq-ui.js?v=20260702-13",
-    "/ui/assets/js/app.js?v=20260806-mobile-sidebar-1",
+    "/ui/assets/js/app.js?v=20260825-theme-persistence-1",
     "/ui/assets/images/logo.png"
 ];
 
@@ -33,17 +33,16 @@ self.addEventListener("fetch", event => {
         return;
     }
 
+    // Online users must receive the latest UI. The cache is only an offline fallback.
     event.respondWith(
-        caches.match(request).then(cached => {
-            const network = fetch(request).then(response => {
-                if (response.ok && url.pathname.startsWith("/ui/")) {
-                    const copy = response.clone();
-                    caches.open(CACHE_NAME).then(cache => cache.put(request, copy));
-                }
-                return response;
-            });
-
-            return cached || network;
-        }).catch(() => caches.match("/ui/dashboard.html"))
+        fetch(request).then(response => {
+            if (response.ok && url.pathname.startsWith("/ui/")) {
+                const copy = response.clone();
+                caches.open(CACHE_NAME).then(cache => cache.put(request, copy));
+            }
+            return response;
+        }).catch(() =>
+            caches.match(request).then(cached => cached || caches.match("/ui/dashboard.html"))
+        )
     );
 });

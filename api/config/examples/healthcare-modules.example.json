@@ -36,7 +36,7 @@
     },
     "map": {
       "enabled": true,
-      "label": "Certification Map"
+      "label": "State Facility Insights Map"
     }
   },
   "role_visibility": {

@@ -15,7 +15,7 @@
 
     "assets": {
         "css": [
-            "/ui/pages/assessment/create.css?v=20260822-cancel-button-wrap-1"
+            "/ui/pages/assessment/create.css?v=20260824-color-hierarchy-1"
         ],
         "js": [
             "/ui/pages/assessment/create.js?v=20260822-auto-name-date-1"

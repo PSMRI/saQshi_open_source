@@ -6,7 +6,7 @@
   "pageHeader": { "title": "Manage Certification", "subtitle": "Add State or National certification details." },
   "authentication": { "required": true },
   "assets": {
-    "css": ["/ui/pages/certification/dashboard.css?v=20260707-4"],
+    "css": ["/ui/pages/certification/dashboard.css?v=20260824-heading-scale-1"],
     "js": ["/ui/pages/certification/dashboard.js?v=20260707-4"]
   },
   "breadcrumb": [{ "label": "Dashboard", "url": "/ui/dashboard.html" }, { "label": "Certification" }, { "label": "Manage" }],

@@ -6,8 +6,8 @@
   "pageHeader": {"title": "Performance Trend", "subtitle": "KPI and outcome trends over time."},
   "authentication": {"required": true},
   "assets": {
-    "css": ["/ui/pages/performance/trend.css?v=20260706-1"],
-    "js": ["/ui/pages/performance/trend.js?v=20260822-facility-nin-export-1"]
+    "css": ["/ui/pages/performance/trend.css?v=20260824-color-hierarchy-1"],
+    "js": ["/ui/pages/performance/trend.js?v=20260824-outcome-completion-1"]
   },
   "breadcrumb": [{"label": "Dashboard", "url": "/ui/dashboard.html"}, {"label": "Performance"}, {"label": "Trend"}],
   "moduleName": "performanceTrend"

@@ -1,0 +1,116 @@
+/* Green health theme: a calm clinical palette with the same contrast as light mode. */
+[data-theme="green"] {
+    --sq-color-primary-50: #ecfdf5;
+    --sq-color-primary-100: #d1fae5;
+    --sq-color-primary-200: #a7f3d0;
+    --sq-color-primary-300: #6ee7b7;
+    --sq-color-primary-400: #34d399;
+    --sq-color-primary-500: #10b981;
+    --sq-color-primary-600: #059669;
+    --sq-color-primary-700: #047857;
+    --sq-color-primary-800: #065f46;
+    --sq-color-primary-900: #064e3b;
+    --sq-color-primary: #059669;
+    --sq-color-primary-hover: #047857;
+    --sq-color-primary-active: #065f46;
+    --sq-color-primary-soft: rgba(5, 150, 105, .12);
+    --sq-bg-body: #f2fbf6;
+    --sq-bg-surface: #ffffff;
+    --sq-bg-muted: #f0fdf4;
+    --sq-bg-soft: #dcfce7;
+    --sq-bg-sidebar: #f7fdf9;
+    --sq-bg-sidebar-hover: #dcfce7;
+    --sq-border: #b7dfc7;
+    --sq-border-light: #dcf2e4;
+    --sq-border-strong: #82c99c;
+    --sq-border-focus: #059669;
+    --sq-text-primary: #163b2a;
+    --sq-text-secondary: #315f48;
+    --sq-text-muted: #5c806b;
+    --sq-text-link: #047857;
+    --sq-table-header-bg: #ecfdf5;
+    --sq-table-row-hover: #f0fdf4;
+    --sq-input-border: #a8d7b8;
+    --sq-focus-ring-color: rgba(5, 150, 105, .38);
+    --sq-shadow-focus: 0 0 0 3px rgba(5, 150, 105, .24);
+}
+
+/* Keep the application shell visibly green, including legacy components that
+   still specify the former blue palette directly. Semantic risk colours stay intact. */
+[data-theme="green"] body,
+[data-theme="green"] .sq-layout,
+[data-theme="green"] .sq-layout-main,
+[data-theme="green"] .sq-main {
+    background: linear-gradient(135deg, #effcf4 0%, #f7fdf9 48%, #e7f8ec 100%);
+}
+
+[data-theme="green"] .sq-header,
+[data-theme="green"] .sq-layout-header,
+[data-theme="green"] .sq-sidebar,
+[data-theme="green"] .sq-layout-sidebar,
+[data-theme="green"] .sq-layout-breadcrumb {
+    background: #f7fdf9;
+    border-color: #a8d7b8;
+}
+
+[data-theme="green"] .sq-sidebar-link.is-active,
+[data-theme="green"] .sq-sidebar-link:hover,
+[data-theme="green"] .sq-header-toggle:hover {
+    background: #d9f6e4;
+    color: #047857;
+}
+
+[data-theme="green"] .sq-card,
+[data-theme="green"] .sq-card-header,
+[data-theme="green"] .sq-card-body,
+[data-theme="green"] .sq-card-footer,
+[data-theme="green"] .sq-table,
+[data-theme="green"] .sq-table-container {
+    border-color: #b7dfc7;
+}
+
+[data-theme="green"] .sq-card-header,
+[data-theme="green"] .sq-table thead th {
+    background: linear-gradient(90deg, #e5f9ec, #f9fffa);
+}
+
+[data-theme="green"] .sq-btn-primary,
+[data-theme="green"] .sq-btn-primary:not(:disabled) {
+    border-color: #047857;
+    background: linear-gradient(135deg, #059669, #047857);
+}
+
+[data-theme="green"] .sq-btn:focus-visible {
+    outline-color: rgba(5, 150, 105, .52);
+}
+
+[data-theme="green"] .sq-state-kpis > div {
+    border-top-color: #059669;
+}
+
+[data-theme="green"] .sq-state-badge,
+[data-theme="green"] .sq-state-type-chips span {
+    background: #d9f6e4;
+    color: #065f46;
+}
+
+[data-theme="green"] .sq-state-chart-row i,
+[data-theme="green"] .sq-state-mini-progress span {
+    background-color: #059669;
+}
+
+[data-theme="green"] .sq-state-domain-link,
+[data-theme="green"] .sq-state-model-details summary,
+[data-theme="green"] .sq-state-plus {
+    color: #047857;
+}
+
+[data-theme="green"] .sq-state-map {
+    background: linear-gradient(135deg, #f1fdf5, #dcfce7);
+    border-color: #a8d7b8;
+}
+
+[data-theme="green"] .sq-state-analysis-guide-button {
+    background: linear-gradient(135deg, #047857, #059669);
+    box-shadow: 0 3px 8px rgba(5, 150, 105, .28);
+}

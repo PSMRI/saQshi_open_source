@@ -12,6 +12,8 @@
 class StateIndicatorAnalyticsService
 {
     private const LOWEST_SCORE_BAND_PERCENT = 25;
+    // Large framework exports can exceed PHP's web memory limit when decoded with json_decode().
+    private const MAX_FRAMEWORK_METADATA_BYTES = 52428800;
     /**
      * Handles analytics processing for this API workflow.
      */
@@ -27,8 +29,214 @@ class StateIndicatorAnalyticsService
                 'per_page' => $pagination['per_page'],
                 'min_facilities' => $minFacilities
             ],
-            'assessment' => self::assessmentWeakIndicators($con, $filters, $pagination, $minFacilities)
+            'assessment' => self::assessmentWeakIndicators($con, $filters, $pagination, $minFacilities),
+            'areas_of_concern' => self::areaOfConcernRisks($con, $filters, $minFacilities),
+            'departments' => self::departmentRisks($con, $filters, $minFacilities),
+            'facility_types' => self::facilityTypeRisks($con, $filters, $minFacilities),
+            'districts' => self::districtRisks($con, $filters, $minFacilities)
         ];
+    }
+
+    /**
+     * Provides mapped facility scores for one configured Area of Concern.
+     */
+    public static function areaOfConcernMap(mysqli $con, array $filters = []): array
+    {
+        $responseTable = self::responseTable($con);
+        $metaMap = self::checkpointMap();
+        $areas = [];
+        foreach ($metaMap as $details) {
+            $area = trim((string)($details['concern_name'] ?? ''));
+            if (str_starts_with($area, 'Area of Concern-')) {
+                $areas[$area] = true;
+            }
+        }
+        $options = array_keys($areas);
+        natcasesort($options);
+        $options = array_values($options);
+        $selected = trim((string)($filters['area_of_concern'] ?? ''));
+        $selectedSubtype = trim((string)($filters['area_subtype'] ?? ''));
+        $subtypes = [];
+        if ($selected !== '') {
+            foreach ($metaMap as $details) {
+                if (($details['concern_name'] ?? '') !== $selected) continue;
+                $code = trim((string)($details['standard'] ?? ''));
+                $name = trim((string)($details['subtype_name'] ?? ''));
+                if ($code !== '') $subtypes[$code] = trim($code . ($name !== '' ? ' — ' . $name : ''));
+            }
+        }
+        ksort($subtypes, SORT_NATURAL | SORT_FLAG_CASE);
+
+        if ($selected === '' || !isset($areas[$selected]) || $responseTable === '' || !self::tableExists($con, 'assessment_master')) {
+            return ['area_options' => $options, 'subtype_options' => $subtypes, 'selected_area' => $selected, 'selected_subtype' => $selectedSubtype, 'map_points' => [], 'district_area_scores' => [], 'total_points' => 0];
+        }
+
+        $assessmentColumn = self::columnExists($con, $responseTable, 'assessment_id') ? 'assessment_id' : 'cycle_id';
+        $where = self::facilityWhere($filters, 'f');
+        $rows = self::rows($con, "
+            SELECT a.fac_id_fk, a.framework_code, r.checkpoint_id,
+                   r.score, r.max_score,
+                   f.fac_name, f.NIN_no, f.Health_facilty_type, f.Dist_Name, f.Block_Name, f.lat, f.longit
+            FROM {$responseTable} r
+            INNER JOIN assessment_master a ON a.assessment_id = r.{$assessmentColumn}
+            INNER JOIN (
+                SELECT fac_id_fk, MAX(assessment_id) AS latest_assessment_id
+                FROM assessment_master
+                GROUP BY fac_id_fk
+            ) latest ON latest.fac_id_fk = a.fac_id_fk AND latest.latest_assessment_id = a.assessment_id
+            INNER JOIN facilities f ON f.fac_id = a.fac_id_fk
+            {$where['sql']}
+              AND f.lat IS NOT NULL AND f.longit IS NOT NULL
+        ", $where['types'], $where['params']);
+
+        $facilities = [];
+        foreach ($rows as $row) {
+            $checkpointId = (string)($row['checkpoint_id'] ?? '');
+            $meta = $metaMap[(string)($row['framework_code'] ?? '') . ':' . $checkpointId]
+                ?? $metaMap[$checkpointId]
+                ?? [];
+            if (($meta['concern_name'] ?? '') !== $selected || ($selectedSubtype !== '' && ($meta['standard'] ?? '') !== $selectedSubtype) || (float)($row['max_score'] ?? 0) <= 0) {
+                continue;
+            }
+            $facilityId = (int)($row['fac_id_fk'] ?? 0);
+            if ($facilityId <= 0) {
+                continue;
+            }
+            if (!isset($facilities[$facilityId])) {
+                $facilities[$facilityId] = [
+                    'fac_id' => $facilityId,
+                    'fac_name' => (string)($row['fac_name'] ?? ''),
+                    'fac_nin' => (string)($row['NIN_no'] ?? ''),
+                    'facility_type' => self::facilityTypeName($row['Health_facilty_type'] ?? ''),
+                    'district' => (string)($row['Dist_Name'] ?? ''),
+                    'block' => (string)($row['Block_Name'] ?? ''),
+                    'lat' => (float)$row['lat'],
+                    'longit' => (float)$row['longit'],
+                    'score_total' => 0.0,
+                    'max_total' => 0.0,
+                    'checkpoint_count' => 0
+                ];
+            }
+            $facilities[$facilityId]['score_total'] += (float)($row['score'] ?? 0);
+            $facilities[$facilityId]['max_total'] += (float)($row['max_score'] ?? 0);
+            $facilities[$facilityId]['checkpoint_count']++;
+        }
+
+        $points = [];
+        $districts = [];
+        foreach ($facilities as $facility) {
+            $score = round(($facility['score_total'] / $facility['max_total']) * 100, 1);
+            $status = $score <= 25 ? 'CRITICAL' : ($score <= 60 ? 'NEEDS IMPROVEMENT' : 'SATISFACTORY');
+            $district = trim((string)($facility['district'] ?? ''));
+            if ($district !== '') {
+                $districts[$district] ??= ['district' => $district, 'score_total' => 0.0, 'max_total' => 0.0, 'facility_count' => 0];
+                $districts[$district]['score_total'] += $facility['score_total'];
+                $districts[$district]['max_total'] += $facility['max_total'];
+                $districts[$district]['facility_count']++;
+            }
+            unset($facility['score_total'], $facility['max_total']);
+            $facility['score'] = $score;
+            $facility['status'] = $status;
+            $facility['area_of_concern'] = $selected;
+            $points[] = $facility;
+        }
+
+        $districtScores = [];
+        foreach ($districts as $district) {
+            $percentage = round(($district['score_total'] / $district['max_total']) * 100, 1);
+            $districtScores[] = [
+                'district' => $district['district'],
+                'percentage' => $percentage,
+                'facility_count' => $district['facility_count'],
+                'status' => $percentage <= 25 ? 'CRITICAL' : ($percentage <= 60 ? 'NEEDS IMPROVEMENT' : 'SATISFACTORY')
+            ];
+        }
+
+        return ['area_options' => $options, 'subtype_options' => $subtypes, 'selected_area' => $selected, 'selected_subtype' => $selectedSubtype, 'map_points' => $points, 'district_area_scores' => $districtScores, 'total_points' => count($points)];
+    }
+
+    /**
+     * Provides mapped facility scores for one configured Area of Concern.
+     */
+    private static function areaOfConcernMapLegacy(mysqli $con, array $filters = []): array
+    {
+        $responseTable = self::responseTable($con);
+        $metaMap = self::checkpointMap();
+        $areas = [];
+        foreach ($metaMap as $details) {
+            $area = trim((string)($details['concern_name'] ?? ''));
+            // The State Map is a Health screen: only use the eight Health NQAS concern groups.
+            if (str_starts_with($area, 'Area of Concern-')) {
+                $areas[$area] = true;
+            }
+        }
+        $options = array_keys($areas);
+        natcasesort($options);
+        $options = array_values($options);
+        $selected = trim((string)($filters['area_of_concern'] ?? ''));
+
+        if ($selected === '' || !isset($areas[$selected]) || $responseTable === '' || !self::tableExists($con, 'assessment_master')) {
+            return ['area_options' => $options, 'selected_area' => $selected, 'map_points' => [], 'total_points' => 0];
+        }
+
+        $assessmentColumn = self::columnExists($con, $responseTable, 'assessment_id') ? 'assessment_id' : 'cycle_id';
+        $where = self::facilityWhere($filters, 'f');
+        $rows = self::rows($con, "
+            SELECT a.fac_id_fk, a.framework_code, r.checkpoint_id,
+                   r.score, r.max_score,
+                   f.fac_name, f.NIN_no, f.Health_facilty_type, f.Dist_Name, f.Block_Name, f.lat, f.longit
+            FROM {$responseTable} r
+            INNER JOIN assessment_master a ON a.assessment_id = r.{$assessmentColumn}
+            INNER JOIN facilities f ON f.fac_id = a.fac_id_fk
+            {$where['sql']}
+              AND f.lat IS NOT NULL AND f.longit IS NOT NULL
+        ", $where['types'], $where['params']);
+
+        $facilities = [];
+        foreach ($rows as $row) {
+            $checkpointId = (string)($row['checkpoint_id'] ?? '');
+            $meta = $metaMap[(string)($row['framework_code'] ?? '') . ':' . $checkpointId]
+                ?? $metaMap[$checkpointId]
+                ?? [];
+            if (($meta['concern_name'] ?? '') !== $selected || (float)($row['max_score'] ?? 0) <= 0) {
+                continue;
+            }
+            $facilityId = (int)($row['fac_id_fk'] ?? 0);
+            if ($facilityId <= 0) {
+                continue;
+            }
+            if (!isset($facilities[$facilityId])) {
+                $facilities[$facilityId] = [
+                    'fac_id' => $facilityId,
+                    'fac_name' => (string)($row['fac_name'] ?? ''),
+                    'fac_nin' => (string)($row['NIN_no'] ?? ''),
+                    'facility_type' => self::facilityTypeName($row['Health_facilty_type'] ?? ''),
+                    'district' => (string)($row['Dist_Name'] ?? ''),
+                    'block' => (string)($row['Block_Name'] ?? ''),
+                    'lat' => (float)$row['lat'],
+                    'longit' => (float)$row['longit'],
+                    'score_total' => 0.0,
+                    'max_total' => 0.0,
+                    'checkpoint_count' => 0
+                ];
+            }
+            $facilities[$facilityId]['score_total'] += (float)($row['score'] ?? 0);
+            $facilities[$facilityId]['max_total'] += (float)($row['max_score'] ?? 0);
+            $facilities[$facilityId]['checkpoint_count']++;
+        }
+
+        $points = [];
+        foreach ($facilities as $facility) {
+            $score = round(($facility['score_total'] / $facility['max_total']) * 100, 1);
+            $status = $score <= 25 ? 'CRITICAL' : ($score <= 60 ? 'NEEDS IMPROVEMENT' : 'SATISFACTORY');
+            unset($facility['score_total'], $facility['max_total']);
+            $facility['score'] = $score;
+            $facility['status'] = $status;
+            $facility['area_of_concern'] = $selected;
+            $points[] = $facility;
+        }
+
+        return ['area_options' => $options, 'selected_area' => $selected, 'map_points' => $points, 'total_points' => count($points)];
     }
 
     /**
@@ -112,7 +320,32 @@ class StateIndicatorAnalyticsService
         $where = self::facilityWhere($filters, 'f');
         $lowWhere = $where;
         $lowWhere['sql'] .= ' AND ' . self::lowestScoreCondition($con, $responseTable, 'r');
+        $departmentId = max(0, (int)($filters['department_id'] ?? 0));
+        if ($departmentId > 0) {
+            $lowWhere['sql'] .= ' AND r.dept_id = ?';
+            $lowWhere['types'] .= 'i';
+            $lowWhere['params'][] = $departmentId;
+        }
         $meta = self::checkpointMap();
+        $areaOfConcern = trim((string)($filters['area_of_concern'] ?? ''));
+        if ($areaOfConcern !== '') {
+            $checkpointIds = [];
+            foreach ($meta as $key => $details) {
+                if (str_contains((string)$key, ':')) {
+                    continue;
+                }
+                if (trim((string)($details['concern_name'] ?? '')) === $areaOfConcern) {
+                    $checkpointIds[] = (int)$key;
+                }
+            }
+            $checkpointIds = array_values(array_filter(array_unique($checkpointIds)));
+            if (!$checkpointIds) {
+                return ['summary' => ['indicators' => 0, 'responses' => 0, 'facilities' => 0, 'assessed_facilities' => 0, 'total_facilities' => 0], 'pagination' => self::paginationMeta($pagination, 0), 'rows' => []];
+            }
+            $lowWhere['sql'] .= ' AND r.checkpoint_id IN (' . implode(',', array_fill(0, count($checkpointIds), '?')) . ')';
+            $lowWhere['types'] .= str_repeat('i', count($checkpointIds));
+            array_push($lowWhere['params'], ...$checkpointIds);
+        }
 
         $summary = self::one($con, "
             SELECT COUNT(DISTINCT r.checkpoint_id) AS indicators,
@@ -123,6 +356,19 @@ class StateIndicatorAnalyticsService
             LEFT JOIN facilities f ON f.fac_id = a.fac_id_fk
             {$lowWhere['sql']}
         ", $lowWhere['types'], $lowWhere['params']);
+
+        $coverageWhere = self::facilityWhere($filters, 'f');
+        $assessed = self::one($con, "
+            SELECT COUNT(DISTINCT a.fac_id_fk) AS assessed_facilities
+            FROM assessment_master a
+            LEFT JOIN facilities f ON f.fac_id = a.fac_id_fk
+            {$coverageWhere['sql']}
+        ", $coverageWhere['types'], $coverageWhere['params']);
+        $totalFacilities = self::one($con, "
+            SELECT COUNT(DISTINCT f.fac_id) AS total_facilities
+            FROM facilities f
+            {$coverageWhere['sql']}
+        ", $coverageWhere['types'], $coverageWhere['params']);
 
         $total = self::one($con, "
             SELECT COUNT(*) AS row_count
@@ -178,11 +424,194 @@ class StateIndicatorAnalyticsService
             'summary' => [
                 'indicators' => (int)($summary['indicators'] ?? 0),
                 'responses' => (int)($summary['responses'] ?? 0),
-                'facilities' => (int)($summary['facilities'] ?? 0)
+                'facilities' => (int)($summary['facilities'] ?? 0),
+                'assessed_facilities' => (int)($assessed['assessed_facilities'] ?? 0),
+                'total_facilities' => (int)($totalFacilities['total_facilities'] ?? 0)
             ],
             'pagination' => self::paginationMeta($pagination, (int)($total['row_count'] ?? 0)),
             'rows' => $rows
         ];
+    }
+
+    /** Groups low-score checkpoints into their configured Areas of Concern. */
+    private static function areaOfConcernRisks(mysqli $con, array $filters, int $minFacilities): array
+    {
+        $responseTable = self::responseTable($con);
+        if ($responseTable === '' || !self::tableExists($con, 'assessment_master')) {
+            return [];
+        }
+
+        $assessmentColumn = self::columnExists($con, $responseTable, 'assessment_id') ? 'assessment_id' : 'cycle_id';
+        $where = self::facilityWhere($filters, 'f');
+        $where['sql'] .= ' AND ' . self::lowestScoreCondition($con, $responseTable, 'r');
+        $responses = self::rows($con, "
+            SELECT a.framework_code, r.checkpoint_id, a.fac_id_fk
+            FROM {$responseTable} r
+            LEFT JOIN assessment_master a ON a.assessment_id = r.{$assessmentColumn}
+            LEFT JOIN facilities f ON f.fac_id = a.fac_id_fk
+            {$where['sql']}
+        ", $where['types'], $where['params']);
+
+        $meta = self::checkpointMap();
+        $selectedArea = trim((string)($filters['area_of_concern'] ?? ''));
+        $groups = [];
+        foreach ($responses as $response) {
+            $frameworkCode = (string)($response['framework_code'] ?? '');
+            $checkpointId = (string)($response['checkpoint_id'] ?? '');
+            $details = $meta[$frameworkCode . ':' . $checkpointId] ?? $meta[$checkpointId] ?? [];
+            $name = trim((string)($details['concern_name'] ?? ''));
+            if ($name === '') {
+                $name = 'Other assessment concerns';
+            }
+            if ($selectedArea !== '' && $name !== $selectedArea) {
+                continue;
+            }
+            $key = $frameworkCode . ':' . $name;
+            if (!isset($groups[$key])) {
+                $groups[$key] = [
+                    'area_of_concern' => $name,
+                    'facilities' => [],
+                    'checkpoints' => [],
+                    'low_score_responses' => 0
+                ];
+            }
+            $groups[$key]['facilities'][(int)($response['fac_id_fk'] ?? 0)] = true;
+            $groups[$key]['checkpoints'][$checkpointId] = true;
+            $groups[$key]['low_score_responses']++;
+        }
+
+        $rows = [];
+        foreach ($groups as $group) {
+            $affected = count(array_filter(array_keys($group['facilities'])));
+            if ($affected < $minFacilities) {
+                continue;
+            }
+            $rows[] = [
+                'area_of_concern' => $group['area_of_concern'],
+                'affected_facilities' => $affected,
+                'low_score_checkpoints' => count($group['checkpoints']),
+                'low_score_responses' => $group['low_score_responses']
+            ];
+        }
+        usort($rows, static fn(array $left, array $right): int =>
+            ($right['affected_facilities'] <=> $left['affected_facilities'])
+            ?: ($right['low_score_responses'] <=> $left['low_score_responses'])
+        );
+
+        return array_slice($rows, 0, 12);
+    }
+
+    /** Ranks departments by the number of facilities with low-score assessment responses. */
+    private static function departmentRisks(mysqli $con, array $filters, int $minFacilities): array
+    {
+        $responseTable = self::responseTable($con);
+        if ($responseTable === '' || !self::tableExists($con, 'assessment_master')) {
+            return [];
+        }
+
+        $assessmentColumn = self::columnExists($con, $responseTable, 'assessment_id') ? 'assessment_id' : 'cycle_id';
+        $where = self::facilityWhere($filters, 'f');
+        $where['sql'] .= ' AND ' . self::lowestScoreCondition($con, $responseTable, 'r');
+        $rows = self::rows($con, "
+            SELECT r.dept_id,
+                   COUNT(DISTINCT a.fac_id_fk) AS affected_facilities,
+                   COUNT(*) AS low_score_responses,
+                   COUNT(DISTINCT r.checkpoint_id) AS low_score_checkpoints
+            FROM {$responseTable} r
+            LEFT JOIN assessment_master a ON a.assessment_id = r.{$assessmentColumn}
+            LEFT JOIN facilities f ON f.fac_id = a.fac_id_fk
+            {$where['sql']}
+            GROUP BY r.dept_id
+            HAVING affected_facilities >= ?
+            ORDER BY affected_facilities DESC, low_score_responses DESC
+            LIMIT 12
+        ", $where['types'] . 'i', array_merge($where['params'], [$minFacilities]));
+
+        foreach ($rows as &$row) {
+            $departmentId = (int)($row['dept_id'] ?? 0);
+            $row['department_name'] = self::departmentName($departmentId);
+            $row['affected_facilities'] = (int)($row['affected_facilities'] ?? 0);
+            $row['low_score_responses'] = (int)($row['low_score_responses'] ?? 0);
+            $row['low_score_checkpoints'] = (int)($row['low_score_checkpoints'] ?? 0);
+        }
+        unset($row);
+
+        return $rows;
+    }
+
+    /** Compares low-score impact across facility types. */
+    private static function facilityTypeRisks(mysqli $con, array $filters, int $minFacilities): array
+    {
+        $responseTable = self::responseTable($con);
+        if ($responseTable === '' || !self::tableExists($con, 'assessment_master')) {
+            return [];
+        }
+
+        $assessmentColumn = self::columnExists($con, $responseTable, 'assessment_id') ? 'assessment_id' : 'cycle_id';
+        $where = self::facilityWhere($filters, 'f');
+        $where['sql'] .= ' AND ' . self::lowestScoreCondition($con, $responseTable, 'r');
+        $rows = self::rows($con, "
+            SELECT f.Health_facilty_type AS facility_type_id,
+                   COUNT(DISTINCT a.fac_id_fk) AS affected_facilities,
+                   COUNT(*) AS low_score_responses,
+                   COUNT(DISTINCT r.checkpoint_id) AS low_score_checkpoints
+            FROM {$responseTable} r
+            LEFT JOIN assessment_master a ON a.assessment_id = r.{$assessmentColumn}
+            LEFT JOIN facilities f ON f.fac_id = a.fac_id_fk
+            {$where['sql']}
+            GROUP BY f.Health_facilty_type
+            HAVING affected_facilities >= ?
+            ORDER BY affected_facilities DESC, low_score_responses DESC
+            LIMIT 12
+        ", $where['types'] . 'i', array_merge($where['params'], [$minFacilities]));
+
+        foreach ($rows as &$row) {
+            $facilityTypeId = (int)($row['facility_type_id'] ?? 0);
+            $row['facility_type_name'] = self::facilityTypeName($facilityTypeId);
+            $row['affected_facilities'] = (int)($row['affected_facilities'] ?? 0);
+            $row['low_score_responses'] = (int)($row['low_score_responses'] ?? 0);
+            $row['low_score_checkpoints'] = (int)($row['low_score_checkpoints'] ?? 0);
+        }
+        unset($row);
+
+        return $rows;
+    }
+
+    /** Ranks districts by low-score assessment impact. */
+    private static function districtRisks(mysqli $con, array $filters, int $minFacilities): array
+    {
+        $responseTable = self::responseTable($con);
+        if ($responseTable === '' || !self::tableExists($con, 'assessment_master')) {
+            return [];
+        }
+
+        $assessmentColumn = self::columnExists($con, $responseTable, 'assessment_id') ? 'assessment_id' : 'cycle_id';
+        $where = self::facilityWhere($filters, 'f');
+        $where['sql'] .= ' AND ' . self::lowestScoreCondition($con, $responseTable, 'r');
+        $where['sql'] .= " AND f.Dist_Name IS NOT NULL AND f.Dist_Name <> ''";
+        $rows = self::rows($con, "
+            SELECT f.Dist_Name AS district_name,
+                   COUNT(DISTINCT a.fac_id_fk) AS affected_facilities,
+                   COUNT(*) AS low_score_responses,
+                   COUNT(DISTINCT r.checkpoint_id) AS low_score_checkpoints
+            FROM {$responseTable} r
+            LEFT JOIN assessment_master a ON a.assessment_id = r.{$assessmentColumn}
+            LEFT JOIN facilities f ON f.fac_id = a.fac_id_fk
+            {$where['sql']}
+            GROUP BY f.Dist_Name
+            HAVING affected_facilities >= ?
+            ORDER BY affected_facilities DESC, low_score_responses DESC
+            LIMIT 12
+        ", $where['types'] . 'i', array_merge($where['params'], [$minFacilities]));
+
+        foreach ($rows as &$row) {
+            $row['affected_facilities'] = (int)($row['affected_facilities'] ?? 0);
+            $row['low_score_responses'] = (int)($row['low_score_responses'] ?? 0);
+            $row['low_score_checkpoints'] = (int)($row['low_score_checkpoints'] ?? 0);
+        }
+        unset($row);
+
+        return $rows;
     }
 
     /**
@@ -275,18 +704,23 @@ class StateIndicatorAnalyticsService
     private static function facilityTypeName(mixed $typeId): string
     {
         $id = (int)$typeId;
-        $map = [
-            1 => 'CHC',
-            2 => 'DH',
-            3 => 'PHC',
-            4 => 'SDH',
-            5 => 'UPHC',
-            6 => 'U-CHC',
-            7 => 'HWC',
-            8 => 'AAM-SC'
-        ];
+        static $names = null;
+        if ($names === null) {
+            $names = [];
+            foreach ([__DIR__ . '/../config/masters/facility_types_health.json', __DIR__ . '/../config/masters/facility_types.json'] as $path) {
+                if (!is_file($path)) continue;
+                $rows = json_decode((string)file_get_contents($path), true);
+                if (!is_array($rows)) continue;
+                foreach ($rows as $row) {
+                    $facilityTypeId = (int)($row['fac_type_id'] ?? $row['facility_type_id'] ?? 0);
+                    $name = trim((string)($row['facilities_type'] ?? $row['fac_type_name'] ?? $row['fac'] ?? ''));
+                    if ($facilityTypeId > 0 && $name !== '') $names[$facilityTypeId] = $name;
+                }
+                if ($names) break;
+            }
+        }
 
-        return $map[$id] ?? (string)$typeId;
+        return $names[$id] ?? ($id > 0 ? 'Facility type ' . $id : 'Unspecified facility type');
     }
 
     /**
@@ -334,7 +768,18 @@ class StateIndicatorAnalyticsService
         }
 
         $map = [];
+        $loadedFrameworkHashes = [];
         foreach (glob(__DIR__ . '/../config/frameworks/*.json') ?: [] as $path) {
+            $size = filesize($path);
+            if ($size === false || $size > self::MAX_FRAMEWORK_METADATA_BYTES) {
+                // Analytics remains available with its built-in "Checkpoint {id}" fallback label.
+                continue;
+            }
+            $hash = sha1_file($path);
+            if ($hash === false || isset($loadedFrameworkHashes[$hash])) {
+                continue;
+            }
+            $loadedFrameworkHashes[$hash] = true;
             $facilityTypes = json_decode((string)file_get_contents($path), true);
             if (!is_array($facilityTypes)) continue;
             $frameworkCode = basename($path, '.json');
@@ -350,6 +795,7 @@ class StateIndicatorAnalyticsService
                                     'class_name' => (string)($department['dept_name'] ?? ''),
                                     'concern_name' => trim((string)($concern['concern_des'] ?? '') . ' ' . (string)($concern['concern_name'] ?? '')),
                                     'standard' => (string)($subtype['Reference_No'] ?? $checkpoint['c_subtype_Reference_No_fk'] ?? ''),
+                                    'subtype_name' => trim((string)($subtype['area_of_con_subtypedeatils'] ?? $subtype['subtype_name'] ?? '')),
                                     'checkpoint' => trim((string)($checkpoint['Checkpoint'] ?? $checkpoint['Measurable_Element'] ?? ''))
                                 ];
                                 $map[$frameworkCode . ':' . $id] = $details;
@@ -359,9 +805,43 @@ class StateIndicatorAnalyticsService
                     }
                 }
             }
+            unset($facilityTypes);
         }
 
         return $map;
+    }
+
+    /** Returns the configured Health department name for an assessment department ID. */
+    private static function departmentName(int $departmentId): string
+    {
+        static $names = null;
+        if ($names === null) {
+            $names = [];
+            foreach ([
+                __DIR__ . '/../config/masters/departmet_heath.json',
+                __DIR__ . '/../config/masters/departmet.json'
+            ] as $path) {
+                if (!is_file($path)) {
+                    continue;
+                }
+                $rows = json_decode((string)file_get_contents($path), true);
+                if (!is_array($rows)) {
+                    continue;
+                }
+                foreach ($rows as $row) {
+                    $id = (int)($row['fac_dept_id'] ?? $row['dept_id'] ?? 0);
+                    $name = trim((string)($row['dept_name'] ?? $row['department_name'] ?? ''));
+                    if ($id > 0 && $name !== '') {
+                        $names[$id] = $name;
+                    }
+                }
+                if ($names) {
+                    break;
+                }
+            }
+        }
+
+        return $names[$departmentId] ?? ($departmentId > 0 ? 'Department ' . $departmentId : 'Facility-wide');
     }
 
     /**

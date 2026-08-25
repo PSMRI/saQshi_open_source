@@ -16,7 +16,7 @@
 
     "assets": {
         "css": [
-            "/ui/pages/assessment/list.css?v=20260702-3"
+            "/ui/pages/assessment/list.css?v=20260824-color-hierarchy-1"
         ],
         "js": [
             "/ui/pages/assessment/list.js?v=20260803-1"

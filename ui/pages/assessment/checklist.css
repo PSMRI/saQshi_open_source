@@ -139,6 +139,21 @@ body:has(.sq-checklist-page) .sq-content{
     color:var(--sq-checklist-pending-text, #7a4808);
 }
 
+.sq-checklist-page .sq-card-header{
+    border-left:4px solid var(--sq-color-primary-500);
+    background:linear-gradient(100deg, var(--sq-color-primary-50), var(--sq-bg-surface) 62%);
+}
+
+.sq-checklist-page .sq-summary-item{
+    border-top:3px solid var(--sq-color-primary-500);
+    background:var(--sq-color-primary-50);
+    box-shadow:0 2px 7px rgba(15, 23, 42, .05);
+}
+
+.sq-checklist-page .sq-summary-item:nth-child(2){ border-top-color:var(--sq-color-warning-500); background:var(--sq-color-warning-50); }
+.sq-checklist-page .sq-summary-item:nth-child(3){ border-top-color:var(--sq-color-info-500); background:var(--sq-color-info-50); }
+.sq-checklist-page .sq-summary-item:nth-child(4){ border-top-color:var(--sq-color-success-500); background:var(--sq-color-success-50); }
+
 .sq-concern-tab small{
     font-size:.62rem;
     opacity:.8;

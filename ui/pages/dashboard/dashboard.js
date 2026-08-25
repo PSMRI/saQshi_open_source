@@ -456,17 +456,14 @@
 
     function renderOutcomeMonths() {
         const summary = state.performance?.summary || {};
-        const rows = (state.performance?.month_status || [])
-            .filter(row => Number(row.outcome_entries || 0) > 0);
-        const latest = rows[rows.length - 1] || null;
-        const totalEntries = rows.reduce(
-            (sum, row) => sum + Number(row.outcome_entries || 0),
-            0
-        );
+        const outcomeStatus = state.performance?.outcome_department_status || {};
+        const completedDepartments = Number(outcomeStatus.completed_departments || 0);
+        const totalDepartments = Number(outcomeStatus.total_departments || 0);
+        const reportingPeriod = outcomeStatus.period || summary.latest_period || "";
 
-        setText("outcome-month-count", summary.outcome_months || rows.length || 0);
-        setText("outcome-entry-count", totalEntries);
-        setText("outcome-latest-month", latest ? shortMonth(latest.period) : "-");
+        setText("outcome-department-completed", completedDepartments);
+        setText("kpi-month-count", summary.kpi_months || 0);
+        setText("performance-reporting-month", reportingPeriod ? shortMonth(reportingPeriod) : "-");
 
         const target = document.getElementById("outcome-month-list");
 
@@ -474,17 +471,17 @@
             return;
         }
 
-        if (!rows.length) {
-            target.innerHTML = `<div class="sq-empty-message">No outcome data filled yet.</div>`;
+        if (!totalDepartments && !summary.kpi_months) {
+            target.innerHTML = `<div class="sq-empty-message">No performance completion data available yet.</div>`;
             return;
         }
 
-        target.innerHTML = rows.slice(-6).reverse().map(row => `
+        target.innerHTML = `
             <div class="sq-outcome-month-chip">
-                <strong>${escapeHtml(shortMonth(row.period))}</strong>
-                <span>${escapeHtml(row.outcome_entries || 0)} outcome entries filled</span>
+                <strong>${escapeHtml(shortMonth(reportingPeriod))}</strong>
+                <span>${escapeHtml(completedDepartments)} of ${escapeHtml(totalDepartments)} outcome departments completed</span>
             </div>
-        `).join("");
+        `;
     }
 
     function renderRecentAssessments() {

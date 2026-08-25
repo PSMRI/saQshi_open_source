@@ -143,11 +143,22 @@
     function syncDepartments() {
         const map = {};
 
+        // Keep the complete department list already loaded for this assessment.
+        // A filtered/reloaded action-plan response can contain only one department;
+        // it must not make the other department options disappear from the filter.
+        state.departments.forEach(function (dept) {
+            const id = Number(dept.dept_id || dept.department_id || 0);
+
+            if (id > 0) {
+                map[id] = dept;
+            }
+        });
+
         state.plans.forEach(function (plan) {
             const dept = plan.department || {};
             const id = Number(plan.dept_id || dept.dept_id || 0);
 
-            if (id > 0 && !map[id]) {
+            if (id > 0 && (!map[id] || /^Department\s+\d+$/i.test(String(map[id].dept_name || "")))) {
                 map[id] = {
                     dept_id: id,
                     dept_name: dept.dept_name || ("Department " + id)
@@ -493,6 +504,19 @@
         const data = response.data || {};
         state.assessment = data.assessment || state.assessment || {};
         state.facility = data.facility || {};
+
+        if (Array.isArray(data.departments)) {
+            data.departments.forEach(function (dept) {
+                const id = Number(dept.dept_id || dept.department_id || 0);
+
+                if (id > 0 && !state.departments.some(function (current) {
+                    return Number(current.dept_id || current.department_id || 0) === id;
+                })) {
+                    state.departments.push(dept);
+                }
+            });
+        }
+
         state.plans = (data.action_plans || []).filter(function (plan) {
             return Boolean(plan.action_plan && plan.action_plan.has_saved_plan);
         });

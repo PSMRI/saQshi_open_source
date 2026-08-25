@@ -1,7 +1,7 @@
 {
   "default_state": "Jharkhand",
   "settings": {
-    "tile_url": "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    "tile_url": "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
     "attribution": "&copy; OpenStreetMap contributors",
     "min_zoom": 5,
     "max_zoom": 18

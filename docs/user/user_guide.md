@@ -529,7 +529,7 @@ Common pages:
 - Facility Categorisation
 - Certification Status
 - Assessment Progress
-- CQI Monitoring
+- CQI Action Tracking
 - Performance Monitoring
 - Facility Drill-down
 - User Administration
@@ -543,6 +543,34 @@ Data is automatically limited by login role:
 | Division | Assigned division |
 | District | Assigned district |
 | Block | Assigned block |
+
+## CQI Action Tracking
+
+Page:
+
+```text
+State Monitoring > CQI Action Tracking
+```
+
+This monitoring page helps state, division, district and block users follow up
+on facility CQI plans without changing the facility's action plan record.
+
+Use the page to identify:
+
+- **High-priority pending** actions that require urgent follow-up.
+- **Unassigned actions** where the responsible person has not been recorded.
+- **Overdue** actions, where the target date has passed and the action is not completed or closed.
+- **Due within 7 days** actions, so a facility can be contacted before the target date.
+
+Each facility row shows its assessment, completed-versus-total action plans,
+pending actions, the earliest target date, last update, and an attention
+summary. An action can appear in more than one attention category; for example,
+a high-priority action can also be overdue.
+
+For every achievable facility action plan, record a clear action, responsible
+person, priority and target date. When the work is complete, use **CQI > Gap
+Closure** to add closure remarks, evidence and revised score, then mark it
+completed. This removes it from pending and overdue follow-up counts.
 
 ## Certification Status
 

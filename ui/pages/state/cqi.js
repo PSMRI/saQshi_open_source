@@ -49,6 +49,15 @@
         if (num(row.overdue) > 0) {
             return `<span class="sq-state-badge sq-state-danger">Overdue</span>`;
         }
+        if (num(row.due_soon) > 0) {
+            return `<span class="sq-state-badge sq-state-warning">Due within 7 days</span>`;
+        }
+        if (num(row.high_priority_pending) > 0) {
+            return `<span class="sq-state-badge sq-state-danger">High priority</span>`;
+        }
+        if (num(row.unassigned_pending) > 0) {
+            return `<span class="sq-state-badge sq-state-warning">Owner missing</span>`;
+        }
         if (num(row.pending) > 0) {
             return `<span class="sq-state-badge sq-state-warning">Pending</span>`;
         }
@@ -82,7 +91,7 @@
                         <th>Status</th>
                         <th>Action Plans</th>
                         <th>Pending</th>
-                        <th>Overdue</th>
+                        <th>Attention Needed</th>
                         <th>Next Target</th>
                         <th>Updated</th>
                     </tr>
@@ -100,7 +109,10 @@
                         <td>${statusBadge(row)}</td>
                         <td>${progress(row.completed || 0, row.total_action_plans || 0)}</td>
                         <td>${esc(row.pending || 0)}</td>
-                        <td>${esc(row.overdue || 0)}</td>
+                        <td>
+                            <strong>${esc(row.overdue || 0)} overdue</strong>
+                            <small>${esc(row.due_soon || 0)} due soon · ${esc(row.high_priority_pending || 0)} high priority · ${esc(row.unassigned_pending || 0)} unassigned</small>
+                        </td>
                         <td>${esc(row.next_target_date || "-")}</td>
                         <td>${esc(row.last_updated_on || "-")}</td>
                     </tr>
@@ -119,15 +131,15 @@
 
             setText("stateCqiTotal", data.facilities_with_action_plan || 0);
             setText("stateCqiDone", data.completed || 0);
-            setText("stateCqiPending", data.pending || 0);
-            setText("stateCqiOverdue", data.overdue || 0);
+            setText("stateCqiHighPriority", data.high_priority_pending || 0);
+            setText("stateCqiUnassigned", data.unassigned_pending || 0);
             renderRows(data.rows || []);
             state.pager.set(data.pagination || {}).render("stateCqiPager", "Showing");
         } catch (error) {
             setText("stateCqiTotal", 0);
             setText("stateCqiDone", 0);
-            setText("stateCqiPending", 0);
-            setText("stateCqiOverdue", 0);
+            setText("stateCqiHighPriority", 0);
+            setText("stateCqiUnassigned", 0);
             document.getElementById("stateCqiRows").innerHTML =
                 `<div class="sq-state-empty">${esc(error.message || "Unable to load CQI monitoring data.")}</div>`;
             state.pager.set({ page: 1, total_pages: 1, total_rows: 0 }).render("stateCqiPager", "Showing");

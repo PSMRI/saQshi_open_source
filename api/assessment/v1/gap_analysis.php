@@ -177,7 +177,7 @@ try {
 
     $checkpointLookup = [];
 
-    foreach ($departments as $dept) {
+    foreach ($departments as &$dept) {
         $deptId = (int)$dept['dept_id'];
 
         $departmentConfig = $engine->getDepartmentById($facTypeId, $deptId);
@@ -185,6 +185,8 @@ try {
         if (!$departmentConfig) {
             continue;
         }
+
+        $dept['dept_name'] = (string)($departmentConfig['dept_name'] ?? '');
 
         foreach (($departmentConfig['concerns'] ?? []) as $concern) {
             foreach (($concern['subtypes'] ?? []) as $subtype) {
@@ -227,6 +229,7 @@ try {
             }
         }
     }
+    unset($dept);
 
     $cycleId = $assessmentId;
 
@@ -413,6 +416,13 @@ try {
             'facility' => $facilityData,
             'scope' => $deptFilter > 0 ? 'DEPARTMENT' : 'ASSESSMENT',
             'dept_id' => $deptFilter > 0 ? $deptFilter : null,
+            'departments' => array_map(static function (array $department): array {
+                return [
+                    'dept_id' => (int)($department['dept_id'] ?? 0),
+                    'dept_name' => (string)($department['dept_name'] ?? ''),
+                    'is_active' => 1
+                ];
+            }, $departments),
 
             'summary' => [
                 'total_original_gaps' => count($allGaps),

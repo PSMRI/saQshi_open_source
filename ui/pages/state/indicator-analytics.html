@@ -2,12 +2,13 @@
 <section class="sq-state-page">
     <div class="sq-state-toolbar">
         <div>
-            <h3>Indicator Analytics</h3>
-            <p>Checklist indicators ranked by schools in the lowest configured score band.</p>
+            <h3>State Risk Overview</h3>
+            <p>Priority assessment risks, based on facilities in the lowest score band.</p>
         </div>
         <div class="sq-state-filters">
-            <input type="search" class="sq-form-control" id="stateIndicatorSearch" placeholder="Search school, UDISE code, district or block" aria-label="Search School, UDISE Code, District Or Block">
-            <input type="number" class="sq-form-control" id="stateIndicatorMinFacilities" min="1" value="1" title="Minimum schools">
+            <a class="sq-btn sq-state-analysis-guide-button" href="/ui/help/state-risk-analysis.html" target="_blank" rel="noopener">New here? Learn how to analyse</a>
+            <input type="search" class="sq-form-control" id="stateIndicatorSearch" placeholder="Search facility, NIN, district or block" aria-label="Search Facility, NIN, District Or Block">
+            <input type="number" class="sq-form-control" id="stateIndicatorMinFacilities" min="1" value="1" title="Minimum facilities">
             <button class="sq-btn sq-btn-primary" id="stateIndicatorRefresh">Refresh</button>
         </div>
     </div>
@@ -16,7 +17,54 @@
 
     <div class="sq-card">
         <div class="sq-card-header">
-            <h3>Checklist Indicators With Most Low-Score Schools</h3>
+            <div>
+                <h3>Area of Concern Risk Breakdown</h3>
+                <p>Quality concerns ranked by the number of affected facilities.</p>
+            </div>
+            <button class="sq-btn sq-btn-light sq-btn-sm" id="stateIndicatorClearArea" type="button" hidden>Show All Areas</button>
+        </div>
+        <div class="sq-card-body" id="stateAreaOfConcernRisks"></div>
+    </div>
+
+    <div class="sq-card">
+        <div class="sq-card-header">
+            <div>
+                <h3>Geographic Risk Breakdown</h3>
+                <p>Districts ranked by low-score impact across assessed facilities.</p>
+            </div>
+            <button class="sq-btn sq-btn-light sq-btn-sm" id="stateIndicatorClearDistrict" type="button" hidden>Show All Districts</button>
+        </div>
+        <div class="sq-card-body" id="stateDistrictRisks"></div>
+    </div>
+
+    <div class="sq-card">
+        <div class="sq-card-header">
+            <div>
+                <h3>Facility Type Risk Comparison</h3>
+                <p>Compare low-score impact by Health facility type.</p>
+            </div>
+            <button class="sq-btn sq-btn-light sq-btn-sm" id="stateIndicatorClearFacilityType" type="button" hidden>Show All Facility Types</button>
+        </div>
+        <div class="sq-card-body" id="stateFacilityTypeRisks"></div>
+    </div>
+
+    <div class="sq-card">
+        <div class="sq-card-header">
+            <div>
+                <h3>Department Risk Breakdown</h3>
+                <p>Departments ranked by low-score impact across facilities.</p>
+            </div>
+            <button class="sq-btn sq-btn-light sq-btn-sm" id="stateIndicatorClearDepartment" type="button" hidden>Show All Departments</button>
+        </div>
+        <div class="sq-card-body" id="stateDepartmentRisks"></div>
+    </div>
+
+    <div class="sq-card">
+        <div class="sq-card-header">
+            <div>
+                <h3>Priority Risk Details</h3>
+                <p>Low-scoring checkpoints ranked by the number of affected facilities.</p>
+            </div>
             <div id="stateIndicatorPager"></div>
         </div>
         <div class="sq-card-body" id="stateAssessmentIndicators"></div>

@@ -16,7 +16,7 @@
 
     "assets": {
         "css": [
-            "/ui/pages/assessment/checklist.css?v=20260807-mobile-actions-1"
+            "/ui/pages/assessment/checklist.css?v=20260824-color-hierarchy-1"
         ],
         "js": [
             "/ui/assets/js/core/offline-response-queue.js?v=20260803-1",

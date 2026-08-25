@@ -14,8 +14,16 @@
     const SQ = window.SQ;
     const state = {
         trends: { KPI: [], OUTCOME: [], EFFECTIVE: [] },
-        effectiveLabel: "KPI"
+        effectiveLabel: "KPI",
+        effectiveType: "KPI",
+        departmentId: "",
+        departments: []
     };
+
+    function currentPeriod() {
+        const now = new Date();
+        return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+    }
 
     function setText(id, value) {
         const el = document.getElementById(id);
@@ -157,36 +165,80 @@
         }
     }
 
+    function filterByDepartment(series) {
+        if (!state.departmentId) {
+            return series;
+        }
+
+        return series.filter(item => String(item.department_id || 0) === state.departmentId);
+    }
+
+    function renderDepartmentFilter() {
+        const select = document.getElementById("perfDepartmentFilter");
+        if (!select) return;
+
+        const departments = new Map(state.departments.map(item => [
+            String(item.department_id || 0),
+            item.department_name || (Number(item.department_id || 0) === 0 ? "Facility-level KPI" : `Department ${item.department_id}`)
+        ]));
+
+        const current = state.departmentId;
+        select.innerHTML = `<option value="">All departments</option>` + [...departments.entries()]
+            .sort((a, b) => a[1].localeCompare(b[1]))
+            .map(([id, name]) => `<option value="${esc(id)}">${esc(name)}</option>`)
+            .join("");
+        state.departmentId = departments.has(current) ? current : "";
+        select.value = state.departmentId;
+    }
+
     function renderTrendSections() {
-        renderCharts("perfOutcomeCharts", state.trends.EFFECTIVE || state.trends.OUTCOME || []);
-        renderCharts("perfKpiCharts", state.trends.KPI || []);
+        const outcomeSeries = state.effectiveType === "OUTCOME"
+            ? (state.trends.EFFECTIVE || state.trends.OUTCOME || [])
+            : (state.trends.OUTCOME || []);
+        setText("perfOutcomeTrendTitle", `${state.effectiveType === "OUTCOME" ? (state.effectiveLabel || "Outcome as KPI") : "Outcome"} Indicator Trends`);
+        renderCharts("perfOutcomeCharts", filterByDepartment(outcomeSeries));
+        renderCharts("perfKpiCharts", filterByDepartment(state.trends.KPI || []));
     }
 
     async function loadDashboard() {
         const response = await SQ.api.get("/performance/v1/dashboard.php", {
-            all_indicators: document.getElementById("perfAllIndicators")?.checked ? 1 : 0
+            all_indicators: document.getElementById("perfAllIndicators")?.checked ? 1 : 0,
+            department_id: state.departmentId,
+            period: document.getElementById("perfPeriodFilter")?.value || currentPeriod()
         }, { loader: false, showError: false });
         const summary = response?.data?.summary || {};
         const monthStatus = response?.data?.month_status || [];
         const trends = response?.data?.indicator_trends || {};
+        const outcomeDepartmentStatus = response?.data?.outcome_department_status || {};
         state.trends = trends;
+        state.departments = response?.data?.trend_departments || [];
+        state.effectiveType = response?.data?.effective_indicator_type || "KPI";
         state.effectiveLabel = response?.data?.effective_indicator_label || response?.data?.effective_indicator_type || "Performance";
 
         setText("perfTotalMonths", summary.total_months || 0);
-        setText("perfTotalEntries", summary.total_entries || 0);
-        setText("perfKpiIndicators", summary.kpi_indicators || summary.outcome_indicators || 0);
+        setText("perfTotalOutcomeDepartments", outcomeDepartmentStatus.total_departments || 0);
+        setText("perfCompletedOutcomeDepartments", outcomeDepartmentStatus.completed_departments || 0);
+        setText("perfKpiIndicators", state.effectiveType === "OUTCOME" ? (summary.outcome_indicators || 0) : (summary.kpi_indicators || 0));
         setText("perfOutcomeIndicators", summary.outcome_indicators || 0);
         setText("perfKpiIndicatorLabel", state.effectiveLabel === "Outcome as KPI" ? "Outcome as KPI Indicators" : "KPI Indicators");
         setText("perfOutcomeIndicatorLabel", "Outcome Indicators");
-        setText("perfLatestPeriod", `Latest period: ${summary.latest_period ? shortMonth(summary.latest_period) : "-"}`);
+        setText("perfLatestPeriod", `Selected month: ${shortMonth(outcomeDepartmentStatus.period || currentPeriod())}`);
 
+        renderDepartmentFilter();
         renderMonthStatus(monthStatus);
         renderTrendSections();
     }
 
     function init() {
+        const periodFilter = document.getElementById("perfPeriodFilter");
+        if (periodFilter && !periodFilter.value) periodFilter.value = currentPeriod();
         document.getElementById("btnPerformanceRefresh")?.addEventListener("click", loadDashboard);
         document.getElementById("perfAllIndicators")?.addEventListener("change", loadDashboard);
+        periodFilter?.addEventListener("change", loadDashboard);
+        document.getElementById("perfDepartmentFilter")?.addEventListener("change", event => {
+            state.departmentId = event.target.value;
+            loadDashboard().catch(console.error);
+        });
         document.getElementById("perfChartStyle")?.addEventListener("change", renderTrendSections);
         loadDashboard().catch(console.error);
     }

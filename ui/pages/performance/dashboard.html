@@ -16,11 +16,21 @@
                     <p>KPI and outcome monitoring summary.</p>
                 </div>
                 <div class="sq-performance-toolbar">
+                    <label class="sq-performance-department-filter">
+                        <span>Department</span>
+                        <select id="perfDepartmentFilter" class="sq-form-control" aria-label="Performance Department Filter">
+                            <option value="">All departments</option>
+                        </select>
+                    </label>
                     <select id="perfChartStyle" class="sq-form-control" aria-label="Perf Chart Style">
                         <option value="line">Line Trend</option>
                         <option value="area">Area Trend</option>
                         <option value="bar">Bar Trend</option>
                     </select>
+                    <label class="sq-performance-department-filter">
+                        <span>Completion month</span>
+                        <input id="perfPeriodFilter" class="sq-form-control" type="month" aria-label="Outcome completion month">
+                    </label>
                     <label class="sq-performance-toggle">
                         <input type="checkbox" id="perfAllIndicators" aria-label="Perf All Indicators">
                         <span>All indicators</span>
@@ -30,10 +40,10 @@
             </div>
             <div class="sq-card-body">
                 <div class="sq-performance-kpis">
-                    <div><span>Total Months</span><strong id="perfTotalMonths">0</strong></div>
-                    <div><span>Total Entries</span><strong id="perfTotalEntries">0</strong></div>
+                    <div><span>Outcome Departments</span><strong id="perfTotalOutcomeDepartments">0</strong></div>
+                    <div><span>Outcome Departments Completed</span><strong id="perfCompletedOutcomeDepartments">0</strong></div>
                     <div><span id="perfKpiIndicatorLabel">KPI Indicators</span><strong id="perfKpiIndicators">0</strong></div>
-                    <div><span id="perfOutcomeIndicatorLabel">Outcome Indicators</span><strong id="perfOutcomeIndicators">0</strong></div>
+                    <div><span>Total Months</span><strong id="perfTotalMonths">0</strong></div>
                 </div>
                 <div class="sq-performance-section-title">
                     <h4>Month Wise Entry Status</h4>
@@ -44,7 +54,7 @@
                 <div class="sq-performance-chart-grid">
                     <div>
                         <div class="sq-performance-section-title">
-                            <h4>Outcome Indicator Trends</h4>
+                            <h4 id="perfOutcomeTrendTitle">Outcome Indicator Trends</h4>
                             <span>Month wise result</span>
                         </div>
                         <div id="perfOutcomeCharts" class="sq-performance-charts" aria-describedby="perfOutcomeChartSummary"></div>

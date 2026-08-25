@@ -486,6 +486,8 @@ class StateDashboardService
             return self::educationGeoMap($con, $filters);
         }
         $filters['_all_facilities'] = true;
+        $mapMode = strtolower(trim((string)($filters['map_mode'] ?? 'certification')));
+        $mapMode = $mapMode === 'presence' ? 'presence' : 'certification';
         $summary = self::certificationSummary($con, $filters);
         $coordinates = self::facilityCoordinatesFromDb($con, $filters);
         $points = [];
@@ -506,10 +508,9 @@ class StateDashboardService
             }
 
             $status = self::normalizeCertStatus($facility['status'] ?? '') ?: 'NOT CERTIFIED';
-            // Healthcare map is a certified-facility locator. Conditional and
-            // non-certified facilities remain in certification lists but are
-            // not plotted here.
-            if ($status !== 'CERTIFIED') {
+            // Certification is deliberately restricted to certified facilities;
+            // the facility-presence view shows every mapped health facility.
+            if ($mapMode === 'certification' && $status !== 'CERTIFIED') {
                 continue;
             }
 
@@ -554,6 +555,7 @@ class StateDashboardService
                 ['type' => 'UNKNOWN', 'count' => $typeCounts['UNKNOWN'] ?? 0]
             ],
             'map_points' => $points,
+            'map_mode' => $mapMode,
             'total_points' => count($points),
             'total_facilities' => $summary['total'] ?? 0
         ];
@@ -1516,11 +1518,12 @@ class StateDashboardService
     public static function cqiSummary(mysqli $con, array $filters = []): array
     {
         if (!self::tableExists($con, 'assessment_action_plan')) {
-            return ['facilities_with_action_plan' => 0, 'total_action_plans' => 0, 'completed' => 0, 'pending' => 0, 'overdue' => 0, 'rows' => []];
+            return ['facilities_with_action_plan' => 0, 'total_action_plans' => 0, 'completed' => 0, 'pending' => 0, 'overdue' => 0, 'due_soon' => 0, 'high_priority_pending' => 0, 'unassigned_pending' => 0, 'rows' => []];
         }
 
         $where = self::actionPlanWhere($con, $filters);
         $today = date('Y-m-d');
+        $dueSoon = date('Y-m-d', strtotime('+7 days'));
         $pagination = self::pagination($filters);
         $page = $pagination['page'];
         $perPage = $pagination['per_page'];
@@ -1531,20 +1534,26 @@ class StateDashboardService
                 COALESCE(SUM(facility_total_action_plans), 0) AS total_action_plans,
                 SUM(CASE WHEN facility_pending = 0 THEN 1 ELSE 0 END) AS completed,
                 SUM(CASE WHEN facility_pending > 0 THEN 1 ELSE 0 END) AS pending,
-                SUM(CASE WHEN facility_overdue > 0 THEN 1 ELSE 0 END) AS overdue
+                SUM(CASE WHEN facility_overdue > 0 THEN 1 ELSE 0 END) AS overdue,
+                COALESCE(SUM(facility_due_soon), 0) AS due_soon,
+                COALESCE(SUM(facility_high_priority_pending), 0) AS high_priority_pending,
+                COALESCE(SUM(facility_unassigned_pending), 0) AS unassigned_pending
             FROM (
                 SELECT
                     a.fac_id_fk,
                     COUNT(*) AS facility_total_action_plans,
                     SUM(CASE WHEN UPPER(COALESCE(ap.status, '')) NOT IN ('COMPLETED','CLOSED') THEN 1 ELSE 0 END) AS facility_pending,
-                    SUM(CASE WHEN ap.target_date IS NOT NULL AND ap.target_date < ? AND UPPER(COALESCE(ap.status, '')) NOT IN ('COMPLETED','CLOSED') THEN 1 ELSE 0 END) AS facility_overdue
+                    SUM(CASE WHEN ap.target_date IS NOT NULL AND ap.target_date < ? AND UPPER(COALESCE(ap.status, '')) NOT IN ('COMPLETED','CLOSED') THEN 1 ELSE 0 END) AS facility_overdue,
+                    SUM(CASE WHEN ap.target_date BETWEEN ? AND ? AND UPPER(COALESCE(ap.status, '')) NOT IN ('COMPLETED','CLOSED') THEN 1 ELSE 0 END) AS facility_due_soon,
+                    SUM(CASE WHEN UPPER(COALESCE(ap.priority, 'MEDIUM')) = 'HIGH' AND UPPER(COALESCE(ap.status, '')) NOT IN ('COMPLETED','CLOSED') THEN 1 ELSE 0 END) AS facility_high_priority_pending,
+                    SUM(CASE WHEN (ap.responsible_person IS NULL OR TRIM(ap.responsible_person) = '') AND UPPER(COALESCE(ap.status, '')) NOT IN ('COMPLETED','CLOSED') THEN 1 ELSE 0 END) AS facility_unassigned_pending
                 FROM assessment_action_plan ap
                 LEFT JOIN assessment_master a ON a.assessment_id = ap.assessment_id
                 LEFT JOIN facilities f ON f.fac_id = a.fac_id_fk
                 {$where['sql']}
                 GROUP BY a.fac_id_fk
             ) facility_cqi
-        ", 's' . $where['types'], array_merge([$today], $where['params']));
+        ", 'sss' . $where['types'], array_merge([$today, $today, $dueSoon], $where['params']));
 
         $detailTotal = self::one($con, "
             SELECT COUNT(*) AS row_count
@@ -1571,6 +1580,9 @@ class StateDashboardService
                 SUM(CASE WHEN UPPER(COALESCE(ap.status, '')) IN ('COMPLETED','CLOSED') THEN 1 ELSE 0 END) AS completed,
                 SUM(CASE WHEN UPPER(COALESCE(ap.status, '')) NOT IN ('COMPLETED','CLOSED') THEN 1 ELSE 0 END) AS pending,
                 SUM(CASE WHEN ap.target_date IS NOT NULL AND ap.target_date < ? AND UPPER(COALESCE(ap.status, '')) NOT IN ('COMPLETED','CLOSED') THEN 1 ELSE 0 END) AS overdue,
+                SUM(CASE WHEN ap.target_date BETWEEN ? AND ? AND UPPER(COALESCE(ap.status, '')) NOT IN ('COMPLETED','CLOSED') THEN 1 ELSE 0 END) AS due_soon,
+                SUM(CASE WHEN UPPER(COALESCE(ap.priority, 'MEDIUM')) = 'HIGH' AND UPPER(COALESCE(ap.status, '')) NOT IN ('COMPLETED','CLOSED') THEN 1 ELSE 0 END) AS high_priority_pending,
+                SUM(CASE WHEN (ap.responsible_person IS NULL OR TRIM(ap.responsible_person) = '') AND UPPER(COALESCE(ap.status, '')) NOT IN ('COMPLETED','CLOSED') THEN 1 ELSE 0 END) AS unassigned_pending,
                 MIN(ap.target_date) AS next_target_date,
                 MAX(ap.updated_on) AS last_updated_on
             FROM assessment_action_plan ap
@@ -1587,7 +1599,7 @@ class StateDashboardService
                 a.status
             ORDER BY f.Dist_Name, f.fac_name, a.assessment_id DESC
             LIMIT ? OFFSET ?
-        ", 's' . $where['types'] . 'ii', array_merge([$today], $where['params'], [$perPage, $offset]));
+        ", 'sss' . $where['types'] . 'ii', array_merge([$today, $today, $dueSoon], $where['params'], [$perPage, $offset]));
 
         return [
             'facilities_with_action_plan' => (int)($row['facilities_with_action_plan'] ?? 0),
@@ -1595,6 +1607,9 @@ class StateDashboardService
             'completed' => (int)($row['completed'] ?? 0),
             'pending' => (int)($row['pending'] ?? 0),
             'overdue' => (int)($row['overdue'] ?? 0),
+            'due_soon' => (int)($row['due_soon'] ?? 0),
+            'high_priority_pending' => (int)($row['high_priority_pending'] ?? 0),
+            'unassigned_pending' => (int)($row['unassigned_pending'] ?? 0),
             'pagination' => self::paginationMeta($pagination, (int)($detailTotal['row_count'] ?? 0)),
             'rows' => $rows
         ];
@@ -3043,7 +3058,7 @@ class StateDashboardService
             'zoom' => (int)($selected['zoom'] ?? $settings['zoom'] ?? 7),
             'min_zoom' => (int)($settings['min_zoom'] ?? 5),
             'max_zoom' => (int)($settings['max_zoom'] ?? 18),
-            'tile_url' => $settings['tile_url'] ?? 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            'tile_url' => $settings['tile_url'] ?? 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
             'attribution' => $settings['attribution'] ?? '&copy; OpenStreetMap contributors',
             'boundary_url' => '/api/state/v1/boundary.php?state=' . rawurlencode($stateKey),
             'boundary_source_url' => $selected['source'] ?? null,

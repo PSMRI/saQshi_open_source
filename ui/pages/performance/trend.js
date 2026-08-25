@@ -18,8 +18,15 @@
         monthStatus: [],
         trends: { KPI: [], OUTCOME: [], EFFECTIVE: [] },
         effectiveLabel: "Performance",
-        effectiveType: "KPI"
+        effectiveType: "KPI",
+        departmentId: "",
+        departments: []
     };
+
+    function currentPeriod() {
+        const now = new Date();
+        return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+    }
 
     function $(id) {
         return document.getElementById(id);
@@ -217,8 +224,38 @@
         }
     }
 
+    function filterByDepartment(series) {
+        if (!state.departmentId) {
+            return series;
+        }
+
+        return series.filter(item => String(item.department_id || 0) === state.departmentId);
+    }
+
+    function renderDepartmentFilter() {
+        const select = $("trendDepartmentFilter");
+        if (!select) return;
+
+        const departments = new Map(state.departments.map(item => [
+            String(item.department_id || 0),
+            item.department_name || (Number(item.department_id || 0) === 0 ? "Facility-level KPI" : `Department ${item.department_id}`)
+        ]));
+
+        const current = state.departmentId;
+        select.innerHTML = `<option value="">All departments</option>` + [...departments.entries()]
+            .sort((a, b) => a[1].localeCompare(b[1]))
+            .map(([id, name]) => `<option value="${esc(id)}">${esc(name)}</option>`)
+            .join("");
+        state.departmentId = departments.has(current) ? current : "";
+        select.value = state.departmentId;
+    }
+
     function renderAll() {
         const readonly = isReadonly();
+        const outcomeIsEffective = state.effectiveType === "OUTCOME";
+        const outcomeSeries = outcomeIsEffective
+            ? (state.trends.EFFECTIVE || state.trends.OUTCOME || [])
+            : (state.trends.OUTCOME || []);
         setText("trendFacility", state.facility?.fac_name || "-");
         setText("trendTotalMonths", state.summary?.total_months || 0);
         setText("trendTotalEntries", state.summary?.total_entries || 0);
@@ -226,9 +263,9 @@
         if ($("btnDownloadOutcomeTrend")) $("btnDownloadOutcomeTrend").hidden = readonly;
         if ($("btnDownloadKpiTrend")) $("btnDownloadKpiTrend").hidden = readonly;
         renderMonthStatus();
-        setText("trendEffectiveTitle", `${state.effectiveLabel || "Performance"} Trends`);
-        renderCharts("trendOutcomeCharts", state.trends.EFFECTIVE || state.trends.OUTCOME || []);
-        renderCharts("trendKpiCharts", state.trends.KPI || []);
+        setText("trendEffectiveTitle", `${outcomeIsEffective ? (state.effectiveLabel || "Outcome as KPI") : "Outcome"} Trends`);
+        renderCharts("trendOutcomeCharts", filterByDepartment(outcomeSeries));
+        renderCharts("trendKpiCharts", filterByDepartment(state.trends.KPI || []));
     }
 
     function excelText(value) {
@@ -241,14 +278,14 @@
 
     function downloadExcel(type) {
         const requestedType = type === "EFFECTIVE" ? (state.effectiveType || "OUTCOME") : type;
-        const series = type === "EFFECTIVE" ? (state.trends.EFFECTIVE || []) : (state.trends[type] || []);
+        const series = filterByDepartment(type === "EFFECTIVE" ? (state.trends.EFFECTIVE || []) : (state.trends[type] || []));
         if (!series.length) {
             if (SQ.toast) SQ.toast(`No ${type} trend data to download.`, "warning");
             return;
         }
 
         const periods = [...new Set(series.flatMap(item => (item.points || []).map(point => point.period)))].sort();
-        const colCount = Math.max(4, 3 + periods.length);
+        const colCount = Math.max(5, 4 + periods.length);
         const reportTime = new Date().toLocaleString();
         const title = `${type === "EFFECTIVE" ? state.effectiveLabel : requestedType} Performance Trend`;
         const dataRows = series.map(item => {
@@ -257,6 +294,7 @@
             return `
                 <tr>
                     <td class="indicator">${excelText(item.indicator_name || "")}</td>
+                    <td>${excelText(item.department_name || (Number(item.department_id || 0) === 0 ? "Facility-level KPI" : "-"))}</td>
                     <td class="num">${excelText(fmt(latest.numerator ?? 0))}</td>
                     <td class="num">${excelText(fmt(latest.denominator ?? 0))}</td>
                     ${periods.map(period => `<td class="num">${byPeriod.has(period) ? excelText(fmt(byPeriod.get(period).result)) : ""}</td>`).join("")}
@@ -298,11 +336,13 @@
                     </tr>
                     <tr>
                         <td class="head">Indicator's Name</td>
+                        <td class="head">Department</td>
                         <td class="head">Numerator</td>
                         <td class="head">Denominator</td>
                         <td class="head" colspan="${Math.max(1, periods.length)}">Month</td>
                     </tr>
                     <tr>
+                        <td class="month"></td>
                         <td class="month"></td>
                         <td class="month"></td>
                         <td class="month"></td>
@@ -327,26 +367,45 @@
 
     async function loadTrend() {
         const response = await SQ.api.get("/performance/v1/trend.php", {
-            all_indicators: $("trendAllIndicators")?.checked ? 1 : 0
+            all_indicators: $("trendAllIndicators")?.checked ? 1 : 0,
+            department_id: state.departmentId,
+            period: $("trendPeriodFilter")?.value || currentPeriod()
         }, { loader: false, showError: false });
 
         state.facility = response?.data?.facility || {};
         state.summary = response?.data?.summary || {};
         state.monthStatus = response?.data?.month_status || [];
         state.trends = response?.data?.indicator_trends || { KPI: [], OUTCOME: [], EFFECTIVE: [] };
+        state.departments = response?.data?.trend_departments || [];
         state.effectiveType = response?.data?.effective_indicator_type || "KPI";
         state.effectiveLabel = response?.data?.effective_indicator_label || state.effectiveType || "Performance";
-        if ($("btnDownloadOutcomeTrend")) $("btnDownloadOutcomeTrend").textContent = `${state.effectiveLabel} Excel`;
+        const outcomeDepartmentStatus = response?.data?.outcome_department_status || {};
+        setText("trendOutcomeDepartments", outcomeDepartmentStatus.total_departments || 0);
+        setText("trendCompletedOutcomeDepartments", outcomeDepartmentStatus.completed_departments || 0);
+        setText("trendSelectedPeriod", shortMonth(outcomeDepartmentStatus.period || currentPeriod()));
+        if ($("btnDownloadOutcomeTrend")) {
+            $("btnDownloadOutcomeTrend").textContent = state.effectiveType === "OUTCOME"
+                ? `${state.effectiveLabel} Excel`
+                : "Outcome Excel";
+        }
+        renderDepartmentFilter();
         renderAll();
     }
 
     function init() {
+        const periodFilter = $("trendPeriodFilter");
+        if (periodFilter && !periodFilter.value) periodFilter.value = currentPeriod();
         document.removeEventListener("click", handleEditLink);
         document.addEventListener("click", handleEditLink);
         $("btnTrendRefresh")?.addEventListener("click", loadTrend);
         $("trendAllIndicators")?.addEventListener("change", loadTrend);
+        periodFilter?.addEventListener("change", loadTrend);
+        $("trendDepartmentFilter")?.addEventListener("change", event => {
+            state.departmentId = event.target.value;
+            loadTrend().catch(console.error);
+        });
         $("trendChartStyle")?.addEventListener("change", renderAll);
-        $("btnDownloadOutcomeTrend")?.addEventListener("click", () => downloadExcel("EFFECTIVE"));
+        $("btnDownloadOutcomeTrend")?.addEventListener("click", () => downloadExcel("OUTCOME"));
         $("btnDownloadKpiTrend")?.addEventListener("click", () => downloadExcel("KPI"));
         loadTrend().catch(console.error);
     }

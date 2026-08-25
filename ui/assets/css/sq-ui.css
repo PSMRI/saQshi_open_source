@@ -21,7 +21,7 @@
    Layout
 ========================================================== */
 
-@import url("../css/layout/layout.css?v=20260730-2");
+@import url("../css/layout/layout.css?v=20260824-page-header-soft-1");
 
 /* ==========================================================
    Components
@@ -52,6 +52,7 @@
 ========================================================== */
 @import url("themes/light.css?v=20260702-17");
 @import url("themes/dark.css?v=20260702-17");
+@import url("themes/green.css?v=20260825-1");
 html {
     scroll-behavior: smooth;
 }

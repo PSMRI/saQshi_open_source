@@ -112,12 +112,15 @@
         <a href="#checklist">Checklist Entry</a>
         <a href="#external-assessor">External Assessor</a>
         <a href="#cqi">CQI: Gap, Action, Closure</a>
+        <a href="#cqi-action-tracking">CQI Action Tracking</a>
         <a href="#performance">KPI & Outcome</a>
         <a href="#certification">Certification</a>
         <a href="#ai-chat">AI Chat Assistant</a>
         <a href="#reports">Reports</a>
         <a href="#profile">Profile & Facility</a>
         <a href="#monitoring-roles">State, Regional, District & Block Monitoring</a>
+        <a href="#state-risk-overview">State Risk Overview Analysis</a>
+        <a href="#state-facility-insights-map">State Facility Insights Map</a>
         <a href="#accessibility">Accessibility</a>
         <a href="#errors">Errors & Messages</a>
         <a href="#workflow">Recommended Workflow</a>
@@ -298,6 +301,33 @@
             <a class="sq-doc-top" href="#top">Back to top</a>
         </section>
 
+        <section class="sq-doc-card full sq-doc-section" id="cqi-action-tracking" data-guide="user">
+            <h2>CQI Action Tracking</h2>
+            <p>Monitoring users can follow up on facility CQI actions without creating a duplicate plan.</p>
+            <div class="sq-doc-grid">
+                <div>
+                    <h3>What needs attention</h3>
+                    <ul class="sq-doc-list">
+                        <li><strong>High-priority pending:</strong> open actions marked High priority.</li>
+                        <li><strong>Unassigned actions:</strong> open actions with no responsible person.</li>
+                        <li><strong>Overdue:</strong> target date has passed and the action is still open.</li>
+                        <li><strong>Due within 7 days:</strong> follow up before the action becomes overdue.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>How to analyse and follow up</h3>
+                    <ol class="sq-doc-list">
+                        <li>Open <strong>State Monitoring → CQI Action Tracking</strong>.</li>
+                        <li>Start with high-priority, overdue and unassigned counts.</li>
+                        <li>Search for a Facility or NIN and review its attention summary and next target date.</li>
+                        <li>Ask the facility to update the original CQI action plan, then complete Gap Closure with evidence when work is finished.</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="sq-doc-note">One action can be both high priority and overdue, so these headline counts should be reviewed as attention signals, not added together as a unique-action total.</div>
+            <a class="sq-doc-top" href="#top">Back to top</a>
+        </section>
+
         <section class="sq-doc-card full sq-doc-section" id="performance" data-guide="user">
             <h2>KPI and Outcome Performance Monitoring</h2>
             <p>Performance pages capture monthly indicators for activated departments.</p>
@@ -446,6 +476,57 @@
                 <li><strong>Assessment, CQI and Performance Monitoring:</strong> show facility-level progress only for facilities under the user&apos;s assigned geography.</li>
                 <li><strong>State Reports:</strong> downloads are also scoped, so district/block users cannot download full state data.</li>
             </ul>
+            <a class="sq-doc-top" href="#top">Back to top</a>
+        </section>
+
+        <section class="sq-doc-card full sq-doc-section" id="state-risk-overview" data-guide="user">
+            <h2>State Risk Overview Analysis</h2>
+            <p>State, regional, district and block monitoring users can use State Risk Overview to identify the quality concerns affecting the most facilities and drill down to the exact checkpoint that needs action.</p>
+            <div class="sq-doc-flow">
+                <div class="sq-doc-step"><strong>1. Check coverage</strong><span>Confirm assessed facilities versus total facilities in the selected scope.</span></div>
+                <div class="sq-doc-step"><strong>2. Select concern</strong><span>Choose the Area of Concern with the highest affected-facility count.</span></div>
+                <div class="sq-doc-step"><strong>3. Narrow scope</strong><span>Use district, facility type and department breakdowns to locate the risk.</span></div>
+                <div class="sq-doc-step"><strong>4. Take action</strong><span>Review real checkpoint text, download facilities and assign follow-up action.</span></div>
+            </div>
+            <div class="sq-doc-grid" style="margin-top:12px">
+                <div>
+                    <h3>How to read the data</h3>
+                    <ul class="sq-doc-list">
+                        <li><strong>Affected facilities:</strong> facilities with one or more responses in the lowest score band.</li>
+                        <li><strong>Low-score checkpoints:</strong> distinct weak checklist items contributing to the risk.</li>
+                        <li><strong>Assessment coverage:</strong> assessed facilities divided by all facilities in the current scope.</li>
+                        <li>Use affected facilities and coverage together; raw response count alone does not determine priority.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Using the drill-downs</h3>
+                    <ul class="sq-doc-list">
+                        <li>Click an <strong>Area of Concern</strong> to filter Priority Risk Details to related checkpoints.</li>
+                        <li>Click a <strong>District</strong>, <strong>Facility Type</strong> or <strong>Department</strong> to focus every breakdown.</li>
+                        <li>Use <strong>Show All…</strong> to remove the selected filter.</li>
+                        <li>Use the <strong>Facilities</strong> button next to a checkpoint to download the affected facility list.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="sq-doc-note"><strong>Start here:</strong> Open State Risk Overview, check coverage, then click the highest Area of Concern. Verify the actual checkpoint and responsible Department/Package before assigning corrective action.</div>
+            <p style="margin-top:12px"><a class="sq-doc-top" href="/ui/help/state-risk-analysis.html" target="_blank" rel="noopener">Open the visual “How to Analyse” guide in a new tab</a></p>
+            <a class="sq-doc-top" href="#top">Back to top</a>
+        </section>
+
+        <section class="sq-doc-card full sq-doc-section" id="state-facility-insights-map" data-guide="user">
+            <h2>State Facility Insights Map</h2>
+            <p>Use this map to see facility presence, certification coverage, and latest assessment results by Area of Concern and subtype.</p>
+            <div class="sq-doc-flow">
+                <div class="sq-doc-step"><strong>1. Pick a view</strong><span>Choose Facility Presence, Certification, or Area of Concern.</span></div>
+                <div class="sq-doc-step"><strong>2. Analyse a concern</strong><span>Select an Area of Concern and optionally one subtype standard.</span></div>
+                <div class="sq-doc-step"><strong>3. Read the colours</strong><span>Districts and facilities use the latest assessment: red critical, amber needs improvement, green satisfactory.</span></div>
+                <div class="sq-doc-step"><strong>4. Drill into facilities</strong><span>Click a cluster or zoom in; shapes identify DH, CHC, PHC, AAM and other facility types.</span></div>
+            </div>
+            <div class="sq-doc-grid" style="margin-top:12px">
+                <div><h3>Important interpretation</h3><ul class="sq-doc-list"><li>Area and subtype scores always use the newest assessment for each facility.</li><li>A grey district has no latest-assessment data for the selected concern; it indicates a coverage gap, not a satisfactory score.</li><li>Clusters keep the map readable; zoom in to view individual facility symbols.</li></ul></div>
+                <div><h3>Suggested routine</h3><ul class="sq-doc-list"><li>Start with a red district.</li><li>Select a subtype to identify the standard driving the risk.</li><li>Open a facility for detailed follow-up and corrective action.</li></ul></div>
+            </div>
+            <p style="margin-top:12px"><a class="sq-doc-top" href="/ui/help/state-facility-insights-map.html" target="_blank" rel="noopener">Open the visual State Facility Insights Map guide in a new tab</a></p>
             <a class="sq-doc-top" href="#top">Back to top</a>
         </section>
 

@@ -2,8 +2,8 @@
 <section class="sq-state-page">
     <div class="sq-state-toolbar">
         <div>
-            <h3>CQI Monitoring</h3>
-            <p data-domain-template="{facility}-wise CQI action plan status across all assessments.">Facility-wise CQI action plan status across all assessments.</p>
+            <h3>CQI Action Tracking</h3>
+            <p data-domain-template="Track accountable owners, priority, target dates, and overdue actions across all {facility} assessments.">Track accountable owners, priority, target dates, and overdue actions across all facility assessments.</p>
         </div>
         <div class="sq-state-filters">
             <input type="search" class="sq-form-control" id="stateCqiSearch" placeholder="Search facility or NIN" aria-label="Search Facility Or NIN" data-domain-placeholder="Search {facility} or {facility_code}" data-domain-aria-label="Search {facility} or {facility_code}">
@@ -13,12 +13,12 @@
     <div class="sq-state-kpis">
         <div><span>Facilities With Action Plan</span><strong id="stateCqiTotal">0</strong></div>
         <div><span>Facilities Completed</span><strong id="stateCqiDone">0</strong></div>
-        <div><span>Facilities Pending</span><strong id="stateCqiPending">0</strong></div>
-        <div><span>Facilities Overdue</span><strong id="stateCqiOverdue">0</strong></div>
+        <div><span>High-Priority Pending</span><strong id="stateCqiHighPriority">0</strong></div>
+        <div><span>Unassigned Actions</span><strong id="stateCqiUnassigned">0</strong></div>
     </div>
     <div class="sq-card">
         <div class="sq-card-header">
-            <h3>Facility CQI Details</h3>
+            <h3>Facility Action Tracking Details</h3>
             <div id="stateCqiPager"></div>
         </div>
         <div class="sq-card-body" id="stateCqiRows"></div>

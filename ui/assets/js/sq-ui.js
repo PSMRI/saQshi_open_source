@@ -108,21 +108,22 @@ const SQ = window.SQ || {};
     SQ.theme = {
         set: function (theme) {
             document.documentElement.setAttribute("data-theme", theme);
+            SQ.storage.set("theme", theme);
             SQ.storage.set("sq-theme", theme);
         },
 
         get: function () {
             return document.documentElement.getAttribute("data-theme")
-                || SQ.storage.get("sq-theme", "light");
+                || SQ.storage.get("theme", SQ.storage.get("sq-theme", "light"));
         },
 
         toggle: function () {
             const current = SQ.theme.get();
-            SQ.theme.set(current === "dark" ? "light" : "dark");
+            SQ.theme.set(current === "light" ? "dark" : (current === "dark" ? "green" : "light"));
         },
 
         init: function () {
-            const theme = SQ.storage.get("sq-theme", "light");
+            const theme = SQ.storage.get("theme", SQ.storage.get("sq-theme", "light"));
             document.documentElement.setAttribute("data-theme", theme);
         }
     };

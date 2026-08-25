@@ -104,7 +104,7 @@
                 const current =
                     document.documentElement.getAttribute("data-theme") || "light";
 
-                const next = current === "dark" ? "light" : "dark";
+                const next = current === "light" ? "dark" : (current === "dark" ? "green" : "light");
 
                 document.documentElement.setAttribute("data-theme", next);
 
@@ -113,7 +113,7 @@
                 }
 
                 if (SQ.toast) {
-                    SQ.toast("Theme changed to " + next, "info");
+                    SQ.toast("Theme changed to " + (next === "green" ? "health green" : next), "info");
                 }
             });
         });

@@ -15,11 +15,21 @@
                 <p>Month-wise KPI and outcome trend view.</p>
             </div>
             <div class="sq-trend-toolbar">
+                <label class="sq-trend-department-filter">
+                    <span>Department</span>
+                    <select id="trendDepartmentFilter" class="sq-form-control" aria-label="Trend Department Filter">
+                        <option value="">All departments</option>
+                    </select>
+                </label>
                 <select id="trendChartStyle" class="sq-form-control" aria-label="Trend Chart Style">
                     <option value="line">Line Trend</option>
                     <option value="area">Area Trend</option>
                     <option value="bar">Bar Trend</option>
                 </select>
+                <label class="sq-trend-department-filter">
+                    <span>Completion month</span>
+                    <input id="trendPeriodFilter" class="sq-form-control" type="month" aria-label="Outcome completion month">
+                </label>
                 <label class="sq-trend-toggle">
                     <input type="checkbox" id="trendAllIndicators" aria-label="Trend All Indicators">
                     <span>All indicators</span>
@@ -32,9 +42,9 @@
         <div class="sq-card-body">
             <div class="sq-trend-summary">
                 <div><span>Facility</span><strong id="trendFacility">-</strong></div>
-                <div><span>Total Months</span><strong id="trendTotalMonths">0</strong></div>
-                <div><span>Total Entries</span><strong id="trendTotalEntries">0</strong></div>
-                <div><span>Latest Period</span><strong id="trendLatestPeriod">-</strong></div>
+                <div><span>Outcome Departments</span><strong id="trendOutcomeDepartments">0</strong></div>
+                <div><span>Outcome Departments Completed</span><strong id="trendCompletedOutcomeDepartments">0</strong></div>
+                <div><span>Selected Month</span><strong id="trendSelectedPeriod">-</strong></div>
             </div>
 
             <div class="sq-trend-section-title">

@@ -7,6 +7,7 @@
 ## User Guide
 
 - [User Guide](docs/user/user_guide.md)
+- [CQI Action Tracking](docs/user/cqi_action_tracking.md)
 
 ## Developer Guide
 

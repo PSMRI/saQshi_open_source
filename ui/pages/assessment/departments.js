@@ -31,7 +31,9 @@
         assignmentMap: {},
         currentAssessorId: 0,
         isAssessorSession: false,
-        isLoading: false
+        isLoading: false,
+        currentPage: 1,
+        pageSize: 5
     };
 
     function $(id) {
@@ -184,10 +186,41 @@
                 </td>
             </tr>
         `;
+
+        renderPagination(0);
     }
 
     function renderLoading() {
         renderEmpty(`Loading ${label("departments", "departments").toLowerCase()}...`);
+    }
+
+    function renderPagination(total) {
+        const container = $("departmentPagination");
+
+        if (!container) {
+            return;
+        }
+
+        const totalPages = Math.ceil(total / state.pageSize);
+
+        if (totalPages <= 1) {
+            container.hidden = true;
+            container.innerHTML = "";
+            return;
+        }
+
+        const current = Math.min(Math.max(state.currentPage, 1), totalPages);
+        const start = (current - 1) * state.pageSize + 1;
+        const end = Math.min(current * state.pageSize, total);
+        container.hidden = false;
+        container.innerHTML = `
+            <div class="sq-pagination-summary">Showing ${start}-${end} of ${total}</div>
+            <div class="sq-pagination-actions" aria-label="Department list pagination">
+                <button type="button" class="sq-btn sq-btn-light" data-sq-department-page="${current - 1}" ${current === 1 ? "disabled" : ""}>Previous</button>
+                <span class="sq-pagination-page">Page ${current} of ${totalPages}</span>
+                <button type="button" class="sq-btn sq-btn-light" data-sq-department-page="${current + 1}" ${current === totalPages ? "disabled" : ""}>Next</button>
+            </div>
+        `;
     }
 
     function renderDepartments() {
@@ -202,9 +235,14 @@
             return;
         }
 
+        const totalPages = Math.ceil(state.departments.length / state.pageSize);
+        state.currentPage = Math.min(Math.max(state.currentPage, 1), totalPages);
+        const offset = (state.currentPage - 1) * state.pageSize;
+        const pageDepartments = state.departments.slice(offset, offset + state.pageSize);
+
         tbody.innerHTML = "";
 
-        state.departments.forEach(function (dept, index) {
+        pageDepartments.forEach(function (dept, index) {
             const active = isDepartmentActive(dept);
             const assignment = dept.assignment || null;
             const completed = assignment && String(assignment.status || "").toUpperCase() === "COMPLETED";
@@ -223,7 +261,7 @@
                 "beforeend",
                 `
                     <tr>
-                        <td>${index + 1}</td>
+                        <td>${offset + index + 1}</td>
                         <td>
                             <strong>${escapeHtml(dept.dept_name || "-")}</strong>
                             ${assignedToAnother ? "" : `<div class="sq-dept-meta">${escapeHtml(dept.program_tag || "General")}</div>`}
@@ -257,6 +295,8 @@
                 `
             );
         });
+
+        renderPagination(state.departments.length);
     }
 
     async function loadAssessment() {
@@ -370,6 +410,7 @@
 
     function bindEvents() {
         const tbody = $("departmentTable");
+        const pagination = $("departmentPagination");
 
         if (!tbody || tbody.dataset.bound === "1") {
             return;
@@ -403,6 +444,20 @@
             const deptId = Number(button.dataset.sqActivateDepartment || 0);
             activateDepartment(deptId, button);
         });
+
+        if (pagination && pagination.dataset.bound !== "1") {
+            pagination.dataset.bound = "1";
+            pagination.addEventListener("click", function (event) {
+                const button = event.target.closest("[data-sq-department-page]");
+
+                if (!button || button.disabled) {
+                    return;
+                }
+
+                state.currentPage = Number(button.dataset.sqDepartmentPage || 1);
+                renderDepartments();
+            });
+        }
     }
 
     async function init() {

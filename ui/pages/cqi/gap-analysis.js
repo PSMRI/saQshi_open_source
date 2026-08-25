@@ -176,7 +176,7 @@
             const dept = gap.department || {};
             const id = Number(gap.dept_id || dept.dept_id || 0);
 
-            if (id > 0 && !map[id]) {
+            if (id > 0 && (!map[id] || /^Department\s+\d+$/i.test(String(map[id].dept_name || "")))) {
                 map[id] = {
                     dept_id: id,
                     dept_name: dept.dept_name || ("Department " + id),
@@ -192,6 +192,29 @@
             .sort(function (a, b) {
                 return String(a.dept_name || "").localeCompare(String(b.dept_name || ""));
             });
+    }
+
+    function mergeDepartments(departments) {
+        const map = {};
+
+        state.departments.forEach(function (dept) {
+            const id = Number(dept.dept_id || dept.department_id || 0);
+            if (id > 0) map[id] = dept;
+        });
+
+        (departments || []).forEach(function (dept) {
+            const id = Number(dept.dept_id || dept.department_id || 0);
+            if (id <= 0) return;
+
+            map[id] = Object.assign({}, map[id] || {}, dept, {
+                dept_id: id,
+                dept_name: dept.dept_name || dept.department_name || map[id]?.dept_name || ("Department " + id)
+            });
+        });
+
+        state.departments = Object.values(map).sort(function (a, b) {
+            return String(a.dept_name || "").localeCompare(String(b.dept_name || ""));
+        });
     }
 
     function filteredGaps() {
@@ -378,6 +401,7 @@
         state.assessment = data.assessment || state.assessment || {};
         state.facility = data.facility || {};
         state.summary = data.summary || {};
+        mergeDepartments(data.departments);
         state.gaps = data.all_gaps || [
             ...(data.open_gaps || []),
             ...(data.closed_gaps || [])

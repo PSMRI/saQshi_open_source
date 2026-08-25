@@ -2,23 +2,27 @@
 <section class="sq-state-page sq-state-map-page">
     <div class="sq-state-toolbar">
         <div>
-            <h3 data-domain-label="map">Certification Map</h3>
-            <p data-domain-label="map_summary">Certified facilities with geo coordinates.</p>
+            <h3 data-domain-label="map">State Facility Insights Map</h3>
+            <p data-domain-label="map_summary">View mapped facility presence, certification, or Area of Concern scores.</p>
         </div>
         <div class="sq-state-filters">
-            <select class="sq-form-control" id="stateMapMode" aria-label="Map display mode"><option value="facility">Facility plotting</option><option value="domain">Domain categorisation</option></select>
-            <select class="sq-form-control" id="stateMapDomain" aria-label="Assessment domain" disabled><option value="">Select domain</option></select>
+            <a class="sq-btn sq-state-analysis-guide-button" href="/ui/help/state-facility-insights-map.html" target="_blank" rel="noopener"><i class="bi bi-map"></i> How to use this map</a>
+            <select class="sq-form-control" id="stateMapMode" aria-label="Map display mode"><option value="presence">Facility presence</option><option value="certification">Certification</option><option value="area_of_concern">Area of Concern</option></select>
+            <select class="sq-form-control" id="stateMapArea" aria-label="Area of Concern" hidden disabled><option value="">Select Area of Concern</option></select>
+            <select class="sq-form-control" id="stateMapSubtype" aria-label="Area of Concern subtype" hidden disabled><option value="">All subtypes</option></select>
             <input type="search" class="sq-form-control" id="stateMapSearch" placeholder="Search facility or NIN" aria-label="Search Facility Or NIN" data-domain-placeholder="Search {facility} or {facility_code}" data-domain-aria-label="Search {facility} or {facility_code}">
             <button class="sq-btn sq-btn-muted" id="stateMapOpenFull" type="button"><i class="bi bi-arrows-fullscreen"></i> Open Full Map</button>
             <button class="sq-btn sq-btn-primary" id="stateMapRefresh"><i class="bi bi-arrow-clockwise"></i> Refresh</button>
         </div>
     </div>
 
+    <div class="sq-state-map-help" role="note"><strong>Map analysis:</strong> Select <b>Area of Concern</b>, choose an area and optionally a subtype. District and facility colours use the latest assessment; click a cluster or zoom in to inspect facility-type symbols. <a href="/ui/help/state-facility-insights-map.html" target="_blank" rel="noopener">Open the full guide <i class="bi bi-arrow-up-right"></i></a></div>
+
     <div class="sq-card" id="stateMapViewCard">
         <div class="sq-card-header"><h3>Map View</h3></div>
         <div class="sq-card-body">
             <p id="stateMapSummary" class="sq-help-text" aria-live="polite">Map data summary will appear after loading.</p>
-            <div id="stateMapCanvas" class="sq-state-map" role="img" aria-label="Certification map showing certified facilities by location" aria-describedby="stateMapSummary"></div>
+            <div id="stateMapCanvas" class="sq-state-map" role="img" aria-label="State map showing facilities by location and selected monitoring view" aria-describedby="stateMapSummary"></div>
             <div id="stateMapLegend" class="sq-state-map-legend" hidden></div>
         </div>
     </div>

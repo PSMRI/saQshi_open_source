@@ -15,10 +15,10 @@
 
     "assets": {
         "css": [
-            "/ui/pages/cqi/closure.css?v=20260704-3"
+            "/ui/pages/cqi/closure.css?v=20260824-color-hierarchy-1"
         ],
         "js": [
-            "/ui/pages/cqi/closure.js?v=20260704-3"
+            "/ui/pages/cqi/closure.js?v=20260824-department-filter-1"
         ]
     },
 

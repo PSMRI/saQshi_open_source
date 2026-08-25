@@ -41,6 +41,15 @@
 @media(max-width:720px){#stateMapViewCard .sq-state-map{min-height:360px}}
 .sq-state-map-legend{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:10px;padding:10px 12px;border:1px solid var(--sq-border,#d8e1ef);border-radius:8px;background:var(--sq-soft-bg,#f5f7fb);font-size:12px}.sq-state-map-legend[hidden]{display:none}.sq-state-map-legend span{display:inline-flex;align-items:center;gap:6px}.sq-state-map-legend i{display:inline-block;width:14px;height:14px;border-radius:3px;border:1px solid rgba(15,23,42,.18)}
 
+/* Facility marker shapes: colour identifies type except in Area of Concern view, where colour identifies score. */
+.sq-state-map-icon{background:transparent!important;border:0!important}.sq-state-map-marker{display:block;width:16px;height:16px;background:var(--marker-color,#2563eb);border:2px solid #fff;box-sizing:border-box;box-shadow:0 1px 4px rgba(15,23,42,.42)}.sq-state-map-marker--circle{border-radius:50%}.sq-state-map-marker--square{border-radius:3px}.sq-state-map-marker--diamond{border-radius:2px;transform:rotate(45deg)}.sq-state-map-marker--triangle{clip-path:polygon(50% 0,100% 100%,0 100%);border:0;filter:drop-shadow(0 1px 2px rgba(15,23,42,.45))}.sq-state-map-marker--hexagon{clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%);border:0;filter:drop-shadow(0 1px 2px rgba(15,23,42,.45))}.sq-state-map-legend .sq-state-map-marker{display:inline-block;width:14px;height:14px;flex:0 0 14px}.sq-state-map-legend .sq-state-map-marker--diamond{margin:1px}
+.sq-state-map-help{padding:10px 13px;border:1px solid #a7dfbc;border-left:4px solid #059669;border-radius:8px;background:#ecfdf5;color:#14532d;font-size:12px;line-height:1.45}.sq-state-map-help a{margin-left:5px;color:#047857;font-weight:800}
+.marker-cluster-small,.marker-cluster-medium,.marker-cluster-large{background:rgba(5,150,105,.28)}.marker-cluster-small div,.marker-cluster-medium div,.marker-cluster-large div{background:#047857;color:#fff;font-weight:800}.sq-state-map-page .marker-cluster{transition:transform .15s ease}.sq-state-map-page .marker-cluster:hover{transform:scale(1.08)}
+
+/* State Risk Overview drill-down rows. */
+.sq-state-risk-row{display:grid;width:100%;grid-template-columns:minmax(220px,1fr) auto auto;align-items:center;gap:16px;padding:10px 12px;border:1px solid var(--sq-border,#d8e1ef);border-radius:7px;background:var(--sq-card-bg,#fff);color:var(--sq-text-primary,#0f172a);font:inherit;text-align:left;cursor:pointer}.sq-state-risk-row:hover{background:var(--sq-soft-bg,#f5f7fb)}.sq-state-risk-row>span:first-child{display:grid;gap:2px}.sq-state-risk-row>span:first-child small{color:var(--sq-muted,#586b86);font-size:11px}.sq-state-risk-row>span:last-child{min-width:86px;text-align:right;color:var(--sq-muted,#586b86);font-size:12px;white-space:nowrap}@media(max-width:620px){.sq-state-risk-row{grid-template-columns:1fr auto;gap:8px}.sq-state-risk-row>span:last-child{grid-column:1/-1;text-align:left}}
+.sq-state-analysis-guide-button{display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:6px 12px;border:0;border-radius:7px;background:linear-gradient(135deg,#0f766e,#2563eb);box-shadow:0 3px 8px rgba(37,99,235,.24);color:#fff!important;font-size:12px;font-weight:800;text-decoration:none;white-space:nowrap}.sq-state-analysis-guide-button:hover{background:linear-gradient(135deg,#115e59,#1d4ed8);color:#fff;transform:translateY(-1px)}.sq-state-analysis-guide-button:focus-visible{outline:3px solid #f59e0b;outline-offset:2px}
+
 /* Healthcare dashboard colour accents. */
 .sq-state-page:not(.sq-state-map-page)>.sq-state-kpis>div{position:relative;overflow:hidden;border:0;border-top:0;color:#fff;box-shadow:0 5px 14px rgba(15,23,42,.12)}
 .sq-state-page:not(.sq-state-map-page)>.sq-state-kpis>div::after{content:"";position:absolute;right:-21px;top:-32px;width:92px;height:92px;border-radius:50%;background:rgba(255,255,255,.15)}
@@ -54,3 +63,18 @@
 .sq-state-page:not(.sq-state-map-page)>.sq-state-grid>.sq-card:nth-child(1) .sq-card-header{background:#e0f2fe;border-left:4px solid #0284c7}
 .sq-state-page:not(.sq-state-map-page)>.sq-state-grid>.sq-card:nth-child(2) .sq-card-header{background:#fef3c7;border-left:4px solid #d97706}
 .sq-state-page:not(.sq-state-map-page)>.sq-state-grid>.sq-card:nth-child(3) .sq-card-header{background:#dcfce7;border-left:4px solid #16a34a}
+
+/* Theme-aware State Monitoring card accents. */
+[data-theme="dark"] .sq-state-page:not(.sq-state-map-page)>.sq-state-grid>.sq-card{border-color:#38506d}
+[data-theme="dark"] .sq-state-page:not(.sq-state-map-page)>.sq-state-grid>.sq-card:nth-child(1) .sq-card-header{background:#203650;border-left-color:#3b82f6;color:#eff6ff}
+[data-theme="dark"] .sq-state-page:not(.sq-state-map-page)>.sq-state-grid>.sq-card:nth-child(2) .sq-card-header{background:#41351a;border-left-color:#f59e0b;color:#fef3c7}
+[data-theme="dark"] .sq-state-page:not(.sq-state-map-page)>.sq-state-grid>.sq-card:nth-child(3) .sq-card-header{background:#173d2b;border-left-color:#22c55e;color:#dcfce7}
+
+[data-theme="green"] .sq-state-page:not(.sq-state-map-page)>.sq-state-kpis>div:nth-child(1){background:linear-gradient(135deg,#065f46,#059669)}
+[data-theme="green"] .sq-state-page:not(.sq-state-map-page)>.sq-state-kpis>div:nth-child(2){background:linear-gradient(135deg,#047857,#10b981)}
+[data-theme="green"] .sq-state-page:not(.sq-state-map-page)>.sq-state-kpis>div:nth-child(3){background:linear-gradient(135deg,#15803d,#22c55e)}
+[data-theme="green"] .sq-state-page:not(.sq-state-map-page)>.sq-state-kpis>div:nth-child(4){background:linear-gradient(135deg,#166534,#4ade80)}
+[data-theme="green"] .sq-state-page:not(.sq-state-map-page)>.sq-state-grid>.sq-card{border-color:#a8d7b8}
+[data-theme="green"] .sq-state-page:not(.sq-state-map-page)>.sq-state-grid>.sq-card .sq-card-header{background:#e9faef;border-left:4px solid #059669;color:#064e3b}
+[data-theme="green"] .sq-state-page:not(.sq-state-map-page)>.sq-state-grid>.sq-card:nth-child(2) .sq-card-header{background:#dcfce7;border-left-color:#16a34a}
+[data-theme="green"] .sq-state-page:not(.sq-state-map-page)>.sq-state-grid>.sq-card:nth-child(3) .sq-card-header{background:#d1fae5;border-left-color:#047857}
