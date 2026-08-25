@@ -61,7 +61,39 @@ class SessionManager
         ini_set('session.use_only_cookies', '1');
         ini_set('session.cookie_httponly', '1');
 
-        session_start();
+        // Redis is preferred in production, but login must remain available if
+        // the Redis service is temporarily unavailable or misconfigured.
+        // Suppress the transport warning here because the fallback below is a
+        // deliberate recovery path; a final failure is still reported clearly.
+        $started = @session_start();
+
+        if (!$started && strtolower((string)(self::config()['driver'] ?? '')) === 'redis') {
+            $configuredPath = trim((string)(self::config()['files']['path'] ?? ''));
+            $paths = array_values(array_unique(array_filter([
+                $configuredPath,
+                dirname(__DIR__) . '/storage/sessions',
+                sys_get_temp_dir()
+            ], static fn($path) => is_string($path) && $path !== '')));
+
+            foreach ($paths as $fallbackPath) {
+                if (!is_dir($fallbackPath) && !@mkdir($fallbackPath, 0700, true) && !is_dir($fallbackPath)) {
+                    continue;
+                }
+
+                ini_set('session.save_handler', 'files');
+                ini_set('session.save_path', $fallbackPath);
+                $started = @session_start();
+
+                if ($started) {
+                    error_log('[SaQshi] Redis session start failed; using file-session fallback.');
+                    break;
+                }
+            }
+        }
+
+        if (!$started) {
+            throw new RuntimeException('Unable to start the application session.');
+        }
 
         self::checkTimeout();
         self::regeneratePeriodically();
