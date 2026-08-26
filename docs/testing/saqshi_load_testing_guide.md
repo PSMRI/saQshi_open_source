@@ -1,7 +1,7 @@
 # SaQshi Load Testing Guide
 
-Version: 1.0  
-Updated: 2026-07-13
+Version: 1.1
+Updated: 2026-08-26
 
 ## Can We Do Load Testing?
 
@@ -21,6 +21,8 @@ Recommended load-test areas:
 
 | Area | Endpoint / Page | Why |
 |---|---|---|
+| Public landing | `/`, `/education-index.html` | Verify profile-aware landing routes remain responsive and do not fall back to the login shell. |
+| Documentation | `/gitbook.html` | Verify the documentation reader remains responsive when many users open guidance. |
 | Public auth helpers | `/api/auth/v1/csrf.php`, `/api/auth/v1/captcha.php` | Baseline API speed |
 | Login | `/api/auth/v1/login.php` | Auth capacity, but avoid brute-force style tests |
 | Dashboard | `/api/assessment/v1/dashboard_insights.php` | Facility landing-page load |
@@ -39,6 +41,17 @@ node scripts/load-test/saqshi-load-test.js --url {main_url}/api/auth/v1/csrf.php
 ```
 
 This checks whether the server can handle basic API requests without stressing it.
+
+For the public pages changed in this release, use a separate, low-concurrency
+GET-only check on a local or dedicated test server:
+
+```text
+node scripts/load-test/saqshi-load-test.js --urls {main_url}/,{main_url}/gitbook.html --duration 10 --concurrency 2
+```
+
+Do not include an education redirect in this mixed test unless the test server
+is configured with the education profile. Validate profile redirects separately
+with a browser check.
 
 ## Moderate Test
 
@@ -92,6 +105,19 @@ Each result contains:
 - Latency min/average/p50/p90/p95/p99/max
 - Sample request results
 
+### How the Runner Counts Failures
+
+The bundled runner counts transport errors and HTTP `500+` responses as
+failures. It records HTTP `401`, `403`, `404` and `405` in the status-count
+output but does not treat them as failures by itself. Always inspect
+`status_counts` before accepting a result:
+
+- Public GET checks should return only intended `200` responses.
+- Protected endpoint checks must use a valid session cookie; unexpected `401`
+  or `403` responses invalidate the test run.
+- Method-guard checks are functional/security tests, not load tests; the
+  expected result for an unsupported method can be `405`.
+
 ## Acceptance Targets
 
 Suggested initial targets for local or test server:
@@ -112,6 +138,12 @@ These are starting targets. Final targets should be based on expected real users
 - Start with low concurrency, then increase gradually.
 - Watch PHP error logs, MySQL CPU, memory and slow query logs.
 - For 50k+ facilities, always test pagination endpoints and report downloads separately.
+- Never use login endpoints for sustained credential attempts; use a dedicated
+  test account only for a small, rate-limited functional check.
+- Do not include session cookies, CSRF tokens, passwords or request bodies in
+  committed result files, tickets or GitBook documentation.
+- Keep public-page and GitBook checks GET-only. They do not require a session
+  and must not be mixed with state-changing requests.
 
 ## Recommended Test Levels
 
@@ -165,3 +197,20 @@ Summary:
 | Max latency | 1401.93 ms |
 
 Smoke result: Passed.
+
+## Latest Public Route Verification
+
+Executed on: 2026-08-26
+
+This was a focused availability and regression check, not a load run. The
+following routes returned HTTP `200` on `http://localhost:94`:
+
+| Route | Result |
+|---|---|
+| `/` | Profile-aware healthcare landing page served |
+| `/gitbook.html` | GitBook reader served |
+| `/ui/login.html` | Login shell served |
+| `/api/auth/v1/captcha.php` | Captcha JSON served |
+
+The detailed release revalidation is recorded in
+`docs/testing/public_pages_gitbook_revalidation_2026_08_26.md`.

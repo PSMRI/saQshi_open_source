@@ -1,5 +1,8 @@
 # Coding Standards and Engineering Conventions
 
+Version: 1.1
+Updated: 2026-08-26
+
 This document answers the main engineering-standard questions for SaQshi. It is written as a practical developer reference rather than a long checklist.
 
 ## Short Answer
@@ -12,6 +15,7 @@ SaQshi follows a lightweight, modular PHP + JavaScript standard:
 - API responses follow a consistent JSON structure.
 - Configuration is JSON-driven for frameworks, facility types, indicators, map boundaries and page metadata.
 - Security is handled through sessions, CSRF, RBAC, prepared statements, encryption helpers, upload validation, friendly errors and event logging.
+- Deployment profiles keep Healthcare, Education and generic-inspection labels/modules/framework defaults configuration-driven without renaming stable API or database contracts.
 
 SaQshi now includes a dependency-free quality gate for syntax checks, lightweight PHP/JavaScript style checks, JSON validation, unit tests and release readiness. The checks are intentionally practical for this PHP/static-UI codebase and can later be replaced or supplemented with PHPCS, PHP CS Fixer and ESLint.
 
@@ -109,6 +113,8 @@ Event::dispatch('auth.login.succeeded', [
 
 Technical database names should not be exposed directly to end users. UI text should use terms such as "Assessment", "Department", "Facility", "Action Plan", "Gap Closure" and "Certification Status".
 
+For profile-aware UI, use active configuration labels rather than hard-coding only healthcare terms. Healthcare generally displays Facility/NIN/Department; Education can display School/UDISE/Class. Keep API field names and schema identifiers stable unless a reviewed, compatibility-safe migration changes the contract.
+
 ## Application Architecture
 
 SaQshi uses a modular monolithic architecture:
@@ -174,6 +180,12 @@ Existing legacy schema names should not be renamed casually. Rename only with mi
 | CSRF | Protected write endpoints should validate CSRF tokens. |
 | Documentation | OpenAPI, endpoint inventory, Postman collection and source reference under `docs/api`. |
 
+### Public Endpoint Standard
+
+Public endpoints require an explicit, narrow contract. `GET /api/config/v1/public_deployment.php` may return only presentation-safe profile code/name, labels, branding and content for the landing page; it must not return credentials, user/session data, internal hostnames, storage paths, database values or operational configuration. Do not infer public access from an endpoint's folder or file name.
+
+For every new public endpoint, document the allowed method, data classification, cache behaviour, authentication rationale, abuse/rate-control expectation and required response headers. Add a negative data-exposure test and update the API inventory/OpenAPI or Postman artifact where applicable.
+
 ## Security Standards
 
 | Area | SaQshi Handling |
@@ -192,13 +204,19 @@ Existing legacy schema names should not be renamed casually. Rename only with mi
 | Errors | Use friendly responses, not raw PHP/DB errors. |
 | Events/logs | Event logging redacts sensitive keys before writing logs. |
 
+### Public Page and Documentation Standard
+
+The root landing page and `gitbook.html` are public static experiences, while `ui/login.html` is a public entry page to protected application functions. Configure hosting-layer CSP, clickjacking/frame protection, `nosniff` and referrer-policy headers for these routes, then verify them in staging. The current VAPT follow-up keeps static-page header coverage open until that deployment verification is recorded.
+
+Treat every GitBook-reader-visible document as public. Never include `.env` contents, temporary passwords, API/session/CSRF values, production hostnames, raw logs, uploads, evidence links, real person data or unapproved facility/school master data. Navigation visibility is not authorization.
+
 ## UI and Accessibility Standards
 
 | Topic | Standard |
 | --- | --- |
 | UI architecture | Static HTML/CSS/JS with dashboard shell and routed pages. |
 | Page pattern | `page.html`, `page.js`, `page.css`, `page.json`. |
-| Labels | Use user-friendly healthcare quality terms. |
+| Labels | Use active profile-configured user-friendly terms; do not expose raw database names. |
 | Responsive design | Pages should work on desktop, tablet and mobile where the workflow allows. |
 | Theme support | Light/dark theme must keep readable text, controls and buttons. |
 | Accessibility | Follow WCAG-oriented labels, focus visibility, keyboard support and readable contrast. |
@@ -239,6 +257,8 @@ Every major feature should have:
 - Security/privacy note when personal or sensitive data is handled.
 - Change entry in `CHANGELOG.md` for release-level work.
 
+When a change affects the profile, public landing page, GitBook reader, static headers, session configuration or a public API contract, also update the deployment guide, security/testing evidence and release checklist. Document what was verified and what remains untested; route availability alone is not production approval.
+
 ## SaQshi-Specific Answers
 
 | Question | Answer |
@@ -252,6 +272,7 @@ Every major feature should have:
 | How are action plans and gap closures tracked? | CQI modules capture action plans, responsible role/post, target dates, evidence and closure/revised score status. |
 | How is audit history maintained? | Event logging, certification history, update timestamps and workflow tables provide traceability. |
 | How can another state reuse it? | Replace/configure facility master sample data, state boundary/map JSON, framework/config JSON, roles and deployment environment values. |
+| How do Education and Healthcare share code? | Deployment profiles apply School/UDISE/Class or Facility/NIN/Department labels and module/framework defaults while shared APIs and schema retain stable compatibility identifiers. |
 | Which licence is used? | GPL-3.0. |
 | How is DPG readiness supported? | Open-source licence, documentation, standards mapping, privacy notes, non-PII sample data, reusable configuration and governance documents are maintained under `docs/compliance`. |
 
@@ -283,6 +304,8 @@ php tools/js_style_check.php
 php tools/run_unit_tests.php
 php tools/release_readiness_check.php
 ```
+
+Run focused checks first when diagnosing a change. The complete quality gate can take longer because it chains all checks and may require database/deployment context; do not report it as passed unless every invoked stage completes successfully. Treat `PASSED_WITH_REVIEW` release-readiness output as a set of release-owner actions, not automatic approval to publish.
 
 Use strict mode when a release owner wants style warnings to fail:
 

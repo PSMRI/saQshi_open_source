@@ -18,3 +18,13 @@ WB-CSRF-001,White Box,CSRF,P0,State-changing APIs,Inspect CSRF enforcement,POST 
 WB-AUTH-001,White Box,Authorization,P0,Monitoring role scope,Inspect state bootstrap and service scope,Role 9/5/4/8 scopes applied centrally,Not Run,
 WB-FILE-001,White Box,Upload,P0,Path traversal,Inspect upload delete path resolution,File operations stay inside uploads,Not Run,
 WB-ERR-001,White Box,Error Handling,P0,Friendly errors,Inspect Response ErrorHandler bootstrap,User sees friendly message,Not Run,
+BB-LAND-001,Black Box,Public Landing,P0,Healthcare root landing,Open / with healthcare profile active,Healthcare landing page loads instead of login shell,Passed,Verified 2026-08-26 at localhost:94
+BB-LAND-002,Black Box,Public Landing,P0,Education profile redirect,Open / with education profile active,Browser redirects to /education-index.html,Not Run,Requires education test configuration
+BB-GIT-001,Black Box,GitBook,P0,GitBook reader loads,Open /gitbook.html,Documentation shell and navigation load,Passed,Verified 2026-08-26 at localhost:94
+BB-GIT-002,Black Box,GitBook,P0,CSV test register renders,Open GitBook URL for saqshi_test_case_template.csv,CSV renders as a readable table,Not Run,
+BB-GIT-003,Black Box,GitBook,P0,Safe document path,Request gitbook.html?doc=..%2F..%2F.env,Reader falls back to README and does not expose local file,Not Run,
+BB-SEC-001,Black Box,Security Headers,P1,Public response headers,Request / and captcha API,Security response headers include nosniff frame protection and CSP,Passed,Verified 2026-08-26 at localhost:94
+BB-SEC-002,Black Box,Method Guard,P1,Captcha unsupported method,Send HEAD request to captcha API,HTTP 405 Method Not Allowed returned,Passed,Verified 2026-08-26 at localhost:94
+WB-JSON-001,White Box,Configuration,P0,JSON syntax scan,Run php tools/json_syntax_check.php,All configuration JSON files parse successfully,Passed,Verified 2026-08-26; removed BOM from facility_types_eduction_bihar.json
+WB-QUALITY-001,White Box,Quality Gate,P0,Style and unit checks,Run PHP JS style checks and unit-test runner,Style checks pass and 8 unit tests pass,Passed,Verified 2026-08-26
+WB-ROUTE-001,White Box,Configuration,P0,IIS root document routing,Inspect web.config and request /,Root serves profile-aware index.html,Passed,Verified 2026-08-26 at localhost:94

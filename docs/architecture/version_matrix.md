@@ -1,5 +1,8 @@
 # SaQshi Version Matrix
 
+Version: 1.1
+Updated: 2026-08-26
+
 This page records how SaQshi evolved before the current open-source release. It helps users and implementers understand what was available in earlier builds and what is now covered in the open-source application.
 
 ## Version Summary
@@ -51,6 +54,11 @@ This page records how SaQshi evolved before the current open-source release. It 
 | Event abstraction layer for future message queue/Kafka use | No | No | Partial | Yes |
 | Test case documentation | No | No | Partial | Yes |
 | Load testing documentation | No | No | No | Yes |
+| Deployment profiles for healthcare, education and generic inspection | No | No | No | Yes |
+| Profile-aware public landing page | No | No | No | Yes |
+| Public deployment-branding API | No | No | No | Yes |
+| Non-PII sample export package | No | No | No | Yes |
+| FHIR R4 facility assessment-summary export | No | No | No | Yes |
 
 </details>
 
@@ -78,6 +86,14 @@ The open-source release keeps the V2 feature direction and adds the elements nee
 - Configuration is separated from code through `.env` and JSON-driven framework files.
 - Third-party license/NOTICE files, release checklist, contribution guide and Code of Conduct are included.
 - Event abstraction is available so future distributed/event-driven integrations, such as Kafka, can be added without changing every API workflow.
+- Deployment profiles support healthcare/NQAS, education and generic-inspection implementations. The root landing page uses public profile branding to select the healthcare or education entry page; authenticated application access remains role/session protected.
+- Stable non-PII sample exports and a facility-scoped FHIR R4 assessment-summary export provide an interoperability foundation subject to deployment-specific identifier, consent and data-sharing approval.
+
+## Current Open-Source Baseline and Evidence Boundary
+
+The current development baseline is documented as `1.0.0-dev` in the release policy. The matrix records product capability and documentation availability; it is not a release-approval record, an impact evaluation, a standards certification or a WHO/DPG endorsement.
+
+Before a tagged public or production release, complete the release checklist and verify the selected deployment profile, public landing route, role-based user flows, accessibility, security headers, data-sharing requirements and active-UAT VAPT evidence. The current release-readiness posture is `PASSED_WITH_REVIEW`, with final legal/privacy approval and controlled-UAT security validation still required.
 
 ## Why This Matters
 
@@ -90,3 +106,5 @@ The current open-source version is not only a checklist entry screen. It is a mo
 - Reports and downloads
 - State, district, division and block dashboards
 - Documentation and API testing support
+
+For profile terminology, healthcare deployments use Facility/NIN/Department language, while education deployments use School/UDISE/Class language where configured. See [Deployment Profile Configuration](../deployment/deployment_profiles.md) for selection, validation and rollback guidance.

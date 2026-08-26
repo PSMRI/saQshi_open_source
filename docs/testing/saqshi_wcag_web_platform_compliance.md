@@ -1,7 +1,7 @@
 # SaQshi WCAG 2.2 and Web Platform Design Principles Review
 
-Version: 1.2  
-Updated: 2026-07-18
+Version: 1.3
+Updated: 2026-08-26
 
 ## Compliance Status
 
@@ -22,6 +22,28 @@ Result file:
 ```text
 docs/testing/wcag_static_audit_results.json
 ```
+
+The 2026-07 static-audit figures above remain the latest saved static-audit
+artifact. During the 2026-08-26 recheck, the static and live accessibility
+scripts could not rewrite their JSON result files because another local process
+held those files open. This does not change the prior result; rerun both scripts
+after the files are unlocked before using them as current release evidence.
+
+## Public Landing and GitBook Accessibility Recheck (2026-08-26)
+
+The following focused checks were completed on `http://localhost:94`:
+
+| Check | Result | Status |
+|---|---|---|
+| Healthcare root route | `/` returned HTTP 200 and served the profile-aware healthcare landing page. | Passed |
+| Digital hero non-text content | The healthcare hero uses a tablet-based assessment image with descriptive alternative text. | Passed |
+| GitBook availability | `/gitbook.html` returned HTTP 200. | Passed |
+| GitBook test-register source | The testing CSV documents returned HTTP 200 and are rendered by the reader's table renderer. | Passed for availability; keyboard/manual review remains required |
+| Login captcha API | `GET /api/auth/v1/captcha.php` returned a text-math question. | Passed |
+
+The landing pages and GitBook reader are outside the current `ui/` static-audit
+roots. They therefore need their own browser keyboard, zoom/reflow and
+screen-reader verification before being included in a full conformance claim.
 
 ## References
 
@@ -61,6 +83,8 @@ WCAG 2.2 success criteria are testable statements and need both automated and hu
 | A11Y-016 | Target size | Compact UI reduced some button/control hit areas. | Added global target-size guard for normal buttons and form controls while allowing explicit compact controls only where intentionally marked. | Rectified |
 | A11Y-017 | Dark-theme contrast | Dark-theme contrast needed repeatable verification. | Added `scripts/accessibility/contrast-check.js` for key light/dark theme color pairs and strengthened existing dark-theme contrast guard. | Rectified |
 | A11Y-018 | NVDA validation | Manual NVDA evidence was pending. | Validated login/captcha, authenticated navigation, assessment list and checklist response flows with NVDA Speech Viewer; all captured results passed. | Passed for tested flows |
+| A11Y-019 | Public landing image | The prior healthcare hero depicted a paper-based review despite digital-platform messaging. | Replaced it with a tablet-based assessment scene and added descriptive alternative text. | Rectified; static availability checked |
+| A11Y-020 | Documentation reader coverage | GitBook and public landing pages were outside the UI-only static-audit roots. | Added focused availability and content checks to the regression records. | Partial; keyboard and screen-reader testing remains required |
 
 ## Current Positive Controls Observed
 
@@ -73,6 +97,7 @@ WCAG 2.2 success criteria are testable statements and need both automated and hu
 | 2.4.7 Focus Visible | Global `:focus-visible` styles and component-specific focus styles exist. |
 | 2.5.8 Target Size Minimum | Shared buttons and form controls have a practical target-size guard; explicitly compact controls should be used sparingly. |
 | 3.1.1 Language of Page | Main shell pages use `lang="en"`. |
+| 1.1.1 Non-text Content | The healthcare public landing hero now has descriptive text for the digital tablet assessment image. |
 | 3.3 Input Assistance | Forms include labels/instructions and validation messages in major workflows. |
 | 4.1 Name, Role, Value | Key components use ARIA roles/labels: navigation, dialogs, notifications, chat, loader. |
 | 4.1.3 Status Messages | Loader/notification/chat areas use `aria-live` in shared components. |
@@ -104,6 +129,7 @@ WCAG 2.2 success criteria are testable statements and need both automated and hu
 | WCAG-011 | Status Messages | Loading, success, errors announced without focus stealing. | Mostly Pass |
 | WCAG-012 | Target Size Minimum | Buttons and controls have practical target sizes. | Improved; global guard added |
 | WCAG-013 | Accessible Authentication | Login uses text math captcha with screen-reader instructions and assisted-login fallback. | NVDA passed for the captured login/captcha result; retain JAWS/VoiceOver and broader workflow validation |
+| WCAG-014 | Public landing and GitBook | Test root landing, education redirect, GitBook reader, hero image text and documentation navigation with keyboard and screen reader. | Availability and hero alternative text checked; full manual review needed |
 
 ## Accessibility Controls Added
 
@@ -219,6 +245,7 @@ The static checker scanned all HTML pages/components/layouts under `ui/pages`, `
 | Charts/maps | Non-visual users may not understand chart/map content. | Performance charts now generate screen-reader summaries; certification map has visible summary and mapped-facility table/caption. | Manually verify screen-reader reading order on chart/map pages. |
 | Compact UI target size | Motor-impaired users may struggle with small buttons. | Normal buttons and form controls now have a global practical target-size guard; compact controls must be explicit. | Manually test dense tables and mobile/touch workflows. |
 | Dark-theme contrast | Low-vision users may see insufficient contrast in uncommon states. | Added `contrast-check.js` for key light/dark theme pairs and kept dark-theme CSS contrast guard. | Run full browser contrast audit across hover, disabled, selected and chart/map states. |
+| Public landing and GitBook coverage | These routes are not included in the UI static-audit roots. | Added focused availability and hero-image alternative-text checks. | Run keyboard, 200% zoom/reflow and screen-reader tests for healthcare and education landing pages plus GitBook navigation. |
 
 ## Recommended Manual Test Procedure
 
@@ -280,6 +307,8 @@ Findings:
 - Final static audit result: 47 files checked, 47 passed, 0 errors, 0 warnings.
 - Built-in speech controls were added to the accessibility menu for browsers that support `speechSynthesis`.
 - Live smoke testing confirms login/dashboard shells are reachable on `{main_url}`, captcha is text-based, and runtime accessibility helper is loaded.
+- Public availability checks on 2026-08-26 confirmed the healthcare root route, GitBook reader, login shell and captcha API are reachable; the digital landing hero has descriptive alternative text.
+- The static and live audit result files were locked during the 2026-08-26 rerun and must be regenerated after they are unlocked.
 
 Detailed execution evidence:
 

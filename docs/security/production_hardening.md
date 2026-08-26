@@ -1,7 +1,7 @@
 # Production Hardening Guide
 
-Version: 1.0  
-Updated: 2026-07-16  
+Version: 1.1
+Updated: 2026-08-26
 License: GPL-3.0
 
 ## Purpose
@@ -18,6 +18,12 @@ This guide lists minimum hardening steps before deploying SaQshi in production.
 - Configure request size limits for uploads.
 - Enable log rotation.
 - Disable directory listing for `uploads/` and runtime storage folders.
+- Serve the profile-aware root `index.html` as the default document; do not set
+  `ui/login.html` as the server default document, or it will bypass healthcare/
+  education landing-page selection.
+- Restrict direct web access to `api/storage/`, `uploads/` private evidence,
+  backup archives, development output and temporary folders. Serve sensitive
+  evidence through an authenticated, scope-checked download route.
 
 ## Application Hardening
 
@@ -29,6 +35,11 @@ This guide lists minimum hardening steps before deploying SaQshi in production.
 - Rotate secrets after deployment handover.
 - Confirm CSRF is enabled for protected write actions.
 - Confirm session cookie settings are secure for HTTPS.
+- Select and validate the deployment profile (`healthcare`, `education` or
+  `generic-inspection`) before creating production assessments. Confirm the
+  configured profile and modules through the deployment API after release.
+- Keep GitBook documentation public only when its documents contain no private
+  operational data, credentials, test session cookies or internal export files.
 
 ## Database Hardening
 
@@ -71,6 +82,45 @@ Before release:
 - Confirm third-party license inventory.
 - Confirm database migration and backup plan.
 - Confirm rollback plan.
+
+### Current Validation Commands
+
+Run these from the application root on a staging deployment before release:
+
+```text
+php tools/php_syntax_check.php
+php tools/json_syntax_check.php
+php tools/php_style_check.php
+php tools/js_style_check.php
+php tools/run_unit_tests.php
+php tools/release_readiness_check.php
+php api/cli/deployment-readiness.php
+```
+
+Then verify the intended public surface:
+
+```text
+GET {main_url}/
+GET {main_url}/gitbook.html
+GET {main_url}/ui/login.html
+GET {main_url}/api/auth/v1/captcha.php
+```
+
+Expected results:
+
+- `/` serves the configured profile-aware landing page.
+- `/gitbook.html` and documentation links return only approved public content.
+- `/ui/login.html` is reachable but is not the web-server default document.
+- The captcha endpoint returns text-math JSON for `GET` and rejects unsupported
+  methods.
+
+### Release-readiness Warnings Require Resolution
+
+Treat every `Passed with review warnings` result as a release gate, not a clean
+approval. In particular, confirm that local runtime logs, uploaded data, key
+files and backup/export artifacts are excluded from the deployment package and
+from source-control publication. Large public assets should be reviewed for
+size, licensing and intended distribution.
 
 ## Related Documents
 

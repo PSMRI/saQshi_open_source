@@ -1,7 +1,7 @@
 # SaQshi Release Checklist
 
-Version: 1.0  
-Updated: 2026-07-13
+Version: 1.1
+Updated: 2026-08-26
 
 Use this checklist before publishing SaQshi to GitHub, sharing a release archive, or deploying a tagged version.
 
@@ -162,3 +162,7 @@ Do not publish if any of these are true:
 - Security contact is missing.
 - Database setup cannot be reproduced.
 - Critical/high VAPT issue is unresolved.
+
+## 2026-08-26 Follow-up Evidence
+
+Local revalidation recorded HTTP 200 for the landing page, GitBook reader and current compliance/security/testing documentation. JSON syntax, PHP/JavaScript style checks and eight unit tests passed. Keep the release verdict as `PASSED_WITH_REVIEW`: static public-page CSP/clickjacking headers are still tracked in VAPT-F-007, and final UAT VAPT, manual accessibility, legal/privacy sign-off, owner asset review and release-manifest review remain required.

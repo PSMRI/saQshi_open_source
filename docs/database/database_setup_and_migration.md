@@ -1,7 +1,7 @@
 # SaQshi Database Setup and Migration Guide
 
-Version: 1.1  
-Updated: 2026-07-18
+Version: 1.2
+Updated: 2026-08-26
 
 ## Purpose
 
@@ -102,6 +102,8 @@ This confirms that the public base schema is sufficient to start the
 application when the required environment values and approved master/config data
 are added.
 
+The base schema is intentionally not a production clone. It does not provision a real deployment's facility master, users, assessment history, evidence, certificate history or private settings. Seed only approved, deployment-specific records after the profile and data-owner approvals are complete.
+
 Validation recorded:
 
 | Item | Status |
@@ -129,6 +131,19 @@ After running the base schema, import approved/sanitized master data as needed:
 - certification configuration,
 - performance KPI/outcome JSON files.
 
+## Deployment Profile and Seed Data
+
+Choose the deployment profile before creating assessment data:
+
+```powershell
+php api/cli/configure-deployment-profile.php --profile=healthcare
+php api/cli/deployment-readiness.php
+```
+
+Supported choices are `healthcare`, `education` and `generic-inspection`. The profile controls labels, modules and default framework behaviour; it does not convert historical records or change the physical database schema names. For example, an education deployment can present School/UDISE/Class labels while the established schema retains `facilities`, `NIN_no` and assessment-department structures.
+
+Use only approved seed data. Real facility names, NIN/UDISE-style identifiers, user contact details, assessment results and hierarchy data must not be committed to the public repository or sample data package without data-owner approval.
+
 The repository also includes migration and schema-support files under
 `api/sql/` such as:
 
@@ -151,6 +166,8 @@ Do not commit production data dumps.
 3. Review the SQL script manually.
 4. Apply scripts in chronological order.
 5. Test affected workflows.
+
+For every production migration, record the migration filename, checksum/revision, executor, timestamp, backup location, pre-check result and post-check result in the release/deployment record. The `schema_migrations` table created by the base schema records applied migration IDs, but it does not replace change approval, backup validation or a tested rollback plan.
 
 Example:
 
@@ -373,9 +390,17 @@ After database changes, test:
 - State dashboard counts.
 - Certification status/map.
 
-## Recommended Schema Version Table
+Also verify the profile-aware public landing and access boundary:
 
-Future improvement:
+- `GET /api/config/v1/public_deployment.php` returns only public branding/label data.
+- `/` serves the healthcare landing page for the healthcare profile and redirects to `education-index.html` for the education profile.
+- Protected APIs still reject an unauthenticated request and role-scoped test users cannot read another facility/geography's data.
+
+Run migrations first in a non-production environment with representative sanitized data. Do not run active security tests, broad deletes, schema drops or data-masking scripts against production without an approved change window and recoverable backup.
+
+## Schema Migration History
+
+The sanitized base schema already creates `schema_migrations` to record applied migration identifiers. Keep the table as an operational aid, and continue to maintain an external change/release record for approvals, backup locations, validation and rollback evidence.
 
 ```sql
 CREATE TABLE IF NOT EXISTS schema_migrations (
@@ -385,4 +410,4 @@ CREATE TABLE IF NOT EXISTS schema_migrations (
 );
 ```
 
-This will allow SaQshi to know which migrations have already been applied.
+Use a unique, immutable migration filename as `migration_id`. Do not edit an already-applied migration in place; add a corrective migration instead.

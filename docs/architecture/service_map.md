@@ -1,7 +1,7 @@
 # SaQshi Service Map
 
-Version: 1.0  
-Updated: 2026-07-18  
+Version: 1.1
+Updated: 2026-08-26
 License: GPL-3.0
 
 ## Purpose
@@ -39,6 +39,7 @@ flowchart LR
     API --> CORE["Core Helpers<br/>Auth, Session, Security, Response"]
     API --> SERVICE["Service Class<br/>api/service/*.php"]
     SERVICE --> CONFIG["JSON Config<br/>api/config/..."]
+    SERVICE --> BRANDING["Public profile branding<br/>presentation-safe only"]
     SERVICE --> CHATCFG["Chat Config<br/>intents, knowledge,<br/>safety rules"]
     SERVICE --> DB[("MySQL / MariaDB")]
     SERVICE --> EVENT["Event::dispatch(...)"]
@@ -50,6 +51,7 @@ flowchart LR
 | Service | Main Responsibility | API Linked | UI Linked |
 |---|---|---|---|
 | `AuthService.php` | Login-support operations, current user/session-related helper behavior. | Auth APIs, login/current-user endpoints. | `ui/pages/login`, dashboard shell. |
+| `DeploymentConfigService.php` | Loads and applies deployment profile, public labels/branding, modules and assessment-period policy. | `api/config/v1/deployment.php`, `assessment_policy.php`, `profile_apply.php`, `public_deployment.php`. | Root landing page, education landing page, deployment setup screens and profile-aware UI labels. |
 | `ValidationService.php` | Common validation helpers for required fields and request payloads. | Shared by multiple API endpoints. | All forms that call APIs indirectly rely on it. |
 | `DashboardService.php` | Facility dashboard summary helper. | Dashboard APIs. | `ui/pages/dashboard`. |
 | `DynamicAssessmentService.php` | Reads framework JSON and manages assessment checklist structure: facility type, departments, concerns, subtypes, checkpoints and response flow. | `api/assessment/v1/*`, checklist/response APIs. | `ui/pages/assessment/checklist.*`, assessment reports. |
@@ -99,6 +101,26 @@ Main responsibilities:
 - Maintain session context.
 - Support role-aware navigation.
 - Keep sensitive login operations outside page JavaScript.
+- Apply strict cookie-only session handling, `HttpOnly`, `SameSite=Strict`, HTTPS `Secure` cookies where HTTPS is detected, timeout and periodic session-ID regeneration.
+- Prefer configured Memurai/Redis storage for multi-worker deployments; if Redis session startup fails, use the protected file-session recovery path and record an operational warning for investigation.
+
+### Deployment Profiles and Public Branding
+
+```text
+index.html
+  -> api/config/v1/public_deployment.php (public presentation data only)
+    -> DeploymentConfigService
+      -> api/config/domain.json + api/config/modules.json
+  -> healthcare landing remains on index.html
+  -> education landing redirects to education-index.html
+```
+
+Main responsibilities:
+
+- Keep healthcare, education and generic-inspection labels/modules/default framework selection configuration-driven.
+- Return only `profile_code`, `profile_name`, public labels, branding and public content through the unauthenticated branding endpoint.
+- Keep authenticated configuration changes behind the normal role/session access controls.
+- Do not treat the public landing page or GitBook navigation as an authorization mechanism.
 
 ### Assessment
 
@@ -145,6 +167,7 @@ Main responsibilities:
 - Create or reuse the active assessment for the selected facility.
 - Auto-activate the department when the facility has only one applicable department.
 - Route multi-department facilities to department activation before checklist entry.
+- Apply the configured Education School/UDISE/Class or Healthcare Facility/NIN/Department terminology in the UI while preserving stable API and schema identifiers.
 
 ### CQI
 
@@ -297,6 +320,12 @@ Chat service safety rules:
 - Point users to report downloads for long facility lists.
 - Store chat history for audit without storing sensitive secrets.
 
+## Public Documentation Reader
+
+`gitbook.html` is a static public documentation reader that loads repository-relative documentation paths. It renders user, developer, deployment, API, security/testing and compliance material but does not authenticate readers. Treat all reader-visible documents as public content: exclude `.env` values, credentials, session/CSRF tokens, production hostnames, raw logs, uploads, real person data, unapproved facility/school master data and internal storage paths.
+
+Availability of the reader or a document (HTTP 200) confirms only that the route is serving content. It does not confirm accessibility conformance, content approval, security-header coverage or release readiness.
+
 ## Wrapper Services
 
 Some `State*Service.php` files are intentionally thin wrappers. They exist so
@@ -329,6 +358,8 @@ to Kafka without changing API endpoint or UI page code.
 - Database values should use prepared statements.
 - UI pages should not know database table structure directly.
 - New service files must be added to this document and to API documentation when public behavior changes.
+- Public endpoints must have an explicit data classification, allowed method and cache/header review. Do not infer public access from service or endpoint location.
+- Profile changes are controlled deployment changes: test with backup and owner approval, then verify the selected profile, public landing behavior and authenticated role flows in a non-production environment.
 
 ## Related Documents
 

@@ -1,7 +1,7 @@
 # SaQshi Black-Box and White-Box Testing Guide
 
-Version: 1.0  
-Updated: 2026-07-13
+Version: 1.1
+Updated: 2026-08-26
 
 ## Purpose
 
@@ -19,6 +19,8 @@ This document explains how SaQshi should be tested using both black-box and whit
 Black-box testing should cover what the user can see or call:
 
 - Login, captcha and encrypted password flow.
+- Profile-aware public landing page for healthcare and education deployments.
+- GitBook documentation reader, CSV test-register rendering and safe document routing.
 - Facility dashboard.
 - Assessment creation, cancellation and completion.
 - Department activation.
@@ -39,6 +41,7 @@ Black-box testing should cover what the user can see or call:
 White-box testing should cover internal implementation:
 
 - PHP syntax validation.
+- JSON configuration validation and PHP/JavaScript style checks.
 - JavaScript syntax validation.
 - Prepared statements and SQL injection review.
 - CSRF enforcement for state-changing APIs.
@@ -78,6 +81,11 @@ White-box testing should cover internal implementation:
 | BB-MON-001 | Monitoring | State dashboard | Open state dashboard | Current month and category/status cards load | P1 |
 | BB-MON-002 | Monitoring | Pagination | Open large list page | Data loads page-wise; no browser freeze | P1 |
 | BB-ERR-001 | Error | Friendly failure | Trigger missing parameter | JSON/UI shows friendly validation message | P0 |
+| BB-LAND-001 | Public landing | Healthcare route | Open `/` with healthcare profile active | Healthcare landing page loads, not the login shell | P0 |
+| BB-LAND-002 | Public landing | Education route | Open `/` with education profile active | Browser redirects to `/education-index.html` | P0 |
+| BB-GIT-001 | GitBook | Documentation reader | Open `/gitbook.html` | GitBook shell and navigation load | P0 |
+| BB-GIT-002 | GitBook | Test register | Open the test-case CSV through GitBook | CSV renders as a readable table | P0 |
+| BB-GIT-003 | GitBook | Safe document path | Request `gitbook.html?doc=..%2F..%2F.env` | Reader falls back to README; no local file is exposed | P0 |
 
 ## White-Box Test Cases
 
@@ -94,6 +102,9 @@ White-box testing should cover internal implementation:
 | WB-CONFIG-001 | Secrets | DB credentials | Inspect config loading | Secrets loaded from `.env`, not committed code | P0 |
 | WB-PERF-001 | Pagination | State list services | Inspect API list responses | Page/per_page supported on large lists | P1 |
 | WB-EVENT-001 | Audit/Event | Event abstraction | Inspect `api/core/Event.php` and bootstrap | Request events are logged | P2 |
+| WB-JSON-001 | Configuration | JSON syntax validation | Run `php tools/json_syntax_check.php` | All tracked configuration JSON files parse successfully | P0 |
+| WB-QUALITY-001 | Quality gate | Style and unit tests | Run PHP/JS style checks and `php tools/run_unit_tests.php` | Style checks pass and unit tests complete without failures | P0 |
+| WB-ROUTE-001 | Configuration | IIS default document | Inspect `web.config` and request `/` | Root serves profile-aware `index.html`, not the login shell | P0 |
 
 ## Initial Test Execution Results
 
@@ -121,6 +132,33 @@ Result:
 | Max latency | 508.19 ms |
 
 Status: Passed.
+
+## Focused Public Pages and GitBook Revalidation
+
+Executed on: 2026-08-26
+Scope: healthcare public landing page, profile-aware root route, GitBook reader,
+documentation test register and supporting configuration checks.
+
+| Check | Result |
+|---|---|
+| `php tools/php_syntax_check.php` | Passed |
+| `php tools/json_syntax_check.php` | Passed after removal of a UTF-8 BOM from `api/config/masters/facility_types_eduction_bihar.json` |
+| `php tools/php_style_check.php` | Passed |
+| `php tools/js_style_check.php` | Passed |
+| `php tools/run_unit_tests.php` | Passed: 8 passed, 0 failed |
+| `php tools/release_readiness_check.php` | Passed with review warnings for local/runtime data and large assets |
+| `GET /` | Passed: HTTP 200, healthcare landing page served |
+| `GET /gitbook.html` | Passed: HTTP 200 |
+| `GET /ui/login.html` | Passed: HTTP 200 |
+| `GET /api/auth/v1/captcha.php` | Passed: HTTP 200 with a text-math question |
+| `HEAD /api/auth/v1/captcha.php` | Passed: HTTP 405, unsupported method rejected |
+
+The static and live accessibility scripts were started during this recheck, but
+their existing JSON report files were locked by another local process. Their
+results must be regenerated after those files are unlocked.
+
+The detailed record is available in
+`docs/testing/public_pages_gitbook_revalidation_2026_08_26.md`.
 
 Result file:
 
@@ -177,4 +215,3 @@ The initial execution in this workspace was safe and non-destructive. It did not
 - Modify real assessment/performance/certification data.
 
 These should be performed on a dedicated test environment with test users and test data.
-

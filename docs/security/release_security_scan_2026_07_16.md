@@ -1,8 +1,8 @@
 # Release Security Scan
 
-Version: 1.0  
+Version: 1.1
 Scan date: 2026-07-16  
-Documentation status reviewed: 2026-07-19  
+Documentation status reviewed: 2026-08-26
 Scope: `open_source/api`, `open_source/ui`, `open_source/tools`, `open_source/scripts`
 
 ## Purpose
@@ -50,6 +50,33 @@ php tools\release_readiness_check.php
 | Friendly error handling | Improved | Server errors are returned through friendly JSON with request IDs. Legacy array-returning services now sanitize low-level database/system messages, and the release checker flags direct raw exception/database output patterns. |
 | Release readiness checker | Passed with review warnings | Remaining warnings are non-code release items: clean-install validation, final sign-offs, UAT VAPT and large asset review. |
 
+## Focused Follow-up — 2026-08-26
+
+This non-destructive follow-up covered recent public-page, GitBook and
+configuration changes. It is not a full replacement for the 2026-07 source
+scan or a UAT VAPT.
+
+| Area | Result | Notes |
+|---|---|---|
+| Configuration JSON | Passed | `php tools/json_syntax_check.php` passed after removal of a UTF-8 BOM from `api/config/masters/facility_types_eduction_bihar.json`. |
+| PHP and JavaScript style | Passed | `php tools/php_style_check.php` and `php tools/js_style_check.php` passed. |
+| Unit regression tests | Passed | `php tools/run_unit_tests.php` reported 8 passed, 0 failed. |
+| Release readiness | Passed with review warnings | Runtime/private data, local logs, key files and large assets remain deployment-hygiene items that must not be included in a public release. |
+| Root document route | Passed | `GET /` returned HTTP 200 and served the profile-aware healthcare landing page rather than the login shell. |
+| GitBook documentation | Passed | `GET /gitbook.html` returned HTTP 200. |
+| Captcha method guard | Passed | `GET` returned text-math JSON; unsupported `HEAD` returned HTTP 405. |
+| SQL hardening regression | Passed for source/syntax review | Action-plan placeholder binding and certification identifier validation remain documented in the SQL security review. |
+
+### Follow-up Limits
+
+- The full secret-scan command from the original scan was not rerun as part of
+  this focused follow-up.
+- The release-readiness output identified local runtime logs, uploaded data and
+  key files for review. These are not evidence that they are tracked for
+  release; confirm the final build manifest and ignore rules before publishing.
+- No active exploit, upload-malware, authenticated authorization-bypass or
+  production-load test was performed.
+
 ## Code Changes Applied During Scan
 
 | File | Change |
@@ -77,4 +104,9 @@ php tools\release_readiness_check.php
 
 Security scan status: **Passed with review warnings**.
 
-No immediate committed secret, PHP syntax, JavaScript syntax, raw password transport, obvious upload traversal issue or direct raw server-error exposure remains in the scanned source. Public release should still wait for the remaining non-code release approvals and the final UAT VAPT pass.
+The 2026-07 scan found no immediate committed secret, PHP syntax, JavaScript
+syntax, raw password transport, obvious upload traversal issue or direct raw
+server-error exposure in its scanned source. The 2026-08-26 focused follow-up
+passed the listed regression checks. Public release should still wait for a
+fresh full secret scan, final build-manifest review, remaining non-code release
+approvals and the final UAT VAPT pass.

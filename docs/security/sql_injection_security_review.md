@@ -1,7 +1,7 @@
 # SaQshi SQL Injection and Security Review
 
-Version: 1.2  
-Updated: 2026-07-19
+Version: 1.3
+Updated: 2026-08-26
 
 ## Purpose
 
@@ -54,6 +54,31 @@ The confirmed SQL injection hardening item has been updated in code after docume
 SQLI-001 is closed. The action-plan suggestion query no longer places checkpoint IDs directly into the SQL string. The query now binds all checkpoint IDs and the framework code through a prepared statement.
 
 SQLI-002 is closed for the current implementation. `CertificationService::ensureColumn()` is private and called with static identifiers, and it now validates table/column names using an alphanumeric/underscore allow-list before building schema-maintenance SQL.
+
+## Focused Revalidation — 2026-08-26
+
+This follow-up rechecked the two documented SQL-hardening controls and the
+supporting regression checks after recent public-page and GitBook changes. It
+was a non-destructive source and syntax review; it did not submit injection
+payloads to a production or authenticated environment.
+
+| Check | Result | Evidence |
+|---|---|---|
+| Action-plan suggestion syntax | Pass | `php -l api/assessment/v1/action_plan.php` completed without syntax errors. |
+| Certification service syntax | Pass | `php -l api/service/CertificationService.php` completed without syntax errors. |
+| Action-plan dynamic `IN` handling | Pass for source review | The SQL uses generated `?` placeholders; checkpoint IDs and framework code are bound with `bind_param()`. |
+| Configuration JSON validation | Pass | `php tools/json_syntax_check.php` passed after removal of a UTF-8 BOM from `api/config/masters/facility_types_eduction_bihar.json`. |
+| Unit regression checks | Pass | `php tools/run_unit_tests.php` reported 8 passed, 0 failed. |
+| Public API safety baseline | Pass for availability | Captcha helper returned HTTP 200 for `GET` and HTTP 405 for an unsupported `HEAD` request. |
+
+### Revalidation Limits
+
+- This result does not prove every SQL query is free of injection risk.
+- It does not replace a controlled authenticated test with malicious IDs,
+  filter values, pagination values, search text and report parameters.
+- Any new or changed query must still be added to the
+  [SQL Query Inventory](../database/sql_query_inventory.md) and reviewed for
+  prepared values or strict allow-listed identifiers.
 
 ## SQLI-001: Dynamic IN Clause in Action Plan Suggestions
 
@@ -139,6 +164,9 @@ Expected result:
 - Keep SQL helper methods for dynamic `IN` clauses to avoid repeating logic.
 - Add automated Semgrep or similar static checks for SQL injection patterns.
 - Add security test cases to Postman for invalid IDs, malicious strings and unauthorized scope access.
+- In a dedicated test database, add controlled negative tests for action-plan
+  suggestion parameters and dynamic list/sort/report filters; assert that
+  queries remain parameterized and responses never include database details.
 - Keep production PHP configured with `display_errors = Off`.
 - Update `docs/database/sql_query_inventory.md` whenever an API page adds,
   removes or materially changes a database query.

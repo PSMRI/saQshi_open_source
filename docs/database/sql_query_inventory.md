@@ -1,7 +1,7 @@
 # SaQshi SQL Query Inventory
 
-Version: 1.0  
-Updated: 2026-07-19
+Version: 1.1
+Updated: 2026-08-26
 
 ## Purpose
 
@@ -24,6 +24,25 @@ SaQshi uses MySQL/MariaDB through PHP `mysqli`.
 
 See the [SQL Injection and Security Review](../security/sql_injection_security_review.md)
 for the security controls and hardening history.
+
+## Inventory Revalidation — 2026-08-26
+
+The inventory was rechecked alongside the SQL injection/security review after
+recent public-page and GitBook changes. Those changes did not add a new
+database-query endpoint. The existing CQI action-plan and certification entries
+remain the relevant dynamic-query controls.
+
+| Inventory item | Revalidation result | Evidence |
+| --- | --- | --- |
+| CQI action-plan suggestions | Pass for source review | `action_plan.php` generates a placeholder for each normalized checkpoint ID and binds the IDs plus framework code through `bind_param()`. |
+| Certification schema compatibility | Pass for source review | `CertificationService::ensureColumn()` remains restricted to validated application-controlled identifiers. |
+| Action-plan syntax | Pass | `php -l api/assessment/v1/action_plan.php` completed without syntax errors. |
+| Certification service syntax | Pass | `php -l api/service/CertificationService.php` completed without syntax errors. |
+| Configuration validity | Pass | `php tools/json_syntax_check.php` completed successfully. |
+
+This revalidation was non-destructive. It does not substitute for controlled
+authenticated negative testing of search, filter, paging, report and action-plan
+parameters against a dedicated test database.
 
 ## Query Inventory by Module
 
@@ -144,7 +163,8 @@ WHERE checkpoint_id IN (?, ?, ...)
 ```
 
 The number of placeholders is generated from validated checkpoint IDs and all
-values are bound. Source: `api/assessment/v1/action_plan.php`.
+values are bound. The framework code is also bound. Source:
+`api/assessment/v1/action_plan.php`.
 
 ## Schema and Metadata Queries
 
@@ -167,7 +187,9 @@ rg -n --glob '*.php' '(->query\\(|mysqli_query\\(|mysqli_prepare\\(|->prepare\\(
 ```
 
 Review each new `query()` call to ensure it is static/trusted SQL. Bind all
-new user-supplied values through a prepared statement.
+new user-supplied values through a prepared statement. Update the relevant row
+in this inventory and the SQL Injection and Security Review whenever a
+query-bearing API page or shared service changes.
 
 ## Related Documentation
 

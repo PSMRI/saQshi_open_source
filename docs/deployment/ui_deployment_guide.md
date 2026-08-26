@@ -1,5 +1,8 @@
 # UI Deployment Guide
 
+Version: 1.1
+Updated: 2026-08-26
+
 This guide explains how to deploy and verify the SaQshi web UI. The API deployment guide covers PHP, database and server setup; this page focuses on the browser application under `ui/`.
 
 ## UI Runtime Model
@@ -10,6 +13,9 @@ SaQshi UI is a static HTML, CSS and JavaScript application. It does not need a f
 | --- | --- |
 | `ui/login.html` | Login entry page. |
 | `ui/dashboard.html` | Main authenticated shell. |
+| `index.html` | Public healthcare landing page and profile-aware root entry point. |
+| `education-index.html` | Public education landing page selected by the education profile. |
+| `gitbook.html` | Public GitBook documentation reader. |
 | `ui/assets/` | Shared CSS, JavaScript, images, icons and design system files. |
 | `ui/components/` | Header, sidebar, footer, loader, modal, notification and chat components. |
 | `ui/layouts/` | Layout templates used by the shell. |
@@ -53,6 +59,21 @@ This same-origin pattern is recommended because SaQshi uses browser sessions, CS
 
 Avoid opening UI files directly from the filesystem. Use a web server URL so JavaScript, JSON manifests, components and API calls resolve correctly.
 
+## Public Entry Pages and Profile Routing
+
+Deploy the root-level public pages with `ui/` and `api/`:
+
+```text
+{main_url}/
+{main_url}/index.html
+{main_url}/education-index.html
+{main_url}/gitbook.html
+```
+
+The root route must resolve to `index.html`, not directly to `ui/login.html`. `index.html` checks the public deployment-branding endpoint and redirects to `education-index.html` when the active profile is Education. When the check is unavailable, it stays on the healthcare landing page as a safe public fallback. Login remains at `{main_url}/ui/login.html`.
+
+Do not cache the `public_deployment.php` response as a shared public response. It contains only public branding/labels, but profile changes must take effect without a stale landing-page redirect.
+
 ## Deployment Steps
 
 1. Copy the full project to the server application root.
@@ -70,6 +91,9 @@ scripts/
 4. Confirm static files are served:
 
 ```text
+{main_url}/
+{main_url}/education-index.html
+{main_url}/gitbook.html
 {main_url}/ui/login.html
 {main_url}/ui/assets/js/app.js
 {main_url}/ui/config/app.json
@@ -188,11 +212,12 @@ Recommended IIS checks:
 
 - Enable Static Content.
 - Configure PHP through FastCGI for `api/*.php`.
-- Set `ui/login.html` as an optional default document if required.
+- Set `index.html` as the default document. Do not override it with `ui/login.html`; this would bypass profile-aware landing-page routing.
 - Add MIME mappings for `.json`, `.svg`, `.woff`, `.woff2`, `.md`, `.yaml` and `.yml` where needed.
 - Disable directory browsing.
 - Deny public access to `.env`, server logs, backups and private storage folders.
 - Ensure upload and log folders have write permission for the application pool identity.
+- Apply and verify the approved static-page CSP, clickjacking/frame, `nosniff` and referrer-policy headers. The current VAPT record keeps static public-page header coverage open until the hosting-layer policy is confirmed.
 
 ## Nginx Notes
 
@@ -205,7 +230,7 @@ server {
     listen 80;
     server_name example.org;
     root /var/www/saqshi;
-    index ui/login.html;
+    index index.html;
 
     location /ui/ {
         try_files $uri =404;
@@ -274,6 +299,7 @@ When deploying UI changes:
 | API errors | Friendly JSON responses, no raw database/PHP errors. |
 | Role menus | Sidebar and page access follow role permissions. |
 | Browser cache | Sensitive API responses are not cached publicly. |
+| Public landing headers | Apply approved CSP, frame/clickjacking, `nosniff` and referrer policy to `/`, `gitbook.html` and `ui/login.html`; verify in staging. |
 
 ## Troubleshooting
 
@@ -294,6 +320,9 @@ Before marking a UI deployment complete, verify these URLs:
 ```text
 {main_url}/ui/login.html
 {main_url}/ui/dashboard.html
+{main_url}/
+{main_url}/education-index.html
+{main_url}/gitbook.html
 {main_url}/ui/help/documentation.html
 {main_url}/docs/api/swagger-ui.html
 {main_url}/api/auth/v1/csrf.php
@@ -308,3 +337,5 @@ Then verify at least one page from each major module:
 - State Monitoring
 - Facility User Profile
 - Documentation
+
+Also verify profile behaviour in an isolated environment: Healthcare should remain on the healthcare landing page; Education should redirect from `/` to `education-index.html`. Do not switch the production profile solely for this verification.

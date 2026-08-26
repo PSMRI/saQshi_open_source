@@ -1,7 +1,7 @@
 # SDG Mapping
 
-Version: 1.3  
-Updated: 2026-08-03  
+Version: 1.4
+Updated: 2026-08-26
 License: GPL-3.0
 
 ## Purpose
@@ -71,6 +71,10 @@ patient-centred healthcare for the public.
 ## Alignment Boundary
 
 SaQshi's SDG contribution is primarily through **digital quality assessment, monitoring, reporting and CQI workflows**. It should not be described as directly providing healthcare services, directly reducing disease burden, or directly achieving SDG targets by itself. Actual SDG impact depends on how health-system teams use the data and complete improvement actions.
+
+## 2026-08-26 Follow-up
+
+The public landing and GitBook routes were rechecked for availability. The healthcare release baseline remains the basis for this SDG mapping; education and generic-inspection profiles reuse the platform but require their own impact claims and evidence. No outcome-impact measurement is implied by route availability or documentation updates.
 
 ## Evidence in Repository
 

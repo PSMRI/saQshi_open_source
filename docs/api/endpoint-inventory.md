@@ -1,5 +1,8 @@
 # API Endpoint Inventory
 
+Version: 1.1
+Updated: 2026-08-26
+
 This is the source-of-truth checklist for endpoint documentation. It contains
 all endpoint implementation files under `api/*/v1`. Files prefixed with `_` are
 internal helpers, not callable endpoints.
@@ -18,12 +21,21 @@ internal helpers, not callable endpoints.
 
 Source directory: `api/assessment/v1/`
 
-## Authentication (9)
+## Authentication (7)
 
-`captcha`, `csrf`, `login`, `login_key`, `login1`, `logout`, `logout1`, `me`,
-`validate`.
+`captcha`, `csrf`, `login`, `login_key`, `logout`, `me`, `validate`.
 
 Source directory: `api/auth/v1/`
+
+## Deployment Configuration (4)
+
+`assessment_policy`, `deployment`, `profile_apply`, `public_deployment`.
+
+Source directory: `api/config/v1/`
+
+`public_deployment` is the deliberately unauthenticated, presentation-only endpoint used by the public landing page. It exposes the active profile code/name plus public labels, branding and content. It must not expose credentials, user/session data, infrastructure settings, storage paths or operational configuration.
+
+`deployment`, `assessment_policy` and `profile_apply` are configuration-management endpoints and require the appropriate authenticated role. Do not treat their presence in this inventory as permission to call them anonymously.
 
 ## Assessor (8)
 
@@ -103,3 +115,6 @@ Source directory: `api/admin/v1/`
 - `api/routes.php` also supports a dispatcher form using `?route=<module/v1/name>`.
 - The inventory will be expanded into endpoint pages with methods, request fields,
   responses, functions, services, database effects and extension guidance.
+- The list is generated from the currently present `api/*/v1` source files. Update it whenever endpoint files are added, removed or renamed; do not leave stale entries such as deleted compatibility endpoints.
+- Most endpoints are protected. Authentication-related endpoints may be called before login only as required by the login flow; public availability must be confirmed from the endpoint implementation and security review, not inferred from its module name.
+- For public-route verification, `GET /api/config/v1/public_deployment.php` should return public branding data and `GET /api/auth/v1/captcha.php` should return a captcha challenge. Unsupported captcha methods should be rejected.

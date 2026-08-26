@@ -1,5 +1,8 @@
 # WHO Digital Health Compatibility
 
+Version: 1.1
+Updated: 2026-08-26
+
 ## Purpose
 
 This page records how SaQshi supports the WHO digital-health design principles of low-bandwidth operation, scalability, adaptability and interoperability. It is an implementation-readiness statement, not a WHO endorsement, certification or formal conformance assessment.
@@ -36,3 +39,7 @@ Use `windows-service` for a continuous Windows worker, or `redis-coordinated` wh
 - Perform expected-load and failover testing for the selected worker topology.
 - Validate any external exchange against the receiving system's current implementation guide.
 - Maintain HTTPS, backups, monitoring and operational incident procedures.
+
+## 2026-08-26 Follow-up
+
+The public landing route and GitBook documentation were rechecked locally for availability. Deployment profiles now explicitly select healthcare, education or generic-inspection landing behaviour, supporting adaptability without changing the interoperability boundary. Offline, low-bandwidth, worker-topology and receiving-system validation remain deployment-specific work; this page continues not to claim WHO endorsement or certification.

@@ -1,10 +1,15 @@
 # Assessment API
 
+Version: 1.1
+Updated: 2026-08-26
+
 ## Why this module exists
 
 The assessment module manages the facility assessment lifecycle: create one active assessment, activate and assess departments, save checkpoint evidence and scores, then complete or cancel the assessment. It also supplies progress, navigation, action-plan and analysis data for the assessment user interface.
 
 All endpoints use facility and user identity from the session. A caller must not operate on another facility merely by submitting a different `fac_id`.
+
+The API uses the active deployment profile for labels and framework defaults. Healthcare deployments normally present Facility/NIN/Department terminology; education deployments can present School/UDISE/Class terminology. Existing physical schema and API field names remain compatibility-oriented, so clients must use the documented request contract rather than deriving field names from displayed UI labels.
 
 ## Lifecycle
 
@@ -19,6 +24,8 @@ Create ACTIVE assessment
 ```
 
 One facility can have only one `ACTIVE` assessment. An assessment may alternatively be cancelled.
+
+For assessor-led/shared work, each assessor must be mapped to the target facility and can work only within assigned available Class/Department scope. The API must enforce this server-side; hiding a button in the UI is not an access-control boundary.
 
 ## Shared implementation pattern
 
@@ -57,6 +64,8 @@ The values have defaults, but name and framework must be non-empty. Dates must b
 | `assessment_master` | Inserts one active assessment. |
 
 **Extension note:** Validate new attributes before the active-row check, add them to the prepared `INSERT`, and return them from both response paths. Consider a database constraint or transaction strategy if simultaneous creates are possible.
+
+**Concurrency note:** Treat the active-assessment check and insert as one lifecycle decision. In high-concurrency deployments, verify that simultaneous requests cannot create conflicting active assessments; use a transaction and/or a database constraint consistent with the deployed MySQL/MariaDB version.
 
 ## Get active assessment
 
@@ -100,6 +109,8 @@ The values have defaults, but name and framework must be non-empty. Dates must b
 ```
 
 `assessment_id`, `dept_id`, `checkpoint_id`, and a valid response are required. The browser should not decide the score. `save-response.php` loads the checkpoint response definition from framework JSON and calculates `score`, `max_score` and `score_status` on the server.
+
+Do not send patient/student personal data, credentials, session values or raw uploaded-file paths in `remarks`, `response_json` or `evidence_url`. Evidence references must remain facility-scoped and be handled according to the deployment evidence-retention policy.
 
 ## Bulk save checklist responses
 
@@ -157,6 +168,8 @@ Before connecting it to an external gateway, map identifiers and terminology
 with the receiving system and confirm the deployment's privacy/data-sharing
 requirements.
 
+The FHIR export is not a public endpoint. Test it only with an authenticated, authorised facility session and validate the receiving system's current implementation guide before any ABDM, DHIS2, HL7 or other integration.
+
 ## Complete assessment
 
 **Source:** `api/assessment/v1/complete_assessment.php`  
@@ -194,3 +207,13 @@ The module also contains the following endpoint families. They are listed here s
 | Checkpoint navigation | `get_checkpoint`, `next_checkpoint`, `previous_checkpoint`, `progress`, `resume`, `score` |
 | Assessor data | `assessor_info_get`, `assessor_info_save` |
 | Analysis and action plans | `gap_analysis`, `dashboard_insights`, `action_plan`, `action_plan_save`, `action_plan_update`, `action_plan_closure` |
+
+## Error, Security and Test Expectations
+
+- Require the documented HTTP method before reading input or writing data.
+- Obtain actor, facility and role scope from the server session; reject missing, expired or cross-scope context.
+- Use `Security::jsonInput()`, prepared statements and framework-owned score calculation for every new write path.
+- Return safe `Response` envelopes; never expose SQL, filesystem paths, passwords, CSRF tokens, session IDs or internal framework contents in an error.
+- Record lifecycle-changing actions through the approved event/history mechanism, without logging sensitive response or credential values.
+
+After changing an assessment endpoint, run JSON/PHP checks and the relevant unit/functional tests. In an approved non-production environment, test a valid facility workflow, invalid method/input, expired session, cross-facility attempt, inactive/completed-assessment attempt and concurrent-save behaviour. Update the endpoint inventory, OpenAPI/Postman artifact when applicable, SQL query inventory and security/test evidence in the same change.

@@ -1,7 +1,7 @@
 # Deployment Profile Configuration
 
-Version: 1.0  
-Updated: 2026-07-18  
+Version: 1.1
+Updated: 2026-08-26
 License: GPL-3.0
 
 ## Purpose
@@ -14,6 +14,20 @@ generic-inspection implementation.
 The standard healthcare profile is NQAS-aligned. Education and
 generic-inspection profiles use the same configurable platform with their own
 labels, modules and framework defaults.
+
+## Public Landing-Page Behaviour
+
+The public root URL is profile-aware:
+
+| Active profile | Root route behaviour | Primary public page |
+|---|---|---|
+| `healthcare` | Serves the healthcare landing page | `index.html` |
+| `education` | Redirects after reading public deployment configuration | `education-index.html` |
+| `generic-inspection` | Verify the configured generic-inspection experience during acceptance testing | Deployment-specific |
+
+`index.html` reads `GET /api/config/v1/public_deployment.php` without authentication. That endpoint returns only public branding and label data; it must not return credentials, user data, infrastructure values or operational configuration. If the call is temporarily unavailable, the root page remains on the healthcare landing page rather than exposing an error.
+
+Authenticated users still use `ui/login.html`; protected pages and APIs continue to enforce role and session checks.
 
 ## Active Configuration Files
 
@@ -44,6 +58,8 @@ The command writes `api/config/domain.json` and `api/config/modules.json`.
 Choose the profile before creating assessments; existing assessments retain the
 framework that was selected when they were created.
 
+Changing an active profile is a controlled deployment change, not a routine user action. It can alter labels, modules, default framework selection and the public landing-page experience. Before changing it, take a database/configuration backup, obtain owner approval, test in non-production and communicate the change. Do not switch a production profile simply to test the landing page.
+
 Profile source files are available in:
 
 ```text
@@ -63,6 +79,18 @@ php api/cli/deployment-readiness.php
 It validates deployment/profile JSON, required PHP extensions, database
 connectivity, the background-jobs table and the selected worker mode. Use
 `--json` for automated deployment pipelines.
+
+## Post-Selection Verification
+
+After selecting or restoring a profile, verify the effective configuration before inviting users:
+
+```powershell
+php api/cli/deployment-readiness.php
+Invoke-WebRequest -UseBasicParsing -Uri "{main_url}/api/config/v1/public_deployment.php"
+Invoke-WebRequest -UseBasicParsing -Uri "{main_url}/"
+```
+
+Confirm that `public_deployment.php` reports the intended `profile_code` and public labels only; Healthcare opens the healthcare landing page; Education opens `education-index.html` after the profile check; and Login opens `ui/login.html`. Then sign in with an authorised test account to confirm expected labels, menus, framework and modules. Record the profile code, deployment date, approving owner and result in the release/deployment record.
 
 Healthcare copy-ready examples are stored in:
 
@@ -209,6 +237,16 @@ The UI uses this response for:
 - active framework reference,
 - deployment setup screens.
 
+### Public Branding API
+
+The unauthenticated landing page uses a narrower endpoint:
+
+```text
+GET {main_url}/api/config/v1/public_deployment.php
+```
+
+It returns `profile_code`, `profile_name`, public labels, branding and public content. Treat it as a public contract: keep values presentation-safe, do not add secrets or environment-specific service details, and recheck the response whenever profile configuration or landing-page code changes.
+
 ## One Assessment, One Checklist
 
 Each assessment uses one framework/checklist at a time. For the current
@@ -251,3 +289,7 @@ form
 These examples are useful for developers validating the configurable assessment
 engine, while the production NQAS checklist continues to follow the approved
 healthcare scoring structure.
+
+## Rollback and Support
+
+If a profile change causes incorrect labels, unexpected menus or landing-page routing, stop further rollout and restore the last approved `domain.json` and `modules.json` backup. Re-run `deployment-readiness.php`, clear browser cache only where necessary, and repeat post-selection verification. Do not delete existing assessments to correct profile configuration; escalate framework or data-migration decisions to the deployment owner.

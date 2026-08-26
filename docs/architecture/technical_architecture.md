@@ -1,12 +1,12 @@
 # SaQshi Technical Architecture
 
-Version: 1.0  
-Updated: 2026-07-18  
+Version: 1.1
+Updated: 2026-08-26
 License: GPL-3.0
 
 ## Purpose
 
-This document shows the high-level technical architecture of the current healthcare/NQAS release of SaQshi.
+This document shows the high-level technical architecture of the current SaQshi development baseline. The healthcare/NQAS profile is the primary reviewed implementation; education and generic-inspection profiles use the same platform with profile-driven labels, modules and framework defaults.
 It is intended for developers, implementers, technical reviewers and deployment
 teams who need to understand how UI pages, APIs, services, configuration,
 database tables, reporting, monitoring and future event integration fit together.
@@ -35,7 +35,8 @@ This diagram gives a readable top-level view. It intentionally keeps only the ma
 
 ```mermaid
 flowchart LR
-    Users["Users<br/>Facility, External Assessor,<br/>Block, District, Division,<br/>State, Admin"]
+    Public["Public entry<br/>/, landing page,<br/>GitBook reader"]
+    Users["Authenticated users<br/>Facility/School, External Assessor,<br/>Block, District, Division,<br/>State, Admin"]
     UI["Web UI<br/>ui/ pages, components,<br/>router and API client"]
     Modules["Application Modules<br/>Assessment, CQI, Performance,<br/>Certification, Reports,<br/>State Monitoring, AI Chat"]
     API["Versioned APIs<br/>api/<module>/v1"]
@@ -43,6 +44,7 @@ flowchart LR
     Data["Data + Storage<br/>Database, JSON config,<br/>uploads, logs, sessions"]
     Docs["Docs + Testing<br/>GitBook, Swagger,<br/>Postman, test docs"]
 
+    Public --> UI
     Users --> UI
     UI --> Modules
     Modules --> API
@@ -137,6 +139,12 @@ configuration, uploads, reports, logs and events work together.
 | API | Versioned PHP endpoints receive requests and return friendly JSON responses. Chat APIs also receive user questions and return scoped assistant answers. |
 | Core + Services | Shared validation, session, CSRF, security, business rules, formulas and event dispatching live here. |
 | Data + Storage | MySQL stores transactions, JSON config drives dynamic behavior, uploads store evidence/report files, and Memurai/Redis can store PHP sessions. |
+
+## Public Entry and Profile Selection
+
+The public root route serves `index.html`. Before login, the page reads `GET /api/config/v1/public_deployment.php`, which returns only public profile branding and labels. Healthcare remains on `index.html`; Education redirects to `education-index.html`. The root page intentionally falls back to the healthcare landing page if the branding check is unavailable.
+
+This public branding call is not the authenticated configuration API and must never carry credentials, user/session data, internal hostnames, storage locations or operational settings. `gitbook.html` is also public and renders repository documentation selected by a controlled repository-relative document path. Documentation navigation is not an authorization boundary; public docs must not contain runtime/private data.
 
 ## Technology and Developer Requirements
 
@@ -300,6 +308,8 @@ sequenceDiagram
 | 14. UI update | Page JS + shared components | Page updates cards, forms, tables, progress bars, charts, alerts or navigation state. | User sees the result. |
 | 15. Optional log monitoring | Alloy, Loki, Grafana | Alloy tails new event-log lines after the request flow; Loki stores them and Grafana provides search/dashboard access. This is not on the synchronous login/API response path. | Searchable operational logs. |
 
+When Redis is configured but cannot start a session, `SessionManager` attempts protected file-session fallback paths so login availability can recover. This is an operational warning, not normal success: restore Memurai/Redis, investigate the PHP/web-server logs and verify new sessions return to the intended Redis configuration.
+
 ### Runtime Variations
 
 #### Normal JSON API Flow
@@ -437,12 +447,12 @@ flowchart TB
     ChecklistUI["ui/pages/assessment/checklist.html"]
     ChecklistJS["ui/pages/assessment/checklist.js"]
     ApiClient["ui/assets/js/core/api.js"]
-    SaveApi["api/assessment/v1/save_response.php"]
+    SaveApi["api/assessment/v1/save-response.php"]
     Bootstrap["api/bootstrap.php"]
     Core["Session + CSRF + Validation"]
     AssessmentSvc["DynamicAssessmentService / Assessment Logic"]
     FrameworkJson["api/config/frameworks/saqshi-nqas.json"]
-    ResponseTable[("assessment_cycle_response")]
+    ResponseTable[("assessment_response")]
     DeptTable[("assessment_department")]
     EventLog["Event::dispatch response.saved"]
     UIUpdate["Next checkpoint / progress update"]
@@ -600,6 +610,8 @@ Future behavior:
 - Upload APIs validate file type and path handling.
 - Role-specific UI and APIs must restrict facility, block, district, division and state data appropriately.
 - Open-source release files live at the project root and under `docs/compliance`.
+- Static public pages (`/`, `gitbook.html`, `ui/login.html`) require an approved hosting-layer CSP, clickjacking/frame, `nosniff` and referrer-policy configuration. The current VAPT follow-up records this static-page header verification as open until confirmed in staging/production.
+- Public route availability is not release approval. Final release requires legal/privacy sign-off, controlled-UAT security evidence, manual accessibility evaluation, release-manifest review and deployment-owner approval.
 
 ## Related Documents
 

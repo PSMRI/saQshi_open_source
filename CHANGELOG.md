@@ -6,6 +6,34 @@ This project follows a practical release log format inspired by Keep a Changelog
 
 ## Unreleased
 
+### 2026-08-26 Release-Preparation Update
+
+#### Added
+
+- Profile-aware public landing-page verification for Healthcare and Education deployments, plus public deployment-branding API documentation.
+- A digital healthcare team landing-page image asset and descriptive alternative text.
+- Public-pages and GitBook revalidation evidence, expanded VAPT follow-up cases, and refreshed black-box, white-box, load, non-functional and accessibility testing documentation.
+- Public API access-boundary documentation for captcha and deployment branding, plus an updated endpoint inventory and source-reference entry for assessment-period policy.
+- Release-safe database dictionary, sanitized-schema, migration-history, data-classification and non-PII seed-data guidance.
+
+#### Changed
+
+- Web-server default-document configuration no longer forces `ui/login.html`; the root route can serve the profile-aware public landing page.
+- Healthcare deployments continue on `index.html`; Education deployments redirect to `education-index.html` after the public branding profile check.
+- User, assessor/DPO, UI deployment, deployment-profile, Memurai session, Open Source/DPG, API, architecture and database GitBook pages were refreshed for the current development baseline.
+- The API and deployment documentation now distinguish public presentation data from authenticated configuration and operational data.
+- The version matrix now records deployment profiles, public landing routing, non-PII sample exports and FHIR R4 assessment-summary export as Open Source baseline capabilities.
+
+#### Security
+
+- Documented the static public-page CSP/clickjacking-header gap as an open VAPT follow-up item; API-only header evidence is not treated as closure.
+- Reinforced release checks for secrets, runtime data, session configuration, non-PII exports and role-scoped API access.
+
+#### Verification
+
+- Confirmed local public root, GitBook documentation and public deployment-branding routes return HTTP 200 during focused revalidation.
+- JSON syntax, focused PHP syntax and repository style/unit checks were recorded in the related testing/security evidence. Active UAT VAPT, manual accessibility checks, legal/privacy sign-off and final release-manifest review remain release gates.
+
 ### Added
 
 - Facility assessment workflow pages and APIs.

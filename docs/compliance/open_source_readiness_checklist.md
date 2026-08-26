@@ -1,7 +1,7 @@
 # SaQshi Open Source Readiness Checklist
 
-Version: 1.5  
-Reviewed: 2026-08-03  
+Version: 1.6
+Reviewed: 2026-08-26
 Repository location: project root
 
 ## Executive Summary
@@ -50,6 +50,10 @@ php tools/release_readiness_check.php
 ```
 
 Latest local result: `PASSED_WITH_REVIEW`.
+
+## 2026-08-26 Follow-up
+
+Local revalidation confirmed that the landing page, GitBook reader and current compliance, security and testing documents return HTTP 200. JSON syntax, PHP/JavaScript style checks and eight unit tests also passed. Static public-page CSP/clickjacking headers remain an open VAPT finding; final active-UAT testing, manual accessibility review, legal/privacy sign-off and final release-manifest review are still required.
 
 Review items currently detected by the latest release checker in this local development/testing copy:
 

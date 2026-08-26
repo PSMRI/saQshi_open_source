@@ -1,12 +1,26 @@
 # SaQshi GitBook Publishing Guide
 
-Version: 1.1  
-Updated: 2026-07-18
+Version: 1.2
+Updated: 2026-08-26
 
 ## Purpose
 
 This project root is GitBook-ready. GitBook can use `README.md` as the landing
 page and `SUMMARY.md` as the left navigation.
+
+The repository also includes a local standalone documentation reader at:
+
+```text
+{main_url}/gitbook.html
+```
+
+The standalone reader is a public web page that loads repository documentation through a `doc` query parameter, for example:
+
+```text
+{main_url}/gitbook.html?doc=docs%2Fuser%2Fuser_guide.md
+```
+
+It is separate from hosted GitBook publishing. Keep both navigation systems current when a page is intended to be visible in both places.
 
 ## Files Used by GitBook
 
@@ -70,12 +84,32 @@ docs/
 4. Review the generated sidebar.
 5. Publish the space after checking links and formatting.
 
+## Standalone Reader Maintenance
+
+The local reader navigation is maintained in `gitbook.html`. It currently groups user, developer, deployment, API, security/testing, compliance and Open Source/DPG documents. The reader supports the public documentation formats used by the repository, including Markdown and selected CSV/JSON/YAML reference artifacts.
+
+When adding or renaming a reader-visible document:
+
+1. Add or update the appropriate navigation item in `gitbook.html`.
+2. Update `SUMMARY.md` when the document should also appear in hosted GitBook navigation.
+3. Use a repository-relative document path; do not link to local disk paths or private deployment folders.
+4. Open the exact `gitbook.html?doc=...` URL and confirm HTTP 200, readable rendering, working internal links and an appropriate title.
+5. Check the page at narrow and desktop widths and confirm keyboard navigation still reaches the sidebar and content.
+
+The root landing page links users to this reader. It is publicly reachable, but its navigation is not an authorization mechanism: never include restricted operational data because a document is hidden from a menu.
+
 ## Maintenance Rule
 
 Whenever a new public document is added under `docs/`, update `SUMMARY.md` so
-the page appears in GitBook navigation.
+the page appears in hosted GitBook navigation.
 
 If the document should appear in the standalone HTML reader, also update the document list in `gitbook.html`.
 
 Do not add `.env`, logs, uploads, keys, database dumps or real user/facility data
 to the GitBook repository.
+
+Also exclude passwords, temporary credentials, session/CSRF values, API secrets, raw error output, internal hostnames, production storage paths, unapproved facility hierarchy data, patient/student data and unredacted evidence. Public documentation should describe controls and use fictional/sample values, never reproduce sensitive runtime output.
+
+## Release Validation Boundary
+
+Before a public release, verify GitBook links and all reader-visible routes alongside the release checklist. A local HTTP 200 result confirms availability only; it does not prove legal/privacy approval, accessibility conformance, security-header coverage or that documentation content is safe to publish. Record content review and final owner approval in the release evidence.

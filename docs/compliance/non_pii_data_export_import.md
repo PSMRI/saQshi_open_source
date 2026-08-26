@@ -1,7 +1,7 @@
 # Non-PII Data Export and Import
 
-Version: 1.1  
-Updated: 2026-07-16  
+Version: 1.2
+Updated: 2026-08-26
 License: GPL-3.0
 
 ## Purpose
@@ -93,3 +93,7 @@ The public sample export package contains no real personal data, patient data, c
 ## DPG Readiness Status
 
 SaQshi has report/download capabilities and now includes stable public sample export files with privacy-safe field definitions. Production deployments must still apply role scope and local data sharing approvals before exporting real facility-level, certification-level, assessment, CQI or performance information. Public publication is not enabled by default.
+
+## 2026-08-26 Release Follow-up
+
+Before each public package, revalidate every sample file and the ZIP archive against the field dictionary. The public GitBook route was rechecked locally for availability; that does not authorize publication of deployment exports. Continue to require data-owner approval, role-scope verification and a manual check for personal, patient, credential, evidence-link, log and server-path data.

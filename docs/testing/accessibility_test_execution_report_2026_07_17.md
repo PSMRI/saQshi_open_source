@@ -3,6 +3,8 @@
 Date: 2026-07-18  
 Test base URL: `{main_url}`
 
+Follow-up revalidation: 2026-08-26
+
 ## Scope Requested
 
 | Test Area | Execution Status |
@@ -184,6 +186,47 @@ Use a real authenticated session with data:
 5. Confirm pagination, filters, charts, map markers and expanded rows are keyboard usable.
 6. Confirm `SQ.a11y.enhance()` has applied labels where needed.
 
+## Follow-up Revalidation: Public Landing and GitBook (2026-08-26)
+
+This follow-up covered the public pages changed after the original July
+execution. It is a focused availability and source-level check; it is not a
+replacement for the manual browser and screen-reader tests listed above.
+
+| Check | Result | Status |
+|---|---|---|
+| Healthcare public root | `GET /` returned HTTP 200 and served the profile-aware healthcare landing page. | Passed |
+| Digital hero alternative text | The tablet-based healthcare assessment hero image has descriptive alternative text. | Passed |
+| GitBook reader availability | `GET /gitbook.html` returned HTTP 200. | Passed |
+| GitBook test-document sources | The testing CSV and Markdown sources returned HTTP 200. | Passed for source availability |
+| Login shell | `GET /ui/login.html` returned HTTP 200. | Passed |
+| Captcha helper | `GET /api/auth/v1/captcha.php` returned an accessible text-math question. | Passed |
+
+### Automated Rerun Limitation
+
+The static and live accessibility scripts were started during this follow-up,
+but their existing evidence files were locked by another local process:
+
+```text
+docs/testing/wcag_static_audit_results.json
+docs/testing/wcag_live_smoke_results.json
+```
+
+The scripts therefore could not save replacement JSON reports. Unlock those
+files and rerun the static audit and live smoke scripts before recording a new
+automated-result count.
+
+### Additional Manual Tests Required
+
+Add the following to the manual accessibility run:
+
+1. Test healthcare and education profile landing pages with keyboard only.
+2. At 200% zoom and at mobile widths, confirm the hero image, header actions
+   and back-to-top control remain usable without overlapping content.
+3. Use NVDA, JAWS and VoiceOver to confirm the landing hero alternative text
+   is concise and that the sign-in/learn links have a logical reading order.
+4. Test GitBook navigation groups, document links and CSV tables with keyboard
+   and screen reader, including visible focus and table headers.
+
 ## Conclusion
 
-Automated and live smoke checks passed for the parts executable in this environment. NVDA manual validation also passed for every captured result in the login and authenticated assessment flows. SaQshi is improved and test-ready, but a formal WCAG conformance claim still requires full workflow coverage for keyboard, screen readers, zoom/reflow and dynamic-data testing, including JAWS and VoiceOver.
+Automated and live smoke checks passed for the parts executable in this environment. NVDA manual validation also passed for every captured result in the login and authenticated assessment flows. The 2026-08-26 follow-up confirmed availability of the updated public landing and GitBook sources plus descriptive alternative text for the new digital hero. SaQshi is improved and test-ready, but a formal WCAG conformance claim still requires full workflow coverage for keyboard, screen readers, zoom/reflow and dynamic-data testing, including JAWS and VoiceOver.

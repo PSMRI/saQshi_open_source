@@ -1,7 +1,7 @@
 # SaQshi VAPT Report and Security Test Cases
 
-Version: 1.1  
-Updated: 2026-07-16
+Version: 1.2
+Updated: 2026-08-26
 
 Security update note, 2026-07-16:
 
@@ -48,6 +48,7 @@ Overall posture: **Improving, but release should require closure of high-risk it
 | VAPT-F-004 | Medium | Uploaded files are under `/uploads`; direct public access may expose evidence URLs if guessed/shared. | Documented production hardening item | Consider access-controlled download endpoint or non-public upload storage for sensitive evidence. |
 | VAPT-F-005 | Medium | Some dynamic DDL/query usages exist, mostly table/column maintenance. | Improved | `CertificationService::ensureColumn()` now validates identifiers; keep future dynamic identifiers allow-listed. |
 | VAPT-F-006 | Low | CSP is strong for APIs, but full UI pages may need separate CSP review if inline scripts remain. | Open | Add UI-level CSP plan before production hardening. |
+| VAPT-F-007 | Medium | Local public static-page responses (for example `/`) include `X-Content-Type-Options` but did not include the API's CSP or frame-protection headers during the 2026-08-26 check. | Open | Add and validate an IIS/static-page CSP and clickjacking protection policy compatible with required inline landing-page scripts. |
 
 ## 4. Positive Controls Observed
 
@@ -133,6 +134,7 @@ Overall posture: **Improving, but release should require closure of high-risk it
 | VAPT-HDR-001 | API headers | Inspect response headers | X-Frame-Options DENY, nosniff, CSP present | Medium |
 | VAPT-HDR-002 | HTTPS HSTS | Deploy on HTTPS and inspect headers | HSTS present | Medium |
 | VAPT-HDR-003 | Clickjacking | Try embedding API/page in iframe | Blocked by frame headers/CSP | Medium |
+| VAPT-HDR-004 | Public-page headers | Inspect headers for `/`, `/gitbook.html` and `/ui/login.html` on HTTPS staging. | Intended CSP, frame protection, nosniff, referrer policy and HSTS are present without breaking required scripts/styles. | High |
 
 ## 6. Immediate Remediation Checklist
 
@@ -155,3 +157,24 @@ Overall posture: **Improving, but release should require closure of high-risk it
 | Event log redaction | Improved | Sensitive event payload/meta/query keys are redacted before event log writes. |
 | Scope review | Completed | Shared state bootstrap applies role scope. |
 | Active exploit testing | Not performed | Requires explicit test environment and approval. |
+
+## Focused Regression Follow-up — 2026-08-26
+
+This non-destructive local follow-up covered public routing, documentation, configuration and selected security controls. It was not an active VAPT or an authenticated authorization test.
+
+| Check | Result | Evidence |
+|---|---|---|
+| Configuration JSON validation | Pass | `php tools/json_syntax_check.php` passed after removal of a UTF-8 BOM from `api/config/masters/facility_types_eduction_bihar.json`. |
+| PHP/JavaScript style and unit checks | Pass | Style checks passed; `php tools/run_unit_tests.php` reported 8 passed, 0 failed. |
+| Profile-aware public root | Pass for availability | `GET /` returned HTTP 200 and served the healthcare landing page for the active profile. |
+| GitBook availability | Pass | `GET /gitbook.html` returned HTTP 200. |
+| Captcha method guard | Pass | `GET /api/auth/v1/captcha.php` returned text-math JSON; unsupported `HEAD` returned HTTP 405. |
+| API response headers | Pass for tested API | Captcha response included CSP, `X-Frame-Options: DENY`, nosniff, referrer policy and related API headers. |
+| Public static-page headers | Finding recorded | Root response did not show the same CSP/frame protections; see VAPT-F-007 and VAPT-HDR-004. |
+| Release readiness | Pass with review warnings | Local runtime/private data, logs, key files and large assets require final package-manifest review before release. |
+
+### Follow-up Limits
+
+- No injection payload, authentication brute-force, XSS, upload-malware, authorization-bypass or report-scope exploit was attempted.
+- Role-scope, report-download and file-upload cases above require dedicated authenticated UAT users and isolated test data.
+- Re-run the complete secret scan and all header checks over HTTPS staging before the next production release.

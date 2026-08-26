@@ -1,7 +1,7 @@
 # Open Standards and Best Practices Mapping
 
-Version: 1.0  
-Updated: 2026-07-16  
+Version: 1.1
+Updated: 2026-08-26
 License: GPL-3.0
 
 ## Purpose
@@ -42,3 +42,7 @@ SaQshi uses JSON configuration for:
 - Keep OpenAPI synchronized with API changes.
 - Keep role access matrix synchronized with new roles/pages.
 - Continue accessibility and security testing before each release.
+
+## 2026-08-26 Follow-up
+
+Local public-route revalidation confirmed the landing page and GitBook documentation reader are available. The current source package supports profile-aware healthcare, education and generic-inspection deployments. Validate profile-specific terminology, identifiers, interoperability mappings and receiving-system requirements before each deployment; availability is not a standards-conformance certification.

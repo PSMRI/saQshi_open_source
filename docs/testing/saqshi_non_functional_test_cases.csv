@@ -12,3 +12,18 @@ DEPLOY-001,Deployment,Config,Fresh setup,"Copy code, create .env, configure DB",
 DEPLOY-003,Deployment,Permissions,Upload folder permission failure,"Remove upload write permission in test env and upload file","Friendly upload error",P1,Not Run,
 AUD-001,Audit,Event,API request event,"Call any API","Request started/finished event logged where enabled",P2,Not Run,
 AUD-005,Audit,Redaction,Sensitive data redaction,"Inspect logs after login/profile update","No password/captcha/password_enc/secrets logged",P0,Not Run,
+ACC-002,Accessibility,Screen Reader,Captcha assistance,"Inspect captcha help text aria-describedby and aria-live attributes","Captcha question and help are announced accessibly",P2,Not Run,
+ACC-003,Accessibility,Alternative Text,Digital landing hero,"Inspect healthcare landing-page hero image","Digital tablet assessment image has descriptive alternative text",P2,Passed,Verified 2026-08-26 at localhost:94
+ACC-005,Accessibility,Keyboard,GitBook navigation,"Use Tab and Enter through GitBook navigation groups and document links","Visible focus and keyboard operation are available",P2,Not Run,
+COMP-003,Compatibility,Browser,Firefox latest,"Run login dashboard checklist and reports","All flows work",P2,Not Run,
+COMP-004,Compatibility,Responsive,Desktop 1366x768,"Open dashboard checklist state pages and GitBook at 100 percent zoom","Layout is compact and usable",P2,Not Run,
+AVAIL-001,Availability,Public Route,Healthcare root route,"Request / with healthcare profile active","HTTP 200 and profile-aware healthcare landing page",P0,Passed,Verified 2026-08-26 at localhost:94
+AVAIL-002,Availability,Documentation,GitBook reader,"Request /gitbook.html","HTTP 200 and documentation shell is served",P0,Passed,Verified 2026-08-26 at localhost:94
+AVAIL-003,Availability,Authentication,Login shell,"Request /ui/login.html","HTTP 200 and login shell is served",P0,Passed,Verified 2026-08-26 at localhost:94
+AVAIL-004,Availability,API,Captcha helper,"Request /api/auth/v1/captcha.php","HTTP 200 with a text-math captcha JSON response",P1,Passed,Verified 2026-08-26 at localhost:94
+SEC-NF-001,Security,Headers,Public response headers,"Request public landing page and captcha API; inspect headers","nosniff frame protection and CSP headers are present",P1,Passed,Verified 2026-08-26 at localhost:94
+SEC-NF-002,Security,Method Guard,Captcha unsupported method,"Send HEAD request to captcha API","HTTP 405 Method Not Allowed is returned",P1,Passed,Verified 2026-08-26 at localhost:94
+PERF-003,Performance,Public Pages,Landing and GitBook GET smoke,"Run GET-only low-concurrency test on / and /gitbook.html in a test environment","HTTP 200 responses only and latency meets agreed threshold",P1,Not Run,Do not run against production without approval
+DATA-006,Data Integrity,Configuration,JSON configuration validity,"Run php tools/json_syntax_check.php","All configuration JSON files parse successfully",P0,Passed,Verified 2026-08-26 after BOM removal
+DEPLOY-002,Deployment,Configuration,IIS default document,"Inspect web.config and request /","Root serves profile-aware index.html rather than login shell",P0,Passed,Verified 2026-08-26 at localhost:94
+DEPLOY-004,Deployment,Readiness,Release readiness review,"Run php tools/release_readiness_check.php","Check passes and deployment hygiene warnings are reviewed before release",P0,Passed,Verified 2026-08-26; passed with review warnings

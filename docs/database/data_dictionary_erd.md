@@ -1,6 +1,11 @@
 # Data Dictionary and ER Diagram
 
-This document provides a first-pass data dictionary and ERD for SaQshi. Table and column names should be verified against the active migration scripts before production release.
+Version: 1.1
+Updated: 2026-08-26
+
+This document provides a maintained high-level data dictionary and ERD for SaQshi. The sanitized base schema at `api/sql/schema/001_base_schema.sql` is the authoritative public installation reference; deployment migrations and the active database remain the authority for exact columns, indexes, constraints and compatibility objects.
+
+SaQshi supports healthcare, education and generic-inspection deployments. Physical table names retain established healthcare-oriented terms such as `facilities`, `NIN_no` and `assessment_department`; the active deployment profile supplies presentation labels such as School/UDISE/Class where configured. Do not rename database columns solely to change UI terminology.
 
 ## Core Entity Relationship Diagram
 
@@ -126,6 +131,19 @@ erDiagram
 | `ai_chat_messages` | AI chat assistant history and fallback/intention audit. |
 | `login_attempts` | Login throttling/failed-attempt tracking. |
 
+## Data Classification and Handling Boundary
+
+| Data area | Classification | Handling rule |
+| --- | --- | --- |
+| `s_user` contact and account fields | Restricted operational personal data | Access only through authenticated, role-scoped workflows; do not include in public sample data or logs. |
+| `facilities` master data and geography | Deployment-sensitive operational data | Public redistribution of real facility names, NIN/UDISE-style identifiers or hierarchy requires data-owner approval. |
+| Assessment, CQI, performance and certification records | Restricted programme/quality data | Apply facility/geography role scope; export only through approved reports and data-sharing policy. |
+| Evidence references and uploads | Restricted, potentially sensitive | Store outside publicly browsable paths; redact/approve before sharing. Do not upload patient, student or other personal information. |
+| Configuration/framework JSON | Public-source candidate after review | Keep secrets and production-only values out of source; review any master data before publication. |
+| Public sample exports | Public, fictional | Use only the approved files under `docs/compliance/sample_exports/`; never substitute a local runtime export. |
+
+SaQshi is not a patient-record system. Patient-level health information, credentials, session values, passwords, tokens, raw logs and production database extracts must not be stored in public documentation, sample exports or release artifacts.
+
 ## Key Relationships
 
 | Relationship | Meaning |
@@ -149,3 +167,17 @@ erDiagram
 | 2 | Full compliance |
 
 Baseline score comes from `assessment_response.score`. Improved score uses `assessment_action_plan.revised_score` when available. A compatibility view named `assessment_cycle_response` is included for older report code paths.
+
+## Schema Verification and Change Control
+
+For a fresh installation, use `api/sql/schema/001_base_schema.sql` together with the database setup guide. Do not use a live production database as a schema source or as sample data.
+
+Before approving a database change:
+
+1. Review the relevant migration and update `api/sql/schema/001_base_schema.sql` when the public base schema changes.
+2. Update this dictionary, the SQL query inventory and any API/report contract affected by the change.
+3. Test a clean installation using sanitized data only.
+4. Confirm role-scoped reads/writes, export fields, backups and retention settings.
+5. Record any deployment-specific seed data separately; never commit real users, facilities, assessments, evidence, logs or credentials.
+
+Related references: [Database Setup and Migration](database_setup_and_migration.md), [SQL Query Inventory](sql_query_inventory.md), [Non-PII Export and Import](../compliance/non_pii_data_export_import.md), and [Deployment Profile Configuration](../deployment/deployment_profiles.md).

@@ -46,3 +46,7 @@
 "ui\pages\state\performance.html","pass","0","0","Not Run","Not Run","Not Run","Static audit passed"
 "ui\pages\state\reports.html","pass","0","0","Not Run","Not Run","Not Run","Static audit passed"
 "ui\pages\state\users.html","pass","0","0","Not Run","Not Run","Not Run","Static audit passed"
+"index.html","review","0","0","Not Run","Not Run","Not Run","2026-08-26 source-level check: profile-aware healthcare public landing is reachable; digital tablet hero has descriptive alternative text; outside UI static-audit roots"
+"education-index.html","review","0","0","Not Run","Not Run","Not Run","Profile-aware education landing page; requires manual keyboard screen-reader and contrast validation under education configuration"
+"gitbook.html","review","0","0","Not Run","Not Run","Not Run","2026-08-26 availability check passed; GitBook navigation and CSV tables require manual keyboard screen-reader and contrast validation"
+"ui\login.html","review","0","0","Not Run","Not Run","Not Run","2026-08-26 live availability check passed; login fragment remains covered by UI static audit"

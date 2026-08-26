@@ -1,7 +1,7 @@
 # Open Source and DPG Release Status
 
-Version: 1.2  
-Updated: 2026-07-19
+Version: 1.3
+Updated: 2026-08-26
 
 ## Current Status
 
@@ -98,3 +98,7 @@ Final public-release status depends on reviewed release-check warnings,
 completed legal/privacy confirmation, current maintainer/security contacts,
 sanitized-schema and clean-install evidence, exclusion of private runtime data,
 deployment retention configuration and final UAT security evidence.
+
+## 2026-08-26 Follow-up
+
+The public landing route, GitBook reader and this DPG/compliance section were rechecked locally and returned HTTP 200. The reviewed healthcare baseline serves `index.html`; the education profile redirects to `education-index.html`. This availability check does not close the pending legal/privacy, release-owner, active-UAT VAPT or final-manifest review items.

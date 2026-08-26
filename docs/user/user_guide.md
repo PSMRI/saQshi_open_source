@@ -1,7 +1,7 @@
 # SaQshi User Guide
 
-Version: 1.0  
-Updated: 2026-07-18  
+Version: 1.1
+Updated: 2026-08-26
 License: GPL-3.0
 
 ## Purpose
@@ -32,6 +32,18 @@ Do not enter patient-level personal health information anywhere in SaQshi, inclu
 - patient photograph or patient-identifiable evidence.
 
 Use SaQshi for facility-level observations, checklist scores, CQI actions, evidence of system/process improvement, KPI/outcome numbers and monitoring reports. If any evidence document accidentally contains patient-identifiable information, do not upload it until it is redacted or cleared by the deployment owner.
+
+## Start Page and Deployment Profile
+
+Open the main application address supplied by your organisation:
+
+```text
+{main_url}/
+```
+
+The start page is selected by the deployment profile. In the healthcare/NQAS deployment it opens the healthcare landing page. In an education deployment it opens the education landing page. The landing page provides general product information; use the **Login** action to enter your authorised workspace.
+
+Do not rely on an internet search result, shared screenshot or another organisation's URL for login. Use only the address provided by your deployment administrator, and do not enter credentials on an unfamiliar page.
 
 ## Login
 
@@ -802,6 +814,10 @@ Use documentation to read:
 - configuration formats,
 - security/testing/compliance docs.
 
+### Getting Help Safely
+
+When reporting a problem, share the page name, approximate time, the action you were taking and the message shown. Do not send passwords, captcha answers, session tokens, patient data, uploaded evidence or screenshots containing personal information. Your administrator can confirm whether the issue is a user-role, facility-mapping, network or application problem.
+
 ## Common Messages and What They Mean
 
 | Message | Meaning | What to Do |
@@ -845,3 +861,5 @@ Use documentation to read:
 | Update profile | Administration > My Profile |
 | Update facility | Administration > Facility Profile |
 | Read help | GitBook Documentation |
+| Open the public start page | `{main_url}/` |
+| Login | `{main_url}/ui/login.html` |

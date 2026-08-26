@@ -1,7 +1,7 @@
 # Non-PII Sample Export Package
 
-Version: 1.0  
-Updated: 2026-07-16  
+Version: 1.1
+Updated: 2026-08-26
 License: GPL-3.0
 
 ## Purpose
@@ -47,3 +47,7 @@ SAMPLE-NIN-0001
 ```
 
 Real deployments may export the same schema with authorized local data according to role scope, privacy approval and applicable policy.
+
+## 2026-08-26 Release Follow-up
+
+These files remain examples only. Recheck all CSV and JSON samples, the ZIP manifest and the field dictionary before every public release. A successfully rendered GitBook page does not establish that a deployment export is safe for public sharing; use fictional values and obtain data-owner approval for any different dataset.

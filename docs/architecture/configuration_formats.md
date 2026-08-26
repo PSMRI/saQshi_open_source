@@ -1,7 +1,7 @@
 # SaQshi Configuration JSON Formats
 
-Version: 1.0  
-Updated: 2026-07-18  
+Version: 1.1
+Updated: 2026-08-26
 License: GPL-3.0
 
 ## Purpose
@@ -14,9 +14,47 @@ important configuration files:
 - Facility master JSON: `api/config/masters/facilities.json`
 - Checklist/framework JSON: `api/config/frameworks/saqshi-nqas.json`
 - Module configuration JSON: `api/config/modules.json`
+- Active deployment profile JSON: `api/config/domain.json`
+- Session-storage JSON: `api/config/session.json`
 
 Keep these files valid JSON. A single missing comma, extra comma or mismatched
 bracket can stop the related module from loading.
+
+Configuration is executable deployment input. Restrict write access to approved deployment administrators, review changes before release, keep backups of the last approved files and never put credentials, tokens, server paths, production-only connection values or personal data in JSON committed to source control.
+
+## Deployment Profile Configuration
+
+Active profile configuration is stored in:
+
+```text
+api/config/domain.json
+api/config/modules.json
+```
+
+Profile templates are stored in:
+
+```text
+api/config/profiles/healthcare.json
+api/config/profiles/education.json
+api/config/profiles/generic-inspection.json
+```
+
+The active `domain.json` supplies `profile_code`, `profile_name`, default framework, labels, branding and public content. `modules.json` supplies module flags, role visibility, `active_profile` and `default_framework`. Healthcare normally uses Facility/NIN/Department labels; Education can use School/UDISE/Class labels while retaining stable compatibility-oriented API/database fields such as `fac_id`.
+
+Select profiles through the deployment command rather than hand-merging files:
+
+```powershell
+php api/cli/configure-deployment-profile.php --profile=healthcare
+php api/cli/deployment-readiness.php
+```
+
+Changing a profile is a controlled deployment change. It can change labels, enabled modules, framework defaults and public landing-page routing. Test it with an approved backup in non-production; do not switch production solely to test a landing page.
+
+### Public Branding Boundary
+
+`GET /api/config/v1/public_deployment.php` exposes only presentation-safe values from the active domain configuration: profile code/name, labels, branding and public content. The root landing page uses it to keep Healthcare on `index.html` or redirect Education to `education-index.html`.
+
+Never add real facilities/schools, user data, internal URLs, storage paths, database values, credentials, tokens or operational settings to `branding`, `content` or any property reachable through the public branding endpoint.
 
 ## Module Configuration JSON
 
@@ -56,6 +94,8 @@ Rules:
 - Disable `certification` if the deployment does not track facility certification.
 - Keep labels short because they are displayed in compact dashboards.
 - Do not delete unknown module keys during upgrades; set `enabled` instead.
+- Keep `active_profile` and `default_framework` aligned with `domain.json` and the selected profile template.
+- Treat `role_visibility` as a UI configuration aid only; API endpoints must independently enforce session and role scope.
 
 ## Facility Master JSON
 
@@ -172,6 +212,7 @@ Before adding or publishing a facility JSON:
 - Confirm `fac_id` is unique.
 - Confirm `fac_type_id` exists in `facility_types.json`.
 - Avoid real patient/person information in any master file.
+- Treat real facility/school names, NIN/UDISE-style identifiers and geography hierarchy as deployment-sensitive data. Publish them only with data-owner approval; use fictional values in public samples.
 
 ## Department Master JSON
 
@@ -441,6 +482,18 @@ Before publishing checklist/framework JSON:
 - Confirm no duplicate checkpoint IDs exist across the framework file.
 - Keep file encoding as UTF-8.
 
+## Session Storage JSON
+
+Path:
+
+```text
+api/config/session.json
+```
+
+This file selects the session cookie name and storage driver. A Redis/Memurai configuration uses host, port, database, key prefix, timeout and the **name** of a password environment variable. The password itself must remain outside JSON, for example in `SAQSHI_REDIS_PASSWORD` configured on the host.
+
+Use a unique cookie name plus Redis database or prefix for each application/deployment. `SessionManager` attempts protected file-session fallback if configured Redis cannot start a session; treat fallback as an operational alert and restore the intended Redis service. See [Memurai Session Configuration](../deployment/memurai_session_configuration.md).
+
 ## Recommended Update Process
 
 1. Create or edit JSON outside production first.
@@ -455,6 +508,10 @@ Before publishing checklist/framework JSON:
 10. Check scorecard/report output and field analytics output.
 11. Only then publish to production.
 
+12. For profile changes, verify `public_deployment.php` exposes presentation-safe data only, root landing routing matches the selected profile, login remains protected, and expected labels/modules/framework appear after authenticated sign-in.
+
+Run `php tools/json_syntax_check.php` after JSON changes. Then test the affected workflow with an authorised least-privilege account and update the deployment, API, testing and data-sharing documentation where the configuration changes a public or operational contract.
+
 ## Related Files
 
 - `api/config/masters/facilities.json`
@@ -464,4 +521,10 @@ Before publishing checklist/framework JSON:
 - `api/config/frameworks/healthcare-example.json`
 - `api/config/examples/healthcare-domain.example.json`
 - `api/config/examples/healthcare-modules.example.json`
+- `api/config/domain.json`
+- `api/config/modules.json`
+- `api/config/session.json`
+- `api/config/profiles/healthcare.json`
+- `api/config/profiles/education.json`
+- `api/config/profiles/generic-inspection.json`
 - `docs/architecture/technical_architecture.md`

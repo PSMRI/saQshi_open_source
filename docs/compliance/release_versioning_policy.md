@@ -1,7 +1,7 @@
 # Release and Versioning Policy
 
-Version: 1.0  
-Updated: 2026-07-16  
+Version: 1.1
+Updated: 2026-08-26
 License: GPL-3.0
 
 ## Purpose
@@ -181,3 +181,7 @@ Current development baseline:
 ```
 
 First public release target should be tagged only after remaining release review gates are closed or formally accepted by the release owner.
+
+## 2026-08-26 Policy Follow-up
+
+Documentation-only corrections, including DPG, security and testing evidence updates, are normally PATCH-level changes when they do not alter a public contract. Profile-specific UI, data model, role or API changes must be evaluated against the breaking-change rules above. Do not tag a release solely because local route and documentation availability checks pass; preserve the release checklist, VAPT and legal/privacy gates.

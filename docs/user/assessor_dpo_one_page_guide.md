@@ -1,7 +1,19 @@
 # State Admin, DPO and Assessor: One-Page Assessment Guide
 
+Version: 1.2
+Updated: 2026-08-26
+
 This guide explains who does what, how a School/Facility is assigned, and how
 an assessment is completed in SaQshi.
+
+## Start and sign in safely
+
+1. Open the organisation-approved address: `{main_url}/`.
+2. Select **Login**, or open `{main_url}/ui/login.html`.
+3. Enter the assigned Assessor Code/username, password and captcha.
+4. Change a temporary password when prompted.
+
+The start page is selected by the deployment profile: education deployments use school terminology and healthcare deployments use facility terminology. Do not enter credentials on a copied link or unfamiliar page, and never share passwords, captcha answers, session data or temporary passwords through an unapproved channel.
 
 ## Roles and scope
 
@@ -11,8 +23,19 @@ an assessment is completed in SaQshi.
 | DPO / Assessor | Can view and assess only the Schools/Facilities and classes assigned by State Admin. Can complete checklists and download own assessment reports. |
 | School / Facility User | Uses the normal facility workflow and sees only their own School/Facility data. |
 
-In the Education profile, use **School** and **UDISE Code**. In the Healthcare
-profile, use **Facility** and **NIN**.
+## Profile terms: Education and Healthcare
+
+Use the terms and menu labels shown by your deployment. The same assignment, checklist, reassessment and reporting controls apply; only the programme terminology and configured assessment structure differ.
+
+| Education profile | Healthcare profile |
+|---|---|
+| School | Facility |
+| UDISE Code | NIN |
+| DPO / Assessor | Assessor |
+| Class (where configured) | Department / service area (where configured) |
+| School assessment | Facility quality assessment |
+
+Education users should use the **School**, **UDISE Code**, **DPO / Assessor Dashboard** and **Class** labels shown in their deployment. Healthcare users should use the **Facility**, **NIN**, **Assessor Dashboard** and **Department/service-area** labels shown in theirs.
 
 ## 1. State Admin: create a DPO / Assessor
 
@@ -35,8 +58,7 @@ To assign multiple assessors to the same School/Facility:
 
 1. Select the first DPO/Assessor and assign the School/Facility.
 2. Select each additional DPO/Assessor and assign the same School/Facility.
-3. For shared work, assign a different class to each assessor. A class can be
-   claimed and assessed by only one assessor at a time.
+3. For shared work, assign a different Class (Education) or Department/service area (Healthcare) to each assessor. The same configured work area can be claimed and assessed by only one assessor at a time.
 
 When another Mentor/Assessor has a class in progress, SaQshi shows that the
 class is in progress by another Mentor and does not offer **Claim & Activate**.
@@ -57,21 +79,18 @@ assessor to another. SaQshi retains old assessments and assignments as history.
 2. Open **DPO / Assessor Dashboard**.
 3. Review Assigned Schools/Facilities, Total Assessments, Completed,
    In Progress and Not Started counts.
-4. For a new class, click **Start Assessment**. For a previously completed
-   class, click **Start Reassessment**. A different class is always a new
-   assessment, not a reassessment.
-5. If required, claim the assigned class before starting the checklist.
+4. For a new Class (Education) or Department/service area (Healthcare), click **Start Assessment**. For a previously completed work area, click **Start Reassessment**. A different configured work area is always a new assessment, not a reassessment.
+5. If required, claim the assigned Class (Education) or Department/service area (Healthcare) before starting the checklist.
 6. Save DPO/Assessor and Assessee details.
-7. Open **Checklist**, select Class, Area of Concern and Standard,
+7. Open **Checklist**, select the applicable Class/Department, Area of Concern and Standard,
    then answer every checkpoint. Save each response and supporting evidence if
    required.
-8. SaQshi automatically marks the class complete when all of its checkpoints
-   are answered. When every active class is complete,
+8. SaQshi automatically marks the assigned Class/Department complete when all of its checkpoints are answered. When every active work area is complete,
    the assessment is marked **Completed**.
 
-If the assessor has already claimed an in-progress class, **Continue
-Assessment** opens that class's checklist directly. Class Activation is shown
-only when no class has been claimed yet.
+Only record assessment observations and approved improvement evidence. Do not enter patient/student personal data, passwords, credentials, raw error messages or evidence containing personal information. Redact the evidence or obtain deployment-owner approval before upload if it contains any personal information.
+
+If the assessor has already claimed an in-progress Class/Department, **Continue Assessment** opens that checklist directly. Class/Department Activation is shown only when no work area has been claimed yet.
 
 ## Shared rounds and overall score
 
@@ -94,6 +113,13 @@ only when no class has been claimed yet.
 - Open **Reports** to view assessment details, score and checkpoint totals.
   In **Assessment Score Trend**, search by School/Facility name or UDISE/NIN to
   compare assessment rounds.
+
+## If something does not work
+
+- **No assigned School/Facility:** contact State Admin to confirm the account, assignment status and Class/Department allocation.
+- **Class/Department already in progress:** choose another assigned available work area, or ask State Admin to confirm the intended assessor.
+- **Unauthorized or session expired:** sign in again; do not attempt to use another user's account.
+- **Save or network error:** note the page name, approximate time and visible message; report these to support without sending screenshots that contain personal data.
 
 ## Quick flow
 

@@ -2,6 +2,7 @@
 
 > Generated from the current files by `tools/generate-api-documentation.php`.
 > Regenerate this file whenever API source, services, core classes, or configuration change.
+> Last reviewed: 2026-08-26. The focused update below records the configuration endpoint added after the last full generated reference.
 
 ## Scope
 
@@ -1925,6 +1926,33 @@ None detected.
 **Events dispatched**
 
 None detected.
+
+### `api/config/v1/assessment_policy.php`
+
+- **Role:** HTTP endpoint
+- **HTTP method guard:** `GET` or `POST`
+- **Source intent:** Authenticated read/update of the deployment assessment-period policy. Only system/state administrators (role IDs `1` and `9`) may access it.
+
+**Dependencies included**
+
+- `/../../auth_api.php`
+- `/../../service/DeploymentConfigService.php`
+
+**Declared classes and functions**
+
+None detected.
+
+**Request fields read from `$request`**
+
+None detected. `POST` input is read through `Security::jsonInput()` and validated by `DeploymentConfigService::updateAssessmentPolicy()`.
+
+**Database tables referenced**
+
+None detected directly; the endpoint delegates persistence to `DeploymentConfigService`.
+
+**Events dispatched**
+
+None detected directly.
 
 ### `api/config/v1/deployment.php`
 
@@ -5811,4 +5839,6 @@ Configuration files define static behaviour, validation rules, master data, cert
 
 ## Maintaining this reference
 
-After modifying an API file, service, core class or JSON configuration, run `php tools/generate-api-documentation.php`, review the generated diff, and update the relevant hand-written module guide with business rules, response examples and extension notes.
+After modifying an API file, service, core class or JSON configuration, run `php -d memory_limit=1024M tools/generate-api-documentation.php`, review the generated diff, and update the relevant hand-written module guide with business rules, response examples and extension notes. The larger memory limit is required locally because the generator reads large framework and performance JSON configuration files.
+
+Also confirm that every `api/*/v1` endpoint is represented in this reference, especially configuration endpoints. Public endpoints require a separate data-exposure review; source discovery alone does not make an endpoint safe to expose anonymously.

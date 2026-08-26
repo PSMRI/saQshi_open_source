@@ -1,7 +1,7 @@
 # SaQshi DPG Readiness Assessment
 
-Version: 1.6  
-Assessed: 2026-08-03  
+Version: 1.7
+Assessed: 2026-08-26
 Project license: GPL-3.0  
 
 ## Verdict
@@ -141,3 +141,7 @@ SaQshi is a DPG-oriented open-source project with a strong technical,
 documentation, licensing, data-attribution, base-schema and non-PII-portability
 foundation. Formal governance/legal sign-off and final UAT/security validation
 remain the main nomination evidence gaps.
+
+## 2026-08-26 Follow-up
+
+Public landing, GitBook and compliance-document availability was rechecked locally (HTTP 200). The package supports healthcare, education and generic-inspection deployment profiles; each profile requires its own deployment acceptance evidence. This follow-up is not a WHO endorsement, a DPG nomination decision or a replacement for final UAT security validation.
