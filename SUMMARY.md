@@ -8,6 +8,7 @@
 
 - [User Guide](docs/user/user_guide.md)
 - [CQI Action Tracking](docs/user/cqi_action_tracking.md)
+- [Shared Resources](docs/user/resources.md)
 
 ## Developer Guide
 

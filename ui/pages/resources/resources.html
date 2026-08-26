@@ -1,0 +1,29 @@
+<section class="sq-resources-page">
+    <div id="resourcesAdminPanel" class="sq-card sq-resources-upload" hidden>
+        <div class="sq-card-header"><div><h3>Publish a resource</h3><p>Published files are immediately available to every logged-in SaQshi user.</p></div></div>
+        <div class="sq-card-body">
+            <form id="resourceUploadForm" class="sq-resources-form" enctype="multipart/form-data">
+                <label><span>Resource name</span><input class="sq-form-control" name="title" maxlength="255" required placeholder="e.g. Assessment Form 2026"></label>
+                <label><span>File type</span><select class="sq-form-control" name="resource_type" required><option value="">Select file type</option><option value="LETTER">Letter</option><option value="FORM">Form</option><option value="DOCUMENT">Document</option><option value="GUIDELINE">Guideline</option><option value="OTHER">Other</option></select></label>
+                <label><span>Applicable for</span><select class="sq-form-control" id="resourceApplicableType" name="applicable_facility_type_id" required><option value="">Select facility type</option></select></label>
+                <label><span>File</span><input class="sq-form-control" name="file" type="file" required></label>
+                <label class="sq-resources-description"><span>Description <small>(optional)</small></span><textarea class="sq-form-control" name="description" maxlength="4000" rows="2" placeholder="Briefly explain what this resource is for."></textarea></label>
+                <div class="sq-resources-submit"><span>All file types accepted. Maximum file size: 500 MB</span><button class="sq-btn sq-btn-primary" type="submit"><i class="bi bi-upload"></i> Publish resource</button></div>
+                <div id="resourceUploadProgress" class="sq-resource-upload-progress" hidden aria-live="polite">
+                    <div class="sq-resource-upload-progress-head"><span id="resourceUploadProgressLabel">Preparing upload…</span><strong id="resourceUploadProgressPercent">0%</strong></div>
+                    <div class="sq-resource-upload-progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="resourceUploadProgressBar"></span></div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="sq-card">
+        <div class="sq-card-header sq-resources-list-header"><div><h3>Available resources</h3><p>Download the latest shared documents and templates.</p></div><span id="resourceCount" class="sq-resources-count">0 resources</span></div>
+        <div class="sq-card-body">
+            <div class="sq-resources-filters"><input type="search" id="resourcesSearch" class="sq-form-control" placeholder="Search resources"><button type="button" id="resourcesRefresh" class="sq-btn sq-btn-light">Search</button></div>
+            <div id="resourcesTabs" class="sq-resources-tabs" role="tablist"></div>
+            <div id="resourcesList" class="sq-resources-list" aria-live="polite"></div>
+            <div id="resourcesPagination" class="sq-resources-pagination" aria-label="Resource pages"></div>
+        </div>
+    </div>
+</section>

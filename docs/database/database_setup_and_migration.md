@@ -155,6 +155,7 @@ api/sql/schema/assessor_info_encryption_columns.sql
 api/sql/schema/2026_07_18_assessor_assignment.sql
 api/sql/schema/2026_07_18_configurable_responses.sql
 api/sql/schema/2026_07_18_department_status_compatibility.sql
+api/sql/schema/2026_08_26_global_resources.sql
 ```
 
 Do not commit production data dumps.
@@ -174,6 +175,19 @@ Example:
 ```text
 mysql -u saqshi_user -p saqshi < api/sql/2026_07_02_rename_assessment_cycle_response.sql
 ```
+
+## Global Resources Migration
+
+The Resources module lets State Admin users (role `9`) publish files for every
+authenticated SaQshi user. For an existing database, apply:
+
+```text
+mysql -u saqshi_user -p saqshi < api/sql/schema/2026_08_26_global_resources.sql
+```
+
+Files are stored outside the public web path under `api/storage/resources/` and
+are downloaded only through the authenticated Resources API. The application
+creates this directory automatically when the first resource is uploaded.
 
 ## User Profile Field Encryption Migration
 

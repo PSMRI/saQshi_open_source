@@ -288,7 +288,7 @@
         // no facility, assessor, monitoring, reporting or dashboard routes.
         if (isManagementRole) {
             document.querySelectorAll(".sq-sidebar-link, .sq-sidebar-section-title").forEach(function (item) {
-                const permitted = item.hasAttribute("data-role11-management");
+                const permitted = item.hasAttribute("data-role11-management") || item.hasAttribute("data-role11-resources");
                 item.dataset.roleHidden = permitted ? "0" : "1";
                 item.hidden = item.hasAttribute("data-sidebar-disabled") || !permitted;
             });

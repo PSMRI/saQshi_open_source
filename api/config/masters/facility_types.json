@@ -33,5 +33,10 @@
     "fac_type_id":10,
     "facilities_type":"SH",
     "fac":"SDH"
+  },
+   {
+    "fac_type_id":12,
+    "facilities_type":"Others",
+    "fac":"Others"
   }
 ]

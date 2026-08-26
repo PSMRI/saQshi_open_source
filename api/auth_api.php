@@ -38,7 +38,7 @@ SessionManager::requireLogin();
 */
 
 $requestPath = (string)(parse_url((string)($_SERVER['REQUEST_URI'] ?? ''), PHP_URL_PATH) ?? '');
-$allowedDuringPasswordChange = (bool)preg_match('#/(?:api/)?(?:auth/v1/|admin/v1/users\.php$)#', $requestPath);
+$allowedDuringPasswordChange = (bool)preg_match('#/(?:api/)?(?:auth/v1/|admin/v1/users\.php$|config/v1/deployment\.php$)#', $requestPath);
 if (!empty($_SESSION['password_must_change']) && !$allowedDuringPasswordChange) {
     Response::forbidden('Password change is required before continuing.');
 }

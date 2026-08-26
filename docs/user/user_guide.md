@@ -18,6 +18,13 @@ Use this guide when you want to know:
 - what common messages mean,
 - what to do if something does not load.
 
+## Shared Resources
+
+All authenticated users can open **Resources** from the sidebar to search,
+filter and download shared files. State Admin users can publish resources for
+all users. See [Shared Resources](resources.md) for complete upload,
+facility-type filtering and download guidance.
+
 ## Important Data Entry Rule
 
 SaQshi is for facility quality assessment and monitoring. It is not a patient record system.

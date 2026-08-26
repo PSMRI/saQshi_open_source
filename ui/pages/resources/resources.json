@@ -1,0 +1,20 @@
+{
+  "id": "resources",
+  "name": "Resources",
+  "title": "Resources",
+  "layout": "dashboard",
+  "pageHeader": {
+    "title": "Resources",
+    "subtitle": "Shared letters, forms, documents and guidance for all SaQshi users."
+  },
+  "authentication": { "required": true },
+  "assets": {
+    "css": ["/ui/pages/resources/resources.css?v=20260826-5"],
+    "js": ["/ui/pages/resources/resources.js?v=20260826-9"]
+  },
+  "breadcrumb": [
+    { "label": "Dashboard", "url": "/ui/dashboard.html" },
+    { "label": "Resources" }
+  ],
+  "moduleName": "resources"
+}
