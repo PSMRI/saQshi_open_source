@@ -82,6 +82,12 @@ CREATE TABLE IF NOT EXISTS s_user (
     division_id INT NULL,
     dist_id INT NULL,
     block_id INT NULL,
+    -- Role-scoped generated keys keep each hierarchy rule from applying to
+    -- users of other roles that also carry hierarchy values.
+    uq_facility_user_scope_id INT GENERATED ALWAYS AS (CASE WHEN role_id_fk = 1 THEN fac_id_fk ELSE NULL END) VIRTUAL,
+    uq_block_user_scope_id INT GENERATED ALWAYS AS (CASE WHEN role_id_fk = 8 THEN block_id ELSE NULL END) VIRTUAL,
+    uq_district_user_scope_id INT GENERATED ALWAYS AS (CASE WHEN role_id_fk = 4 THEN dist_id ELSE NULL END) VIRTUAL,
+    uq_division_user_scope_id INT GENERATED ALWAYS AS (CASE WHEN role_id_fk = 5 THEN division_id ELSE NULL END) VIRTUAL,
     password_must_change TINYINT NOT NULL DEFAULT 0,
     password_changed_on TIMESTAMP NULL,
     created_by INT NULL,
@@ -90,6 +96,10 @@ CREATE TABLE IF NOT EXISTS s_user (
     updated_on TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (u_id),
     UNIQUE KEY uq_s_user_name (u_name),
+    UNIQUE KEY uq_s_user_facility_role_scope (uq_facility_user_scope_id),
+    UNIQUE KEY uq_s_user_block_role_scope (uq_block_user_scope_id),
+    UNIQUE KEY uq_s_user_district_role_scope (uq_district_user_scope_id),
+    UNIQUE KEY uq_s_user_division_role_scope (uq_division_user_scope_id),
     KEY idx_s_user_facility (fac_id_fk),
     KEY idx_s_user_role (role_id_fk),
     KEY idx_s_user_scope (state_id, division_id, dist_id, block_id),

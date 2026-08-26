@@ -149,7 +149,7 @@ class LoginCrypto
     {
         $dir = self::keyDir();
 
-        if (!is_dir($dir) && !mkdir($dir, 0775, true) && !is_dir($dir)) {
+        if (!is_dir($dir) && !@mkdir($dir, 0775, true) && !is_dir($dir)) {
             throw new RuntimeException('Login key directory could not be created');
         }
 

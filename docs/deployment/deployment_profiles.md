@@ -1,4 +1,4 @@
-# Healthcare Deployment Configuration
+# Deployment Profile Configuration
 
 Version: 1.0  
 Updated: 2026-07-18  
@@ -6,12 +6,14 @@ License: GPL-3.0
 
 ## Purpose
 
-This page explains the healthcare/NQAS configuration used by SaQshi. It is for
-deployment owners who need to confirm which modules are enabled, which labels
-are shown to users, and which checklist framework is active.
+This page explains how SaQshi deployment profiles control the active modules,
+user-facing labels and default checklist framework. It is for deployment owners
+who need to confirm the configuration used by their healthcare, education or
+generic-inspection implementation.
 
-For the current GitBook release, SaQshi is documented as a healthcare quality
-assessment and CQI platform.
+The standard healthcare profile is NQAS-aligned. Education and
+generic-inspection profiles use the same configurable platform with their own
+labels, modules and framework defaults.
 
 ## Active Configuration Files
 
@@ -41,6 +43,14 @@ php api/cli/configure-deployment-profile.php --profile=healthcare
 The command writes `api/config/domain.json` and `api/config/modules.json`.
 Choose the profile before creating assessments; existing assessments retain the
 framework that was selected when they were created.
+
+Profile source files are available in:
+
+```text
+api/config/profiles/healthcare.json
+api/config/profiles/education.json
+api/config/profiles/generic-inspection.json
+```
 
 ## Readiness Check
 

@@ -228,7 +228,10 @@ class Event
     {
         $dir = dirname(__DIR__) . '/storage/events';
 
-        if (!is_dir($dir) && !mkdir($dir, 0775, true) && !is_dir($dir)) {
+        // Request tracing is diagnostic only. A deployment with a missing or
+        // read-only runtime log folder must not turn public login endpoints
+        // into HTTP 500 responses.
+        if (!is_dir($dir) && !@mkdir($dir, 0775, true) && !is_dir($dir)) {
             error_log('SaQshi event log directory could not be created: ' . $dir);
             return;
         }
