@@ -43,9 +43,13 @@
     "branding": {
         "login_kicker": "Healthcare Quality Platform",
         "login_title": "Structured assessments for facility improvement.",
-        "login_description": "Manage NQAS, MusQan and LaQshya assessment workflows with department activation, checkpoint scoring and CQI tracking.",
+        "login_description": "Manage NQAS, MusQan, LaQshya and Kayakalp assessment workflows with department activation, checkpoint scoring and CQI tracking.",
         "login_app_name": "SaQshi",
-        "login_app_tagline": "Digital Healthcare Quality Assessment Platform"
+        "login_app_tagline": "Digital Healthcare Quality Assessment Platform",
+        "login_logo_1": "/ui/assets/images/jharkhand-government-logo.jpeg?v=20260827-1",
+        "login_logo_1_alt": "Government of Jharkhand",
+        "login_logo_2": "/ui/assets/images/logo.png",
+        "login_logo_2_alt": "SaQshi"
     },
     "content": {
         "assessor_dashboard_overview": "{assessment} overview across your assigned {facilities}.",
@@ -53,5 +57,5 @@
         "assessor_no_mapped_items": "No {facilities} are mapped to this {assessor} profile."
     },
     "applied_by": 0,
-    "applied_on": "2026-08-20T21:24:14+05:30"
+    "applied_on": "2026-08-27T09:11:17+05:30"
 }
