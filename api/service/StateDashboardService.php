@@ -2434,9 +2434,10 @@ class StateDashboardService
         $params = [];
 
         // Role 11 is a restricted management account. It may administer
-        // administrator and Mentor/Assessor accounts, not the full state-user list.
+        // Facility User accounts plus administrator and Mentor/Assessor accounts,
+        // without receiving the full state-user list.
         if (!empty($filters['management_roles_only'])) {
-            $where[] = "(LOWER(COALESCE(r.role_name, '')) LIKE '%admin%' OR LOWER(COALESCE(r.role_name, '')) LIKE '%assessor%' OR LOWER(COALESCE(r.role_name, '')) LIKE '%mentor%')";
+            $where[] = "(u.role_id_fk = 1 OR LOWER(COALESCE(r.role_name, '')) LIKE '%admin%' OR LOWER(COALESCE(r.role_name, '')) LIKE '%assessor%' OR LOWER(COALESCE(r.role_name, '')) LIKE '%mentor%')";
         }
 
         if (!empty($filters['role_id'])) {

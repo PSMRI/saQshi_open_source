@@ -57,7 +57,8 @@ VALUES
     (5, 'Division User', 1, 'Division/regional monitoring user'),
     (8, 'Block User', 1, 'Block monitoring user'),
     (9, 'State Admin', 1, 'State monitoring and administration user'),
-    (10, 'Assessor', 1, 'External/state assigned assessor')
+    (10, 'Assessor', 1, 'External/state assigned assessor'),
+    (11, 'User Admin', 1, 'User administration and management')
 ON DUPLICATE KEY UPDATE
     role_name = VALUES(role_name),
     role_status = VALUES(role_status),

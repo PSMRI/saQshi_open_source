@@ -100,6 +100,30 @@
         state.rows = response.data?.rows || [];
     }
 
+    async function downloadPendingFacilityCredentials() {
+        try {
+            const response = await SQ.api.get("/state/v1/facility_pending_credentials.php", {}, {
+                loader: true,
+                loaderText: "Preparing pending credentials...",
+                showError: false
+            });
+            const rows = response.data?.rows || [];
+            if (!rows.length) {
+                SQ.notification?.warning("No Facility Users have pending initial credentials.");
+                return;
+            }
+            downloadCsv("facility-user-pending-credentials.csv", [
+                "user_id", "username", "temporary_password", "facility_nin",
+                "facility", "district", "block", "created_on"
+            ], rows.map(row => [
+                row.u_id, row.username, row.temporary_password, row.facility_nin,
+                row.fac_name, row.district, row.block, row.created_on
+            ]));
+        } catch (error) {
+            SQ.notification?.error(error.message || "Unable to download pending Facility User credentials.");
+        }
+    }
+
     async function updateStatus(userId, nextStatus) {
         const activate = Number(nextStatus) === 1;
         const ok = window.confirm(`${activate ? "Activate" : "Deactivate"} this user?`);
@@ -394,6 +418,11 @@
         if (createButton && state.canCreateUsers) {
             createButton.hidden = false;
             createButton.addEventListener("click", openCreateUser);
+        }
+        const pendingCredentialsButton = document.getElementById("statePendingCredentials");
+        if (pendingCredentialsButton && Number(currentUser?.role_id) === 11) {
+            pendingCredentialsButton.hidden = false;
+            pendingCredentialsButton.addEventListener("click", downloadPendingFacilityCredentials);
         }
         document.getElementById("stateUsersTemplate")?.addEventListener("click", function () {
             downloadCsv("user-import-template.csv", ["username", "role_name", "school_facility_udise_nin", "is_active", "temporary_password"], [["new.admin", "Administrator", "", "1", ""], ["new.mentor", "Mentor", "", "1", ""]]);
