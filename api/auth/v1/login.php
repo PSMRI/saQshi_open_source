@@ -45,6 +45,7 @@ try {
         ]);
     }
     $captcha = trim((string)$request['captcha']);
+    $rememberMe = !empty($request['remember_me']);
 
     $expectedCaptcha = (string)($_SESSION['login_captcha_answer'] ?? '');
     $captchaExpires = (int)($_SESSION['login_captcha_expires'] ?? 0);
@@ -70,7 +71,8 @@ try {
 
     $result = $auth->login(
         $username,
-        $password
+        $password,
+        $rememberMe
     );
 
     Event::dispatch('auth.login.auth_checked', [

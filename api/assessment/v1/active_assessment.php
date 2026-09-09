@@ -47,7 +47,11 @@ try {
     $assessmentIdSql = $requestedAssessmentId > 0 ? ' AND assessment_id = ?' : '';
     // PENDING is an assessor-only draft used while choosing a class.  It is
     // intentionally not shown as active work on the assessor dashboard.
-    $statusSql = $isAssessorSession ? "AND status IN ('ACTIVE', 'PENDING')" : "AND status = 'ACTIVE'";
+    // A requested assessment is being viewed from history. Permit completed
+    // assessments in that read-only context; the default remains active work.
+    $statusSql = $requestedAssessmentId > 0
+        ? "AND status IN ('ACTIVE', 'COMPLETED')"
+        : ($isAssessorSession ? "AND status IN ('ACTIVE', 'PENDING')" : "AND status = 'ACTIVE'");
 
     $sql = "
         SELECT

@@ -245,7 +245,10 @@
         pageDepartments.forEach(function (dept, index) {
             const active = isDepartmentActive(dept);
             const assignment = dept.assignment || null;
-            const completed = assignment && String(assignment.status || "").toUpperCase() === "COMPLETED";
+            // Historical completed assessments are view-only.  They must not
+            // offer actions from the facility's currently active assessment.
+            const completed = String(state.assessment?.status || "").toUpperCase() === "COMPLETED"
+                || (assignment && String(assignment.status || "").toUpperCase() === "COMPLETED");
             const assignedToAnother = assignment && Number(assignment.assessor_id) !== Number(state.currentAssessorId);
             const isAssessor = state.isAssessorSession || state.currentAssessorId > 0;
             const assessorHasActiveClass = isAssessor && Object.values(state.assignmentMap).some(function (item) {

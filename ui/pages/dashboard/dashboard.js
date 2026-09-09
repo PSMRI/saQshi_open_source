@@ -260,17 +260,22 @@
     function renderProgress() {
         const summary = state.progress?.summary || {};
         const departments = summary.departments || summary;
+        const responses = summary.responses || {};
+        const assessmentId = Number(state.progress?.assessment?.assessment_id || 0);
+        const assessment = state.assessments.find(function (item) {
+            return Number(item.assessment_id) === assessmentId;
+        }) || {};
+        const total = Number(assessment.total_checkpoints || 0);
+        const completed = Number(responses.total_saved_responses || 0);
+        const pending = Math.max(total - completed, 0);
+        const percent = total > 0
+            ? Math.round((completed / total) * 10000) / 100
+            : Number(departments.completion_percent || summary.department_completion_percent || 0);
 
-        const active = Number(departments.active_departments || 0);
-        const completed = Number(departments.completed || 0);
-        const pending = Math.max(active - completed, 0);
-        const percent = Number(
-            departments.completion_percent ||
-            summary.department_completion_percent ||
-            0
-        );
-
-        setText("active-departments", active);
+        // Overall progress means completed checkpoints, not only completed
+        // departments. A department can be in progress with many saved
+        // checkpoints and must not make the dashboard appear as 0% complete.
+        setText("active-departments", total);
         setText("completed-departments", completed);
         setText("pending-departments", pending);
         setText("overall-progress-text", percent + "%");
@@ -281,8 +286,6 @@
             bar.style.width = percent + "%";
         }
 
-        setText("metric-in-progress", Number(departments.in_progress || 0));
-        setText("metric-completed", completed);
     }
 
     function renderScore() {
@@ -508,7 +511,7 @@
             const isAssessorLed = Boolean(assessment.is_assessor_led);
             const action = isAssessorLed
                 ? `<span class="sq-text-muted sq-text-sm">Assessor-managed</span>`
-                : `<a href="#" data-sq-route="assessment/departments" class="sq-btn sq-btn-sm sq-btn-outline-primary">Open</a>`;
+                : `<button type="button" data-dashboard-open-assessment="${escapeHtml(assessment.assessment_id)}" class="sq-btn sq-btn-sm sq-btn-outline-primary">Open</button>`;
 
             return `
                 <tr>
@@ -525,7 +528,16 @@
     }
 
     function renderMetrics() {
+        const counts = state.assessments.reduce(function (result, assessment) {
+            const status = String(assessment.status || "").trim().toUpperCase();
+            if (status === "COMPLETED") result.completed += 1;
+            if (status === "ACTIVE" || status === "IN_PROGRESS") result.inProgress += 1;
+            return result;
+        }, { completed: 0, inProgress: 0 });
+
         setText("metric-total-assessments", state.assessments.length);
+        setText("metric-completed", counts.completed);
+        setText("metric-in-progress", counts.inProgress);
         renderRecentAssessments();
     }
 
@@ -567,9 +579,26 @@
         });
     }
 
+    function bindRecentAssessmentActions() {
+        const target = document.getElementById("recent-assessment-list");
+
+        if (!target || target.dataset.dashboardAssessmentActionsBound === "1") return;
+
+        target.dataset.dashboardAssessmentActionsBound = "1";
+        target.addEventListener("click", function (event) {
+            const button = event.target.closest("[data-dashboard-open-assessment]");
+            const assessmentId = Number(button?.dataset.dashboardOpenAssessment || 0);
+
+            if (assessmentId && SQ.router && typeof SQ.router.navigate === "function") {
+                SQ.router.navigate("assessment/departments", { assessment_id: assessmentId });
+            }
+        });
+    }
+
     async function init() {
         try {
             bindQuickActions();
+            bindRecentAssessmentActions();
             document.getElementById("areaConcernDepartmentFilter")?.addEventListener("change", renderAreaConcerns);
 
             if (SQ.breadcrumb) {

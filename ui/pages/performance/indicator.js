@@ -122,8 +122,14 @@
         select.hidden = false;
         select.disabled = false;
         const existing = select.value;
+        // The department selector represents the assessment scope.  Building it
+        // only from indicator items hid activated departments with no configured
+        // indicators for the selected type.
         const departments = [...new Map(
-            state.allItems.map(item => [String(item.department_id || 0), item.department_name || ("Department " + item.department_id)])
+            (state.activeDepartments || []).map(department => [
+                String(department.department_id || department.dept_id || 0),
+                department.department_name || department.dept_name || ("Department " + (department.department_id || department.dept_id))
+            ])
         ).entries()].filter(([id]) => id !== "0");
 
         select.innerHTML = `<option value="">Select activated department</option>` + departments
@@ -348,6 +354,7 @@
         }
         state.activeAssessment = response?.data?.active_assessment || null;
         state.activeDepartmentIds = response?.data?.active_department_ids || [];
+        state.activeDepartments = response?.data?.active_departments || [];
         state.allItems = response?.data?.items || [];
 
         renderDepartments();

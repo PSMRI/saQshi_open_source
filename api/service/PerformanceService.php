@@ -17,6 +17,7 @@
  */
 
 require_once __DIR__ . '/FormulaEngine.php';
+require_once __DIR__ . '/../core/FrameworkEngine.php';
 
 /**
  * Provides performance service behavior for SaQshi API workflows.
@@ -437,6 +438,41 @@ class PerformanceService
         }
 
         return array_values(array_unique(array_filter($ids)));
+    }
+
+    /**
+     * Returns every activated department for the current assessment, including
+     * departments that do not yet have indicators configured for a given type.
+     */
+    public static function activeDepartments(mysqli $con, int $facilityId, int $facilityTypeId = 0): array
+    {
+        $ids = self::activeDepartmentIds($con, $facilityId);
+        if (!$ids) {
+            return [];
+        }
+
+        $names = self::departmentNames();
+        $assessment = self::activeAssessment($con, $facilityId);
+        $frameworkCode = trim((string)($assessment['framework_code'] ?? ''));
+
+        if ($facilityTypeId > 0 && $frameworkCode !== '') {
+            try {
+                foreach (FrameworkEngine::load($frameworkCode)->getDepartments($facilityTypeId) as $department) {
+                    $deptId = (int)($department['fac_dept_id'] ?? $department['dept_id'] ?? 0);
+                    $deptName = trim((string)($department['fac_dept_name'] ?? $department['dept_name'] ?? $department['department_name'] ?? $department['name'] ?? ''));
+                    if ($deptId > 0 && $deptName !== '') {
+                        $names[$deptId] = $deptName;
+                    }
+                }
+            } catch (Throwable) {
+                // A missing legacy framework must not hide activated departments.
+            }
+        }
+
+        return array_map(static fn(int $deptId): array => [
+            'department_id' => $deptId,
+            'department_name' => $names[$deptId] ?? ('Department ' . $deptId)
+        ], $ids);
     }
 
     /**

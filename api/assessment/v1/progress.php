@@ -418,6 +418,13 @@ try {
                 'total_checkpoints' => 0,
                 'total_score' => 0
             ];
+        $departmentDefinition = $engine->getDepartmentById($facTypeId, (int)$row['dept_id']) ?? [];
+        $departmentName = trim((string)(
+            $departmentDefinition['dept_name']
+            ?? $departmentDefinition['department_name']
+            ?? $departmentDefinition['fac_dept_name']
+            ?? ''
+        ));
         $possibleScore = (float)$scoreBase['total_score'];
 
         $originalPercentage = $possibleScore > 0
@@ -447,6 +454,9 @@ try {
             'assessment_department_id' => (int)$row['id'],
             'assessment_id' => (int)$row['assessment_id'],
             'dept_id' => (int)$row['dept_id'],
+            'department_name' => $departmentName !== ''
+                ? $departmentName
+                : ('Department ' . (int)$row['dept_id']),
 
             'is_active' => (int)$row['is_active'],
             'status' => $row['status'],

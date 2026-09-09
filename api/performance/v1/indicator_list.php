@@ -30,7 +30,11 @@ try {
         ? (bool)$rule['kpi_department_required']
         : (bool)$rule['outcome_department_required'];
     $activeAssessment = PerformanceService::activeAssessment($con, $facId);
-    $activeDepartments = PerformanceService::activeDepartmentIds($con, $facId);
+    $activeDepartmentDetails = PerformanceService::activeDepartments($con, $facId, $facilityTypeId);
+    $activeDepartments = array_map(
+        static fn(array $department): int => (int)$department['department_id'],
+        $activeDepartmentDetails
+    );
     $items = IndicatorService::list($facilityTypeId, $departmentId, $indicatorType);
 
     if ($departmentRequired) {
@@ -48,6 +52,7 @@ try {
         'department_required' => $departmentRequired,
         'active_assessment' => $activeAssessment,
         'active_department_ids' => $activeDepartments,
+        'active_departments' => $activeDepartmentDetails,
         'items' => $items
     ]);
 } catch (Throwable $e) {

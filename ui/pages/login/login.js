@@ -102,6 +102,10 @@
         return document.getElementById("captchaQuestion");
     }
 
+    function rememberMe() {
+        return Boolean(document.getElementById("rememberMe")?.checked);
+    }
+
     function pemToArrayBuffer(pem) {
         const base64 = String(pem || "")
             .replace(/-----BEGIN PUBLIC KEY-----/g, "")
@@ -261,7 +265,8 @@
         const payload = {
             username: username().value.trim(),
             password_enc: "",
-            captcha: captcha().value.trim()
+            captcha: captcha().value.trim(),
+            remember_me: rememberMe()
         };
 
         try {
@@ -275,7 +280,7 @@
             payload.password_enc = await encryptPassword(plainPassword);
 
             if (SQ.auth && SQ.auth.loginEncrypted) {
-                response = await SQ.auth.loginEncrypted(payload.username, payload.password_enc, payload.captcha);
+                response = await SQ.auth.loginEncrypted(payload.username, payload.password_enc, payload.captcha, payload.remember_me);
             } else {
                 response = await SQ.api.post(
                     "/auth/v1/login.php",

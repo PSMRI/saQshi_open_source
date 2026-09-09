@@ -1,0 +1,1184 @@
+{"kind":"deck","id":"pr/wprkp4","name":"Deck"}
+{"kind":"layout","layoutId":"/ppt/slideMasters/slideMaster1.xml","name":"","type":"master","placeholders":[{"name":"slideNumber","type":"slideNumber","textPreview":"null"}]}
+{"kind":"layout","layoutId":"/ppt/slideLayouts/slideLayout1.xml","name":"DEFAULT"}
+{"kind":"layout","layoutId":"/ppt/slideLayouts/slideLayout2.xml","name":"SAQSHI_MASTER","placeholders":[{"name":"slideNumber","type":"slideNumber","textPreview":"1002"}]}
+{"kind":"slide","id":"sl/y90nupkv","slide":1,"title":"OPEN SOURCE • CONFIGURABLE • CROSS-SECTOR","textShapes":10}
+{"kind":"shape","id":"sh/547294r6","slide":1,"name":"Shape 0","bbox":[907.2,7.68,360,360]}
+{"kind":"shape","id":"sh/k3yl0zql","slide":1,"name":"Shape 1","bbox":[984,384,283.2,283.2]}
+{"kind":"shape","id":"sh/7qp4be9c","slide":1,"name":"Shape 2","bbox":[878.4,120,307.2,470.4]}
+{"kind":"shape","id":"sh/ts7md4r2","slide":1,"name":"Shape 3","bbox":[69.12,166.08,316.8,32.64]}
+{"kind":"textbox","id":"sh/sryl4zqx","slide":1,"name":"Text 4","text":"OPEN SOURCE • CONFIGURABLE • CROSS-SECTOR","textPreview":"OPEN SOURCE • CONFIGURABLE • CROSS-SECTOR","textChars":41,"textLines":1,"bbox":[76.8,172.8,301.44,15.36]}
+{"kind":"textbox","id":"sh/fu94fe98","slide":1,"name":"Text 5","text":"SaQshi","textPreview":"SaQshi","textChars":6,"textLines":1,"bbox":[69.12,213.12,518.4,78.72]}
+{"kind":"textbox","id":"sh/utg3698n","slide":1,"name":"Text 6","text":"Open Digital Quality\nImprovement Platform","textPreview":"Open Digital Quality | Improvement Platform","textChars":41,"textLines":2,"bbox":[69.12,278.4,681.6,132.48]}
+{"kind":"textbox","id":"sh/wn6dc7eh","slide":1,"name":"Text 7","text":"From assessment → action → outcomes → certification — across health, education and other public-service quality programs.","textPreview":"From assessment → action → outcomes → certification — across health, education and other public-service quality programs.","textChars":121,"textLines":1,"bbox":[71.04,436.8,676.8,100.8]}
+{"kind":"shape","id":"sh/hofulsf2","slide":1,"name":"Shape 8","bbox":[933.12,174.72,236.16,236.16]}
+{"kind":"textbox","id":"sh/vmdcj2xw","slide":1,"name":"Text 9","text":"ONE\nPLATFORM","textPreview":"ONE | PLATFORM","textChars":12,"textLines":2,"bbox":[977.28,316.8,148.8,57.6]}
+{"kind":"shape","id":"sh/4r6dg7et","slide":1,"name":"Shape 10","bbox":[830.4,120,110.4,110.4]}
+{"kind":"textbox","id":"sh/ipovexwn","slide":1,"name":"Text 11","text":"Health","textPreview":"Health","textChars":6,"textLines":1,"bbox":[816,234.24,139.2,24]}
+{"kind":"shape","id":"sh/3qxwn2x8","slide":1,"name":"Shape 12","bbox":[1147.2,69.12,110.4,110.4]}
+{"kind":"textbox","id":"sh/dgzetcfa","slide":1,"name":"Text 13","text":"Education","textPreview":"Education","textChars":9,"textLines":1,"bbox":[1132.8,183.36,139.2,24]}
+{"kind":"shape","id":"sh/1cvuxc7e","slide":1,"name":"Shape 14","bbox":[1156.8,446.4,110.4,110.4]}
+{"kind":"textbox","id":"sh/zadcv2p8","slide":1,"name":"Text 15","text":"Feedback","textPreview":"Feedback","textChars":8,"textLines":1,"bbox":[1142.4,560.64,139.2,24]}
+{"kind":"shape","id":"sh/e94v2hon","slide":1,"name":"Shape 16","bbox":[820.8,460.8,110.4,110.4]}
+{"kind":"textbox","id":"sh/ozmd8r65","slide":1,"name":"Text 17","text":"Analytics","textPreview":"Analytics","textChars":9,"textLines":1,"bbox":[806.4,575.04,139.2,24]}
+{"kind":"textbox","id":"sh/nydczmpk","slide":1,"name":"Text 18","text":"Your Saathi for Quality Assessment — evolved into a reusable digital public quality platform.","textPreview":"Your Saathi for Quality Assessment — evolved into a reusable digital public quality platform.","textChars":93,"textLines":1,"bbox":[71.04,609.6,892.8,36.48]}
+{"kind":"image","id":"im/1kvyhsfm","slide":1,"name":"Image 0","bbox":[69.12,60.48,244.8,84.48]}
+{"kind":"image","id":"im/mlofqdgr","slide":1,"name":"Image 1","bbox":[1010.88,232.32,80.64,80.64]}
+{"kind":"image","id":"im/nmxgjixc","slide":1,"name":"Image 2","bbox":[860.16,139.2,50.88,50.88]}
+{"kind":"image","id":"im/xgzi9wzu","slide":1,"name":"Image 3","bbox":[1176.96,88.32,50.88,50.88]}
+{"kind":"image","id":"im/wfqhgri9","slide":1,"name":"Image 4","bbox":[1186.56,465.6,50.88,50.88]}
+{"kind":"image","id":"im/veh07mho","slide":1,"name":"Image 5","bbox":[850.56,480,50.88,50.88]}
+{"kind":"notes","id":"nt/y90nupkv","slide":1,"text":""}
+{"kind":"slide","id":"sl/hwbqtkby","slide":2,"title":"EXECUTIVE PROPOSITION","textShapes":11}
+{"kind":"shape","id":"sh/9072xkry","slide":2,"name":"Shape 0","bbox":[59.52,22.08,211.2,28.8]}
+{"kind":"textbox","id":"sh/ozy1ofad","slide":2,"name":"Text 1","text":"EXECUTIVE PROPOSITION","textPreview":"EXECUTIVE PROPOSITION","textChars":21,"textLines":1,"bbox":[67.2,26.4,195.84,13.44]}
+{"kind":"textbox","id":"sh/b29kza94","slide":2,"name":"Text 2","text":"SaQshi is not another checklist application","textPreview":"SaQshi is not another checklist application","textChars":43,"textLines":1,"bbox":[59.52,43.2,1142.4,49.92]}
+{"kind":"shape","id":"sh/a10jqpsj","slide":2,"name":"Shape 3","bbox":[59.52,101.76,76.8,0]}
+{"kind":"textbox","id":"sh/x4r21kru","slide":2,"name":"Text 4","text":"It is a configurable quality-improvement operating layer that turns standards into repeatable digital workflows.","textPreview":"It is a configurable quality-improvement operating layer that turns standards into repeatable digital workflows.","textChars":112,"textLines":1,"bbox":[59.52,111.36,1152,43.2]}
+{"kind":"shape","id":"sh/r65knqtk","slide":2,"name":"Shape 5","bbox":[72,192,357.12,321.6]}
+{"kind":"shape","id":"sh/q5wjelsz","slide":2,"name":"Shape 6","bbox":[98.88,216,59.52,59.52]}
+{"kind":"textbox","id":"sh/9wnqhczy","slide":2,"name":"Text 7","text":"Standards become digital","textPreview":"Standards become digital","textChars":24,"textLines":1,"bbox":[98.88,292.8,302.4,49.92]}
+{"kind":"textbox","id":"sh/mtwrmxg7","slide":2,"name":"Text 8","text":"Frameworks, domains, checkpoints, scoring rules and facility/entity types become configuration — not hard-coded forms.","textPreview":"Frameworks, domains, checkpoints, scoring rules and facility/entity types become configuration — not hard-coded forms.","textChars":118,"textLines":1,"bbox":[98.88,353.28,299.52,120]}
+{"kind":"shape","id":"sh/nu58f2hs","slide":2,"name":"Shape 9","bbox":[471.36,192,357.12,321.6]}
+{"kind":"shape","id":"sh/wjy9sry9","slide":2,"name":"Shape 10","bbox":[498.24,216,59.52,59.52]}
+{"kind":"textbox","id":"sh/ahwrqhgj","slide":2,"name":"Text 11","text":"Assessments become workflows","textPreview":"Assessments become workflows","textChars":28,"textLines":1,"bbox":[498.24,292.8,302.4,49.92]}
+{"kind":"textbox","id":"sh/bip8jmho","slide":2,"name":"Text 12","text":"Pause/resume, evidence, scoring, gaps, action plans, responsibility, target dates, closure and reassessment stay connected.","textPreview":"Pause/resume, evidence, scoring, gaps, action plans, responsibility, target dates, closure and reassessment stay connected.","textChars":123,"textLines":1,"bbox":[498.24,353.28,299.52,120]}
+{"kind":"shape","id":"sh/cnupgny5","slide":2,"name":"Shape 13","bbox":[870.72,192,357.12,321.6]}
+{"kind":"shape","id":"sh/do3q9szq","slide":2,"name":"Shape 14","bbox":[897.6,216,59.52,59.52]}
+{"kind":"textbox","id":"sh/s72xofmh","slide":2,"name":"Text 15","text":"Data becomes improvement","textPreview":"Data becomes improvement","textChars":24,"textLines":1,"bbox":[897.6,292.8,302.4,49.92]}
+{"kind":"textbox","id":"sh/76twva5c","slide":2,"name":"Text 16","text":"Dashboards, KPI/outcome trends, certification status and comparative analysis show whether quality is actually changing.","textPreview":"Dashboards, KPI/outcome trends, certification status and comparative analysis show whether quality is actually changing.","textChars":120,"textLines":1,"bbox":[897.6,353.28,299.52,120]}
+{"kind":"shape","id":"sh/65kfmpor","slide":2,"name":"Shape 17","bbox":[153.6,554.88,969.6,74.88]}
+{"kind":"textbox","id":"sh/hcvy14ne","slide":2,"name":"Text 18","text":"THE PLATFORM IDEA  →  Configure once. Reuse across frameworks, facilities, schools, departments, classes and geographies.","textPreview":"THE PLATFORM IDEA  →  Configure once. Reuse across frameworks, facilities, schools, departments, classes and geographies.","textChars":121,"textLines":1,"bbox":[182.4,576,912,28.8]}
+{"kind":"textbox","id":"sh/gbmxszmt","slide":2,"name":"Slide Number Placeholder 0","placeholder":"slideNumber","text":"2","textPreview":"2","textChars":1,"textLines":1,"bbox":[1185.6,690.24,36.48,17.28]}
+{"kind":"image","id":"im/0ruxkv2l","slide":2,"name":"Image 0","bbox":[1142.4,34.56,88.32,30.72]}
+{"kind":"image","id":"im/ls3yt036","slide":2,"name":"Image 1","bbox":[108.96,226.08,39.36,39.36]}
+{"kind":"image","id":"im/mtwfm5kr","slide":2,"name":"Image 2","bbox":[508.32,226.08,39.36,39.36]}
+{"kind":"image","id":"im/nu5gfalw","slide":2,"name":"Image 3","bbox":[907.68,226.08,39.36,39.36]}
+{"kind":"notes","id":"nt/hwbqtkby","slide":2,"text":""}
+{"kind":"slide","id":"sl/ofy9wn61","slide":3,"title":"PROBLEM","textShapes":16}
+{"kind":"shape","id":"sh/cza94vmx","slide":3,"name":"Shape 0","bbox":[59.52,22.08,211.2,28.8]}
+{"kind":"textbox","id":"sh/d0jax03i","slide":3,"name":"Text 1","text":"PROBLEM","textPreview":"PROBLEM","textChars":7,"textLines":1,"bbox":[67.2,26.4,195.84,13.44]}
+{"kind":"textbox","id":"sh/298ryl4v","slide":3,"name":"Text 2","text":"Quality assurance is still fragmented between paper, Excel and isolated applications","textPreview":"Quality assurance is still fragmented between paper, Excel and isolated applications","textChars":84,"textLines":1,"bbox":[59.52,43.2,1142.4,49.92]}
+{"kind":"shape","id":"sh/3ah8rqlg","slide":3,"name":"Shape 3","bbox":[59.52,101.76,76.8,0]}
+{"kind":"textbox","id":"sh/obq90bml","slide":3,"name":"Text 4","text":"The original SaQshi concept note identifies manual assessment, limited digital functionality, weak action planning and poor comparative analysis.","textPreview":"The original SaQshi concept note identifies manual assessment, limited digital functionality, weak action planning and poor comparative a...","textChars":145,"textLines":1,"bbox":[59.52,111.36,1152,43.2]}
+{"kind":"shape","id":"sh/m5cra54z","slide":3,"name":"Shape 5","bbox":[69.12,180.48,360,193.92]}
+{"kind":"shape","id":"sh/n6ls3alk","slide":3,"name":"Shape 6","bbox":[93.12,203.52,49.92,49.92]}
+{"kind":"textbox","id":"sh/m1c3mlsn","slide":3,"name":"Text 7","text":"Paper → Excel → manual scoring","textPreview":"Paper → Excel → manual scoring","textChars":30,"textLines":1,"bbox":[155.52,202.56,244.8,51.84]}
+{"kind":"textbox","id":"sh/943mhgre","slide":3,"name":"Text 8","text":"Printing, re-entry and score collation consume time and introduce avoidable errors.","textPreview":"Printing, re-entry and score collation consume time and introduce avoidable errors.","textChars":83,"textLines":1,"bbox":[93.12,268.8,309.12,79.68]}
+{"kind":"shape","id":"sh/83ulovat","slide":3,"name":"Shape 9","bbox":[467.52,180.48,360,193.92]}
+{"kind":"shape","id":"sh/v6l4jq94","slide":3,"name":"Shape 10","bbox":[491.52,203.52,49.92,49.92]}
+{"kind":"textbox","id":"sh/x8nml0ra","slide":3,"name":"Text 11","text":"Digital forms without workflow","textPreview":"Digital forms without workflow","textChars":30,"textLines":1,"bbox":[553.92,202.56,244.8,51.84]}
+{"kind":"textbox","id":"sh/w7ulsvqp","slide":3,"name":"Text 12","text":"Capturing answers alone does not create real-time gap visibility or accountability for closure.","textPreview":"Capturing answers alone does not create real-time gap visibility or accountability for closure.","textChars":95,"textLines":1,"bbox":[491.52,268.8,309.12,79.68]}
+{"kind":"shape","id":"sh/ja54na9g","slide":3,"name":"Shape 13","bbox":[865.92,180.48,360,193.92]}
+{"kind":"shape","id":"sh/i9w3u58v","slide":3,"name":"Shape 14","bbox":[889.92,203.52,49.92,49.92]}
+{"kind":"textbox","id":"sh/f29gbyx0","slide":3,"name":"Text 15","text":"Action plans disconnected from evidence","textPreview":"Action plans disconnected from evidence","textChars":39,"textLines":1,"bbox":[952.32,202.56,244.8,51.84]}
+{"kind":"textbox","id":"sh/03ix43e5","slide":3,"name":"Text 16","text":"Owner, due date, closure evidence and revised score are often managed outside the assessment.","textPreview":"Owner, due date, closure evidence and revised score are often managed outside the assessment.","textChars":93,"textLines":1,"bbox":[889.92,268.8,309.12,79.68]}
+{"kind":"shape","id":"sh/14ryd8fq","slide":3,"name":"Shape 17","bbox":[69.12,408.96,360,193.92]}
+{"kind":"shape","id":"sh/6d0fytg3","slide":3,"name":"Shape 18","bbox":[93.12,432,49.92,49.92]}
+{"kind":"textbox","id":"sh/sfix03y9","slide":3,"name":"Text 19","text":"No continuous improvement memory","textPreview":"No continuous improvement memory","textChars":32,"textLines":1,"bbox":[155.52,431.04,244.8,51.84]}
+{"kind":"textbox","id":"sh/tgry9ofu","slide":3,"name":"Text 20","text":"Baseline, reassessment and current status are difficult to compare consistently over time.","textPreview":"Baseline, reassessment and current status are difficult to compare consistently over time.","textChars":90,"textLines":1,"bbox":[93.12,497.28,309.12,79.68]}
+{"kind":"shape","id":"sh/a9kfadwn","slide":3,"name":"Shape 21","bbox":[467.52,408.96,360,193.92]}
+{"kind":"shape","id":"sh/batgjixs","slide":3,"name":"Shape 22","bbox":[491.52,432,49.92,49.92]}
+{"kind":"textbox","id":"sh/k3m1g7yp","slide":3,"name":"Text 23","text":"Framework silos","textPreview":"Framework silos","textChars":15,"textLines":1,"bbox":[553.92,431.04,244.8,51.84]}
+{"kind":"textbox","id":"sh/z2d07mh4","slide":3,"name":"Text 24","text":"Every program, facility type or sector tends to create a new workflow and a new technology stack.","textPreview":"Every program, facility type or sector tends to create a new workflow and a new technology stack.","textChars":97,"textLines":1,"bbox":[491.52,497.28,309.12,79.68]}
+{"kind":"shape","id":"sh/y14jehgj","slide":3,"name":"Shape 25","bbox":[865.92,408.96,360,193.92]}
+{"kind":"shape","id":"sh/x0vi5czy","slide":3,"name":"Shape 26","bbox":[889.92,432,49.92,49.92]}
+{"kind":"textbox","id":"sh/byd032h8","slide":3,"name":"Text 27","text":"Vendor & customization dependency","textPreview":"Vendor & customization dependency","textChars":33,"textLines":1,"bbox":[952.32,431.04,244.8,51.84]}
+{"kind":"textbox","id":"sh/ax4zax0n","slide":3,"name":"Text 28","text":"Closed or hard-coded systems make adaptation, integration and long-term ownership expensive.","textPreview":"Closed or hard-coded systems make adaptation, integration and long-term ownership expensive.","textChars":92,"textLines":1,"bbox":[889.92,497.28,309.12,79.68]}
+{"kind":"textbox","id":"sh/re9g7yxo","slide":3,"name":"Slide Number Placeholder 0","placeholder":"slideNumber","text":"3","textPreview":"3","textChars":1,"textLines":1,"bbox":[1185.6,690.24,36.48,17.28]}
+{"kind":"image","id":"im/e90b690z","slide":3,"name":"Image 0","bbox":[1142.4,34.56,88.32,30.72]}
+{"kind":"image","id":"im/fa9szehk","slide":3,"name":"Image 1","bbox":[103.2,213.6,29.76,29.76]}
+{"kind":"image","id":"im/z2pov6l0","slide":3,"name":"Image 2","bbox":[501.6,213.6,29.76,29.76]}
+{"kind":"image","id":"im/y1g7214f","slide":3,"name":"Image 3","bbox":[900,213.6,29.76,29.76]}
+{"kind":"image","id":"im/l476xg3q","slide":3,"name":"Image 4","bbox":[103.2,442.08,29.76,29.76]}
+{"kind":"image","id":"im/k3yp4bml","slide":3,"name":"Image 5","bbox":[501.6,442.08,29.76,29.76]}
+{"kind":"image","id":"im/by5or6lo","slide":3,"name":"Image 6","bbox":[900,442.08,29.76,29.76]}
+{"kind":"notes","id":"nt/ofy9wn61","slide":3,"text":""}
+{"kind":"slide","id":"sl/jyx0ra1s","slide":4,"title":"STRATEGIC SHIFT","textShapes":23}
+{"kind":"shape","id":"sh/1cj2d8b6","slide":4,"name":"Shape 0","bbox":[59.52,22.08,211.2,28.8]}
+{"kind":"textbox","id":"sh/0ba143al","slide":4,"name":"Text 1","text":"STRATEGIC SHIFT","textPreview":"STRATEGIC SHIFT","textChars":15,"textLines":1,"bbox":[67.2,26.4,195.84,13.44]}
+{"kind":"textbox","id":"sh/rm1k7yt4","slide":4,"name":"Text 2","text":"The shift: from digitizing a checklist to operating a quality-improvement system","textPreview":"The shift: from digitizing a checklist to operating a quality-improvement system","textChars":80,"textLines":1,"bbox":[59.52,43.2,1142.4,49.92]}
+{"kind":"shape","id":"sh/ql8jytsj","slide":4,"name":"Shape 3","bbox":[59.52,101.76,76.8,0]}
+{"kind":"textbox","id":"sh/doj29oba","slide":4,"name":"Text 4","text":"SaQshi connects the full improvement loop instead of stopping after data capture.","textPreview":"SaQshi connects the full improvement loop instead of stopping after data capture.","textChars":81,"textLines":1,"bbox":[59.52,111.36,1152,43.2]}
+{"kind":"shape","id":"sh/3ihk3et8","slide":4,"name":"Shape 5","bbox":[59.52,199.68,120,120]}
+{"kind":"textbox","id":"sh/kbm987y5","slide":4,"name":"Text 6","text":"01","textPreview":"01","textChars":2,"textLines":1,"bbox":[93.12,288,52.8,17.28]}
+{"kind":"textbox","id":"sh/5cva1cfq","slide":4,"name":"Text 7","text":"Configure","textPreview":"Configure","textChars":9,"textLines":1,"bbox":[35.52,338.88,168,33.6]}
+{"kind":"textbox","id":"sh/i94r6xgz","slide":4,"name":"Text 8","text":"Framework, entity types, domains, checkpoints, scoring","textPreview":"Framework, entity types, domains, checkpoints, scoring","textChars":54,"textLines":1,"bbox":[28.8,382.08,182.4,103.68]}
+{"kind":"shape","id":"sh/jadsz2xk","slide":4,"name":"Shape 9","bbox":[181.44,259.2,72.96,0]}
+{"kind":"shape","id":"sh/w72947yt","slide":4,"name":"Shape 10","bbox":[256.32,199.68,120,120]}
+{"kind":"textbox","id":"sh/a5kr2xg3","slide":4,"name":"Text 11","text":"02","textPreview":"02","textChars":2,"textLines":1,"bbox":[289.92,288,52.8,17.28]}
+{"kind":"textbox","id":"sh/v6tsv2xo","slide":4,"name":"Text 12","text":"Assess","textPreview":"Assess","textChars":6,"textLines":1,"bbox":[232.32,338.88,168,33.6]}
+{"kind":"textbox","id":"sh/g36tgryd","slide":4,"name":"Text 13","text":"Digital response, evidence, progress, pause/resume","textPreview":"Digital response, evidence, progress, pause/resume","textChars":50,"textLines":1,"bbox":[225.6,382.08,182.4,103.68]}
+{"kind":"shape","id":"sh/h4fa9wfy","slide":4,"name":"Shape 14","bbox":[378.24,259.2,72.96,0]}
+{"kind":"shape","id":"sh/p0batw72","slide":4,"name":"Shape 15","bbox":[453.12,199.68,120,120]}
+{"kind":"textbox","id":"sh/3ytsrmpw","slide":4,"name":"Text 16","text":"03","textPreview":"03","textChars":2,"textLines":1,"bbox":[486.72,288,52.8,17.28]}
+{"kind":"textbox","id":"sh/2xkrih8b","slide":4,"name":"Text 17","text":"Improve","textPreview":"Improve","textChars":7,"textLines":1,"bbox":[429.12,338.88,168,33.6]}
+{"kind":"textbox","id":"sh/1wbapc7q","slide":4,"name":"Text 18","text":"Gap analysis, action plan, owner, target date, closure","textPreview":"Gap analysis, action plan, owner, target date, closure","textChars":54,"textLines":1,"bbox":[422.4,382.08,182.4,103.68]}
+{"kind":"shape","id":"sh/gv29g7q5","slide":4,"name":"Shape 19","bbox":[575.04,259.2,72.96,0]}
+{"kind":"shape","id":"sh/fu9sn2p0","slide":4,"name":"Shape 20","bbox":[649.92,199.68,120,120]}
+{"kind":"textbox","id":"sh/tsrqlc7u","slide":4,"name":"Text 21","text":"04","textPreview":"04","textChars":2,"textLines":1,"bbox":[683.52,288,52.8,17.28]}
+{"kind":"textbox","id":"sh/sri9s7q9","slide":4,"name":"Text 22","text":"Monitor","textPreview":"Monitor","textChars":7,"textLines":1,"bbox":[625.92,338.88,168,33.6]}
+{"kind":"textbox","id":"sh/ilwf69kv","slide":4,"name":"Text 23","text":"KPI / outcome entry, formulas, validation and trends","textPreview":"KPI / outcome entry, formulas, validation and trends","textChars":52,"textLines":1,"bbox":[619.2,382.08,182.4,103.68]}
+{"kind":"shape","id":"sh/jm5gze1g","slide":4,"name":"Shape 24","bbox":[771.84,259.2,72.96,0]}
+{"kind":"shape","id":"sh/knex8j21","slide":4,"name":"Shape 25","bbox":[846.72,199.68,120,120]}
+{"kind":"textbox","id":"sh/axcf29kj","slide":4,"name":"Text 26","text":"05","textPreview":"05","textChars":2,"textLines":1,"bbox":[880.32,288,52.8,17.28]}
+{"kind":"textbox","id":"sh/vy5gbe14","slide":4,"name":"Text 27","text":"Certify","textPreview":"Certify","textChars":7,"textLines":1,"bbox":[822.72,338.88,168,33.6]}
+{"kind":"textbox","id":"sh/wzex4z2p","slide":4,"name":"Text 28","text":"Certification type, validity, renewal and history","textPreview":"Certification type, validity, renewal and history","textChars":49,"textLines":1,"bbox":[816,382.08,182.4,103.68]}
+{"kind":"shape","id":"sh/xknyx4ja","slide":4,"name":"Shape 29","bbox":[968.64,259.2,72.96,0]}
+{"kind":"shape","id":"sh/mtcfypkn","slide":4,"name":"Shape 30","bbox":[1043.52,199.68,120,120]}
+{"kind":"textbox","id":"sh/fm5c3q54","slide":4,"name":"Text 31","text":"06","textPreview":"06","textChars":2,"textLines":1,"bbox":[1077.12,288,52.8,17.28]}
+{"kind":"textbox","id":"sh/elwba54j","slide":4,"name":"Text 32","text":"Learn","textPreview":"Learn","textChars":5,"textLines":1,"bbox":[1019.52,338.88,168,33.6]}
+{"kind":"textbox","id":"sh/18nu50nu","slide":4,"name":"Text 33","text":"Dashboards, drill-down, reports and resource feedback","textPreview":"Dashboards, drill-down, reports and resource feedback","textChars":53,"textLines":1,"bbox":[1012.8,382.08,182.4,103.68]}
+{"kind":"shape","id":"sh/0netcvm9","slide":4,"name":"Shape 34","bbox":[148.8,539.52,984,74.88]}
+{"kind":"textbox","id":"sh/rilczq5s","slide":4,"name":"Text 35","text":"Continuous Quality Improvement (CQI) loop: each reassessment creates a new evidence-backed improvement history instead of replacing the past.","textPreview":"Continuous Quality Improvement (CQI) loop: each reassessment creates a new evidence-backed improvement history instead of replacing the p...","textChars":141,"textLines":1,"bbox":[182.4,563.52,912,26.88]}
+{"kind":"textbox","id":"sh/6x8rahk3","slide":4,"name":"Slide Number Placeholder 0","placeholder":"slideNumber","text":"4","textPreview":"4","textChars":1,"textLines":1,"bbox":[1185.6,690.24,36.48,17.28]}
+{"kind":"image","id":"im/dorehgni","slide":4,"name":"Image 0","bbox":[1142.4,34.56,88.32,30.72]}
+{"kind":"image","id":"im/ql0v61or","slide":4,"name":"Image 1","bbox":[92.16,225.6,54.72,54.72]}
+{"kind":"image","id":"im/bm9wf65c","slide":4,"name":"Image 2","bbox":[288.96,225.6,54.72,54.72]}
+{"kind":"image","id":"im/ojid4r6l","slide":4,"name":"Image 3","bbox":[485.76,225.6,54.72,54.72]}
+{"kind":"image","id":"im/pkredwn6","slide":4,"name":"Image 4","bbox":[682.56,225.6,54.72,54.72]}
+{"kind":"image","id":"im/7upwnm98","slide":4,"name":"Image 5","bbox":[879.36,225.6,54.72,54.72]}
+{"kind":"image","id":"im/6tgfeh8n","slide":4,"name":"Image 6","bbox":[1076.16,225.6,54.72,54.72]}
+{"kind":"notes","id":"nt/jyx0ra1s","slide":4,"text":""}
+{"kind":"slide","id":"sl/i107q5of","slide":5,"title":"PLATFORM","textShapes":23}
+{"kind":"shape","id":"sh/dgbulwnm","slide":5,"name":"Shape 0","bbox":[59.52,22.08,211.2,28.8]}
+{"kind":"textbox","id":"sh/cf2tcr61","slide":5,"name":"Text 1","text":"PLATFORM","textPreview":"PLATFORM","textChars":8,"textLines":1,"bbox":[67.2,26.4,195.84,13.44]}
+{"kind":"textbox","id":"sh/z2tcnm5s","slide":5,"name":"Text 2","text":"One core engine, many sectors and frameworks","textPreview":"One core engine, many sectors and frameworks","textChars":44,"textLines":1,"bbox":[59.52,43.2,1142.4,49.92]}
+{"kind":"shape","id":"sh/yhkbe1o7","slide":5,"name":"Shape 3","bbox":[59.52,101.76,76.8,0]}
+{"kind":"textbox","id":"sh/l4bupwny","slide":5,"name":"Text 4","text":"The reusable platform separates common capabilities from sector-specific configuration.","textPreview":"The reusable platform separates common capabilities from sector-specific configuration.","textChars":87,"textLines":1,"bbox":[59.52,111.36,1152,43.2]}
+{"kind":"shape","id":"sh/n6dcr65o","slide":5,"name":"Shape 5","bbox":[436.8,201.6,408,374.4]}
+{"kind":"textbox","id":"sh/m5kbi1oj","slide":5,"name":"Text 6","text":"SaQshi Core Platform","textPreview":"SaQshi Core Platform","textChars":20,"textLines":1,"bbox":[491.52,232.32,297.6,40.32]}
+{"kind":"shape","id":"sh/w32dkbuh","slide":5,"name":"Shape 7","bbox":[466.56,299.52,151.68,55.68]}
+{"kind":"textbox","id":"sh/ahkvi1cb","slide":5,"name":"Text 8","text":"Identity & RBAC","textPreview":"Identity & RBAC","textChars":15,"textLines":1,"bbox":[506.88,312,99.84,24.96]}
+{"kind":"shape","id":"sh/v2twb6dw","slide":5,"name":"Shape 9","bbox":[645.12,299.52,151.68,55.68]}
+{"kind":"textbox","id":"sh/58vehgvy","slide":5,"name":"Text 10","text":"Framework Engine","textPreview":"Framework Engine","textChars":16,"textLines":1,"bbox":[685.44,312,99.84,24.96]}
+{"kind":"shape","id":"sh/i54fmlc7","slide":5,"name":"Shape 11","bbox":[466.56,374.4,151.68,55.68]}
+{"kind":"textbox","id":"sh/sb6xsvu9","slide":5,"name":"Text 12","text":"Assessment & Scoring","textPreview":"Assessment & Scoring","textChars":20,"textLines":1,"bbox":[506.88,386.88,99.84,24.96]}
+{"kind":"shape","id":"sh/tcfel0vu","slide":5,"name":"Shape 13","bbox":[645.12,374.4,151.68,55.68]}
+{"kind":"textbox","id":"sh/gfi5grih","slide":5,"name":"Text 14","text":"CQI / Action Plan","textPreview":"CQI / Action Plan","textChars":17,"textLines":1,"bbox":[685.44,386.88,99.84,24.96]}
+{"kind":"shape","id":"sh/fe94nm1w","slide":5,"name":"Shape 15","bbox":[466.56,449.28,151.68,55.68]}
+{"kind":"textbox","id":"sh/pkr6tgjy","slide":5,"name":"Text 16","text":"KPI / Outcomes","textPreview":"KPI / Outcomes","textChars":14,"textLines":1,"bbox":[506.88,461.76,99.84,24.96]}
+{"kind":"shape","id":"sh/4ji5kbid","slide":5,"name":"Shape 17","bbox":[645.12,449.28,151.68,55.68]}
+{"kind":"textbox","id":"sh/2h0ni107","slide":5,"name":"Text 18","text":"Analytics & Export","textPreview":"Analytics & Export","textChars":18,"textLines":1,"bbox":[685.44,461.76,99.84,24.96]}
+{"kind":"shape","id":"sh/5o7mhcju","slide":5,"name":"Shape 19","bbox":[72,206.4,297.6,100.8]}
+{"kind":"shape","id":"sh/kny587i9","slide":5,"name":"Shape 20","bbox":[94.08,230.4,51.84,51.84]}
+{"kind":"textbox","id":"sh/vu5kbihc","slide":5,"name":"Text 21","text":"Health","textPreview":"Health","textChars":6,"textLines":1,"bbox":[160.32,226.56,172.8,31.68]}
+{"kind":"textbox","id":"sh/wve1knyx","slide":5,"name":"Text 22","text":"NQAS • MusQan • LaQshya","textPreview":"NQAS • MusQan • LaQshya","textChars":23,"textLines":1,"bbox":[160.32,262.08,177.6,25.92]}
+{"kind":"shape","id":"sh/xwn2dszi","slide":5,"name":"Shape 23","bbox":[370.56,256.32,59.52,0]}
+{"kind":"shape","id":"sh/ihw3mxg3","slide":5,"name":"Shape 24","bbox":[72,345.6,297.6,100.8]}
+{"kind":"shape","id":"sh/ji5kf2ho","slide":5,"name":"Shape 25","bbox":[94.08,369.6,51.84,51.84]}
+{"kind":"textbox","id":"sh/5kn2hszu","slide":5,"name":"Text 26","text":"Education","textPreview":"Education","textChars":9,"textLines":1,"bbox":[160.32,365.76,172.8,31.68]}
+{"kind":"textbox","id":"sh/e1sjatgz","slide":5,"name":"Text 27","text":"School • Class • Domain","textPreview":"School • Class • Domain","textChars":23,"textLines":1,"bbox":[160.32,401.28,177.6,25.92]}
+{"kind":"shape","id":"sh/zmlk3yhk","slide":5,"name":"Shape 28","bbox":[370.56,395.52,59.52,0]}
+{"kind":"shape","id":"sh/fid07u98","slide":5,"name":"Shape 29","bbox":[72,484.8,297.6,100.8]}
+{"kind":"shape","id":"sh/ehkzepsn","slide":5,"name":"Shape 30","bbox":[94.08,508.8,51.84,51.84]}
+{"kind":"textbox","id":"sh/gjmhgzqt","slide":5,"name":"Text 31","text":"Beneficiary Experience","textPreview":"Beneficiary Experience","textChars":22,"textLines":1,"bbox":[160.32,504.96,172.8,31.68]}
+{"kind":"textbox","id":"sh/3md0bu94","slide":5,"name":"Text 32","text":"Feedback • Social audit","textPreview":"Feedback • Social audit","textChars":23,"textLines":1,"bbox":[160.32,540.48,177.6,25.92]}
+{"kind":"shape","id":"sh/2l4zip8j","slide":5,"name":"Shape 33","bbox":[370.56,534.72,59.52,0]}
+{"kind":"shape","id":"sh/povid4ra","slide":5,"name":"Shape 34","bbox":[846.72,256.32,57.6,0]}
+{"kind":"shape","id":"sh/onmhkzqp","slide":5,"name":"Shape 35","bbox":[910.08,206.4,292.8,100.8]}
+{"kind":"shape","id":"sh/bqx0fe9g","slide":5,"name":"Shape 36","bbox":[931.2,230.4,51.84,51.84]}
+{"kind":"textbox","id":"sh/8f6hcj6t","slide":5,"name":"Text 37","text":"Framework Pack","textPreview":"Framework Pack","textChars":14,"textLines":1,"bbox":[997.44,226.56,170.88,31.68]}
+{"kind":"textbox","id":"sh/9gfy5o7e","slide":5,"name":"Text 38","text":"JSON configuration","textPreview":"JSON configuration","textChars":18,"textLines":1,"bbox":[997.44,262.08,165.12,25.92]}
+{"kind":"shape","id":"sh/mdoza9o3","slide":5,"name":"Shape 39","bbox":[846.72,395.52,57.6,0]}
+{"kind":"shape","id":"sh/nexg3epo","slide":5,"name":"Shape 40","bbox":[910.08,345.6,292.8,100.8]}
+{"kind":"shape","id":"sh/0r6h8z6x","slide":5,"name":"Shape 41","bbox":[931.2,369.6,51.84,51.84]}
+{"kind":"textbox","id":"sh/yp4z69or","slide":5,"name":"Text 42","text":"Geography & Hierarchy","textPreview":"Geography & Hierarchy","textChars":21,"textLines":1,"bbox":[997.44,365.76,170.88,31.68]}
+{"kind":"textbox","id":"sh/zqxgzupc","slide":5,"name":"Text 43","text":"State → district → entity","textPreview":"State → district → entity","textChars":25,"textLines":1,"bbox":[997.44,401.28,165.12,25.92]}
+{"kind":"shape","id":"sh/cnmh4z61","slide":5,"name":"Shape 44","bbox":[846.72,534.72,57.6,0]}
+{"kind":"shape","id":"sh/dovyx476","slide":5,"name":"Shape 45","bbox":[910.08,484.8,292.8,100.8]}
+{"kind":"shape","id":"sh/t8n6lwvy","slide":5,"name":"Shape 46","bbox":[931.2,508.8,51.84,51.84]}
+{"kind":"textbox","id":"sh/r6lojmds","slide":5,"name":"Text 47","text":"Deployment Profile","textPreview":"Deployment Profile","textChars":18,"textLines":1,"bbox":[997.44,504.96,170.88,31.68]}
+{"kind":"textbox","id":"sh/65cnahc7","slide":5,"name":"Text 48","text":"Cloud / on-prem / tenant","textPreview":"Cloud / on-prem / tenant","textChars":24,"textLines":1,"bbox":[997.44,540.48,165.12,25.92]}
+{"kind":"textbox","id":"sh/lkz258bi","slide":5,"name":"Slide Number Placeholder 0","placeholder":"slideNumber","text":"5","textPreview":"5","textChars":1,"textLines":1,"bbox":[1185.6,690.24,36.48,17.28]}
+{"kind":"image","id":"im/214zqp0n","slide":5,"name":"Image 0","bbox":[1142.4,34.56,88.32,30.72]}
+{"kind":"image","id":"im/n2d0zu1s","slide":5,"name":"Image 1","bbox":[477.12,312.96,24,24]}
+{"kind":"image","id":"im/o3mhszid","slide":5,"name":"Image 2","bbox":[655.68,312.96,24,24]}
+{"kind":"image","id":"im/p4vi14jy","slide":5,"name":"Image 3","bbox":[477.12,387.84,24,24]}
+{"kind":"image","id":"im/exkzmp0b","slide":5,"name":"Image 4","bbox":[655.68,387.84,24,24]}
+{"kind":"image","id":"im/fyt0vu1w","slide":5,"name":"Image 5","bbox":[477.12,462.72,24,24]}
+{"kind":"image","id":"im/hsj21sje","slide":5,"name":"Image 6","bbox":[655.68,462.72,24,24]}
+{"kind":"image","id":"im/gral8n2t","slide":5,"name":"Image 7","bbox":[104.16,240.48,31.68,31.68]}
+{"kind":"image","id":"im/vqhkzil8","slide":5,"name":"Image 8","bbox":[104.16,379.68,31.68,31.68]}
+{"kind":"image","id":"im/up836dk3","slide":5,"name":"Image 9","bbox":[104.16,518.88,31.68,31.68]}
+{"kind":"image","id":"im/toz2x83i","slide":5,"name":"Image 10","bbox":[941.28,240.48,31.68,31.68]}
+{"kind":"image","id":"im/8nql432x","slide":5,"name":"Image 11","bbox":[941.28,379.68,31.68,31.68]}
+{"kind":"image","id":"im/7mhkvilc","slide":5,"name":"Image 12","bbox":[941.28,518.88,31.68,31.68]}
+{"kind":"notes","id":"nt/i107q5of","slide":5,"text":""}
+{"kind":"slide","id":"sl/x8f69ofe","slide":6,"title":"CROSS-SECTOR","textShapes":37}
+{"kind":"shape","id":"sh/yhg7epsj","slide":6,"name":"Shape 0","bbox":[59.52,22.08,211.2,28.8]}
+{"kind":"textbox","id":"sh/zi98nu94","slide":6,"name":"Text 1","text":"CROSS-SECTOR","textPreview":"CROSS-SECTOR","textChars":12,"textLines":1,"bbox":[67.2,26.4,195.84,13.44]}
+{"kind":"textbox","id":"sh/87ipkzal","slide":6,"name":"Text 2","text":"Health → Education → any structured quality program","textPreview":"Health → Education → any structured quality program","textChars":51,"textLines":1,"bbox":[59.52,43.2,1142.4,49.92]}
+{"kind":"shape","id":"sh/98rqt4r6","slide":6,"name":"Shape 3","bbox":[59.52,101.76,76.8,0]}
+{"kind":"textbox","id":"sh/ml07i9sv","slide":6,"name":"Text 4","text":"SaQshi works because the underlying quality-assurance pattern is the same even when the vocabulary changes.","textPreview":"SaQshi works because the underlying quality-assurance pattern is the same even when the vocabulary changes.","textChars":107,"textLines":1,"bbox":[59.52,111.36,1152,43.2]}
+{"kind":"shape","id":"sh/oryp8fah","slide":6,"name":"Shape 5","bbox":[64.32,182.4,225.6,59.52]}
+{"kind":"textbox","id":"sh/pc76hkr2","slide":6,"name":"Text 6","text":"Quality concept","textPreview":"Quality concept","textChars":15,"textLines":1,"bbox":[72,200.64,210.24,19.2]}
+{"kind":"shape","id":"sh/h4bupgn6","slide":6,"name":"Shape 7","bbox":[294.72,182.4,288,59.52]}
+{"kind":"textbox","id":"sh/w32twb6l","slide":6,"name":"Text 8","text":"HEALTH","textPreview":"HEALTH","textChars":6,"textLines":1,"bbox":[302.4,200.64,272.64,19.2]}
+{"kind":"shape","id":"sh/v2tcn650","slide":6,"name":"Shape 9","bbox":[587.52,182.4,288,59.52]}
+{"kind":"textbox","id":"sh/u1kbu1ov","slide":6,"name":"Text 10","text":"EDUCATION","textPreview":"EDUCATION","textChars":9,"textLines":1,"bbox":[595.2,200.64,272.64,19.2]}
+{"kind":"shape","id":"sh/5svutgni","slide":6,"name":"Shape 11","bbox":[880.32,182.4,355.2,59.52]}
+{"kind":"textbox","id":"sh/47mt0b6x","slide":6,"name":"Text 12","text":"SAQSHI CONFIGURATION","textPreview":"SAQSHI CONFIGURATION","textChars":20,"textLines":1,"bbox":[888,200.64,339.84,19.2]}
+{"kind":"shape","id":"sh/j6dcr65c","slide":6,"name":"Shape 13","bbox":[64.32,251.52,225.6,49.92]}
+{"kind":"textbox","id":"sh/i54bylor","slide":6,"name":"Text 14","text":"Quality entity","textPreview":"Quality entity","textChars":14,"textLines":1,"bbox":[72,263.04,210.24,23.04]}
+{"kind":"shape","id":"sh/twfux0ne","slide":6,"name":"Shape 15","bbox":[294.72,251.52,288,49.92]}
+{"kind":"textbox","id":"sh/svmt4v6t","slide":6,"name":"Text 16","text":"Health facility","textPreview":"Health facility","textChars":15,"textLines":1,"bbox":[302.4,263.04,272.64,23.04]}
+{"kind":"shape","id":"sh/cbe5g3ih","slide":6,"name":"Shape 17","bbox":[587.52,251.52,288,49.92]}
+{"kind":"textbox","id":"sh/dcnm98zm","slide":6,"name":"Text 18","text":"School / institution","textPreview":"School / institution","textChars":20,"textLines":1,"bbox":[595.2,263.04,272.64,23.04]}
+{"kind":"shape","id":"sh/qpwnet0b","slide":6,"name":"Shape 19","bbox":[880.32,251.52,355.2,49.92]}
+{"kind":"textbox","id":"sh/bq547yhw","slide":6,"name":"Text 20","text":"Facility types / entity types","textPreview":"Facility types / entity types","textChars":29,"textLines":1,"bbox":[888,263.04,339.84,23.04]}
+{"kind":"shape","id":"sh/0fy5k3id","slide":6,"name":"Shape 21","bbox":[64.32,307.2,225.6,49.92]}
+{"kind":"textbox","id":"sh/lg76d8zy","slide":6,"name":"Text 22","text":"Operational unit","textPreview":"Operational unit","textChars":16,"textLines":1,"bbox":[72,318.72,210.24,23.04]}
+{"kind":"shape","id":"sh/ydgnit07","slide":6,"name":"Shape 23","bbox":[294.72,307.2,288,49.92]}
+{"kind":"textbox","id":"sh/zep4byhs","slide":6,"name":"Text 24","text":"Department","textPreview":"Department","textChars":10,"textLines":1,"bbox":[302.4,318.72,272.64,23.04]}
+{"kind":"shape","id":"sh/gju58ji9","slide":6,"name":"Shape 25","bbox":[587.52,307.2,288,49.92]}
+{"kind":"textbox","id":"sh/1k3mhozu","slide":6,"name":"Text 26","text":"Class / grade / unit","textPreview":"Class / grade / unit","textChars":20,"textLines":1,"bbox":[595.2,318.72,272.64,23.04]}
+{"kind":"shape","id":"sh/jet8nm1c","slide":6,"name":"Shape 27","bbox":[880.32,307.2,355.2,49.92]}
+{"kind":"textbox","id":"sh/idk7ehkr","slide":6,"name":"Text 28","text":"Departments / sub-entities","textPreview":"Departments / sub-entities","textChars":26,"textLines":1,"bbox":[888,318.72,339.84,23.04]}
+{"kind":"shape","id":"sh/50bqpcj2","slide":6,"name":"Shape 29","bbox":[64.32,362.88,225.6,49.92]}
+{"kind":"textbox","id":"sh/4f2pgr2h","slide":6,"name":"Text 30","text":"Quality dimension","textPreview":"Quality dimension","textChars":17,"textLines":1,"bbox":[72,374.4,210.24,23.04]}
+{"kind":"shape","id":"sh/va98j210","slide":6,"name":"Shape 31","bbox":[294.72,362.88,288,49.92]}
+{"kind":"textbox","id":"sh/u907axkf","slide":6,"name":"Text 32","text":"Area of concern / standard","textPreview":"Area of concern / standard","textChars":26,"textLines":1,"bbox":[302.4,374.4,272.64,23.04]}
+{"kind":"shape","id":"sh/hcrqlcj6","slide":6,"name":"Shape 33","bbox":[587.52,362.88,288,49.92]}
+{"kind":"textbox","id":"sh/wbipc72l","slide":6,"name":"Text 34","text":"Domain / theme","textPreview":"Domain / theme","textChars":14,"textLines":1,"bbox":[595.2,374.4,272.64,23.04]}
+{"kind":"shape","id":"sh/7698f214","slide":6,"name":"Shape 35","bbox":[880.32,362.88,355.2,49.92]}
+{"kind":"textbox","id":"sh/m5076xkj","slide":6,"name":"Text 36","text":"Framework domains","textPreview":"Framework domains","textChars":17,"textLines":1,"bbox":[888,374.4,339.84,23.04]}
+{"kind":"shape","id":"sh/2dkbalg3","slide":6,"name":"Shape 37","bbox":[64.32,418.56,225.6,49.92]}
+{"kind":"textbox","id":"sh/netcjqxo","slide":6,"name":"Text 38","text":"Assessment item","textPreview":"Assessment item","textChars":15,"textLines":1,"bbox":[72,430.08,210.24,23.04]}
+{"kind":"shape","id":"sh/of2tcvy9","slide":6,"name":"Shape 39","bbox":[294.72,418.56,288,49.92]}
+{"kind":"textbox","id":"sh/pgbul0fu","slide":6,"name":"Text 40","text":"Checkpoint","textPreview":"Checkpoint","textChars":10,"textLines":1,"bbox":[302.4,430.08,272.64,23.04]}
+{"kind":"shape","id":"sh/ep0b6lg7","slide":6,"name":"Shape 41","bbox":[587.52,418.56,288,49.92]}
+{"kind":"textbox","id":"sh/fq9cfqxc","slide":6,"name":"Text 42","text":"Observation / indicator","textPreview":"Observation / indicator","textChars":23,"textLines":1,"bbox":[595.2,430.08,272.64,23.04]}
+{"kind":"shape","id":"sh/0r2t8vyx","slide":6,"name":"Shape 43","bbox":[880.32,418.56,355.2,49.92]}
+{"kind":"textbox","id":"sh/1sbuh0fi","slide":6,"name":"Text 44","text":"Configurable checkpoint","textPreview":"Configurable checkpoint","textChars":23,"textLines":1,"bbox":[888,430.08,339.84,23.04]}
+{"kind":"shape","id":"sh/ql0b21gv","slide":6,"name":"Shape 45","bbox":[64.32,474.24,225.6,49.92]}
+{"kind":"textbox","id":"sh/rm9sb6xg","slide":6,"name":"Text 46","text":"Evidence","textPreview":"Evidence","textChars":8,"textLines":1,"bbox":[72,485.76,210.24,23.04]}
+{"kind":"shape","id":"sh/9gfeh4zy","slide":6,"name":"Shape 47","bbox":[294.72,474.24,288,49.92]}
+{"kind":"textbox","id":"sh/8f6x8jid","slide":6,"name":"Text 48","text":"Document / observation","textPreview":"Document / observation","textChars":22,"textLines":1,"bbox":[302.4,485.76,272.64,23.04]}
+{"kind":"shape","id":"sh/7exwfehs","slide":6,"name":"Shape 49","bbox":[587.52,474.24,288,49.92]}
+{"kind":"textbox","id":"sh/mdof6907","slide":6,"name":"Text 50","text":"Classroom evidence / records","textPreview":"Classroom evidence / records","textChars":28,"textLines":1,"bbox":[595.2,485.76,272.64,23.04]}
+{"kind":"shape","id":"sh/lcfed4z2","slide":6,"name":"Shape 51","bbox":[880.32,474.24,355.2,49.92]}
+{"kind":"textbox","id":"sh/kb6d4zih","slide":6,"name":"Text 52","text":"File / note / score","textPreview":"File / note / score","textChars":19,"textLines":1,"bbox":[888,485.76,339.84,23.04]}
+{"kind":"shape","id":"sh/zaxwbuhw","slide":6,"name":"Shape 53","bbox":[64.32,529.92,225.6,49.92]}
+{"kind":"textbox","id":"sh/y94v2p0b","slide":6,"name":"Text 54","text":"Improvement","textPreview":"Improvement","textChars":11,"textLines":1,"bbox":[72,541.44,210.24,23.04]}
+{"kind":"shape","id":"sh/x8ve9kzq","slide":6,"name":"Shape 55","bbox":[294.72,529.92,288,49.92]}
+{"kind":"textbox","id":"sh/c7md0zi5","slide":6,"name":"Text 56","text":"Gap + action plan","textPreview":"Gap + action plan","textChars":17,"textLines":1,"bbox":[302.4,541.44,272.64,23.04]}
+{"kind":"shape","id":"sh/o3a5cjud","slide":6,"name":"Shape 57","bbox":[587.52,529.92,288,49.92]}
+{"kind":"textbox","id":"sh/p4j6loby","slide":6,"name":"Text 58","text":"Low domain + improvement action","textPreview":"Low domain + improvement action","textChars":31,"textLines":1,"bbox":[595.2,541.44,272.64,23.04]}
+{"kind":"shape","id":"sh/21snatc7","slide":6,"name":"Shape 59","bbox":[880.32,529.92,355.2,49.92]}
+{"kind":"textbox","id":"sh/n21ojets","slide":6,"name":"Text 60","text":"Generic CQI workflow","textPreview":"Generic CQI workflow","textChars":20,"textLines":1,"bbox":[888,541.44,339.84,23.04]}
+{"kind":"shape","id":"sh/0zq58ju1","slide":6,"name":"Shape 61","bbox":[64.32,585.6,225.6,49.92]}
+{"kind":"textbox","id":"sh/10z6hobm","slide":6,"name":"Text 62","text":"Performance","textPreview":"Performance","textChars":11,"textLines":1,"bbox":[72,597.12,210.24,23.04]}
+{"kind":"shape","id":"sh/ed8n69cb","slide":6,"name":"Shape 63","bbox":[294.72,585.6,288,49.92]}
+{"kind":"textbox","id":"sh/fyhofetw","slide":6,"name":"Text 64","text":"KPI / outcome indicator","textPreview":"KPI / outcome indicator","textChars":23,"textLines":1,"bbox":[302.4,597.12,272.64,23.04]}
+{"kind":"shape","id":"sh/kvu5k3ul","slide":6,"name":"Shape 65","bbox":[587.52,585.6,288,49.92]}
+{"kind":"textbox","id":"sh/lw36d8b6","slide":6,"name":"Text 66","text":"Class / school performance","textPreview":"Class / school performance","textChars":26,"textLines":1,"bbox":[595.2,597.12,272.64,23.04]}
+{"kind":"shape","id":"sh/vq58j2d8","slide":6,"name":"Shape 67","bbox":[880.32,585.6,355.2,49.92]}
+{"kind":"textbox","id":"sh/upwraxwn","slide":6,"name":"Text 68","text":"Indicator engine + analytics","textPreview":"Indicator engine + analytics","textChars":28,"textLines":1,"bbox":[888,597.12,339.84,23.04]}
+{"kind":"textbox","id":"sh/hs7qlcve","slide":6,"name":"Text 69","text":"Result: the platform can absorb new frameworks without rebuilding authentication, assessment workflow, CQI, analytics and governance every time.","textPreview":"Result: the platform can absorb new frameworks without rebuilding authentication, assessment workflow, CQI, analytics and governance ever...","textChars":144,"textLines":1,"bbox":[100.8,619.2,1065.6,38.4]}
+{"kind":"textbox","id":"sh/3up8nmd4","slide":6,"name":"Slide Number Placeholder 0","placeholder":"slideNumber","text":"6","textPreview":"6","textChars":1,"textLines":1,"bbox":[1185.6,690.24,36.48,17.28]}
+{"kind":"image","id":"im/vux4nmds","slide":6,"name":"Image 0","bbox":[1142.4,34.56,88.32,30.72]}
+{"kind":"notes","id":"nt/x8f69ofe","slide":6,"text":""}
+{"kind":"slide","id":"sl/gnmp4jqx","slide":7,"title":"HEALTH","textShapes":17}
+{"kind":"shape","id":"sh/cb2tkvap","slide":7,"name":"Shape 0","bbox":[59.52,22.08,211.2,28.8]}
+{"kind":"textbox","id":"sh/dcbud0ra","slide":7,"name":"Text 1","text":"HEALTH","textPreview":"HEALTH","textChars":6,"textLines":1,"bbox":[67.2,26.4,195.84,13.44]}
+{"kind":"textbox","id":"sh/ydkbm5sv","slide":7,"name":"Text 2","text":"Health quality assurance: from facility assessment to certification readiness","textPreview":"Health quality assurance: from facility assessment to certification readiness","textChars":77,"textLines":1,"bbox":[59.52,43.2,1142.4,49.92]}
+{"kind":"shape","id":"sh/zedcfa9g","slide":7,"name":"Shape 3","bbox":[59.52,101.76,76.8,0]}
+{"kind":"textbox","id":"sh/kzmdova1","slide":7,"name":"Text 4","text":"Designed around facility types, departments, checkpoints, gaps, indicators and improvement cycles.","textPreview":"Designed around facility types, departments, checkpoints, gaps, indicators and improvement cycles.","textChars":98,"textLines":1,"bbox":[59.52,111.36,1152,43.2]}
+{"kind":"shape","id":"sh/eh0ba1sr","slide":7,"name":"Shape 5","bbox":[76.8,184.32,532.8,115.2]}
+{"kind":"shape","id":"sh/fi9c369c","slide":7,"name":"Shape 6","bbox":[100.8,216,52.8,52.8]}
+{"kind":"textbox","id":"sh/a9ojq5kz","slide":7,"name":"Text 7","text":"Multiple frameworks","textPreview":"Multiple frameworks","textChars":19,"textLines":1,"bbox":[170.88,203.52,192,30.72]}
+{"kind":"textbox","id":"sh/xcz2l03q","slide":7,"name":"Text 8","text":"NQAS, MusQan, LaQshya and future framework packs","textPreview":"NQAS, MusQan, LaQshya and future framework packs","textChars":48,"textLines":1,"bbox":[360,201.6,220.8,67.2]}
+{"kind":"shape","id":"sh/cbq1sv25","slide":7,"name":"Shape 9","bbox":[657.6,184.32,532.8,115.2]}
+{"kind":"shape","id":"sh/n6x0fqlo","slide":7,"name":"Shape 10","bbox":[681.6,216,52.8,52.8]}
+{"kind":"textbox","id":"sh/p8fih03e","slide":7,"name":"Text 11","text":"Facility hierarchy","textPreview":"Facility hierarchy","textChars":18,"textLines":1,"bbox":[751.68,203.52,192,30.72]}
+{"kind":"textbox","id":"sh/o761ov2t","slide":7,"name":"Text 12","text":"DH, SDH, CHC, PHC, APHC, HWC and configurable types","textPreview":"DH, SDH, CHC, PHC, APHC, HWC and configurable types","textChars":51,"textLines":1,"bbox":[940.8,201.6,220.8,67.2]}
+{"kind":"shape","id":"sh/f2d0b6lc","slide":7,"name":"Shape 13","bbox":[76.8,331.2,532.8,115.2]}
+{"kind":"shape","id":"sh/eh4jil4r","slide":7,"name":"Shape 14","bbox":[100.8,362.88,52.8,52.8]}
+{"kind":"textbox","id":"sh/jedkn654","slide":7,"name":"Text 15","text":"Department activation","textPreview":"Department activation","textChars":21,"textLines":1,"bbox":[170.88,350.4,192,30.72]}
+{"kind":"textbox","id":"sh/4fm1wb6p","slide":7,"name":"Text 16","text":"Enable only the departments relevant to a facility / assessment period","textPreview":"Enable only the departments relevant to a facility / assessment period","textChars":70,"textLines":1,"bbox":[360,348.48,220.8,67.2]}
+{"kind":"shape","id":"sh/50v2pgna","slide":7,"name":"Shape 17","bbox":[657.6,331.2,532.8,115.2]}
+{"kind":"shape","id":"sh/q143ylov","slide":7,"name":"Shape 18","bbox":[681.6,362.88,52.8,52.8]}
+{"kind":"textbox","id":"sh/s3ml0v61","slide":7,"name":"Text 19","text":"Assessment cycles","textPreview":"Assessment cycles","textChars":17,"textLines":1,"bbox":[751.68,350.4,192,30.72]}
+{"kind":"textbox","id":"sh/d4f2t0nm","slide":7,"name":"Text 20","text":"Baseline, self-assessment, reassessment and multiple cycles","textPreview":"Baseline, self-assessment, reassessment and multiple cycles","textChars":59,"textLines":1,"bbox":[940.8,348.48,220.8,67.2]}
+{"kind":"shape","id":"sh/e5o32lor","slide":7,"name":"Shape 21","bbox":[76.8,478.08,532.8,115.2]}
+{"kind":"shape","id":"sh/f6xkvq5c","slide":7,"name":"Shape 22","bbox":[100.8,509.76,52.8,52.8]}
+{"kind":"textbox","id":"sh/ozq5szq9","slide":7,"name":"Text 23","text":"Outcome monitoring","textPreview":"Outcome monitoring","textChars":18,"textLines":1,"bbox":[170.88,497.28,192,30.72]}
+{"kind":"textbox","id":"sh/nyh4jupo","slide":7,"name":"Text 24","text":"Monthly KPI / outcome entry with validation and trend visualization","textPreview":"Monthly KPI / outcome entry with validation and trend visualization","textChars":67,"textLines":1,"bbox":[360,495.36,220.8,67.2]}
+{"kind":"shape","id":"sh/2x8nqp83","slide":7,"name":"Shape 25","bbox":[657.6,478.08,532.8,115.2]}
+{"kind":"shape","id":"sh/x4j6p47q","slide":7,"name":"Shape 26","bbox":[681.6,509.76,52.8,52.8]}
+{"kind":"textbox","id":"sh/b2h4nupk","slide":7,"name":"Text 27","text":"Certification tracking","textPreview":"Certification tracking","textChars":22,"textLines":1,"bbox":[751.68,497.28,192,30.72]}
+{"kind":"textbox","id":"sh/a18nup8z","slide":7,"name":"Text 28","text":"State, national, conditional certification, validity and renewal history","textPreview":"State, national, conditional certification, validity and renewal history","textChars":72,"textLines":1,"bbox":[940.8,495.36,220.8,67.2]}
+{"kind":"shape","id":"sh/lsj6t47m","slide":7,"name":"Shape 29","bbox":[206.4,590.4,868.8,55.68]}
+{"kind":"textbox","id":"sh/kra50jqh","slide":7,"name":"Text 30","text":"Health workflow: FACILITY → DEPARTMENT → CHECKPOINT → GAP → ACTION PLAN → REASSESSMENT → KPI/OUTCOME → CERTIFICATION","textPreview":"Health workflow: FACILITY → DEPARTMENT → CHECKPOINT → GAP → ACTION PLAN → REASSESSMENT → KPI/OUTCOME → CERTIFICATION","textChars":116,"textLines":1,"bbox":[230.4,608.64,820.8,17.28]}
+{"kind":"textbox","id":"sh/r2dkrq5g","slide":7,"name":"Slide Number Placeholder 0","placeholder":"slideNumber","text":"7","textPreview":"7","textChars":1,"textLines":1,"bbox":[1185.6,690.24,36.48,17.28]}
+{"kind":"image","id":"im/fex0nmx0","slide":7,"name":"Image 0","bbox":[1142.4,34.56,88.32,30.72]}
+{"kind":"image","id":"im/edozehwf","slide":7,"name":"Image 1","bbox":[110.88,226.08,32.64,32.64]}
+{"kind":"image","id":"im/1gfipcvq","slide":7,"name":"Image 2","bbox":[691.68,226.08,32.64,32.64]}
+{"kind":"image","id":"im/gf6hg7e5","slide":7,"name":"Image 3","bbox":[110.88,372.96,32.64,32.64]}
+{"kind":"image","id":"im/32x0rmdw","slide":7,"name":"Image 4","bbox":[691.68,372.96,32.64,32.64]}
+{"kind":"image","id":"im/21ozihwb","slide":7,"name":"Image 5","bbox":[110.88,519.84,32.64,32.64]}
+{"kind":"image","id":"im/p4zitwv2","slide":7,"name":"Image 6","bbox":[691.68,519.84,32.64,32.64]}
+{"kind":"notes","id":"nt/gnmp4jqx","slide":7,"text":""}
+{"kind":"slide","id":"sl/fu1gfa1s","slide":8,"title":"EDUCATION","textShapes":21}
+{"kind":"shape","id":"sh/18byd4zy","slide":8,"name":"Shape 0","bbox":[59.52,22.08,158.4,28.8]}
+{"kind":"textbox","id":"sh/g72x4zyd","slide":8,"name":"Text 1","text":"EDUCATION","textPreview":"EDUCATION","textChars":9,"textLines":1,"bbox":[67.2,26.4,143.04,13.44]}
+{"kind":"textbox","id":"sh/ri9g7uhw","slide":8,"name":"Text 2","text":"Education quality improvement uses the same platform primitives","textPreview":"Education quality improvement uses the same platform primitives","textChars":63,"textLines":1,"bbox":[59.52,43.2,1142.4,49.92]}
+{"kind":"shape","id":"sh/6h0fypgb","slide":8,"name":"Shape 3","bbox":[59.52,101.76,76.8,0]}
+{"kind":"textbox","id":"sh/tkby9kzm","slide":8,"name":"Text 4","text":"Schools, classes and quality domains can be assessed, compared and improved without creating a separate product.","textPreview":"Schools, classes and quality domains can be assessed, compared and improved without creating a separate product.","textChars":112,"textLines":1,"bbox":[59.52,111.36,1152,43.2]}
+{"kind":"shape","id":"sh/je9g3ahk","slide":8,"name":"Shape 5","bbox":[72,196.8,165.12,120]}
+{"kind":"textbox","id":"sh/o7ydoret","slide":8,"name":"Text 6","text":"School","textPreview":"School","textChars":6,"textLines":1,"bbox":[83.52,281.28,142.08,24.96]}
+{"kind":"textbox","id":"sh/98rehwve","slide":8,"name":"Text 7","text":"Entity","textPreview":"Entity","textChars":6,"textLines":1,"bbox":[83.52,314.88,142.08,20.16]}
+{"kind":"shape","id":"sh/m5gvmhwn","slide":8,"name":"Shape 8","bbox":[240,254.4,57.6,0]}
+{"kind":"shape","id":"sh/n6pwfmd8","slide":8,"name":"Shape 9","bbox":[305.28,196.8,165.12,120]}
+{"kind":"textbox","id":"sh/1k7edwv2","slide":8,"name":"Text 10","text":"Class / Grade","textPreview":"Class / Grade","textChars":13,"textLines":1,"bbox":[316.8,281.28,142.08,24.96]}
+{"kind":"textbox","id":"sh/ehgvihwr","slide":8,"name":"Text 11","text":"Operational unit","textPreview":"Operational unit","textChars":16,"textLines":1,"bbox":[316.8,314.88,142.08,20.16]}
+{"kind":"shape","id":"sh/zipwbmdc","slide":8,"name":"Shape 12","bbox":[473.28,254.4,57.6,0]}
+{"kind":"shape","id":"sh/kfixwbe1","slide":8,"name":"Shape 13","bbox":[538.56,196.8,165.12,120]}
+{"kind":"textbox","id":"sh/tw7e9gnq","slide":8,"name":"Text 14","text":"Domain","textPreview":"Domain","textChars":6,"textLines":1,"bbox":[550.08,281.28,142.08,24.96]}
+{"kind":"textbox","id":"sh/svydgb65","slide":8,"name":"Text 15","text":"Quality dimension","textPreview":"Quality dimension","textChars":17,"textLines":1,"bbox":[550.08,314.88,142.08,20.16]}
+{"kind":"shape","id":"sh/7u5w765k","slide":8,"name":"Shape 16","bbox":[706.56,254.4,57.6,0]}
+{"kind":"shape","id":"sh/6twve1oz","slide":8,"name":"Shape 17","bbox":[771.84,196.8,165.12,120]}
+{"kind":"textbox","id":"sh/kredcr6t","slide":8,"name":"Text 18","text":"Assessment","textPreview":"Assessment","textChars":10,"textLines":1,"bbox":[783.36,281.28,142.08,24.96]}
+{"kind":"textbox","id":"sh/jq5w365o","slide":8,"name":"Text 19","text":"Latest per class","textPreview":"Latest per class","textChars":16,"textLines":1,"bbox":[783.36,314.88,142.08,20.16]}
+{"kind":"shape","id":"sh/i5wva1o3","slide":8,"name":"Shape 20","bbox":[939.84,254.4,57.6,0]}
+{"kind":"shape","id":"sh/x4ne1wni","slide":8,"name":"Shape 21","bbox":[1005.12,196.8,165.12,120]}
+{"kind":"textbox","id":"sh/m9sb2x4v","slide":8,"name":"Text 22","text":"Improvement","textPreview":"Improvement","textChars":11,"textLines":1,"bbox":[1016.64,281.28,142.08,24.96]}
+{"kind":"textbox","id":"sh/na1sb2lg","slide":8,"name":"Text 23","text":"Lowest-domain action","textPreview":"Lowest-domain action","textChars":20,"textLines":1,"bbox":[1016.64,314.88,142.08,20.16]}
+{"kind":"shape","id":"sh/8bat47ml","slide":8,"name":"Shape 24","bbox":[86.4,408,316.8,156.48]}
+{"kind":"shape","id":"sh/9w3uds36","slide":8,"name":"Shape 25","bbox":[107.52,433.92,46.08,46.08]}
+{"kind":"textbox","id":"sh/z61s7il4","slide":8,"name":"Text 26","text":"Latest-assessment logic","textPreview":"Latest-assessment logic","textChars":23,"textLines":1,"bbox":[165.12,427.2,206.4,38.4]}
+{"kind":"textbox","id":"sh/07atgnmp","slide":8,"name":"Text 27","text":"When a class is assessed multiple times, analytics can use only the latest completed assessment.","textPreview":"When a class is assessed multiple times, analytics can use only the latest completed assessment.","textChars":96,"textLines":1,"bbox":[107.52,482.88,273.6,59.52]}
+{"kind":"shape","id":"sh/l8ja9s3a","slide":8,"name":"Shape 28","bbox":[443.52,408,316.8,156.48]}
+{"kind":"shape","id":"sh/q18bad4n","slide":8,"name":"Shape 29","bbox":[464.64,433.92,46.08,46.08]}
+{"kind":"textbox","id":"sh/3u18fepo","slide":8,"name":"Text 30","text":"Domain diagnostics","textPreview":"Domain diagnostics","textChars":18,"textLines":1,"bbox":[522.24,427.2,206.4,38.4]}
+{"kind":"textbox","id":"sh/2ts769o3","slide":8,"name":"Text 31","text":"Identify the lowest-performing domain for each class and focus the improvement conversation.","textPreview":"Identify the lowest-performing domain for each class and focus the improvement conversation.","textChars":92,"textLines":1,"bbox":[464.64,482.88,273.6,59.52]}
+{"kind":"shape","id":"sh/pwjqho7u","slide":8,"name":"Shape 32","bbox":[800.64,408,316.8,156.48]}
+{"kind":"shape","id":"sh/4vap8j69","slide":8,"name":"Shape 33","bbox":[821.76,433.92,46.08,46.08]}
+{"kind":"textbox","id":"sh/up872987","slide":8,"name":"Text 34","text":"District / state view","textPreview":"District / state view","textChars":21,"textLines":1,"bbox":[879.36,427.2,206.4,38.4]}
+{"kind":"textbox","id":"sh/hsjqd47y","slide":8,"name":"Text 35","text":"Class-wise completion, top/low schools, district comparisons and trend reporting.","textPreview":"Class-wise completion, top/low schools, district comparisons and trend reporting.","textChars":81,"textLines":1,"bbox":[821.76,482.88,273.6,59.52]}
+{"kind":"textbox","id":"sh/grap4zqd","slide":8,"name":"Text 36","text":"The sector changes. The platform workflow does not.","textPreview":"The sector changes. The platform workflow does not.","textChars":51,"textLines":1,"bbox":[336,599.04,604.8,33.6]}
+{"kind":"textbox","id":"sh/zidwn618","slide":8,"name":"Slide Number Placeholder 0","placeholder":"slideNumber","text":"8","textPreview":"8","textChars":1,"textLines":1,"bbox":[1185.6,690.24,36.48,17.28]}
+{"kind":"image","id":"im/4fmlwfmd","slide":8,"name":"Image 0","bbox":[1142.4,34.56,88.32,30.72]}
+{"kind":"image","id":"im/5gvmpkny","slide":8,"name":"Image 1","bbox":[127.68,219.84,52.8,52.8]}
+{"kind":"image","id":"im/fahofep0","slide":8,"name":"Image 2","bbox":[360.96,219.84,52.8,52.8]}
+{"kind":"image","id":"im/e987m9of","slide":8,"name":"Image 3","bbox":[594.24,219.84,52.8,52.8]}
+{"kind":"image","id":"im/1cz6ho76","slide":8,"name":"Image 4","bbox":[827.52,219.84,52.8,52.8]}
+{"kind":"image","id":"im/0bqpoj6l","slide":8,"name":"Image 5","bbox":[1060.8,219.84,52.8,52.8]}
+{"kind":"image","id":"im/r6xobep4","slide":8,"name":"Image 6","bbox":[117.6,444,25.92,25.92]}
+{"kind":"image","id":"im/qloni9oj","slide":8,"name":"Image 7","bbox":[474.72,444,25.92,25.92]}
+{"kind":"image","id":"im/d8f6d47a","slide":8,"name":"Image 8","bbox":[831.84,444,25.92,25.92]}
+{"kind":"notes","id":"nt/fu1gfa1s","slide":8,"text":""}
+{"kind":"slide","id":"sl/udsvah03","slide":9,"title":"WORKFLOW","textShapes":29}
+{"kind":"shape","id":"sh/1cfmhgne","slide":9,"name":"Shape 0","bbox":[59.52,22.08,211.2,28.8]}
+{"kind":"textbox","id":"sh/0b65obm9","slide":9,"name":"Text 1","text":"WORKFLOW","textPreview":"WORKFLOW","textChars":8,"textLines":1,"bbox":[67.2,26.4,195.84,13.44]}
+{"kind":"textbox","id":"sh/nex4jq5k","slide":9,"name":"Text 2","text":"End-to-end functional workflow","textPreview":"End-to-end functional workflow","textChars":30,"textLines":1,"bbox":[59.52,43.2,1142.4,49.92]}
+{"kind":"shape","id":"sh/mdonql4z","slide":9,"name":"Shape 3","bbox":[59.52,101.76,76.8,0]}
+{"kind":"textbox","id":"sh/9gzml0nq","slide":9,"name":"Text 4","text":"A single transaction chain connects configuration, assessment, improvement, performance and governance.","textPreview":"A single transaction chain connects configuration, assessment, improvement, performance and governance.","textChars":103,"textLines":1,"bbox":[59.52,111.36,1152,43.2]}
+{"kind":"shape","id":"sh/bih4na5w","slide":9,"name":"Shape 5","bbox":[59.52,182.4,261.12,177.6]}
+{"kind":"shape","id":"sh/ah8nu54b","slide":9,"name":"Shape 6","bbox":[78.72,201.6,52.8,52.8]}
+{"kind":"textbox","id":"sh/oza1gfyh","slide":9,"name":"Text 7","text":"1","textPreview":"1","textChars":1,"textLines":1,"bbox":[78.72,215.04,52.8,15.36]}
+{"kind":"textbox","id":"sh/2xsjepgb","slide":9,"name":"Text 8","text":"Onboard","textPreview":"Onboard","textChars":7,"textLines":1,"bbox":[80.64,270.72,206.4,30.72]}
+{"kind":"textbox","id":"sh/3y107axw","slide":9,"name":"Text 9","text":"Users • roles • hierarchy","textPreview":"Users • roles • hierarchy","textChars":25,"textLines":1,"bbox":[80.64,311.04,209.28,33.6]}
+{"kind":"shape","id":"sh/cnu1kzyd","slide":9,"name":"Shape 10","bbox":[322.56,273.6,24.96,0]}
+{"kind":"shape","id":"sh/do3id4fy","slide":9,"name":"Shape 11","bbox":[355.2,182.4,261.12,177.6]}
+{"kind":"shape","id":"sh/qlcjipgn","slide":9,"name":"Shape 12","bbox":[374.4,201.6,52.8,52.8]}
+{"kind":"textbox","id":"sh/bml0buxs","slide":9,"name":"Text 13","text":"2","textPreview":"2","textChars":1,"textLines":1,"bbox":[374.4,215.04,52.8,15.36]}
+{"kind":"textbox","id":"sh/lsn2h4fa","slide":9,"name":"Text 14","text":"Activate","textPreview":"Activate","textChars":8,"textLines":1,"bbox":[376.32,270.72,206.4,30.72]}
+{"kind":"textbox","id":"sh/98ji147e","slide":9,"name":"Text 15","text":"Framework • entity • department","textPreview":"Framework • entity • department","textChars":31,"textLines":1,"bbox":[376.32,311.04,209.28,33.6]}
+{"kind":"shape","id":"sh/87a18zqt","slide":9,"name":"Shape 16","bbox":[618.24,273.6,24.96,0]}
+{"kind":"shape","id":"sh/76h0zup8","slide":9,"name":"Shape 17","bbox":[650.88,182.4,261.12,177.6]}
+{"kind":"shape","id":"sh/ml8j6p8n","slide":9,"name":"Shape 18","bbox":[670.08,201.6,52.8,52.8]}
+{"kind":"textbox","id":"sh/hcji5o7a","slide":9,"name":"Text 19","text":"3","textPreview":"3","textChars":1,"textLines":1,"bbox":[670.08,215.04,52.8,15.36]}
+{"kind":"textbox","id":"sh/va103ep4","slide":9,"name":"Text 20","text":"Assess","textPreview":"Assess","textChars":6,"textLines":1,"bbox":[672,270.72,206.4,30.72]}
+{"kind":"textbox","id":"sh/u9sja98z","slide":9,"name":"Text 21","text":"Checkpoint response • evidence","textPreview":"Checkpoint response • evidence","textChars":30,"textLines":1,"bbox":[672,311.04,209.28,33.6]}
+{"kind":"shape","id":"sh/xgzitk76","slide":9,"name":"Shape 22","bbox":[913.92,273.6,24.96,0]}
+{"kind":"shape","id":"sh/cf6h0fql","slide":9,"name":"Shape 23","bbox":[946.56,182.4,261.12,177.6]}
+{"kind":"shape","id":"sh/2l4faloj","slide":9,"name":"Shape 24","bbox":[965.76,201.6,52.8,52.8]}
+{"kind":"textbox","id":"sh/nmdg3q54","slide":9,"name":"Text 25","text":"4","textPreview":"4","textChars":1,"textLines":1,"bbox":[965.76,215.04,52.8,15.36]}
+{"kind":"textbox","id":"sh/pofy50nu","slide":9,"name":"Text 26","text":"Score","textPreview":"Score","textChars":5,"textLines":1,"bbox":[967.68,270.72,206.4,30.72]}
+{"kind":"textbox","id":"sh/apofe5of","slide":9,"name":"Text 27","text":"Auto score • compliance • gaps","textPreview":"Auto score • compliance • gaps","textChars":30,"textLines":1,"bbox":[967.68,311.04,209.28,33.6]}
+{"kind":"shape","id":"sh/bqxg7q50","slide":9,"name":"Shape 28","bbox":[59.52,419.52,261.12,177.6]}
+{"kind":"shape","id":"sh/cr6xgv6l","slide":9,"name":"Shape 29","bbox":[78.72,438.72,52.8,52.8]}
+{"kind":"textbox","id":"sh/xcfy90n6","slide":9,"name":"Text 30","text":"5","textPreview":"5","textChars":1,"textLines":1,"bbox":[78.72,452.16,52.8,15.36]}
+{"kind":"textbox","id":"sh/rutwv65w","slide":9,"name":"Text 31","text":"Act","textPreview":"Act","textChars":3,"textLines":1,"bbox":[80.64,507.84,206.4,30.72]}
+{"kind":"textbox","id":"sh/7y14jyd8","slide":9,"name":"Text 32","text":"Owner • target • action plan","textPreview":"Owner • target • action plan","textChars":28,"textLines":1,"bbox":[80.64,548.16,209.28,33.6]}
+{"kind":"shape","id":"sh/mdsnatcn","slide":9,"name":"Shape 33","bbox":[322.56,510.72,24.96,0]}
+{"kind":"shape","id":"sh/903ml8be","slide":9,"name":"Shape 34","bbox":[355.2,419.52,261.12,177.6]}
+{"kind":"shape","id":"sh/8zu5c3ut","slide":9,"name":"Shape 35","bbox":[374.4,438.72,52.8,52.8]}
+{"kind":"textbox","id":"sh/v2l4nitk","slide":9,"name":"Text 36","text":"6","textPreview":"6","textChars":1,"textLines":1,"bbox":[374.4,452.16,52.8,15.36]}
+{"kind":"textbox","id":"sh/h43mp8ba","slide":9,"name":"Text 37","text":"Close","textPreview":"Close","textChars":5,"textLines":1,"bbox":[376.32,507.84,206.4,30.72]}
+{"kind":"textbox","id":"sh/w3u5g3u5","slide":9,"name":"Text 38","text":"Evidence • status • revised score","textPreview":"Evidence • status • revised score","textChars":33,"textLines":1,"bbox":[376.32,548.16,209.28,33.6]}
+{"kind":"shape","id":"sh/j6l4ritg","slide":9,"name":"Shape 39","bbox":[618.24,510.72,24.96,0]}
+{"kind":"shape","id":"sh/i5cnidcv","slide":9,"name":"Shape 40","bbox":[650.88,419.52,261.12,177.6]}
+{"kind":"shape","id":"sh/0bel8na9","slide":9,"name":"Shape 41","bbox":[670.08,438.72,52.8,52.8]}
+{"kind":"textbox","id":"sh/1wnm1sru","slide":9,"name":"Text 42","text":"7","textPreview":"7","textChars":1,"textLines":1,"bbox":[670.08,452.16,52.8,15.36]}
+{"kind":"textbox","id":"sh/fa54zi9o","slide":9,"name":"Text 43","text":"Monitor","textPreview":"Monitor","textChars":7,"textLines":1,"bbox":[672,507.84,206.4,30.72]}
+{"kind":"textbox","id":"sh/s7el4nax","slide":9,"name":"Text 44","text":"KPI • outcomes • trend","textPreview":"KPI • outcomes • trend","textChars":22,"textLines":1,"bbox":[672,548.16,209.28,33.6]}
+{"kind":"shape","id":"sh/t8nmx8ri","slide":9,"name":"Shape 45","bbox":[913.92,510.72,24.96,0]}
+{"kind":"shape","id":"sh/65c32ds7","slide":9,"name":"Shape 46","bbox":[946.56,419.52,261.12,177.6]}
+{"kind":"shape","id":"sh/r654vi9c","slide":9,"name":"Shape 47","bbox":[965.76,438.72,52.8,52.8]}
+{"kind":"textbox","id":"sh/43ul03a1","slide":9,"name":"Text 48","text":"8","textPreview":"8","textChars":1,"textLines":1,"bbox":[965.76,452.16,52.8,15.36]}
+{"kind":"textbox","id":"sh/l0v2x4ja","slide":9,"name":"Text 49","text":"Govern","textPreview":"Govern","textChars":6,"textLines":1,"bbox":[967.68,507.84,206.4,30.72]}
+{"kind":"textbox","id":"sh/kzm14z2p","slide":9,"name":"Text 50","text":"Certification • dashboard • export","textPreview":"Certification • dashboard • export","textChars":34,"textLines":1,"bbox":[967.68,548.16,209.28,33.6]}
+{"kind":"textbox","id":"sh/jyd0vu14","slide":9,"name":"Text 51","text":"Every step writes to a traceable digital record — making the improvement story visible, auditable and reportable.","textPreview":"Every step writes to a traceable digital record — making the improvement story visible, auditable and reportable.","textChars":113,"textLines":1,"bbox":[96,622.08,1075.2,30.72]}
+{"kind":"textbox","id":"sh/wba1cjqp","slide":9,"name":"Slide Number Placeholder 0","placeholder":"slideNumber","text":"9","textPreview":"9","textChars":1,"textLines":1,"bbox":[1185.6,690.24,36.48,17.28]}
+{"kind":"image","id":"im/lsza1ori","slide":9,"name":"Image 0","bbox":[1142.4,34.56,88.32,30.72]}
+{"kind":"image","id":"im/qlobm98v","slide":9,"name":"Image 1","bbox":[256.32,200.64,41.28,41.28]}
+{"kind":"image","id":"im/bmxsve9g","slide":9,"name":"Image 2","bbox":[552,200.64,41.28,41.28]}
+{"kind":"image","id":"im/cnqtojql","slide":9,"name":"Image 3","bbox":[847.68,200.64,41.28,41.28]}
+{"kind":"image","id":"im/dozaxor6","slide":9,"name":"Image 4","bbox":[1143.36,200.64,41.28,41.28]}
+{"kind":"image","id":"im/2xori98j","slide":9,"name":"Image 5","bbox":[256.32,437.76,41.28,41.28]}
+{"kind":"image","id":"im/3yxsru94","slide":9,"name":"Image 6","bbox":[552,437.76,41.28,41.28]}
+{"kind":"image","id":"im/5c3excbm","slide":9,"name":"Image 7","bbox":[847.68,437.76,41.28,41.28]}
+{"kind":"image","id":"im/kbud47a1","slide":9,"name":"Image 8","bbox":[1143.36,437.76,41.28,41.28]}
+{"kind":"notes","id":"nt/udsvah03","slide":9,"text":""}
+{"kind":"slide","id":"sl/m90b6t0r","slide":10,"title":"ASSESSMENT ENGINE","textShapes":25}
+{"kind":"shape","id":"sh/xc3mho32","slide":10,"name":"Shape 0","bbox":[59.52,22.08,211.2,28.8]}
+{"kind":"textbox","id":"sh/cbu58j2h","slide":10,"name":"Text 1","text":"ASSESSMENT ENGINE","textPreview":"ASSESSMENT ENGINE","textChars":17,"textLines":1,"bbox":[67.2,26.4,195.84,13.44]}
+{"kind":"textbox","id":"sh/zelojyl8","slide":10,"name":"Text 2","text":"Digital assessment designed for real field conditions","textPreview":"Digital assessment designed for real field conditions","textChars":53,"textLines":1,"bbox":[59.52,43.2,1142.4,49.92]}
+{"kind":"shape","id":"sh/ydcnatkn","slide":10,"name":"Shape 3","bbox":[59.52,101.76,76.8,0]}
+{"kind":"textbox","id":"sh/l036l83y","slide":10,"name":"Text 4","text":"The objective is not only paper elimination; it is better adoption, continuity and data quality.","textPreview":"The objective is not only paper elimination; it is better adoption, continuity and data quality.","textChars":96,"textLines":1,"bbox":[59.52,111.36,1152,43.2]}
+{"kind":"shape","id":"sh/725onyl4","slide":10,"name":"Shape 5","bbox":[72,187.2,283.2,113.28]}
+{"kind":"shape","id":"sh/m1cnetkj","slide":10,"name":"Shape 6","bbox":[89.28,209.28,46.08,46.08]}
+{"kind":"textbox","id":"sh/d87uxg3m","slide":10,"name":"Text 7","text":"Pause & resume","textPreview":"Pause & resume","textChars":14,"textLines":1,"bbox":[146.88,202.56,182.4,28.8]}
+{"kind":"textbox","id":"sh/q5gb21kb","slide":10,"name":"Text 8","text":"Stagger long assessments without losing progress.","textPreview":"Stagger long assessments without losing progress.","textChars":49,"textLines":1,"bbox":[146.88,239.04,180.48,38.4]}
+{"kind":"shape","id":"sh/r6pcv6lw","slide":10,"name":"Shape 9","bbox":[384,187.2,283.2,113.28]}
+{"kind":"shape","id":"sh/0bit8b2d","slide":10,"name":"Shape 10","bbox":[401.28,209.28,46.08,46.08]}
+{"kind":"textbox","id":"sh/e9gb61k7","slide":10,"name":"Text 11","text":"Evidence-ready","textPreview":"Evidence-ready","textChars":14,"textLines":1,"bbox":[458.88,202.56,182.4,28.8]}
+{"kind":"textbox","id":"sh/fapcz6ls","slide":10,"name":"Text 12","text":"Attach documents / notes and keep them with the checkpoint.","textPreview":"Attach documents / notes and keep them with the checkpoint.","textChars":59,"textLines":1,"bbox":[458.88,239.04,180.48,38.4]}
+{"kind":"shape","id":"sh/ozitcv29","slide":10,"name":"Shape 13","bbox":[72,329.28,283.2,113.28]}
+{"kind":"shape","id":"sh/p0ru503u","slide":10,"name":"Shape 14","bbox":[89.28,351.36,46.08,46.08]}
+{"kind":"textbox","id":"sh/wvetgbud","slide":10,"name":"Text 15","text":"Multiple cycles","textPreview":"Multiple cycles","textChars":15,"textLines":1,"bbox":[146.88,344.64,182.4,28.8]}
+{"kind":"textbox","id":"sh/bu5cnqd8","slide":10,"name":"Text 16","text":"Baseline, reassessment and repeated improvement cycles.","textPreview":"Baseline, reassessment and repeated improvement cycles.","textChars":55,"textLines":1,"bbox":[146.88,381.12,180.48,38.4]}
+{"kind":"shape","id":"sh/atwbelcn","slide":10,"name":"Shape 17","bbox":[384,329.28,283.2,113.28]}
+{"kind":"shape","id":"sh/lk7ut0va","slide":10,"name":"Shape 18","bbox":[401.28,351.36,46.08,46.08]}
+{"kind":"textbox","id":"sh/jypcrqd4","slide":10,"name":"Text 19","text":"Contextual scoring","textPreview":"Contextual scoring","textChars":18,"textLines":1,"bbox":[458.88,344.64,182.4,28.8]}
+{"kind":"textbox","id":"sh/yxgbilcj","slide":10,"name":"Text 20","text":"Configurable scoring and completion rules by framework.","textPreview":"Configurable scoring and completion rules by framework.","textChars":55,"textLines":1,"bbox":[458.88,381.12,180.48,38.4]}
+{"kind":"shape","id":"sh/1o3ahwvq","slide":10,"name":"Shape 21","bbox":[72,471.36,283.2,113.28]}
+{"kind":"shape","id":"sh/0nut8rul","slide":10,"name":"Shape 22","bbox":[89.28,493.44,46.08,46.08]}
+{"kind":"textbox","id":"sh/ru18r2to","slide":10,"name":"Text 23","text":"Progress tracking","textPreview":"Progress tracking","textChars":17,"textLines":1,"bbox":[146.88,486.72,182.4,28.8]}
+{"kind":"textbox","id":"sh/cva9k7a9","slide":10,"name":"Text 24","text":"Department / class / entity completion status in real time.","textPreview":"Department / class / entity completion status in real time.","textChars":59,"textLines":1,"bbox":[146.88,523.2,180.48,38.4]}
+{"kind":"shape","id":"sh/dwjqtcbu","slide":10,"name":"Shape 25","bbox":[384,471.36,283.2,113.28]}
+{"kind":"shape","id":"sh/exsrmhsf","slide":10,"name":"Shape 26","bbox":[401.28,493.44,46.08,46.08]}
+{"kind":"textbox","id":"sh/0zu9ora5","slide":10,"name":"Text 27","text":"Validation","textPreview":"Validation","textChars":10,"textLines":1,"bbox":[458.88,486.72,182.4,28.8]}
+{"kind":"textbox","id":"sh/103qxcbq","slide":10,"name":"Text 28","text":"Prevent duplicate or invalid entries using workflow rules.","textPreview":"Prevent duplicate or invalid entries using workflow rules.","textChars":58,"textLines":1,"bbox":[458.88,523.2,180.48,38.4]}
+{"kind":"shape","id":"sh/u187adsv","slide":10,"name":"Shape 29","bbox":[721.92,187.2,480,418.56]}
+{"kind":"textbox","id":"sh/f2h8jitg","slide":10,"name":"Text 30","text":"Assessment Workspace","textPreview":"Assessment Workspace","textChars":20,"textLines":1,"bbox":[760.32,218.88,268.8,33.6]}
+{"kind":"textbox","id":"sh/bmpgrah8","slide":10,"name":"Text 31","text":"Department: Patient Rights  •  Cycle 2","textPreview":"Department: Patient Rights  •  Cycle 2","textChars":38,"textLines":1,"bbox":[760.32,262.08,340.8,26.88]}
+{"kind":"shape","id":"sh/algfy50n","slide":10,"name":"Shape 32","bbox":[760.32,307.2,382.08,78.72]}
+{"kind":"textbox","id":"sh/xo7ytkzy","slide":10,"name":"Text 33","text":"Checkpoint 4.2  |  Is informed consent documented?","textPreview":"Checkpoint 4.2  |  Is informed consent documented?","textChars":50,"textLines":1,"bbox":[782.4,328.32,331.2,24.96]}
+{"kind":"shape","id":"sh/wnyx0fit","slide":10,"name":"Shape 34","bbox":[768,414.72,100.8,43.2]}
+{"kind":"textbox","id":"sh/jq9gvuh4","slide":10,"name":"Text 35","text":"Fully","textPreview":"Fully","textChars":5,"textLines":1,"bbox":[772.8,429.12,91.2,13.44]}
+{"kind":"shape","id":"sh/ip0f2p0j","slide":10,"name":"Shape 36","bbox":[885.12,414.72,100.8,43.2]}
+{"kind":"textbox","id":"sh/5cryx4za","slide":10,"name":"Text 37","text":"Partially","textPreview":"Partially","textChars":9,"textLines":1,"bbox":[889.92,429.12,91.2,13.44]}
+{"kind":"shape","id":"sh/kbix4zyp","slide":10,"name":"Shape 38","bbox":[1002.24,414.72,100.8,43.2]}
+{"kind":"textbox","id":"sh/7e9gzuhg","slide":10,"name":"Text 39","text":"Non-compliant","textPreview":"Non-compliant","textChars":13,"textLines":1,"bbox":[1007.04,429.12,91.2,13.44]}
+{"kind":"shape","id":"sh/6d0f6pgv","slide":10,"name":"Shape 40","bbox":[763.2,491.52,376.32,46.08]}
+{"kind":"textbox","id":"sh/4j2xwzet","slide":10,"name":"Text 41","text":"Evidence / notes / attachment","textPreview":"Evidence / notes / attachment","textChars":29,"textLines":1,"bbox":[779.52,506.88,264,13.44]}
+{"kind":"shape","id":"sh/2hkfu9w3","slide":10,"name":"Shape 42","bbox":[768,559.68,134.4,34.56]}
+{"kind":"textbox","id":"sh/3itwnex8","slide":10,"name":"Text 43","text":"SAVE & NEXT","textPreview":"SAVE & NEXT","textChars":11,"textLines":1,"bbox":[779.52,571.2,110.4,11.52]}
+{"kind":"textbox","id":"sh/gfixszex","slide":10,"name":"Text 44","text":"68% complete","textPreview":"68% complete","textChars":12,"textLines":1,"bbox":[1012.8,568.32,105.6,14.4]}
+{"kind":"textbox","id":"sh/kjytkvup","slide":10,"name":"Slide Number Placeholder 0","placeholder":"slideNumber","text":"10","textPreview":"10","textChars":2,"textLines":1,"bbox":[1185.6,690.24,36.48,17.28]}
+{"kind":"image","id":"im/excj6twj","slide":10,"name":"Image 0","bbox":[1142.4,34.56,88.32,30.72]}
+{"kind":"image","id":"im/103i18fa","slide":10,"name":"Image 1","bbox":[99.36,219.36,25.92,25.92]}
+{"kind":"image","id":"im/gzu183ep","slide":10,"name":"Image 2","bbox":[411.36,219.36,25.92,25.92]}
+{"kind":"image","id":"im/3ml03yxg","slide":10,"name":"Image 3","bbox":[99.36,361.44,25.92,25.92]}
+{"kind":"image","id":"im/21cjadwv","slide":10,"name":"Image 4","bbox":[411.36,361.44,25.92,25.92]}
+{"kind":"image","id":"im/yhg32xg3","slide":10,"name":"Image 5","bbox":[99.36,503.52,25.92,25.92]}
+{"kind":"image","id":"im/zip4v2ho","slide":10,"name":"Image 6","bbox":[411.36,503.52,25.92,25.92]}
+{"kind":"image","id":"im/0jyl47y9","slide":10,"name":"Image 7","bbox":[1089.6,503.04,22.08,22.08]}
+{"kind":"notes","id":"nt/m90b6t0r","slide":10,"text":""}
+{"kind":"slide","id":"sl/jetc3ut0","slide":11,"title":"CQI","textShapes":21}
+{"kind":"shape","id":"sh/xcryxg7y","slide":11,"name":"Shape 0","bbox":[59.52,22.08,211.2,28.8]}
+{"kind":"textbox","id":"sh/wbih4b6d","slide":11,"name":"Text 1","text":"CQI","textPreview":"CQI","textChars":3,"textLines":1,"bbox":[67.2,26.4,195.84,13.44]}
+{"kind":"textbox","id":"sh/n69grmpw","slide":11,"name":"Text 2","text":"Gap closure is a workflow, not a spreadsheet column","textPreview":"Gap closure is a workflow, not a spreadsheet column","textChars":51,"textLines":1,"bbox":[59.52,43.2,1142.4,49.92]}
+{"kind":"shape","id":"sh/250zy18b","slide":11,"name":"Shape 3","bbox":[59.52,101.76,76.8,0]}
+{"kind":"textbox","id":"sh/98rytw72","slide":11,"name":"Text 4","text":"SaQshi carries each non-compliance from identification to accountable closure and reassessment.","textPreview":"SaQshi carries each non-compliance from identification to accountable closure and reassessment.","textChars":95,"textLines":1,"bbox":[59.52,111.36,1152,43.2]}
+{"kind":"shape","id":"sh/72t03qp0","slide":11,"name":"Shape 5","bbox":[64.32,195.84,168,261.12]}
+{"kind":"shape","id":"sh/61kzalof","slide":11,"name":"Shape 6","bbox":[119.04,220.8,55.68,55.68]}
+{"kind":"textbox","id":"sh/9gza9sze","slide":11,"name":"Text 7","text":"Gap detected","textPreview":"Gap detected","textChars":12,"textLines":1,"bbox":[79.68,293.76,137.28,43.2]}
+{"kind":"textbox","id":"sh/mdobedg3","slide":11,"name":"Text 8","text":"Checkpoint is partially / non-compliant","textPreview":"Checkpoint is partially / non-compliant","textChars":39,"textLines":1,"bbox":[81.6,353.28,134.4,74.88]}
+{"kind":"shape","id":"sh/nehs7iho","slide":11,"name":"Shape 9","bbox":[234.24,321.6,24,0]}
+{"kind":"shape","id":"sh/0b6tc3yx","slide":11,"name":"Shape 10","bbox":[265.92,195.84,168,261.12]}
+{"kind":"shape","id":"sh/1cfa58zi","slide":11,"name":"Shape 11","bbox":[320.64,220.8,55.68,55.68]}
+{"kind":"textbox","id":"sh/zaxs3yhc","slide":11,"name":"Text 12","text":"Action created","textPreview":"Action created","textChars":14,"textLines":1,"bbox":[281.28,293.76,137.28,43.2]}
+{"kind":"textbox","id":"sh/cn6t83y1","slide":11,"name":"Text 13","text":"Corrective / preventive action recorded","textPreview":"Corrective / preventive action recorded","textChars":39,"textLines":1,"bbox":[283.2,353.28,134.4,74.88]}
+{"kind":"shape","id":"sh/dofa18z6","slide":11,"name":"Shape 14","bbox":[435.84,321.6,24,0]}
+{"kind":"shape","id":"sh/tsnip0ny","slide":11,"name":"Shape 15","bbox":[467.52,195.84,168,261.12]}
+{"kind":"shape","id":"sh/87ehgv6d","slide":11,"name":"Shape 16","bbox":[522.24,220.8,55.68,55.68]}
+{"kind":"textbox","id":"sh/65wzelo7","slide":11,"name":"Text 17","text":"Responsibility","textPreview":"Responsibility","textChars":14,"textLines":1,"bbox":[482.88,293.76,137.28,43.2]}
+{"kind":"textbox","id":"sh/l43ilgn2","slide":11,"name":"Text 18","text":"Owner and team assigned","textPreview":"Owner and team assigned","textChars":23,"textLines":1,"bbox":[484.8,353.28,134.4,74.88]}
+{"kind":"shape","id":"sh/k3uhcb6h","slide":11,"name":"Shape 19","bbox":[637.44,321.6,24,0]}
+{"kind":"shape","id":"sh/j2lgjq5w","slide":11,"name":"Shape 20","bbox":[669.12,195.84,168,261.12]}
+{"kind":"shape","id":"sh/y1czalob","slide":11,"name":"Shape 21","bbox":[723.84,220.8,55.68,55.68]}
+{"kind":"textbox","id":"sh/4zyhofml","slide":11,"name":"Text 22","text":"Target date","textPreview":"Target date","textChars":11,"textLines":1,"bbox":[684.48,293.76,137.28,43.2]}
+{"kind":"textbox","id":"sh/m58fih43","slide":11,"name":"Text 23","text":"Due date & status become visible","textPreview":"Due date & status become visible","textChars":32,"textLines":1,"bbox":[686.4,353.28,134.4,74.88]}
+{"kind":"shape","id":"sh/n61wbmlo","slide":11,"name":"Shape 24","bbox":[839.04,321.6,24,0]}
+{"kind":"shape","id":"sh/o7axk7m9","slide":11,"name":"Shape 25","bbox":[870.72,195.84,168,261.12]}
+{"kind":"shape","id":"sh/98jedc3u","slide":11,"name":"Shape 26","bbox":[925.44,220.8,55.68,55.68]}
+{"kind":"textbox","id":"sh/z2hw72lc","slide":11,"name":"Text 27","text":"Closure evidence","textPreview":"Closure evidence","textChars":16,"textLines":1,"bbox":[886.08,293.76,137.28,43.2]}
+{"kind":"textbox","id":"sh/03qxg7mx","slide":11,"name":"Text 28","text":"Proof and comments attached","textPreview":"Proof and comments attached","textChars":27,"textLines":1,"bbox":[888,353.28,134.4,74.88]}
+{"kind":"shape","id":"sh/14ze9c3i","slide":11,"name":"Shape 29","bbox":[1040.64,321.6,24,0]}
+{"kind":"shape","id":"sh/ydcfq1kb","slide":11,"name":"Shape 30","bbox":[1072.32,195.84,168,261.12]}
+{"kind":"shape","id":"sh/jylwj6lw","slide":11,"name":"Shape 31","bbox":[1127.04,220.8,55.68,55.68]}
+{"kind":"textbox","id":"sh/ip8bmtor","slide":11,"name":"Text 32","text":"Reassessment","textPreview":"Reassessment","textChars":12,"textLines":1,"bbox":[1087.68,293.76,137.28,43.2]}
+{"kind":"textbox","id":"sh/5sjah872","slide":11,"name":"Text 33","text":"Score revised; history retained","textPreview":"Score revised; history retained","textChars":31,"textLines":1,"bbox":[1089.6,353.28,134.4,74.88]}
+{"kind":"shape","id":"sh/4rato36h","slide":11,"name":"Shape 34","bbox":[124.8,532.8,46.08,46.08]}
+{"kind":"textbox","id":"sh/u18bit8f","slide":11,"name":"Text 35","text":"Accountability","textPreview":"Accountability","textChars":14,"textLines":1,"bbox":[182.4,541.44,168,19.2]}
+{"kind":"shape","id":"sh/h4zado76","slide":11,"name":"Shape 36","bbox":[408,532.8,46.08,46.08]}
+{"kind":"textbox","id":"sh/fy1cnipk","slide":11,"name":"Text 37","text":"Time-bound closure","textPreview":"Time-bound closure","textChars":18,"textLines":1,"bbox":[465.6,541.44,168,19.2]}
+{"kind":"shape","id":"sh/exsbudoz","slide":11,"name":"Shape 38","bbox":[691.2,532.8,46.08,46.08]}
+{"kind":"textbox","id":"sh/x4vqhknm","slide":11,"name":"Text 39","text":"Audit trail","textPreview":"Audit trail","textChars":11,"textLines":1,"bbox":[748.8,541.44,168,19.2]}
+{"kind":"shape","id":"sh/a147m5ob","slide":11,"name":"Shape 40","bbox":[974.4,532.8,46.08,46.08]}
+{"kind":"textbox","id":"sh/k7mpsfmd","slide":11,"name":"Text 41","text":"Improvement history","textPreview":"Improvement history","textChars":19,"textLines":1,"bbox":[1032,541.44,168,19.2]}
+{"kind":"textbox","id":"sh/l8fqlkny","slide":11,"name":"Text 42","text":"This is the core difference between “assessment digitization” and “continuous quality improvement.”","textPreview":"This is the core difference between “assessment digitization” and “continuous quality improvement.”","textChars":99,"textLines":1,"bbox":[220.8,600,835.2,33.6]}
+{"kind":"textbox","id":"sh/ihkzm5sn","slide":11,"name":"Slide Number Placeholder 0","placeholder":"slideNumber","text":"11","textPreview":"11","textChars":2,"textLines":1,"bbox":[1185.6,690.24,36.48,17.28]}
+{"kind":"image","id":"im/x836xwfa","slide":11,"name":"Image 0","bbox":[1142.4,34.56,88.32,30.72]}
+{"kind":"image","id":"im/c7apobep","slide":11,"name":"Image 1","bbox":[129.12,230.88,35.52,35.52]}
+{"kind":"image","id":"im/zal8z6xg","slide":11,"name":"Image 2","bbox":[330.72,230.88,35.52,35.52]}
+{"kind":"image","id":"im/y9c7q1wv","slide":11,"name":"Image 3","bbox":[532.32,230.88,35.52,35.52]}
+{"kind":"image","id":"im/u5wri5g3","slide":11,"name":"Image 4","bbox":[733.92,230.88,35.52,35.52]}
+{"kind":"image","id":"im/v65sraho","slide":11,"name":"Image 5","bbox":[935.52,230.88,35.52,35.52]}
+{"kind":"image","id":"im/w7e9kfyt","slide":11,"name":"Image 6","bbox":[1137.12,230.88,35.52,35.52]}
+{"kind":"image","id":"im/h87atkze","slide":11,"name":"Image 7","bbox":[134.88,542.88,25.92,25.92]}
+{"kind":"image","id":"im/m1wre5gr","slide":11,"name":"Image 8","bbox":[418.08,542.88,25.92,25.92]}
+{"kind":"image","id":"im/725snahc","slide":11,"name":"Image 9","bbox":[701.28,542.88,25.92,25.92]}
+{"kind":"image","id":"im/83e9gvyx","slide":11,"name":"Image 10","bbox":[984.48,542.88,25.92,25.92]}
+{"kind":"notes","id":"nt/jetc3ut0","slide":11,"text":""}
+{"kind":"slide","id":"sl/8f2psfyx","slide":12,"title":"PERFORMANCE","textShapes":28}
+{"kind":"shape","id":"sh/1gbm9s3a","slide":12,"name":"Shape 0","bbox":[59.52,22.08,211.2,28.8]}
+{"kind":"textbox","id":"sh/0f2lgnmp","slide":12,"name":"Text 1","text":"PERFORMANCE","textPreview":"PERFORMANCE","textChars":11,"textLines":1,"bbox":[67.2,26.4,195.84,13.44]}
+{"kind":"textbox","id":"sh/ra943il8","slide":12,"name":"Text 2","text":"Move from periodic assessment to continuous performance monitoring","textPreview":"Move from periodic assessment to continuous performance monitoring","textChars":66,"textLines":1,"bbox":[59.52,43.2,1142.4,49.92]}
+{"kind":"shape","id":"sh/q903ad4n","slide":12,"name":"Shape 3","bbox":[59.52,101.76,76.8,0]}
+{"kind":"textbox","id":"sh/dcbm583y","slide":12,"name":"Text 4","text":"Monthly KPI and outcome indicators show whether process improvement is translating into results.","textPreview":"Monthly KPI and outcome indicators show whether process improvement is translating into results.","textChars":96,"textLines":1,"bbox":[59.52,111.36,1152,43.2]}
+{"kind":"shape","id":"sh/b6d4f2lc","slide":12,"name":"Shape 5","bbox":[72,184.32,691.2,412.8]}
+{"kind":"textbox","id":"sh/a543mx4r","slide":12,"name":"Text 6","text":"Illustrative outcome trend","textPreview":"Illustrative outcome trend","textChars":26,"textLines":1,"bbox":[103.68,209.28,259.2,28.8]}
+{"kind":"shape","id":"sh/wvupgz6t","slide":12,"name":"Shape 7","bbox":[110.4,532.8,571.2,0]}
+{"kind":"shape","id":"sh/xw3q94ne","slide":12,"name":"Shape 8","bbox":[110.4,292.8,0,240]}
+{"kind":"shape","id":"sh/atc7epon","slide":12,"name":"Shape 9","bbox":[129.6,456,52.8,76.8]}
+{"kind":"textbox","id":"sh/bulo7u58","slide":12,"name":"Text 10","text":"Apr","textPreview":"Apr","textChars":3,"textLines":1,"bbox":[124.8,545.28,62.4,19.2]}
+{"kind":"textbox","id":"sh/orapcf6h","slide":12,"name":"Text 11","text":"22","textPreview":"22","textChars":2,"textLines":1,"bbox":[129.6,424.32,52.8,17.28]}
+{"kind":"shape","id":"sh/9sj65kn2","slide":12,"name":"Shape 12","bbox":[220.8,435.05,52.8,97.75]}
+{"kind":"textbox","id":"sh/mps7a5or","slide":12,"name":"Text 13","text":"May","textPreview":"May","textChars":3,"textLines":1,"bbox":[216,545.28,62.4,19.2]}
+{"kind":"textbox","id":"sh/nq1o3a5w","slide":12,"name":"Text 14","text":"28","textPreview":"28","textChars":2,"textLines":1,"bbox":[220.8,403.37,52.8,17.28]}
+{"kind":"shape","id":"sh/0nap8f6l","slide":12,"name":"Shape 15","bbox":[312,438.55,52.8,94.25]}
+{"kind":"textbox","id":"sh/1oj61kn6","slide":12,"name":"Text 16","text":"Jun","textPreview":"Jun","textChars":3,"textLines":1,"bbox":[307.2,545.28,62.4,19.2]}
+{"kind":"textbox","id":"sh/hkbm5wzu","slide":12,"name":"Text 17","text":"27","textPreview":"27","textChars":2,"textLines":1,"bbox":[312,406.87,52.8,17.28]}
+{"kind":"shape","id":"sh/gj25cry9","slide":12,"name":"Shape 18","bbox":[403.2,414.11,52.8,118.69]}
+{"kind":"textbox","id":"sh/fit436ho","slide":12,"name":"Text 19","text":"Jul","textPreview":"Jul","textChars":3,"textLines":1,"bbox":[398.4,545.28,62.4,19.2]}
+{"kind":"textbox","id":"sh/uh0na1g3","slide":12,"name":"Text 20","text":"34","textPreview":"34","textChars":2,"textLines":1,"bbox":[403.2,382.43,52.8,17.28]}
+{"kind":"shape","id":"sh/tgrm1wzy","slide":12,"name":"Shape 21","bbox":[494.4,396.65,52.8,136.15]}
+{"kind":"textbox","id":"sh/sfi58ryd","slide":12,"name":"Text 22","text":"Aug","textPreview":"Aug","textChars":3,"textLines":1,"bbox":[489.6,545.28,62.4,19.2]}
+{"kind":"textbox","id":"sh/7u94zmhs","slide":12,"name":"Text 23","text":"39","textPreview":"39","textChars":2,"textLines":1,"bbox":[494.4,364.97,52.8,17.28]}
+{"kind":"shape","id":"sh/6t0n6hg7","slide":12,"name":"Shape 24","bbox":[585.6,368.73,52.8,164.07]}
+{"kind":"textbox","id":"sh/dcv6dgz2","slide":12,"name":"Text 25","text":"Sep","textPreview":"Sep","textChars":3,"textLines":1,"bbox":[580.8,545.28,62.4,19.2]}
+{"kind":"textbox","id":"sh/cbm5kbyh","slide":12,"name":"Text 26","text":"47","textPreview":"47","textChars":2,"textLines":1,"bbox":[585.6,337.05,52.8,17.28]}
+{"kind":"textbox","id":"sh/alwbitsn","slide":12,"name":"Text 27","text":"Baseline period","textPreview":"Baseline period","textChars":15,"textLines":1,"bbox":[129.6,261.12,192,17.28]}
+{"kind":"textbox","id":"sh/bm5sryt8","slide":12,"name":"Text 28","text":"Improvement period","textPreview":"Improvement period","textChars":18,"textLines":1,"bbox":[403.2,261.12,192,17.28]}
+{"kind":"shape","id":"sh/wnetkjat","slide":12,"name":"Shape 29","bbox":[811.2,198.72,44.16,44.16]}
+{"kind":"textbox","id":"sh/mhcbe9sr","slide":12,"name":"Text 30","text":"Monthly entry","textPreview":"Monthly entry","textChars":13,"textLines":1,"bbox":[868.8,190.08,144,25.92]}
+{"kind":"textbox","id":"sh/nilsnetc","slide":12,"name":"Text 31","text":"Indicator values captured against the entity and reporting month.","textPreview":"Indicator values captured against the entity and reporting month.","textChars":65,"textLines":1,"bbox":[868.8,219.84,302.4,43.2]}
+{"kind":"shape","id":"sh/ojutgjah","slide":12,"name":"Shape 32","bbox":[811.2,302.4,44.16,44.16]}
+{"kind":"textbox","id":"sh/6dgbqdsv","slide":12,"name":"Text 33","text":"Formula engine","textPreview":"Formula engine","textChars":14,"textLines":1,"bbox":[868.8,293.76,144,25.92]}
+{"kind":"textbox","id":"sh/7epczitg","slide":12,"name":"Text 34","text":"Derived KPI / rate calculations can be automated.","textPreview":"Derived KPI / rate calculations can be automated.","textChars":49,"textLines":1,"bbox":[868.8,323.52,302.4,43.2]}
+{"kind":"shape","id":"sh/r6l8vaxw","slide":12,"name":"Shape 35","bbox":[811.2,406.08,44.16,44.16]}
+{"kind":"textbox","id":"sh/d8nqxkf2","slide":12,"name":"Text 36","text":"Validation rules","textPreview":"Validation rules","textChars":16,"textLines":1,"bbox":[868.8,397.44,144,25.92]}
+{"kind":"textbox","id":"sh/s7epofeh","slide":12,"name":"Text 37","text":"Duplicate-month and invalid-value controls improve data quality.","textPreview":"Duplicate-month and invalid-value controls improve data quality.","textChars":64,"textLines":1,"bbox":[868.8,427.2,302.4,43.2]}
+{"kind":"shape","id":"sh/j2lorqxk","slide":12,"name":"Shape 38","bbox":[811.2,509.76,44.16,44.16]}
+{"kind":"textbox","id":"sh/5436t0fq","slide":12,"name":"Text 39","text":"Trend intelligence","textPreview":"Trend intelligence","textChars":18,"textLines":1,"bbox":[868.8,501.12,144,25.92]}
+{"kind":"textbox","id":"sh/43upkve5","slide":12,"name":"Text 40","text":"State, district and entity views show movement over time.","textPreview":"State, district and entity views show movement over time.","textChars":57,"textLines":1,"bbox":[868.8,530.88,302.4,43.2]}
+{"kind":"textbox","id":"sh/nyp83ud4","slide":12,"name":"Text 41","text":"Assessments tell us “where we are.” Indicators tell us “whether the system is improving.”","textPreview":"Assessments tell us “where we are.” Indicators tell us “whether the system is improving.”","textChars":89,"textLines":1,"bbox":[134.4,622.08,1008,28.8]}
+{"kind":"textbox","id":"sh/87q5srux","slide":12,"name":"Slide Number Placeholder 0","placeholder":"slideNumber","text":"12","textPreview":"12","textChars":2,"textLines":1,"bbox":[1185.6,690.24,36.48,17.28]}
+{"kind":"image","id":"im/dkb2ps7y","slide":12,"name":"Image 0","bbox":[1142.4,34.56,88.32,30.72]}
+{"kind":"image","id":"im/fehovq9g","slide":12,"name":"Image 1","bbox":[821.28,208.8,24,24]}
+{"kind":"image","id":"im/ed8n2lsb","slide":12,"name":"Image 2","bbox":[821.28,312.48,24,24]}
+{"kind":"image","id":"im/1gz6x0rm","slide":12,"name":"Image 3","bbox":[821.28,416.16,24,24]}
+{"kind":"image","id":"im/gfq54va1","slide":12,"name":"Image 4","bbox":[821.28,519.84,24,24]}
+{"kind":"notes","id":"nt/8f2psfyx","slide":12,"text":""}
+{"kind":"slide","id":"sl/hgzapcr6","slide":13,"title":"PLATFORM PROOF","textShapes":12}
+{"kind":"shape","id":"sh/q50nydsj","slide":13,"name":"Shape 0","bbox":[59.52,22.08,211.2,28.8]}
+{"kind":"textbox","id":"sh/bq9orito","slide":13,"name":"Text 1","text":"PLATFORM PROOF","textPreview":"PLATFORM PROOF","textChars":14,"textLines":1,"bbox":[67.2,26.4,195.84,13.44]}
+{"kind":"textbox","id":"sh/o3i5w3ad","slide":13,"name":"Text 2","text":"Unified dashboard: baseline, current score, compliance and progress in one view","textPreview":"Unified dashboard: baseline, current score, compliance and progress in one view","textChars":79,"textLines":1,"bbox":[59.52,43.2,1142.4,49.92]}
+{"kind":"shape","id":"sh/p4r6p8by","slide":13,"name":"Shape 3","bbox":[59.52,101.76,76.8,0]}
+{"kind":"textbox","id":"sh/21gnuts7","slide":13,"name":"Text 4","text":"The reference SaQshi concept already demonstrates baseline/current comparison, checkpoint completion, resources and feedback modules.","textPreview":"The reference SaQshi concept already demonstrates baseline/current comparison, checkpoint completion, resources and feedback modules.","textChars":133,"textLines":1,"bbox":[59.52,111.36,1152,43.2]}
+{"kind":"shape","id":"sh/gzy5s3a1","slide":13,"name":"Shape 5","bbox":[72,168,792,453.12]}
+{"kind":"shape","id":"sh/hcfy9k3u","slide":13,"name":"Shape 6","bbox":[897.6,192,302.4,78.72]}
+{"kind":"shape","id":"sh/gb6x0zm9","slide":13,"name":"Shape 7","bbox":[897.6,192,8.64,78.72]}
+{"kind":"textbox","id":"sh/vaxg7ulo","slide":13,"name":"Text 8","text":"Baseline vs current","textPreview":"Baseline vs current","textChars":19,"textLines":1,"bbox":[926.4,204.48,240,24.96]}
+{"kind":"textbox","id":"sh/u9ofyp43","slide":13,"name":"Text 9","text":"Visual evidence of improvement","textPreview":"Visual evidence of improvement","textChars":30,"textLines":1,"bbox":[926.4,236.16,235.2,19.2]}
+{"kind":"shape","id":"sh/t8fy5k3i","slide":13,"name":"Shape 10","bbox":[897.6,299.52,302.4,78.72]}
+{"kind":"shape","id":"sh/876xwfmx","slide":13,"name":"Shape 11","bbox":[897.6,299.52,8.64,78.72]}
+{"kind":"textbox","id":"sh/7mdg3als","slide":13,"name":"Text 12","text":"Checkpoint progress","textPreview":"Checkpoint progress","textChars":19,"textLines":1,"bbox":[926.4,312,240,24.96]}
+{"kind":"textbox","id":"sh/6l4fu547","slide":13,"name":"Text 13","text":"Track assessment completeness","textPreview":"Track assessment completeness","textChars":29,"textLines":1,"bbox":[926.4,343.68,235.2,19.2]}
+{"kind":"shape","id":"sh/lkvy103m","slide":13,"name":"Shape 14","bbox":[897.6,406.08,302.4,78.72]}
+{"kind":"shape","id":"sh/kjmxsfm1","slide":13,"name":"Shape 15","bbox":[897.6,406.08,8.64,78.72]}
+{"kind":"textbox","id":"sh/cnqh8fux","slide":13,"name":"Text 16","text":"Compliance mix","textPreview":"Compliance mix","textChars":14,"textLines":1,"bbox":[926.4,418.56,240,24.96]}
+{"kind":"textbox","id":"sh/xozyhkbi","slide":13,"name":"Text 17","text":"Fully / partially / non-compliant","textPreview":"Fully / partially / non-compliant","textChars":33,"textLines":1,"bbox":[926.4,450.24,235.2,19.2]}
+{"kind":"shape","id":"sh/q18f65cr","slide":13,"name":"Shape 18","bbox":[897.6,512.64,302.4,78.72]}
+{"kind":"shape","id":"sh/bmhgfatc","slide":13,"name":"Shape 19","bbox":[897.6,512.64,8.64,78.72]}
+{"kind":"textbox","id":"sh/oz6x4vul","slide":13,"name":"Text 20","text":"Role-specific access","textPreview":"Role-specific access","textChars":20,"textLines":1,"bbox":[926.4,525.12,240,24.96]}
+{"kind":"textbox","id":"sh/p0zyd0b6","slide":13,"name":"Text 21","text":"Dashboard + modules by responsibility","textPreview":"Dashboard + modules by responsibility","textChars":37,"textLines":1,"bbox":[926.4,556.8,235.2,19.2]}
+{"kind":"textbox","id":"sh/8vahgzu5","slide":13,"name":"Slide Number Placeholder 0","placeholder":"slideNumber","text":"13","textPreview":"13","textChars":2,"textLines":1,"bbox":[1185.6,690.24,36.48,17.28]}
+{"kind":"image","id":"im/dgfy5wry","slide":13,"name":"Image 0","bbox":[1142.4,34.56,88.32,30.72]}
+{"kind":"image","id":"im/cf6xwrad","slide":13,"name":"Image 1","bbox":[91.2,192,753.6,380.16]}
+{"kind":"notes","id":"nt/hgzapcr6","slide":13,"text":""}
+{"kind":"slide","id":"sl/6lsnupw7","slide":14,"title":"CERTIFICATION","textShapes":15}
+{"kind":"shape","id":"sh/xc7eds76","slide":14,"name":"Shape 0","bbox":[59.52,22.08,211.2,28.8]}
+{"kind":"textbox","id":"sh/wbydknq1","slide":14,"name":"Text 1","text":"CERTIFICATION","textPreview":"CERTIFICATION","textChars":13,"textLines":1,"bbox":[67.2,26.4,195.84,13.44]}
+{"kind":"textbox","id":"sh/jepwf2pc","slide":14,"name":"Text 2","text":"Certification becomes a managed lifecycle, not a static field","textPreview":"Certification becomes a managed lifecycle, not a static field","textChars":61,"textLines":1,"bbox":[59.52,43.2,1142.4,49.92]}
+{"kind":"shape","id":"sh/idgvmx8r","slide":14,"name":"Shape 3","bbox":[59.52,101.76,76.8,0]}
+{"kind":"textbox","id":"sh/5grehs7i","slide":14,"name":"Text 4","text":"Track status, validity, renewal and history while connecting certification readiness to actual assessment progress.","textPreview":"Track status, validity, renewal and history while connecting certification readiness to actual assessment progress.","textChars":115,"textLines":1,"bbox":[59.52,111.36,1152,43.2]}
+{"kind":"shape","id":"sh/zi5c3y98","slide":14,"name":"Shape 5","bbox":[76.8,196.8,132.48,132.48]}
+{"kind":"textbox","id":"sh/c3e1gjyd","slide":14,"name":"Text 6","text":"Ready?","textPreview":"Ready?","textChars":6,"textLines":1,"bbox":[62.4,351.36,161.28,26.88]}
+{"kind":"textbox","id":"sh/x4ni9ofy","slide":14,"name":"Text 7","text":"Gap status + score","textPreview":"Gap status + score","textChars":18,"textLines":1,"bbox":[59.52,386.88,167.04,52.8]}
+{"kind":"shape","id":"sh/a1wze9g7","slide":14,"name":"Shape 8","bbox":[211.2,262.08,86.4,0]}
+{"kind":"shape","id":"sh/b2507exs","slide":14,"name":"Shape 9","bbox":[312,196.8,132.48,132.48]}
+{"kind":"textbox","id":"sh/ls7idofu","slide":14,"name":"Text 10","text":"Apply","textPreview":"Apply","textChars":5,"textLines":1,"bbox":[297.6,351.36,161.28,26.88]}
+{"kind":"textbox","id":"sh/y5wjitgj","slide":14,"name":"Text 11","text":"Certification workflow","textPreview":"Certification workflow","textChars":22,"textLines":1,"bbox":[294.72,386.88,167.04,52.8]}
+{"kind":"shape","id":"sh/z650byxo","slide":14,"name":"Shape 12","bbox":[446.4,262.08,86.4,0]}
+{"kind":"shape","id":"sh/0buh8zy5","slide":14,"name":"Shape 13","bbox":[547.2,196.8,132.48,132.48]}
+{"kind":"textbox","id":"sh/hsvy50re","slide":14,"name":"Text 14","text":"Certified","textPreview":"Certified","textChars":9,"textLines":1,"bbox":[532.8,351.36,161.28,26.88]}
+{"kind":"textbox","id":"sh/grmxwvqt","slide":14,"name":"Text 15","text":"State / national / conditional","textPreview":"State / national / conditional","textChars":30,"textLines":1,"bbox":[529.92,386.88,167.04,52.8]}
+{"kind":"shape","id":"sh/fqdg3q98","slide":14,"name":"Shape 16","bbox":[681.6,262.08,86.4,0]}
+{"kind":"shape","id":"sh/up4fal83","slide":14,"name":"Shape 17","bbox":[782.4,196.8,132.48,132.48]}
+{"kind":"textbox","id":"sh/4vmh0vq5","slide":14,"name":"Text 18","text":"Validity","textPreview":"Validity","textChars":8,"textLines":1,"bbox":[768,351.36,161.28,26.88]}
+{"kind":"textbox","id":"sh/3udg7q9k","slide":14,"name":"Text 19","text":"Expiry monitoring","textPreview":"Expiry monitoring","textChars":17,"textLines":1,"bbox":[765.12,386.88,167.04,52.8]}
+{"kind":"shape","id":"sh/2t4fyl8z","slide":14,"name":"Shape 20","bbox":[916.8,262.08,86.4,0]}
+{"kind":"shape","id":"sh/d0fydk7m","slide":14,"name":"Shape 21","bbox":[1017.6,196.8,132.48,132.48]}
+{"kind":"textbox","id":"sh/atg3idk7","slide":14,"name":"Text 22","text":"Renew","textPreview":"Renew","textChars":5,"textLines":1,"bbox":[1003.2,351.36,161.28,26.88]}
+{"kind":"textbox","id":"sh/bup4rils","slide":14,"name":"Text 23","text":"Reassessment + evidence","textPreview":"Reassessment + evidence","textChars":23,"textLines":1,"bbox":[1000.32,386.88,167.04,52.8]}
+{"kind":"shape","id":"sh/cvylkn2d","slide":14,"name":"Shape 24","bbox":[206.4,497.28,864,96]}
+{"kind":"textbox","id":"sh/yxgnmxkj","slide":14,"name":"Text 25","text":"Governance benefit: administrators can see which entities are certified, expiring, due for renewal or blocked by unresolved gaps — without rebuilding the status manually.","textPreview":"Governance benefit: administrators can see which entities are certified, expiring, due for renewal or blocked by unresolved gaps — withou...","textChars":170,"textLines":1,"bbox":[292.8,518.4,729.6,42.24]}
+{"kind":"textbox","id":"sh/h4nm5sba","slide":14,"name":"Slide Number Placeholder 0","placeholder":"slideNumber","text":"14","textPreview":"14","textChars":2,"textLines":1,"bbox":[1185.6,690.24,36.48,17.28]}
+{"kind":"image","id":"im/0j69oba5","slide":14,"name":"Image 0","bbox":[1142.4,34.56,88.32,30.72]}
+{"kind":"image","id":"im/zidsv69k","slide":14,"name":"Image 1","bbox":[114.24,228.48,57.6,57.6]}
+{"kind":"image","id":"im/eh4rm1sf","slide":14,"name":"Image 2","bbox":[349.44,228.48,57.6,57.6]}
+{"kind":"image","id":"im/hobqlcrm","slide":14,"name":"Image 3","bbox":[584.64,228.48,57.6,57.6]}
+{"kind":"image","id":"im/gn29c7a1","slide":14,"name":"Image 4","bbox":[819.84,228.48,57.6,57.6]}
+{"kind":"image","id":"im/kjadkfup","slide":14,"name":"Image 5","bbox":[1055.04,228.48,57.6,57.6]}
+{"kind":"image","id":"im/lkjutkba","slide":14,"name":"Image 6","bbox":[235.2,523.2,40.32,40.32]}
+{"kind":"notes","id":"nt/6lsnupw7","slide":14,"text":""}
+{"kind":"slide","id":"sl/vaxsvy10","slide":15,"title":"GOVERNANCE","textShapes":21}
+{"kind":"shape","id":"sh/547mhg3m","slide":15,"name":"Shape 0","bbox":[59.52,22.08,211.2,28.8]}
+{"kind":"textbox","id":"sh/k3y5ov21","slide":15,"name":"Text 1","text":"GOVERNANCE","textPreview":"GOVERNANCE","textChars":10,"textLines":1,"bbox":[67.2,26.4,195.84,13.44]}
+{"kind":"textbox","id":"sh/76p4jqls","slide":15,"name":"Text 2","text":"Role-based access mirrors how public programs are actually managed","textPreview":"Role-based access mirrors how public programs are actually managed","textChars":66,"textLines":1,"bbox":[59.52,43.2,1142.4,49.92]}
+{"kind":"shape","id":"sh/65gnqlk7","slide":15,"name":"Shape 3","bbox":[59.52,101.76,76.8,0]}
+{"kind":"textbox","id":"sh/t87ml0ji","slide":15,"name":"Text 4","text":"Access is controlled by hierarchy, responsibility and functional privilege rather than a single “admin/user” split.","textPreview":"Access is controlled by hierarchy, responsibility and functional privilege rather than a single “admin/user” split.","textChars":115,"textLines":1,"bbox":[59.52,111.36,1152,43.2]}
+{"kind":"shape","id":"sh/na5476l8","slide":15,"name":"Shape 5","bbox":[211.2,184.32,297.6,67.2]}
+{"kind":"textbox","id":"sh/m9c3e1kn","slide":15,"name":"Text 6","text":"State / Program Admin","textPreview":"State / Program Admin","textChars":21,"textLines":1,"bbox":[225.6,196.8,268.8,19.2]}
+{"kind":"textbox","id":"sh/wrm9kvep","slide":15,"name":"Text 7","text":"Configuration • users • dashboard • certification","textPreview":"Configuration • users • dashboard • certification","textChars":49,"textLines":1,"bbox":[225.6,221.76,268.8,16.32]}
+{"kind":"shape","id":"sh/hsvat0fa","slide":15,"name":"Shape 8","bbox":[163.2,270.72,393.6,67.2]}
+{"kind":"textbox","id":"sh/upkrilwj","slide":15,"name":"Text 9","text":"District / Division","textPreview":"District / Division","textChars":19,"textLines":1,"bbox":[177.6,283.2,364.8,19.2]}
+{"kind":"textbox","id":"sh/vqdsrqx4","slide":15,"name":"Text 10","text":"Monitor entities • review progress • analytics","textPreview":"Monitor entities • review progress • analytics","textChars":46,"textLines":1,"bbox":[177.6,308.16,364.8,16.32]}
+{"kind":"shape","id":"sh/4vm9ovel","slide":15,"name":"Shape 11","bbox":[115.2,357.12,489.6,67.2]}
+{"kind":"textbox","id":"sh/5wvax0f6","slide":15,"name":"Text 12","text":"Facility / School Admin","textPreview":"Facility / School Admin","textChars":23,"textLines":1,"bbox":[129.6,369.6,460.8,19.2]}
+{"kind":"textbox","id":"sh/it4rm5wv","slide":15,"name":"Text 13","text":"Activate departments/classes • assign work • action plans","textPreview":"Activate departments/classes • assign work • action plans","textChars":57,"textLines":1,"bbox":[129.6,394.56,460.8,16.32]}
+{"kind":"shape","id":"sh/judsvqxg","slide":15,"name":"Shape 14","bbox":[67.2,443.52,585.6,67.2]}
+{"kind":"textbox","id":"sh/0z29cbyh","slide":15,"name":"Text 15","text":"Assessor / Department User","textPreview":"Assessor / Department User","textChars":26,"textLines":1,"bbox":[81.6,456,556.8,19.2]}
+{"kind":"textbox","id":"sh/l0bqlgf2","slide":15,"name":"Text 16","text":"Assess • save evidence • close gaps • enter indicators","textPreview":"Assess • save evidence • close gaps • enter indicators","textChars":54,"textLines":1,"bbox":[81.6,480.96,556.8,16.32]}
+{"kind":"shape","id":"sh/1kjyt83e","slide":15,"name":"Shape 17","bbox":[724.8,198.72,46.08,46.08]}
+{"kind":"textbox","id":"sh/fi1grylo","slide":15,"name":"Text 18","text":"Scope","textPreview":"Scope","textChars":5,"textLines":1,"bbox":[787.2,192.96,120,23.04]}
+{"kind":"textbox","id":"sh/ehsfyt43","slide":15,"name":"Text 19","text":"State / district / entity / department","textPreview":"State / district / entity / department","textChars":38,"textLines":1,"bbox":[897.6,191.04,273.6,34.56]}
+{"kind":"shape","id":"sh/p8jyx83q","slide":15,"name":"Shape 20","bbox":[724.8,304.32,46.08,46.08]}
+{"kind":"textbox","id":"sh/361gvilk","slide":15,"name":"Text 21","text":"Privileges","textPreview":"Privileges","textChars":10,"textLines":1,"bbox":[787.2,298.56,120,23.04]}
+{"kind":"textbox","id":"sh/25sf2d4z","slide":15,"name":"Text 22","text":"View • create • edit • approve • export • administer","textPreview":"View • create • edit • approve • export • administer","textChars":52,"textLines":1,"bbox":[897.6,296.64,273.6,34.56]}
+{"kind":"shape","id":"sh/dc3y1s3m","slide":15,"name":"Shape 23","bbox":[724.8,409.92,46.08,46.08]}
+{"kind":"textbox","id":"sh/uh4v2pkj","slide":15,"name":"Text 24","text":"Assignment","textPreview":"Assignment","textChars":10,"textLines":1,"bbox":[787.2,404.16,120,23.04]}
+{"kind":"textbox","id":"sh/vixcvu14","slide":15,"name":"Text 25","text":"User linked to facility / school and allowed units","textPreview":"User linked to facility / school and allowed units","textChars":50,"textLines":1,"bbox":[897.6,402.24,273.6,34.56]}
+{"kind":"shape","id":"sh/wj6d4z2p","slide":15,"name":"Shape 26","bbox":[724.8,515.52,46.08,46.08]}
+{"kind":"textbox","id":"sh/ilov6pkv","slide":15,"name":"Text 27","text":"Auditability","textPreview":"Auditability","textChars":12,"textLines":1,"bbox":[787.2,509.76,120,23.04]}
+{"kind":"textbox","id":"sh/jmxwzu1g","slide":15,"name":"Text 28","text":"Security events and change history retained","textPreview":"Security events and change history retained","textChars":43,"textLines":1,"bbox":[897.6,507.84,273.6,34.56]}
+{"kind":"textbox","id":"sh/4n6d8z21","slide":15,"name":"Text 29","text":"Security is part of the platform contract — not a feature added later for each framework.","textPreview":"Security is part of the platform contract — not a feature added later for each framework.","textChars":89,"textLines":1,"bbox":[667.2,590.4,480,48]}
+{"kind":"textbox","id":"sh/o7ah4nm5","slide":15,"name":"Slide Number Placeholder 0","placeholder":"slideNumber","text":"15","textPreview":"15","textChars":2,"textLines":1,"bbox":[1185.6,690.24,36.48,17.28]}
+{"kind":"image","id":"im/yt0r6lwz","slide":15,"name":"Image 0","bbox":[1142.4,34.56,88.32,30.72]}
+{"kind":"image","id":"im/dsrqxgve","slide":15,"name":"Image 1","bbox":[734.88,208.8,25.92,25.92]}
+{"kind":"image","id":"im/cri94vet","slide":15,"name":"Image 2","bbox":[734.88,314.4,25.92,25.92]}
+{"kind":"image","id":"im/cvah4zup","slide":15,"name":"Image 3","bbox":[734.88,420,25.92,25.92]}
+{"kind":"image","id":"im/dwjidkva","slide":15,"name":"Image 4","bbox":[734.88,525.6,25.92,25.92]}
+{"kind":"notes","id":"nt/vaxsvy10","slide":15,"text":""}
+{"kind":"slide","id":"sl/gny5sjyp","slide":16,"title":"CAPABILITIES","textShapes":44}
+{"kind":"shape","id":"sh/8z2h8bq1","slide":16,"name":"Shape 0","bbox":[59.52,22.08,211.2,28.8]}
+{"kind":"textbox","id":"sh/9kby1g7m","slide":16,"name":"Text 1","text":"CAPABILITIES","textPreview":"CAPABILITIES","textChars":12,"textLines":1,"bbox":[67.2,26.4,195.84,13.44]}
+{"kind":"textbox","id":"sh/ytkf2h8j","slide":16,"name":"Text 2","text":"What the platform provides today — and what every framework can reuse","textPreview":"What the platform provides today — and what every framework can reuse","textChars":69,"textLines":1,"bbox":[59.52,43.2,1142.4,49.92]}
+{"kind":"shape","id":"sh/zutgvm94","slide":16,"name":"Shape 3","bbox":[59.52,101.76,76.8,0]}
+{"kind":"textbox","id":"sh/kv2h4rqp","slide":16,"name":"Text 4","text":"A shared capability stack prevents the same features being rebuilt for each sector or program.","textPreview":"A shared capability stack prevents the same features being rebuilt for each sector or program.","textChars":94,"textLines":1,"bbox":[59.52,111.36,1152,43.2]}
+{"kind":"shape","id":"sh/ip4zel83","slide":16,"name":"Shape 5","bbox":[69.12,172.8,261.12,192]}
+{"kind":"shape","id":"sh/3qdg7qpo","slide":16,"name":"Shape 6","bbox":[90.24,193.92,105.6,32.64]}
+{"kind":"textbox","id":"sh/fm1gzq5o","slide":16,"name":"Text 7","text":"CONFIGURE","textPreview":"CONFIGURE","textChars":9,"textLines":1,"bbox":[96,202.56,94.08,12.48]}
+{"kind":"shape","id":"sh/e1sf65o3","slide":16,"name":"Shape 8","bbox":[93.12,244.8,5.76,5.76]}
+{"kind":"textbox","id":"sh/1ojy10ne","slide":16,"name":"Text 9","text":"Framework & facility/entity types","textPreview":"Framework & facility/entity types","textChars":33,"textLines":1,"bbox":[107.52,236.16,196.8,23.04]}
+{"kind":"shape","id":"sh/gnax8v6t","slide":16,"name":"Shape 10","bbox":[93.12,272.64,5.76,5.76]}
+{"kind":"textbox","id":"sh/nqlg3a5k","slide":16,"name":"Text 11","text":"Departments / domains / concerns","textPreview":"Departments / domains / concerns","textChars":32,"textLines":1,"bbox":[107.52,264,196.8,23.04]}
+{"kind":"shape","id":"sh/2pcfa5oz","slide":16,"name":"Shape 12","bbox":[93.12,300.48,5.76,5.76]}
+{"kind":"textbox","id":"sh/ps3y5knq","slide":16,"name":"Text 13","text":"Checkpoint & scoring configuration","textPreview":"Checkpoint & scoring configuration","textChars":34,"textLines":1,"bbox":[107.52,291.84,196.8,23.04]}
+{"kind":"shape","id":"sh/oruhcf65","slide":16,"name":"Shape 14","bbox":[93.12,328.32,5.76,5.76]}
+{"kind":"textbox","id":"sh/bulg7u5g","slide":16,"name":"Text 15","text":"Assessment methods / cycle rules","textPreview":"Assessment methods / cycle rules","textChars":32,"textLines":1,"bbox":[107.52,319.68,196.8,23.04]}
+{"kind":"shape","id":"sh/atczepob","slide":16,"name":"Shape 16","bbox":[362.88,172.8,261.12,192]}
+{"kind":"shape","id":"sh/mpgj6t8j","slide":16,"name":"Shape 17","bbox":[384,193.92,105.6,32.64]}
+{"kind":"textbox","id":"sh/7qp0zepo","slide":16,"name":"Text 18","text":"ASSESS","textPreview":"ASSESS","textChars":6,"textLines":1,"bbox":[389.76,202.56,94.08,12.48]}
+{"kind":"shape","id":"sh/8by18jq9","slide":16,"name":"Shape 19","bbox":[386.88,244.8,5.76,5.76]}
+{"kind":"textbox","id":"sh/9c7i1o7u","slide":16,"name":"Text 20","text":"Digital forms + progress tracking","textPreview":"Digital forms + progress tracking","textChars":33,"textLines":1,"bbox":[401.28,236.16,196.8,23.04]}
+{"kind":"shape","id":"sh/ylwj2987","slide":16,"name":"Shape 21","bbox":[386.88,272.64,5.76,5.76]}
+{"kind":"textbox","id":"sh/zm50veps","slide":16,"name":"Text 22","text":"Pause / resume / multiple cycles","textPreview":"Pause / resume / multiple cycles","textChars":32,"textLines":1,"bbox":[401.28,264,196.8,23.04]}
+{"kind":"shape","id":"sh/kne14jqd","slide":16,"name":"Shape 23","bbox":[386.88,300.48,5.76,5.76]}
+{"kind":"textbox","id":"sh/lo7ixo7y","slide":16,"name":"Text 24","text":"Evidence and validation","textPreview":"Evidence and validation","textChars":23,"textLines":1,"bbox":[401.28,291.84,196.8,23.04]}
+{"kind":"shape","id":"sh/ih0jedob","slide":16,"name":"Shape 25","bbox":[386.88,328.32,5.76,5.76]}
+{"kind":"textbox","id":"sh/ji9k7ypw","slide":16,"name":"Text 26","text":"Automated score calculation","textPreview":"Automated score calculation","textChars":27,"textLines":1,"bbox":[401.28,319.68,196.8,23.04]}
+{"kind":"shape","id":"sh/tcbmdcre","slide":16,"name":"Shape 27","bbox":[656.64,172.8,261.12,192]}
+{"kind":"shape","id":"sh/sb2l47at","slide":16,"name":"Shape 28","bbox":[677.76,193.92,105.6,32.64]}
+{"kind":"textbox","id":"sh/rat4b298","slide":16,"name":"Text 29","text":"IMPROVE","textPreview":"IMPROVE","textChars":7,"textLines":1,"bbox":[683.52,202.56,94.08,12.48]}
+{"kind":"shape","id":"sh/69k32xsn","slide":16,"name":"Shape 30","bbox":[680.64,244.8,5.76,5.76]}
+{"kind":"textbox","id":"sh/58bm9sr2","slide":16,"name":"Text 31","text":"Gap analysis","textPreview":"Gap analysis","textChars":12,"textLines":1,"bbox":[695.04,236.16,196.8,23.04]}
+{"kind":"shape","id":"sh/47il0nah","slide":16,"name":"Shape 32","bbox":[680.64,272.64,5.76,5.76]}
+{"kind":"textbox","id":"sh/j6947i9w","slide":16,"name":"Text 33","text":"Action plan + responsibility","textPreview":"Action plan + responsibility","textChars":28,"textLines":1,"bbox":[695.04,264,196.8,23.04]}
+{"kind":"shape","id":"sh/i503ydsr","slide":16,"name":"Shape 34","bbox":[680.64,300.48,5.76,5.76]}
+{"kind":"textbox","id":"sh/p4vmlwrm","slide":16,"name":"Text 35","text":"Target dates + closure evidence","textPreview":"Target dates + closure evidence","textChars":31,"textLines":1,"bbox":[695.04,291.84,196.8,23.04]}
+{"kind":"shape","id":"sh/o3m5crq1","slide":16,"name":"Shape 36","bbox":[680.64,328.32,5.76,5.76]}
+{"kind":"textbox","id":"sh/wnadcrqh","slide":16,"name":"Text 37","text":"Revised score + history","textPreview":"Revised score + history","textChars":23,"textLines":1,"bbox":[695.04,319.68,196.8,23.04]}
+{"kind":"shape","id":"sh/xoju5wr2","slide":16,"name":"Shape 38","bbox":[950.4,172.8,261.12,192]}
+{"kind":"shape","id":"sh/alsbahsb","slide":16,"name":"Shape 39","bbox":[971.52,193.92,105.6,32.64]}
+{"kind":"textbox","id":"sh/vm1c3m9w","slide":16,"name":"Text 40","text":"MONITOR","textPreview":"MONITOR","textChars":7,"textLines":1,"bbox":[977.28,202.56,94.08,12.48]}
+{"kind":"shape","id":"sh/kbudgrqt","slide":16,"name":"Shape 41","bbox":[974.4,244.8,5.76,5.76]}
+{"kind":"textbox","id":"sh/5c3u9wry","slide":16,"name":"Text 42","text":"KPI / outcome indicators","textPreview":"KPI / outcome indicators","textChars":24,"textLines":1,"bbox":[988.8,236.16,196.8,23.04]}
+{"kind":"shape","id":"sh/i9sve18n","slide":16,"name":"Shape 43","bbox":[974.4,272.64,5.76,5.76]}
+{"kind":"textbox","id":"sh/ja1c7m98","slide":16,"name":"Text 44","text":"Formula & validation engine","textPreview":"Formula & validation engine","textChars":27,"textLines":1,"bbox":[988.8,264,196.8,23.04]}
+{"kind":"shape","id":"sh/sfudkbqp","slide":16,"name":"Shape 45","bbox":[974.4,300.48,5.76,5.76]}
+{"kind":"textbox","id":"sh/tg3udgra","slide":16,"name":"Text 46","text":"Trend analytics","textPreview":"Trend analytics","textChars":15,"textLines":1,"bbox":[988.8,291.84,196.8,23.04]}
+{"kind":"shape","id":"sh/3apg3atc","slide":16,"name":"Shape 47","bbox":[974.4,328.32,5.76,5.76]}
+{"kind":"textbox","id":"sh/29wfa5sr","slide":16,"name":"Text 48","text":"Baseline vs current","textPreview":"Baseline vs current","textChars":19,"textLines":1,"bbox":[988.8,319.68,196.8,23.04]}
+{"kind":"shape","id":"sh/pc7y5kbi","slide":16,"name":"Shape 49","bbox":[69.12,408,261.12,192]}
+{"kind":"shape","id":"sh/obyxcfax","slide":16,"name":"Shape 50","bbox":[90.24,429.12,105.6,32.64]}
+{"kind":"textbox","id":"sh/f65wzqtg","slide":16,"name":"Text 51","text":"GOVERN","textPreview":"GOVERN","textChars":6,"textLines":1,"bbox":[96,437.76,94.08,12.48]}
+{"kind":"shape","id":"sh/u5wf6lcv","slide":16,"name":"Shape 52","bbox":[93.12,480,5.76,5.76]}
+{"kind":"textbox","id":"sh/h8ne10b6","slide":16,"name":"Text 53","text":"RBAC + hierarchy","textPreview":"RBAC + hierarchy","textChars":16,"textLines":1,"bbox":[107.52,471.36,196.8,23.04]}
+{"kind":"shape","id":"sh/g7ex8va1","slide":16,"name":"Shape 54","bbox":[93.12,507.84,5.76,5.76]}
+{"kind":"textbox","id":"sh/z29gbutk","slide":16,"name":"Text 55","text":"User / entity assignment","textPreview":"User / entity assignment","textChars":24,"textLines":1,"bbox":[107.52,499.2,196.8,23.04]}
+{"kind":"shape","id":"sh/y10fipsz","slide":16,"name":"Shape 56","bbox":[93.12,535.68,5.76,5.76]}
+{"kind":"textbox","id":"sh/axkjatc7","slide":16,"name":"Text 57","text":"Certification tracking","textPreview":"Certification tracking","textChars":22,"textLines":1,"bbox":[107.52,527.04,196.8,23.04]}
+{"kind":"shape","id":"sh/vyt03yds","slide":16,"name":"Shape 58","bbox":[93.12,563.52,5.76,5.76]}
+{"kind":"textbox","id":"sh/wz21c3ud","slide":16,"name":"Text 59","text":"Audit / access controls","textPreview":"Audit / access controls","textChars":23,"textLines":1,"bbox":[107.52,554.88,196.8,23.04]}
+{"kind":"shape","id":"sh/x0bi58vy","slide":16,"name":"Shape 60","bbox":[362.88,408,261.12,192]}
+{"kind":"shape","id":"sh/i14jetcj","slide":16,"name":"Shape 61","bbox":[384,429.12,105.6,32.64]}
+{"kind":"textbox","id":"sh/j2d07yd4","slide":16,"name":"Text 62","text":"ANALYZE","textPreview":"ANALYZE","textChars":7,"textLines":1,"bbox":[389.76,437.76,94.08,12.48]}
+{"kind":"shape","id":"sh/k3m1g3u9","slide":16,"name":"Shape 63","bbox":[386.88,480,5.76,5.76]}
+{"kind":"textbox","id":"sh/5ovi98vu","slide":16,"name":"Text 64","text":"State / district / entity dashboards","textPreview":"State / district / entity dashboards","textChars":36,"textLines":1,"bbox":[401.28,471.36,196.8,23.04]}
+{"kind":"shape","id":"sh/y50z29cz","slide":16,"name":"Shape 65","bbox":[386.88,507.84,5.76,5.76]}
+{"kind":"textbox","id":"sh/z690vedk","slide":16,"name":"Text 66","text":"Drill-down & completion status","textPreview":"Drill-down & completion status","textChars":30,"textLines":1,"bbox":[401.28,499.2,196.8,23.04]}
+{"kind":"shape","id":"sh/hkzmhcf2","slide":16,"name":"Shape 67","bbox":[386.88,535.68,5.76,5.76]}
+{"kind":"textbox","id":"sh/gj6l87eh","slide":16,"name":"Text 68","text":"Comparative analysis","textPreview":"Comparative analysis","textChars":20,"textLines":1,"bbox":[401.28,527.04,196.8,23.04]}
+{"kind":"shape","id":"sh/fixkf2xc","slide":16,"name":"Shape 69","bbox":[386.88,563.52,5.76,5.76]}
+{"kind":"textbox","id":"sh/uxo36xwr","slide":16,"name":"Text 70","text":"Excel / PDF exports","textPreview":"Excel / PDF exports","textChars":19,"textLines":1,"bbox":[401.28,554.88,196.8,23.04]}
+{"kind":"shape","id":"sh/pozm5cfe","slide":16,"name":"Shape 71","bbox":[656.64,408,261.12,192]}
+{"kind":"shape","id":"sh/4nqlcret","slide":16,"name":"Shape 72","bbox":[677.76,429.12,105.6,32.64]}
+{"kind":"textbox","id":"sh/3mh4jmx8","slide":16,"name":"Text 73","text":"ENABLE","textPreview":"ENABLE","textChars":6,"textLines":1,"bbox":[683.52,437.76,94.08,12.48]}
+{"kind":"shape","id":"sh/2l83ahwn","slide":16,"name":"Shape 74","bbox":[680.64,480,5.76,5.76]}
+{"kind":"textbox","id":"sh/5sf29sfu","slide":16,"name":"Text 75","text":"Resources / guidelines / videos","textPreview":"Resources / guidelines / videos","textChars":31,"textLines":1,"bbox":[695.04,471.36,196.8,23.04]}
+{"kind":"shape","id":"sh/krml0nep","slide":16,"name":"Shape 76","bbox":[680.64,507.84,5.76,5.76]}
+{"kind":"textbox","id":"sh/wr2p0b65","slide":16,"name":"Text 77","text":"User feedback","textPreview":"User feedback","textChars":13,"textLines":1,"bbox":[695.04,499.2,196.8,23.04]}
+{"kind":"shape","id":"sh/xsbq9gnq","slide":16,"name":"Shape 78","bbox":[680.64,535.68,5.76,5.76]}
+{"kind":"textbox","id":"sh/apk7yloz","slide":16,"name":"Text 79","text":"Admin-managed content","textPreview":"Admin-managed content","textChars":21,"textLines":1,"bbox":[695.04,527.04,196.8,23.04]}
+{"kind":"shape","id":"sh/bqt8765k","slide":16,"name":"Shape 80","bbox":[680.64,563.52,5.76,5.76]}
+{"kind":"textbox","id":"sh/on2pwb69","slide":16,"name":"Text 81","text":"Low-bandwidth aware UX","textPreview":"Low-bandwidth aware UX","textChars":22,"textLines":1,"bbox":[695.04,554.88,196.8,23.04]}
+{"kind":"shape","id":"sh/9obq5gne","slide":16,"name":"Shape 82","bbox":[950.4,408,261.12,192]}
+{"kind":"shape","id":"sh/2l07u1o3","slide":16,"name":"Shape 83","bbox":[971.52,429.12,105.6,32.64]}
+{"kind":"textbox","id":"sh/nmt8365o","slide":16,"name":"Text 84","text":"INTEGRATE","textPreview":"INTEGRATE","textChars":9,"textLines":1,"bbox":[977.28,437.76,94.08,12.48]}
+{"kind":"shape","id":"sh/8jmp8v6d","slide":16,"name":"Shape 85","bbox":[974.4,480,5.76,5.76]}
+{"kind":"textbox","id":"sh/tkvqh0ny","slide":16,"name":"Text 86","text":"API-first services","textPreview":"API-first services","textChars":18,"textLines":1,"bbox":[988.8,471.36,196.8,23.04]}
+{"kind":"shape","id":"sh/3ehs7up0","slide":16,"name":"Shape 87","bbox":[974.4,507.84,5.76,5.76]}
+{"kind":"textbox","id":"sh/id8byp8f","slide":16,"name":"Text 88","text":"JSON configuration","textPreview":"JSON configuration","textChars":18,"textLines":1,"bbox":[988.8,499.2,196.8,23.04]}
+{"kind":"shape","id":"sh/5gza9476","slide":16,"name":"Shape 89","bbox":[974.4,535.68,5.76,5.76]}
+{"kind":"textbox","id":"sh/4fqt0zql","slide":16,"name":"Text 90","text":"External data exchange","textPreview":"External data exchange","textChars":22,"textLines":1,"bbox":[988.8,527.04,196.8,23.04]}
+{"kind":"shape","id":"sh/rihsbepw","slide":16,"name":"Shape 91","bbox":[974.4,563.52,5.76,5.76]}
+{"kind":"textbox","id":"sh/qh8b298r","slide":16,"name":"Text 92","text":"Portable deployment","textPreview":"Portable deployment","textChars":19,"textLines":1,"bbox":[988.8,554.88,196.8,23.04]}
+{"kind":"textbox","id":"sh/s3qt4jqh","slide":16,"name":"Slide Number Placeholder 0","placeholder":"slideNumber","text":"16","textPreview":"16","textChars":2,"textLines":1,"bbox":[1185.6,690.24,36.48,17.28]}
+{"kind":"image","id":"im/upczm9o3","slide":16,"name":"Image 0","bbox":[1142.4,34.56,88.32,30.72]}
+{"kind":"notes","id":"nt/gny5sjyp","slide":16,"text":""}
+{"kind":"slide","id":"sl/14bup87q","slide":17,"title":"OPEN SOURCE","textShapes":17}
+{"kind":"shape","id":"sh/1c7e50ni","slide":17,"name":"Shape 0","bbox":[59.52,22.08,182.4,28.8]}
+{"kind":"textbox","id":"sh/gbedwfmx","slide":17,"name":"Text 1","text":"OPEN SOURCE","textPreview":"OPEN SOURCE","textChars":11,"textLines":1,"bbox":[67.2,26.4,167.04,13.44]}
+{"kind":"textbox","id":"sh/rm5czq50","slide":17,"name":"Text 2","text":"Open source by design — not simply “built with open-source tools”","textPreview":"Open source by design — not simply “built with open-source tools”","textChars":65,"textLines":1,"bbox":[59.52,43.2,1142.4,49.92]}
+{"kind":"shape","id":"sh/6lwvql4v","slide":17,"name":"Shape 3","bbox":[59.52,101.76,76.8,0]}
+{"kind":"textbox","id":"sh/t8ne10n6","slide":17,"name":"Text 4","text":"The strategic value is government / implementer ownership, configurability, portability and a contribution model that reduces lock-in.","textPreview":"The strategic value is government / implementer ownership, configurability, portability and a contribution model that reduces lock-in.","textChars":134,"textLines":1,"bbox":[59.52,111.36,1152,43.2]}
+{"kind":"shape","id":"sh/jilcvq54","slide":17,"name":"Shape 5","bbox":[72,184.32,355.2,177.6]}
+{"kind":"shape","id":"sh/ihcvml4j","slide":17,"name":"Shape 6","bbox":[96,208.32,51.84,51.84]}
+{"kind":"textbox","id":"sh/pc7qhwn6","slide":17,"name":"Text 7","text":"Open codebase","textPreview":"Open codebase","textChars":13,"textLines":1,"bbox":[163.2,205.44,225.6,34.56]}
+{"kind":"textbox","id":"sh/29grm1of","slide":17,"name":"Text 8","text":"Auditable, reviewable and extensible source structure.","textPreview":"Auditable, reviewable and extensible source structure.","textChars":54,"textLines":1,"bbox":[96,268.8,297.6,62.4]}
+{"kind":"shape","id":"sh/3ap8fm50","slide":17,"name":"Shape 9","bbox":[471.36,184.32,355.2,177.6]}
+{"kind":"shape","id":"sh/gnepkr69","slide":17,"name":"Shape 10","bbox":[495.36,208.32,51.84,51.84]}
+{"kind":"textbox","id":"sh/ulw7ihoj","slide":17,"name":"Text 11","text":"Open configuration","textPreview":"Open configuration","textChars":18,"textLines":1,"bbox":[562.56,205.44,225.6,34.56]}
+{"kind":"textbox","id":"sh/fm58bm54","slide":17,"name":"Text 12","text":"Framework packs are data-driven (JSON), reducing custom code.","textPreview":"Framework packs are data-driven (JSON), reducing custom code.","textChars":61,"textLines":1,"bbox":[495.36,268.8,297.6,62.4]}
+{"kind":"shape","id":"sh/0ji9wb6t","slide":17,"name":"Shape 13","bbox":[870.72,184.32,355.2,177.6]}
+{"kind":"shape","id":"sh/14rqpgne","slide":17,"name":"Shape 14","bbox":[894.72,208.32,51.84,51.84]}
+{"kind":"textbox","id":"sh/8ze9gbyx","slide":17,"name":"Text 15","text":"Open interfaces","textPreview":"Open interfaces","textChars":15,"textLines":1,"bbox":[961.92,205.44,225.6,34.56]}
+{"kind":"textbox","id":"sh/ny5876xc","slide":17,"name":"Text 16","text":"API-first services allow integration with surrounding systems.","textPreview":"API-first services allow integration with surrounding systems.","textChars":62,"textLines":1,"bbox":[894.72,268.8,297.6,62.4]}
+{"kind":"shape","id":"sh/mxw7e1gr","slide":17,"name":"Shape 17","bbox":[72,400.32,355.2,177.6]}
+{"kind":"shape","id":"sh/lwnq5gf6","slide":17,"name":"Shape 18","bbox":[96,424.32,51.84,51.84]}
+{"kind":"textbox","id":"sh/zul836xg","slide":17,"name":"Text 19","text":"Deployment freedom","textPreview":"Deployment freedom","textChars":18,"textLines":1,"bbox":[163.2,421.44,225.6,34.56]}
+{"kind":"textbox","id":"sh/ytc7a1gv","slide":17,"name":"Text 20","text":"Run on government cloud, private cloud or on-prem environments.","textPreview":"Run on government cloud, private cloud or on-prem environments.","textChars":63,"textLines":1,"bbox":[96,484.8,297.6,62.4]}
+{"kind":"shape","id":"sh/d83q1wfa","slide":17,"name":"Shape 21","bbox":[471.36,400.32,355.2,177.6]}
+{"kind":"shape","id":"sh/c7up8ryp","slide":17,"name":"Shape 22","bbox":[495.36,424.32,51.84,51.84]}
+{"kind":"textbox","id":"sh/3e1ob2d8","slide":17,"name":"Text 23","text":"Reusable sector packs","textPreview":"Reusable sector packs","textChars":21,"textLines":1,"bbox":[562.56,421.44,225.6,34.56]}
+{"kind":"textbox","id":"sh/oza547ed","slide":17,"name":"Text 24","text":"Health / education / future domains can share one core engine.","textPreview":"Health / education / future domains can share one core engine.","textChars":62,"textLines":1,"bbox":[495.36,484.8,297.6,62.4]}
+{"kind":"shape","id":"sh/p0j6dcvy","slide":17,"name":"Shape 25","bbox":[870.72,400.32,355.2,177.6]}
+{"kind":"shape","id":"sh/e98nydwb","slide":17,"name":"Shape 26","bbox":[894.72,424.32,51.84,51.84]}
+{"kind":"textbox","id":"sh/gbq50neh","slide":17,"name":"Text 27","text":"Transparent improvement","textPreview":"Transparent improvement","textChars":23,"textLines":1,"bbox":[961.92,421.44,225.6,34.56]}
+{"kind":"textbox","id":"sh/1cj69sv2","slide":17,"name":"Text 28","text":"Issues, releases, documentation and QA can follow an open contribution process.","textPreview":"Issues, releases, documentation and QA can follow an open contribution process.","textChars":79,"textLines":1,"bbox":[894.72,484.8,297.6,62.4]}
+{"kind":"shape","id":"sh/658nudwf","slide":17,"name":"Shape 29","bbox":[139.2,610.56,998.4,46.08]}
+{"kind":"textbox","id":"sh/r6h43id0","slide":17,"name":"Text 30","text":"OPEN SOURCE OUTCOME → Local ownership + faster adaptation + lower duplication + easier integration + ecosystem innovation","textPreview":"OPEN SOURCE OUTCOME → Local ownership + faster adaptation + lower duplication + easier integration + ecosystem innovation","textChars":121,"textLines":1,"bbox":[168,625.92,940.8,14.4]}
+{"kind":"textbox","id":"sh/0vepcbyl","slide":17,"name":"Slide Number Placeholder 0","placeholder":"slideNumber","text":"17","textPreview":"17","textChars":2,"textLines":1,"bbox":[1185.6,690.24,36.48,17.28]}
+{"kind":"image","id":"im/4j2d07mh","slide":17,"name":"Image 0","bbox":[1142.4,34.56,88.32,30.72]}
+{"kind":"image","id":"im/5kbe9c3m","slide":17,"name":"Image 1","bbox":[106.08,218.4,31.68,31.68]}
+{"kind":"image","id":"im/ihkvyx4b","slide":17,"name":"Image 2","bbox":[505.44,218.4,31.68,31.68]}
+{"kind":"image","id":"im/3itw72lw","slide":17,"name":"Image 3","bbox":[904.8,218.4,31.68,31.68]}
+{"kind":"image","id":"im/snmd4rmd","slide":17,"name":"Image 4","bbox":[106.08,434.4,31.68,31.68]}
+{"kind":"image","id":"im/dovedc3y","slide":17,"name":"Image 5","bbox":[505.44,434.4,31.68,31.68]}
+{"kind":"image","id":"im/qlkv2h47","slide":17,"name":"Image 6","bbox":[904.8,434.4,31.68,31.68]}
+{"kind":"notes","id":"nt/14bup87q","slide":17,"text":""}
+{"kind":"slide","id":"sl/y5wne50z","slide":18,"title":"WHY OPEN","textShapes":19}
+{"kind":"shape","id":"sh/wrelszu9","slide":18,"name":"Shape 0","bbox":[59.52,22.08,211.2,28.8]}
+{"kind":"textbox","id":"sh/hsn2l4bu","slide":18,"name":"Text 1","text":"WHY OPEN","textPreview":"WHY OPEN","textChars":8,"textLines":1,"bbox":[67.2,26.4,195.84,13.44]}
+{"kind":"textbox","id":"sh/itw3upcf","slide":18,"name":"Text 2","text":"Replace framework-by-framework software projects with a shared public quality platform","textPreview":"Replace framework-by-framework software projects with a shared public quality platform","textChars":86,"textLines":1,"bbox":[59.52,43.2,1142.4,49.92]}
+{"kind":"shape","id":"sh/je5knut0","slide":18,"name":"Shape 3","bbox":[59.52,101.76,76.8,0]}
+{"kind":"textbox","id":"sh/4felwzu5","slide":18,"name":"Text 4","text":"The biggest cost is often not the first build — it is repeated customization, migrations and dependency over many programs.","textPreview":"The biggest cost is often not the first build — it is repeated customization, migrations and dependency over many programs.","textChars":123,"textLines":1,"bbox":[59.52,111.36,1152,43.2]}
+{"kind":"shape","id":"sh/6hw3y9sb","slide":18,"name":"Shape 5","bbox":[72,177.6,542.4,453.12]}
+{"kind":"shape","id":"sh/rip4retw","slide":18,"name":"Shape 6","bbox":[664.32,177.6,542.4,453.12]}
+{"kind":"textbox","id":"sh/upg3i18r","slide":18,"name":"Text 7","text":"Silo / closed implementation","textPreview":"Silo / closed implementation","textChars":28,"textLines":1,"bbox":[163.2,205.44,364.8,33.6]}
+{"kind":"textbox","id":"sh/gbylkbqh","slide":18,"name":"Text 8","text":"SaQshi open platform approach","textPreview":"SaQshi open platform approach","textChars":29,"textLines":1,"bbox":[755.52,205.44,384,33.6]}
+{"kind":"textbox","id":"sh/6lg3e18f","slide":18,"name":"Text 9","text":"New application for each framework","textPreview":"New application for each framework","textChars":34,"textLines":1,"bbox":[142.08,276.48,412.8,28.8]}
+{"kind":"textbox","id":"sh/snylgrql","slide":18,"name":"Text 10","text":"Hard-coded workflow and scoring","textPreview":"Hard-coded workflow and scoring","textChars":31,"textLines":1,"bbox":[142.08,329.28,412.8,28.8]}
+{"kind":"textbox","id":"sh/qh03ql8j","slide":18,"name":"Text 11","text":"Custom reports for every geography","textPreview":"Custom reports for every geography","textChars":34,"textLines":1,"bbox":[142.08,382.08,412.8,28.8]}
+{"kind":"textbox","id":"sh/nedoru9c","slide":18,"name":"Text 12","text":"Vendor change becomes a migration project","textPreview":"Vendor change becomes a migration project","textChars":41,"textLines":1,"bbox":[142.08,434.88,412.8,28.8]}
+{"kind":"textbox","id":"sh/90v6t4ri","slide":18,"name":"Text 13","text":"Integration added after deployment","textPreview":"Integration added after deployment","textChars":34,"textLines":1,"bbox":[142.08,487.68,412.8,28.8]}
+{"kind":"textbox","id":"sh/v2xovu9o","slide":18,"name":"Text 14","text":"Knowledge remains with implementation team","textPreview":"Knowledge remains with implementation team","textChars":42,"textLines":1,"bbox":[142.08,540.48,412.8,28.8]}
+{"kind":"textbox","id":"sh/x4f6x4re","slide":18,"name":"Text 15","text":"New framework = configuration pack","textPreview":"New framework = configuration pack","textChars":34,"textLines":1,"bbox":[735.36,276.48,417.6,28.8]}
+{"kind":"textbox","id":"sh/b6toja94","slide":18,"name":"Text 16","text":"Shared workflow + configurable scoring","textPreview":"Shared workflow + configurable scoring","textChars":38,"textLines":1,"bbox":[735.36,329.28,417.6,28.8]}
+{"kind":"textbox","id":"sh/szq9g3uh","slide":18,"name":"Text 17","text":"Reusable dashboards + filters + exports","textPreview":"Reusable dashboards + filters + exports","textChars":39,"textLines":1,"bbox":[735.36,382.08,417.6,28.8]}
+{"kind":"textbox","id":"sh/6x8retcb","slide":18,"name":"Text 18","text":"Code/config ownership can transfer locally","textPreview":"Code/config ownership can transfer locally","textChars":42,"textLines":1,"bbox":[735.36,434.88,417.6,28.8]}
+{"kind":"textbox","id":"sh/g3a9knud","slide":18,"name":"Text 19","text":"APIs are a core platform layer","textPreview":"APIs are a core platform layer","textChars":30,"textLines":1,"bbox":[735.36,487.68,417.6,28.8]}
+{"kind":"textbox","id":"sh/u1sridc7","slide":18,"name":"Text 20","text":"Documentation + versioned contribution model","textPreview":"Documentation + versioned contribution model","textChars":44,"textLines":1,"bbox":[735.36,540.48,417.6,28.8]}
+{"kind":"textbox","id":"sh/x8fqhobu","slide":18,"name":"Text 21","text":"Strategic principle: invest once in platform capability; spend future effort on quality content and implementation — not rebuilding software plumbing.","textPreview":"Strategic principle: invest once in platform capability; spend future effort on quality content and implementation — not rebuilding softw...","textChars":150,"textLines":1,"bbox":[192,609.6,892.8,36.48]}
+{"kind":"textbox","id":"sh/fulcvmhs","slide":18,"name":"Slide Number Placeholder 0","placeholder":"slideNumber","text":"18","textPreview":"18","textChars":2,"textLines":1,"bbox":[1185.6,690.24,36.48,17.28]}
+{"kind":"image","id":"im/ji90vq54","slide":18,"name":"Image 0","bbox":[1142.4,34.56,88.32,30.72]}
+{"kind":"image","id":"im/zm1ojitg","slide":18,"name":"Image 1","bbox":[103.68,207.36,46.08,46.08]}
+{"kind":"image","id":"im/els7adcv","slide":18,"name":"Image 2","bbox":[696,207.36,46.08,46.08]}
+{"kind":"image","id":"im/1oj6lsbm","slide":18,"name":"Image 3","bbox":[107.52,280.32,17.28,17.28]}
+{"kind":"image","id":"im/0napcnu1","slide":18,"name":"Image 4","bbox":[107.52,333.12,17.28,17.28]}
+{"kind":"image","id":"im/nq1on2ts","slide":18,"name":"Image 5","bbox":[107.52,385.92,17.28,17.28]}
+{"kind":"image","id":"im/mps7exc7","slide":18,"name":"Image 6","bbox":[107.52,438.72,17.28,17.28]}
+{"kind":"image","id":"im/9sj6pcbi","slide":18,"name":"Image 7","bbox":[107.52,491.52,17.28,17.28]}
+{"kind":"image","id":"im/orapg7ud","slide":18,"name":"Image 8","bbox":[107.52,544.32,17.28,17.28]}
+{"kind":"image","id":"im/bul8r2to","slide":18,"name":"Image 9","bbox":[700.8,280.32,17.28,17.28]}
+{"kind":"image","id":"im/atc7ixc3","slide":18,"name":"Image 10","bbox":[700.8,333.12,17.28,17.28]}
+{"kind":"image","id":"im/8ju587qh","slide":18,"name":"Image 11","bbox":[700.8,385.92,17.28,17.28]}
+{"kind":"image","id":"im/tkn61cr2","slide":18,"name":"Image 12","bbox":[700.8,438.72,17.28,17.28]}
+{"kind":"image","id":"im/6xcn6h8b","slide":18,"name":"Image 13","bbox":[700.8,491.52,17.28,17.28]}
+{"kind":"image","id":"im/7ilozm9w","slide":18,"name":"Image 14","bbox":[700.8,544.32,17.28,17.28]}
+{"kind":"notes","id":"nt/y5wne50z","slide":18,"text":""}
+{"kind":"slide","id":"sl/nid43ytk","slide":19,"title":"ARCHITECTURE","textShapes":15}
+{"kind":"shape","id":"sh/9gb6xgbi","slide":19,"name":"Shape 0","bbox":[59.52,22.08,211.2,28.8]}
+{"kind":"textbox","id":"sh/8v2pobax","slide":19,"name":"Text 1","text":"ARCHITECTURE","textPreview":"ARCHITECTURE","textChars":12,"textLines":1,"bbox":[67.2,26.4,195.84,13.44]}
+{"kind":"textbox","id":"sh/vitozqt8","slide":19,"name":"Text 2","text":"Open-source architecture: modular, configuration-driven and API-first","textPreview":"Open-source architecture: modular, configuration-driven and API-first","textChars":69,"textLines":1,"bbox":[59.52,43.2,1142.4,49.92]}
+{"kind":"shape","id":"sh/ahk7qls3","slide":19,"name":"Shape 3","bbox":[59.52,101.76,76.8,0]}
+{"kind":"textbox","id":"sh/xkbq10be","slide":19,"name":"Text 4","text":"Current refactor separates core services, framework configuration and assessment APIs so the same engine can serve multiple programs.","textPreview":"Current refactor separates core services, framework configuration and assessment APIs so the same engine can serve multiple programs.","textChars":133,"textLines":1,"bbox":[59.52,111.36,1152,43.2]}
+{"kind":"shape","id":"sh/jmd83atk","slide":19,"name":"Shape 5","bbox":[105.6,178.56,1070.4,67.2]}
+{"kind":"textbox","id":"sh/il47u5sz","slide":19,"name":"Text 6","text":"Experience Layer","textPreview":"Experience Layer","textChars":16,"textLines":1,"bbox":[134.4,192,201.6,23.04]}
+{"kind":"textbox","id":"sh/cri1gnql","slide":19,"name":"Text 7","text":"Responsive Web UI  •  Admin Console  •  Test UI  •  Reports & Exports","textPreview":"Responsive Web UI  •  Admin Console  •  Test UI  •  Reports & Exports","textChars":69,"textLines":1,"bbox":[331.2,192.96,801.6,32.64]}
+{"kind":"shape","id":"sh/dsri9sr6","slide":19,"name":"Shape 8","bbox":[641.28,245.76,0,19.2]}
+{"kind":"shape","id":"sh/qpgjex8f","slide":19,"name":"Shape 9","bbox":[105.6,265.92,1070.4,74.88]}
+{"kind":"textbox","id":"sh/rqp07290","slide":19,"name":"Text 10","text":"Platform API Layer","textPreview":"Platform API Layer","textChars":18,"textLines":1,"bbox":[134.4,279.36,201.6,23.04]}
+{"kind":"textbox","id":"sh/0vi1k7qx","slide":19,"name":"Text 11","text":"Auth / RBAC  •  Framework APIs  •  Assessment APIs  •  CQI  •  KPI / Outcomes  •  Certification","textPreview":"Auth / RBAC  •  Framework APIs  •  Assessment APIs  •  CQI  •  KPI / Outcomes  •  Certification","textChars":95,"textLines":1,"bbox":[331.2,280.32,801.6,32.64]}
+{"kind":"shape","id":"sh/1gridcr2","slide":19,"name":"Shape 12","bbox":[641.28,340.8,0,19.2]}
+{"kind":"shape","id":"sh/et0jix8r","slide":19,"name":"Shape 13","bbox":[105.6,361.92,1070.4,74.88]}
+{"kind":"textbox","id":"sh/zu90b29c","slide":19,"name":"Text 14","text":"Reusable Services","textPreview":"Reusable Services","textChars":17,"textLines":1,"bbox":[134.4,375.36,201.6,23.04]}
+{"kind":"textbox","id":"sh/oj21o7qt","slide":19,"name":"Text 15","text":"FrameworkEngine  •  DepartmentStatusService  •  DynamicAssessmentService  •  Security / Session / CSRF","textPreview":"FrameworkEngine  •  DepartmentStatusService  •  DynamicAssessmentService  •  Security / Session / CSRF","textChars":102,"textLines":1,"bbox":[331.2,376.32,801.6,32.64]}
+{"kind":"shape","id":"sh/9kb2hcre","slide":19,"name":"Shape 16","bbox":[641.28,436.8,0,19.2]}
+{"kind":"shape","id":"sh/x07i1cji","slide":19,"name":"Shape 17","bbox":[105.6,457.92,1070.4,74.88]}
+{"kind":"textbox","id":"sh/wfy1s7ix","slide":19,"name":"Text 18","text":"Configuration Layer","textPreview":"Configuration Layer","textChars":19,"textLines":1,"bbox":[134.4,471.36,201.6,23.04]}
+{"kind":"textbox","id":"sh/vep0z21c","slide":19,"name":"Text 19","text":"frameworks/*.json  •  masters/*.json  •  facility types  •  domains  •  checkpoints  •  methods","textPreview":"frameworks/*.json  •  masters/*.json  •  facility types  •  domains  •  checkpoints  •  methods","textChars":95,"textLines":1,"bbox":[331.2,472.32,801.6,32.64]}
+{"kind":"shape","id":"sh/adgjqx0r","slide":19,"name":"Shape 20","bbox":[641.28,532.8,0,19.2]}
+{"kind":"shape","id":"sh/54ri5wje","slide":19,"name":"Shape 21","bbox":[105.6,553.92,1070.4,74.88]}
+{"kind":"textbox","id":"sh/k3y1wri9","slide":19,"name":"Text 22","text":"Data & Deployment","textPreview":"Data & Deployment","textChars":17,"textLines":1,"bbox":[134.4,567.36,201.6,23.04]}
+{"kind":"textbox","id":"sh/j2p03m1o","slide":19,"name":"Text 23","text":"MySQL / relational data  •  file storage  •  APIs  •  container / VM / government cloud / on-prem options","textPreview":"MySQL / relational data  •  file storage  •  APIs  •  container / VM / government cloud / on-prem options","textChars":105,"textLines":1,"bbox":[331.2,568.32,801.6,32.64]}
+{"kind":"textbox","id":"sh/i1gjuh03","slide":19,"name":"Text 24","text":"Key design decision: framework knowledge lives in configuration; common quality-improvement behavior lives in reusable services.","textPreview":"Key design decision: framework knowledge lives in configuration; common quality-improvement behavior lives in reusable services.","textChars":128,"textLines":1,"bbox":[144,643.2,988.8,24]}
+{"kind":"textbox","id":"sh/07ehknip","slide":19,"name":"Slide Number Placeholder 0","placeholder":"slideNumber","text":"19","textPreview":"19","textChars":2,"textLines":1,"bbox":[1185.6,690.24,36.48,17.28]}
+{"kind":"image","id":"im/i9w7a14b","slide":19,"name":"Image 0","bbox":[1142.4,34.56,88.32,30.72]}
+{"kind":"notes","id":"nt/nid43ytk","slide":19,"text":""}
+{"kind":"slide","id":"sl/zyxsni5k","slide":20,"title":"PLATFORM ENGINEERING","textShapes":20}
+{"kind":"shape","id":"sh/qpwjmh8n","slide":20,"name":"Shape 0","bbox":[59.52,22.08,211.2,28.8]}
+{"kind":"textbox","id":"sh/rq50vmp8","slide":20,"name":"Text 1","text":"PLATFORM ENGINEERING","textPreview":"PLATFORM ENGINEERING","textChars":20,"textLines":1,"bbox":[67.2,26.4,195.84,13.44]}
+{"kind":"textbox","id":"sh/4nu1krqh","slide":20,"name":"Text 2","text":"Interoperable, portable and secure by default","textPreview":"Interoperable, portable and secure by default","textChars":45,"textLines":1,"bbox":[59.52,43.2,1142.4,49.92]}
+{"kind":"shape","id":"sh/po3itc72","slide":20,"name":"Shape 3","bbox":[59.52,101.76,76.8,0]}
+{"kind":"textbox","id":"sh/2lczih8r","slide":20,"name":"Text 4","text":"A quality platform has to coexist with existing government systems, not become another isolated data island.","textPreview":"A quality platform has to coexist with existing government systems, not become another isolated data island.","textChars":108,"textLines":1,"bbox":[59.52,111.36,1152,43.2]}
+{"kind":"shape","id":"sh/gjuhg7ql","slide":20,"name":"Shape 5","bbox":[72,182.4,331.2,417.6]}
+{"kind":"shape","id":"sh/hk3ipcr6","slide":20,"name":"Shape 6","bbox":[206.4,213.12,62.4,62.4]}
+{"kind":"textbox","id":"sh/cj65wzyd","slide":20,"name":"Text 7","text":"INTEROPERABILITY","textPreview":"INTEROPERABILITY","textChars":16,"textLines":1,"bbox":[105.6,299.52,264,30.72]}
+{"kind":"shape","id":"sh/rid4nuhs","slide":20,"name":"Shape 8","bbox":[108.48,370.56,6.72,6.72]}
+{"kind":"textbox","id":"sh/qh4nupg7","slide":20,"name":"Text 9","text":"Documented REST-style APIs","textPreview":"Documented REST-style APIs","textChars":26,"textLines":1,"bbox":[125.76,360.96,244.8,34.56]}
+{"kind":"shape","id":"sh/pwvmlkzm","slide":20,"name":"Shape 10","bbox":[108.48,423.36,6.72,6.72]}
+{"kind":"textbox","id":"sh/4vm5sfy1","slide":20,"name":"Text 11","text":"JSON-based framework/config exchange","textPreview":"JSON-based framework/config exchange","textChars":36,"textLines":1,"bbox":[125.76,413.76,244.8,34.56]}
+{"kind":"shape","id":"sh/3ud4juhg","slide":20,"name":"Shape 12","bbox":[108.48,476.16,6.72,6.72]}
+{"kind":"textbox","id":"sh/2t4nqpgb","slide":20,"name":"Text 13","text":"Excel / PDF exports for operational use","textPreview":"Excel / PDF exports for operational use","textChars":39,"textLines":1,"bbox":[125.76,466.56,244.8,34.56]}
+{"kind":"shape","id":"sh/hsvmhkzq","slide":20,"name":"Shape 14","bbox":[108.48,528.96,6.72,6.72]}
+{"kind":"textbox","id":"sh/grm5ofy5","slide":20,"name":"Text 15","text":"Integration-ready master and reporting services","textPreview":"Integration-ready master and reporting services","textChars":47,"textLines":1,"bbox":[125.76,519.36,244.8,34.56]}
+{"kind":"shape","id":"sh/8b654f61","slide":20,"name":"Shape 16","bbox":[436.8,182.4,331.2,417.6]}
+{"kind":"shape","id":"sh/tcz6dk7m","slide":20,"name":"Shape 17","bbox":[571.2,213.12,62.4,62.4]}
+{"kind":"textbox","id":"sh/7ax4bapg","slide":20,"name":"Text 18","text":"SECURITY","textPreview":"SECURITY","textChars":8,"textLines":1,"bbox":[470.4,299.52,264,30.72]}
+{"kind":"shape","id":"sh/k7650f6p","slide":20,"name":"Shape 19","bbox":[473.28,370.56,6.72,6.72]}
+{"kind":"textbox","id":"sh/l8fm907a","slide":20,"name":"Text 20","text":"Role-based access & scoped assignment","textPreview":"Role-based access & scoped assignment","textChars":37,"textLines":1,"bbox":[490.56,360.96,244.8,34.56]}
+{"kind":"shape","id":"sh/y5ony58z","slide":20,"name":"Shape 21","bbox":[473.28,423.36,6.72,6.72]}
+{"kind":"textbox","id":"sh/j6x47ap4","slide":20,"name":"Text 22","text":"CSRF and session security controls","textPreview":"CSRF and session security controls","textChars":34,"textLines":1,"bbox":[490.56,413.76,244.8,34.56]}
+{"kind":"shape","id":"sh/43q5cz69","slide":20,"name":"Shape 23","bbox":[473.28,476.16,6.72,6.72]}
+{"kind":"textbox","id":"sh/54j6l47e","slide":20,"name":"Text 24","text":"Login lockout / failed-attempt controls","textPreview":"Login lockout / failed-attempt controls","textChars":39,"textLines":1,"bbox":[490.56,466.56,244.8,34.56]}
+{"kind":"shape","id":"sh/za50r2ds","slide":20,"name":"Shape 25","bbox":[473.28,528.96,6.72,6.72]}
+{"kind":"textbox","id":"sh/e9wzyxcn","slide":20,"name":"Text 26","text":"Audit-oriented workflow and privilege separation","textPreview":"Audit-oriented workflow and privilege separation","textChars":48,"textLines":1,"bbox":[490.56,519.36,244.8,34.56]}
+{"kind":"shape","id":"sh/1cnitsvy","slide":20,"name":"Shape 27","bbox":[801.6,182.4,331.2,417.6]}
+{"kind":"shape","id":"sh/0beh07ud","slide":20,"name":"Shape 28","bbox":[936,213.12,62.4,62.4]}
+{"kind":"textbox","id":"sh/mdwz2xcj","slide":20,"name":"Text 29","text":"PORTABILITY","textPreview":"PORTABILITY","textChars":11,"textLines":1,"bbox":[835.2,299.52,264,30.72]}
+{"kind":"shape","id":"sh/907ixcva","slide":20,"name":"Shape 30","bbox":[838.08,370.56,6.72,6.72]}
+{"kind":"textbox","id":"sh/8zeh47up","slide":20,"name":"Text 31","text":"Open relational database foundation","textPreview":"Open relational database foundation","textChars":35,"textLines":1,"bbox":[855.36,360.96,244.8,34.56]}
+{"kind":"shape","id":"sh/32lgjid0","slide":20,"name":"Shape 32","bbox":[838.08,423.36,6.72,6.72]}
+{"kind":"textbox","id":"sh/2hczqdwf","slide":20,"name":"Text 33","text":"Deployable on VM / cloud / on-prem","textPreview":"Deployable on VM / cloud / on-prem","textChars":34,"textLines":1,"bbox":[855.36,413.76,244.8,34.56]}
+{"kind":"shape","id":"sh/ulwz6d4b","slide":20,"name":"Shape 34","bbox":[838.08,476.16,6.72,6.72]}
+{"kind":"textbox","id":"sh/vmp0zilg","slide":20,"name":"Text 35","text":"Configuration separated from application code","textPreview":"Configuration separated from application code","textChars":45,"textLines":1,"bbox":[855.36,466.56,244.8,34.56]}
+{"kind":"shape","id":"sh/gnyh8nm1","slide":20,"name":"Shape 36","bbox":[838.08,528.96,6.72,6.72]}
+{"kind":"textbox","id":"sh/ho7i1s3m","slide":20,"name":"Text 37","text":"Sector packs can evolve independently","textPreview":"Sector packs can evolve independently","textChars":37,"textLines":1,"bbox":[855.36,519.36,244.8,34.56]}
+{"kind":"textbox","id":"sh/ipgzadk7","slide":20,"name":"Text 38","text":"This engineering foundation is what allows SaQshi to become infrastructure, rather than a one-time application.","textPreview":"This engineering foundation is what allows SaQshi to become infrastructure, rather than a one-time application.","textChars":111,"textLines":1,"bbox":[196.8,624,892.8,28.8]}
+{"kind":"textbox","id":"sh/re9072lo","slide":20,"name":"Slide Number Placeholder 0","placeholder":"slideNumber","text":"20","textPreview":"20","textChars":2,"textLines":1,"bbox":[1185.6,690.24,36.48,17.28]}
+{"kind":"image","id":"im/wv29gfud","slide":20,"name":"Image 0","bbox":[1142.4,34.56,88.32,30.72]}
+{"kind":"image","id":"im/vutsnads","slide":20,"name":"Image 1","bbox":[216.48,223.2,42.24,42.24]}
+{"kind":"image","id":"im/ut0re5c7","slide":20,"name":"Image 2","bbox":[581.28,223.2,42.24,42.24]}
+{"kind":"image","id":"im/1sfa14b2","slide":20,"name":"Image 3","bbox":[946.08,223.2,42.24,42.24]}
+{"kind":"notes","id":"nt/zyxsni5k","slide":20,"text":""}
+{"kind":"slide","id":"sl/m1wvqtk3","slide":21,"title":"OPEN ECOSYSTEM","textShapes":17}
+{"kind":"shape","id":"sh/1gbmxs7a","slide":21,"name":"Shape 0","bbox":[59.52,22.08,211.2,28.8]}
+{"kind":"textbox","id":"sh/0f2lon6p","slide":21,"name":"Text 1","text":"OPEN ECOSYSTEM","textPreview":"OPEN ECOSYSTEM","textChars":14,"textLines":1,"bbox":[67.2,26.4,195.84,13.44]}
+{"kind":"textbox","id":"sh/ra9kryp8","slide":21,"name":"Text 2","text":"A practical open-source operating model for SaQshi","textPreview":"A practical open-source operating model for SaQshi","textChars":50,"textLines":1,"bbox":[59.52,43.2,1142.4,49.92]}
+{"kind":"shape","id":"sh/qp03yt8n","slide":21,"name":"Shape 3","bbox":[59.52,101.76,76.8,0]}
+{"kind":"textbox","id":"sh/dcb2t87y","slide":21,"name":"Text 4","text":"Open-source sustainability needs product governance as much as it needs a repository.","textPreview":"Open-source sustainability needs product governance as much as it needs a repository.","textChars":85,"textLines":1,"bbox":[59.52,111.36,1152,43.2]}
+{"kind":"shape","id":"sh/b6d432pc","slide":21,"name":"Shape 5","bbox":[74.88,180.48,350.4,184.32]}
+{"kind":"shape","id":"sh/al43uxor","slide":21,"name":"Shape 6","bbox":[98.88,204.48,49.92,49.92]}
+{"kind":"textbox","id":"sh/5kjydsri","slide":21,"name":"Text 7","text":"1. Core platform","textPreview":"1. Core platform","textChars":16,"textLines":1,"bbox":[163.2,204.48,216,33.6]}
+{"kind":"textbox","id":"sh/ixsf2d87","slide":21,"name":"Text 8","text":"Stable authentication, workflow, services, reporting and database contracts.","textPreview":"Stable authentication, workflow, services, reporting and database contracts.","textChars":76,"textLines":1,"bbox":[98.88,266.88,288,62.4]}
+{"kind":"shape","id":"sh/jy1gbi9s","slide":21,"name":"Shape 9","bbox":[473.28,180.48,350.4,184.32]}
+{"kind":"shape","id":"sh/wvax03q1","slide":21,"name":"Shape 10","bbox":[497.28,204.48,49.92,49.92]}
+{"kind":"textbox","id":"sh/utsfyt8v","slide":21,"name":"Text 11","text":"2. Framework packs","textPreview":"2. Framework packs","textChars":18,"textLines":1,"bbox":[561.6,204.48,216,33.6]}
+{"kind":"textbox","id":"sh/vu1w7y9g","slide":21,"name":"Text 12","text":"Versioned health, education and future sector configurations.","textPreview":"Versioned health, education and future sector configurations.","textChars":61,"textLines":1,"bbox":[497.28,266.88,288,62.4]}
+{"kind":"shape","id":"sh/8rqxw3q5","slide":21,"name":"Shape 13","bbox":[871.68,180.48,350.4,184.32]}
+{"kind":"shape","id":"sh/9sze58rq","slide":21,"name":"Shape 14","bbox":[895.68,204.48,49.92,49.92]}
+{"kind":"textbox","id":"sh/onid0f2t","slide":21,"name":"Text 15","text":"3. State / tenant config","textPreview":"3. State / tenant config","textChars":24,"textLines":1,"bbox":[960,204.48,216,33.6]}
+{"kind":"textbox","id":"sh/nm9cru18","slide":21,"name":"Text 16","text":"Local hierarchy, masters, roles, labels, active modules and deployment settings.","textPreview":"Local hierarchy, masters, roles, labels, active modules and deployment settings.","textChars":80,"textLines":1,"bbox":[895.68,266.88,288,62.4]}
+{"kind":"shape","id":"sh/2l0vypkn","slide":21,"name":"Shape 17","bbox":[74.88,401.28,350.4,184.32]}
+{"kind":"shape","id":"sh/1kru5kj2","slide":21,"name":"Shape 18","bbox":[98.88,425.28,49.92,49.92]}
+{"kind":"textbox","id":"sh/fi9c3a1c","slide":21,"name":"Text 19","text":"4. Contribution flow","textPreview":"4. Contribution flow","textChars":20,"textLines":1,"bbox":[163.2,425.28,216,33.6]}
+{"kind":"textbox","id":"sh/ehgvu5kr","slide":21,"name":"Text 20","text":"Issue → design review → code/config change → test → release notes.","textPreview":"Issue → design review → code/config change → test → release notes.","textChars":66,"textLines":1,"bbox":[98.88,487.68,288,62.4]}
+{"kind":"shape","id":"sh/lgbe14jm","slide":21,"name":"Shape 21","bbox":[473.28,401.28,350.4,184.32]}
+{"kind":"shape","id":"sh/kf2d8zi1","slide":21,"name":"Shape 22","bbox":[497.28,425.28,49.92,49.92]}
+{"kind":"textbox","id":"sh/jqlkfmds","slide":21,"name":"Text 23","text":"5. Documentation","textPreview":"5. Documentation","textChars":16,"textLines":1,"bbox":[561.6,425.28,216,33.6]}
+{"kind":"textbox","id":"sh/4ru1o7ed","slide":21,"name":"Text 24","text":"User manual, API docs, deployment guide, configuration guide and testing playbook.","textPreview":"User manual, API docs, deployment guide, configuration guide and testing playbook.","textChars":82,"textLines":1,"bbox":[497.28,487.68,288,62.4]}
+{"kind":"shape","id":"sh/5c32hcvy","slide":21,"name":"Shape 25","bbox":[871.68,401.28,350.4,184.32]}
+{"kind":"shape","id":"sh/ulcjixwb","slide":21,"name":"Shape 26","bbox":[895.68,425.28,49.92,49.92]}
+{"kind":"textbox","id":"sh/wnu1k7e1","slide":21,"name":"Text 27","text":"6. Release governance","textPreview":"6. Release governance","textChars":21,"textLines":1,"bbox":[960,425.28,216,33.6]}
+{"kind":"textbox","id":"sh/ho3idcvm","slide":21,"name":"Text 28","text":"Versioning, security review, compatibility checks and upgrade path.","textPreview":"Versioning, security review, compatibility checks and upgrade path.","textChars":67,"textLines":1,"bbox":[895.68,487.68,288,62.4]}
+{"kind":"textbox","id":"sh/ehwje1cf","slide":21,"name":"Text 29","text":"Goal: let multiple implementers contribute without fragmenting the product into incompatible forks.","textPreview":"Goal: let multiple implementers contribute without fragmenting the product into incompatible forks.","textChars":99,"textLines":1,"bbox":[201.6,624,883.2,26.88]}
+{"kind":"textbox","id":"sh/0jidwf2x","slide":21,"name":"Slide Number Placeholder 0","placeholder":"slideNumber","text":"21","textPreview":"21","textChars":2,"textLines":1,"bbox":[1185.6,690.24,36.48,17.28]}
+{"kind":"image","id":"im/kfq9gr25","slide":21,"name":"Image 0","bbox":[1142.4,34.56,88.32,30.72]}
+{"kind":"image","id":"im/07i90ry5","slide":21,"name":"Image 1","bbox":[108.96,214.56,29.76,29.76]}
+{"kind":"image","id":"im/lsrq9wza","slide":21,"name":"Image 2","bbox":[507.36,214.56,29.76,29.76]}
+{"kind":"image","id":"im/y5gry1gz","slide":21,"name":"Image 3","bbox":[905.76,214.56,29.76,29.76]}
+{"kind":"image","id":"im/z6p876hk","slide":21,"name":"Image 4","bbox":[108.96,435.36,29.76,29.76]}
+{"kind":"image","id":"im/8vi94by1","slide":21,"name":"Image 5","bbox":[507.36,435.36,29.76,29.76]}
+{"kind":"image","id":"im/9wrqdgfm","slide":21,"name":"Image 6","bbox":[905.76,435.36,29.76,29.76]}
+{"kind":"notes","id":"nt/m1wvqtk3","slide":21,"text":""}
+{"kind":"slide","id":"sl/5onypobq","slide":22,"title":"ROADMAP","textShapes":36}
+{"kind":"shape","id":"sh/6987itcr","slide":22,"name":"Shape 0","bbox":[59.52,22.08,211.2,28.8]}
+{"kind":"textbox","id":"sh/7a18rydc","slide":22,"name":"Text 1","text":"ROADMAP","textPreview":"ROADMAP","textChars":7,"textLines":1,"bbox":[67.2,26.4,195.84,13.44]}
+{"kind":"textbox","id":"sh/k7qpgjul","slide":22,"name":"Text 2","text":"Evolution roadmap: from legacy assessment to open digital quality infrastructure","textPreview":"Evolution roadmap: from legacy assessment to open digital quality infrastructure","textChars":80,"textLines":1,"bbox":[59.52,43.2,1142.4,49.92]}
+{"kind":"shape","id":"sh/58zqpov6","slide":22,"name":"Shape 3","bbox":[59.52,101.76,76.8,0]}
+{"kind":"textbox","id":"sh/il87etcv","slide":22,"name":"Text 4","text":"The roadmap shows how functionality matures from digitization into an interoperable, reusable platform.","textPreview":"The roadmap shows how functionality matures from digitization into an interoperable, reusable platform.","textChars":103,"textLines":1,"bbox":[59.52,111.36,1152,43.2]}
+{"kind":"shape","id":"sh/43u9snu5","slide":22,"name":"Shape 5","bbox":[77.76,192,59.52,59.52]}
+{"kind":"textbox","id":"sh/p43q1sva","slide":22,"name":"Text 6","text":"0","textPreview":"0","textChars":1,"textLines":1,"bbox":[77.76,211.2,59.52,13.44]}
+{"kind":"shape","id":"sh/p4z6tcri","slide":22,"name":"Shape 7","bbox":[137.28,221.76,78.72,0]}
+{"kind":"textbox","id":"sh/436507qx","slide":22,"name":"Text 8","text":"Legacy","textPreview":"Legacy","textChars":6,"textLines":1,"bbox":[48,276.48,120,34.56]}
+{"kind":"textbox","id":"sh/3ixor29c","slide":22,"name":"Text 9","text":"Paper / Excel","textPreview":"Paper / Excel","textChars":13,"textLines":1,"bbox":[41.28,323.52,134.4,69.12]}
+{"kind":"shape","id":"sh/2honyx8r","slide":22,"name":"Shape 10","bbox":[214.08,192,59.52,59.52]}
+{"kind":"textbox","id":"sh/hgf6pcr6","slide":22,"name":"Text 11","text":"1","textPreview":"1","textChars":1,"textLines":1,"bbox":[214.08,211.2,59.52,13.44]}
+{"kind":"shape","id":"sh/gf65w7ql","slide":22,"name":"Shape 12","bbox":[273.6,221.76,78.72,0]}
+{"kind":"textbox","id":"sh/fexon290","slide":22,"name":"Text 13","text":"Digital","textPreview":"Digital","textChars":7,"textLines":1,"bbox":[184.32,276.48,120,34.56]}
+{"kind":"textbox","id":"sh/udonux8v","slide":22,"name":"Text 14","text":"Assessment engine","textPreview":"Assessment engine","textChars":17,"textLines":1,"bbox":[177.6,323.52,134.4,69.12]}
+{"kind":"shape","id":"sh/1cj61w7q","slide":22,"name":"Shape 15","bbox":[350.4,192,59.52,59.52]}
+{"kind":"textbox","id":"sh/0bap8rq5","slide":22,"name":"Text 16","text":"2","textPreview":"2","textChars":1,"textLines":1,"bbox":[350.4,211.2,59.52,13.44]}
+{"kind":"shape","id":"sh/krihkz2d","slide":22,"name":"Shape 17","bbox":[409.92,221.76,78.72,0]}
+{"kind":"textbox","id":"sh/lsrit4jy","slide":22,"name":"Text 18","text":"Framework","textPreview":"Framework","textChars":9,"textLines":1,"bbox":[320.64,276.48,120,34.56]}
+{"kind":"textbox","id":"sh/yp0zipk7","slide":22,"name":"Text 19","text":"JSON-driven configuration","textPreview":"JSON-driven configuration","textChars":25,"textLines":1,"bbox":[313.92,323.52,134.4,69.12]}
+{"kind":"shape","id":"sh/jq90ru1s","slide":22,"name":"Shape 20","bbox":[486.72,192,59.52,59.52]}
+{"kind":"textbox","id":"sh/wnihgf2h","slide":22,"name":"Text 21","text":"3","textPreview":"3","textChars":1,"textLines":1,"bbox":[486.72,211.2,59.52,13.44]}
+{"kind":"shape","id":"sh/xoripkj2","slide":22,"name":"Shape 22","bbox":[546.24,221.76,78.72,0]}
+{"kind":"textbox","id":"sh/al0zepkb","slide":22,"name":"Text 23","text":"CQI","textPreview":"CQI","textChars":3,"textLines":1,"bbox":[456.96,276.48,120,34.56]}
+{"kind":"textbox","id":"sh/bm9gnu1w","slide":22,"name":"Text 24","text":"Gap → action → closure","textPreview":"Gap → action → closure","textChars":22,"textLines":1,"bbox":[450.24,323.52,134.4,69.12]}
+{"kind":"shape","id":"sh/ozyhcf25","slide":22,"name":"Shape 25","bbox":[623.04,192,59.52,59.52]}
+{"kind":"textbox","id":"sh/907ylkjq","slide":22,"name":"Text 26","text":"4","textPreview":"4","textChars":1,"textLines":1,"bbox":[623.04,211.2,59.52,13.44]}
+{"kind":"shape","id":"sh/rup0va5s","slide":22,"name":"Shape 27","bbox":[682.56,221.76,78.72,0]}
+{"kind":"textbox","id":"sh/qtwz2547","slide":22,"name":"Text 28","text":"Performance","textPreview":"Performance","textChars":11,"textLines":1,"bbox":[593.28,276.48,120,34.56]}
+{"kind":"textbox","id":"sh/dw7ixkni","slide":22,"name":"Text 29","text":"KPI / outcomes","textPreview":"KPI / outcomes","textChars":14,"textLines":1,"bbox":[586.56,323.52,134.4,69.12]}
+{"kind":"shape","id":"sh/cvy14fmx","slide":22,"name":"Shape 30","bbox":[759.36,192,59.52,59.52]}
+{"kind":"textbox","id":"sh/zyp0za5o","slide":22,"name":"Text 31","text":"5","textPreview":"5","textChars":1,"textLines":1,"bbox":[759.36,211.2,59.52,13.44]}
+{"kind":"shape","id":"sh/exgj6p43","slide":22,"name":"Shape 32","bbox":[818.88,221.76,78.72,0]}
+{"kind":"textbox","id":"sh/1k7i1knu","slide":22,"name":"Text 33","text":"Certification","textPreview":"Certification","textChars":13,"textLines":1,"bbox":[729.6,276.48,120,34.56]}
+{"kind":"textbox","id":"sh/0jy18fm9","slide":22,"name":"Text 34","text":"Validity & renewal","textPreview":"Validity & renewal","textChars":18,"textLines":1,"bbox":[722.88,323.52,134.4,69.12]}
+{"kind":"shape","id":"sh/nm903u5k","slide":22,"name":"Shape 35","bbox":[895.68,192,59.52,59.52]}
+{"kind":"textbox","id":"sh/ml0jap4f","slide":22,"name":"Text 36","text":"6","textPreview":"6","textChars":1,"textLines":1,"bbox":[895.68,211.2,59.52,13.44]}
+{"kind":"shape","id":"sh/65836tcb","slide":22,"name":"Shape 37","bbox":[955.2,221.76,78.72,0]}
+{"kind":"textbox","id":"sh/7qhkzytw","slide":22,"name":"Text 38","text":"Dashboards","textPreview":"Dashboards","textChars":10,"textLines":1,"bbox":[865.92,276.48,120,34.56]}
+{"kind":"textbox","id":"sh/8rql83uh","slide":22,"name":"Text 39","text":"Monitoring & drill-down","textPreview":"Monitoring & drill-down","textChars":23,"textLines":1,"bbox":[859.2,323.52,134.4,69.12]}
+{"kind":"shape","id":"sh/tsz218b2","slide":22,"name":"Shape 40","bbox":[1032,192,59.52,59.52]}
+{"kind":"textbox","id":"sh/ut83adcn","slide":22,"name":"Text 41","text":"7","textPreview":"7","textChars":1,"textLines":1,"bbox":[1032,211.2,59.52,13.44]}
+{"kind":"shape","id":"sh/vuhk3it8","slide":22,"name":"Shape 42","bbox":[1091.52,221.76,78.72,0]}
+{"kind":"textbox","id":"sh/gvqlcnud","slide":22,"name":"Text 43","text":"Analytics","textPreview":"Analytics","textChars":9,"textLines":1,"bbox":[1002.24,276.48,120,34.56]}
+{"kind":"textbox","id":"sh/hwz258by","slide":22,"name":"Text 44","text":"Trends & exports","textPreview":"Trends & exports","textChars":16,"textLines":1,"bbox":[995.52,323.52,134.4,69.12]}
+{"kind":"shape","id":"sh/ax4jy9c3","slide":22,"name":"Shape 45","bbox":[1168.32,192,59.52,59.52]}
+{"kind":"textbox","id":"sh/byxkreto","slide":22,"name":"Text 46","text":"8","textPreview":"8","textChars":1,"textLines":1,"bbox":[1168.32,211.2,59.52,13.44]}
+{"kind":"textbox","id":"sh/ds36xcv6","slide":22,"name":"Text 47","text":"Open ecosystem","textPreview":"Open ecosystem","textChars":14,"textLines":1,"bbox":[1138.56,276.48,120,34.56]}
+{"kind":"textbox","id":"sh/sru54rel","slide":22,"name":"Text 48","text":"APIs • sector packs • contributions","textPreview":"APIs • sector packs • contributions","textChars":35,"textLines":1,"bbox":[1131.84,323.52,134.4,69.12]}
+{"kind":"shape","id":"sh/rqlovmdg","slide":22,"name":"Shape 49","bbox":[81.6,446.4,1118.4,139.2]}
+{"kind":"textbox","id":"sh/qpcn2hwv","slide":22,"name":"Text 50","text":"What makes Phase 8 different?","textPreview":"What makes Phase 8 different?","textChars":29,"textLines":1,"bbox":[120,478.08,307.2,32.64]}
+{"kind":"textbox","id":"sh/1gn61wvi","slide":22,"name":"Text 51","text":"The platform is no longer “a SaQshi deployment.” It becomes a reusable ecosystem where new frameworks, sectors, states and implementers can extend a stable common core.","textPreview":"The platform is no longer “a SaQshi deployment.” It becomes a reusable ecosystem where new frameworks, sectors, states and implementers c...","textChars":168,"textLines":1,"bbox":[408,473.28,724.8,55.68]}
+{"kind":"shape","id":"sh/0vu58rex","slide":22,"name":"Shape 52","bbox":[412.8,532.8,225.6,32.64]}
+{"kind":"textbox","id":"sh/fulozmdc","slide":22,"name":"Text 53","text":"CONFIGURATION OVER CUSTOM CODE","textPreview":"CONFIGURATION OVER CUSTOM CODE","textChars":30,"textLines":1,"bbox":[420.48,539.52,210.24,15.36]}
+{"kind":"shape","id":"sh/etcn6hwr","slide":22,"name":"Shape 54","bbox":[657.6,532.8,139.2,32.64]}
+{"kind":"textbox","id":"sh/hkjmpsvy","slide":22,"name":"Text 55","text":"OPEN APIS","textPreview":"OPEN APIS","textChars":9,"textLines":1,"bbox":[665.28,539.52,123.84,15.36]}
+{"kind":"shape","id":"sh/gza5wnet","slide":22,"name":"Shape 56","bbox":[816,532.8,216,32.64]}
+{"kind":"textbox","id":"sh/8fyxsrql","slide":22,"name":"Text 57","text":"REUSABLE SECTOR PACKS","textPreview":"REUSABLE SECTOR PACKS","textChars":21,"textLines":1,"bbox":[823.68,539.52,200.64,15.36]}
+{"kind":"textbox","id":"sh/6dwfqh8v","slide":22,"name":"Slide Number Placeholder 0","placeholder":"slideNumber","text":"22","textPreview":"22","textChars":2,"textLines":1,"bbox":[1185.6,690.24,36.48,17.28]}
+{"kind":"image","id":"im/i58zu9wb","slide":22,"name":"Image 0","bbox":[1142.4,34.56,88.32,30.72]}
+{"kind":"notes","id":"nt/5onypobq","slide":22,"text":""}
+{"kind":"slide","id":"sl/c7uhcr6t","slide":23,"title":"QUALITY IMPROVEMENT INFRASTRUCTURE","textShapes":11}
+{"kind":"shape","id":"sh/8zm9k7y5","slide":23,"name":"Shape 0","bbox":[69.12,163.2,283.2,32.64]}
+{"kind":"textbox","id":"sh/v2d8fmhw","slide":23,"name":"Text 1","text":"QUALITY IMPROVEMENT INFRASTRUCTURE","textPreview":"QUALITY IMPROVEMENT INFRASTRUCTURE","textChars":34,"textLines":1,"bbox":[76.8,169.92,267.84,15.36]}
+{"kind":"textbox","id":"sh/a14rmhgb","slide":23,"name":"Text 2","text":"SaQshi connects standards, people, evidence and outcomes in one continuous digital loop.","textPreview":"SaQshi connects standards, people, evidence and outcomes in one continuous digital loop.","textChars":88,"textLines":1,"bbox":[69.12,225.6,830.4,134.4]}
+{"kind":"textbox","id":"sh/w3m9o7yh","slide":23,"name":"Text 3","text":"Cross-sector","textPreview":"Cross-sector","textChars":12,"textLines":1,"bbox":[127.68,404.16,129.6,24]}
+{"kind":"textbox","id":"sh/jqd8jmhs","slide":23,"name":"Text 4","text":"Health today. Education now. More sectors without rebuilding the core.","textPreview":"Health today. Education now. More sectors without rebuilding the core.","textChars":70,"textLines":1,"bbox":[254.4,404.16,662.4,33.6]}
+{"kind":"textbox","id":"sh/sby90zm1","slide":23,"name":"Text 5","text":"Open by design","textPreview":"Open by design","textChars":14,"textLines":1,"bbox":[127.68,479.04,129.6,24]}
+{"kind":"textbox","id":"sh/tc7at436","slide":23,"name":"Text 6","text":"Configurable, auditable, portable and extendable — reducing long-term lock-in.","textPreview":"Configurable, auditable, portable and extendable — reducing long-term lock-in.","textChars":78,"textLines":1,"bbox":[254.4,479.04,662.4,33.6]}
+{"kind":"textbox","id":"sh/rapsrelg","slide":23,"name":"Text 7","text":"Improvement-first","textPreview":"Improvement-first","textChars":17,"textLines":1,"bbox":[127.68,553.92,129.6,24]}
+{"kind":"textbox","id":"sh/0fi94jmx","slide":23,"name":"Text 8","text":"Assessment is the starting point; action, outcomes and learning are the destination.","textPreview":"Assessment is the starting point; action, outcomes and learning are the destination.","textChars":84,"textLines":1,"bbox":[254.4,553.92,662.4,33.6]}
+{"kind":"shape","id":"sh/1graxo3i","slide":23,"name":"Shape 9","bbox":[916.8,165.12,288,422.4]}
+{"kind":"textbox","id":"sh/fepsvelc","slide":23,"name":"Text 10","text":"ASSESS → IMPROVE → MONITOR → LEARN","textPreview":"ASSESS → IMPROVE → MONITOR → LEARN","textChars":34,"textLines":1,"bbox":[955.2,340.8,211.2,67.2]}
+{"kind":"textbox","id":"sh/oji9832t","slide":23,"name":"Text 11","text":"Repeat across every framework and every service-delivery system.","textPreview":"Repeat across every framework and every service-delivery system.","textChars":64,"textLines":1,"bbox":[955.2,436.8,211.2,74.88]}
+{"kind":"textbox","id":"sh/p4ra1o3e","slide":23,"name":"Text 12","text":"SaQshi — Your Saathi for Quality Assessment. Built to become the open platform for quality improvement.","textPreview":"SaQshi — Your Saathi for Quality Assessment. Built to become the open platform for quality improvement.","textChars":103,"textLines":1,"bbox":[71.04,635.52,1132.8,33.6]}
+{"kind":"image","id":"im/mxczetc3","slide":23,"name":"Image 0","bbox":[69.12,55.68,225.6,77.76]}
+{"kind":"image","id":"im/7ylgnydo","slide":23,"name":"Image 1","bbox":[74.88,405.12,33.6,33.6]}
+{"kind":"image","id":"im/8zuhgju9","slide":23,"name":"Image 2","bbox":[74.88,480,33.6,33.6]}
+{"kind":"image","id":"im/903ypovu","slide":23,"name":"Image 3","bbox":[74.88,554.88,33.6,33.6]}
+{"kind":"image","id":"im/u1wzitcz","slide":23,"name":"Image 4","bbox":[1010.88,216,100.8,100.8]}
+{"kind":"notes","id":"nt/c7uhcr6t","slide":23,"text":""}
+{"kind":"slide","id":"sl/1vkbtm","slide":24,"title":"HEALTHCARE PLATFORM","textShapes":13}
+{"kind":"shape","id":"sh/lwru9ovu","slide":24,"bbox":[60,22,212,29]}
+{"kind":"textbox","id":"sh/y90be9wj","slide":24,"text":"HEALTHCARE PLATFORM","textPreview":"HEALTHCARE PLATFORM","textChars":19,"textLines":1,"bbox":[60,22,212,29]}
+{"kind":"textbox","id":"sh/za9c7edo","slide":24,"text":"SaQshi connects assessment, action and oversight","textPreview":"SaQshi connects assessment, action and oversight","textChars":48,"textLines":1,"bbox":[60,57,1080,43]}
+{"kind":"shape","id":"sh/8zid4jel","slide":24,"bbox":[60,99,77,5]}
+{"kind":"textbox","id":"sh/90rudov6","slide":24,"text":"The health deployment brings assessment, CQI, performance monitoring, certification and reporting into one platform.","textPreview":"The health deployment brings assessment, CQI, performance monitoring, certification and reporting into one platform.","textChars":116,"textLines":1,"bbox":[60,125,1080,28]}
+{"kind":"shape","id":"sh/mx0v2twf","slide":24,"bbox":[0,686,1280,34]}
+{"kind":"textbox","id":"sh/7y9cbed0","slide":24,"text":"SaQshi | Open Digital Quality Improvement Platform","textPreview":"SaQshi | Open Digital Quality Improvement Platform","textChars":50,"textLines":1,"bbox":[52,690,420,18]}
+{"kind":"textbox","id":"sh/o3yt8ze1","slide":24,"text":"24","textPreview":"24","textChars":2,"textLines":1,"bbox":[1200,690,30,18]}
+{"kind":"shape","id":"sh/cze983yl","slide":24,"bbox":[72,190,292,128]}
+{"kind":"textbox","id":"sh/by5szyx0","slide":24,"text":"Structured assessment","textPreview":"Structured assessment","textChars":21,"textLines":1,"bbox":[94,212,246,25]}
+{"kind":"textbox","id":"sh/axwr6dgf","slide":24,"text":"Create or resume assessments, activate applicable departments and capture checkpoint responses.","textPreview":"Create or resume assessments, activate applicable departments and capture checkpoint responses.","textChars":95,"textLines":1,"bbox":[94,247,246,53]}
+{"kind":"shape","id":"sh/lo7a5sf2","slide":24,"bbox":[402,190,292,128]}
+{"kind":"textbox","id":"sh/kne9cnyx","slide":24,"text":"CQI action management","textPreview":"CQI action management","textChars":21,"textLines":1,"bbox":[424,212,246,25]}
+{"kind":"textbox","id":"sh/jm5s3ixc","slide":24,"text":"Turn gaps into action plans with ownership, target dates, evidence and closure updates.","textPreview":"Turn gaps into action plans with ownership, target dates, evidence and closure updates.","textChars":87,"textLines":1,"bbox":[424,247,246,53]}
+{"kind":"shape","id":"sh/y1wradgr","slide":24,"bbox":[72,354,292,128]}
+{"kind":"textbox","id":"sh/ts7a9sfe","slide":24,"text":"Performance monitoring","textPreview":"Performance monitoring","textChars":22,"textLines":1,"bbox":[94,376,246,25]}
+{"kind":"textbox","id":"sh/8ry9gnyt","slide":24,"text":"Record monthly KPI and outcome data, calculate results and review trends.","textPreview":"Record monthly KPI and outcome data, calculate results and review trends.","textChars":73,"textLines":1,"bbox":[94,411,246,53]}
+{"kind":"shape","id":"sh/s7qlsva1","slide":24,"bbox":[402,354,292,128]}
+{"kind":"textbox","id":"sh/d8z2l0rm","slide":24,"text":"Certification and reports","textPreview":"Certification and reports","textChars":25,"textLines":1,"bbox":[424,376,246,25]}
+{"kind":"textbox","id":"sh/q583qlsb","slide":24,"text":"Track certification status and history, then use reports to support follow-up.","textPreview":"Track certification status and history, then use reports to support follow-up.","textChars":78,"textLines":1,"bbox":[424,411,246,53]}
+{"kind":"image","id":"im/o72dkny1","slide":24,"name":"","alt":"SaQshi brand logo","bbox":[1142,34,88,31]}
+{"kind":"image","id":"im/y9cfmtob","slide":24,"name":"","alt":"SaQshi brand logo","bbox":[770,188,430,324]}
+{"kind":"notes","id":"nt/1vkbtm","slide":24,"text":"Source: docs/architecture/project_overview.md."}
+{"kind":"slide","id":"sl/wd9x1d","slide":25,"title":"ROLE-BASED OPERATIONS","textShapes":13}
+{"kind":"shape","id":"sh/bit4jadw","slide":25,"bbox":[60,22,212,29]}
+{"kind":"textbox","id":"sh/cj2lsfuh","slide":25,"text":"ROLE-BASED OPERATIONS","textPreview":"ROLE-BASED OPERATIONS","textChars":21,"textLines":1,"bbox":[60,22,212,29]}
+{"kind":"textbox","id":"sh/dkbmlkv2","slide":25,"text":"The right view for each person","textPreview":"The right view for each person","textChars":30,"textLines":1,"bbox":[60,57,1080,43]}
+{"kind":"shape","id":"sh/yl43upcn","slide":25,"bbox":[60,99,77,5]}
+{"kind":"textbox","id":"sh/z6d4nads","slide":25,"text":"SaQshi separates facility work from supervisory monitoring while keeping every assessment traceable to its scope.","textPreview":"SaQshi separates facility work from supervisory monitoring while keeping every assessment traceable to its scope.","textChars":113,"textLines":1,"bbox":[60,125,1080,28]}
+{"kind":"shape","id":"sh/07mlwfud","slide":25,"bbox":[0,686,1280,34]}
+{"kind":"textbox","id":"sh/l8vmpkvy","slide":25,"text":"SaQshi | Open Digital Quality Improvement Platform","textPreview":"SaQshi | Open Digital Quality Improvement Platform","textChars":50,"textLines":1,"bbox":[52,690,420,18]}
+{"kind":"textbox","id":"sh/m943ypcj","slide":25,"text":"25","textPreview":"25","textChars":2,"textLines":1,"bbox":[1200,690,30,18]}
+{"kind":"shape","id":"sh/32p8buxk","slide":25,"bbox":[72,190,534,146]}
+{"kind":"shape","id":"sh/21wr2pwz","slide":25,"bbox":[72,190,10,146]}
+{"kind":"textbox","id":"sh/po7qdkfq","slide":25,"text":"Facility team","textPreview":"Facility team","textChars":13,"textLines":1,"bbox":[105,213,460,25]}
+{"kind":"textbox","id":"sh/4ny94ze5","slide":25,"text":"Assessment entry, CQI actions, evidence, KPI/outcome entry and facility reports.","textPreview":"Assessment entry, CQI actions, evidence, KPI/outcome entry and facility reports.","textChars":80,"textLines":1,"bbox":[105,252,460,60]}
+{"kind":"shape","id":"sh/fy587ax8","slide":25,"bbox":[674,190,534,146]}
+{"kind":"shape","id":"sh/uxwry5w3","slide":25,"bbox":[674,190,10,146]}
+{"kind":"textbox","id":"sh/h0nq9kfe","slide":25,"text":"Assessor","textPreview":"Assessor","textChars":8,"textLines":1,"bbox":[707,213,460,25]}
+{"kind":"textbox","id":"sh/gze90fet","slide":25,"text":"Assigned facility assessments and allocated department or class work.","textPreview":"Assigned facility assessments and allocated department or class work.","textChars":69,"textLines":1,"bbox":[707,252,460,60]}
+{"kind":"shape","id":"sh/zu9sjexs","slide":25,"bbox":[72,390,534,146]}
+{"kind":"shape","id":"sh/etgra9w7","slide":25,"bbox":[72,390,10,146]}
+{"kind":"textbox","id":"sh/apkbidgf","slide":25,"text":"District and division","textPreview":"District and division","textChars":21,"textLines":1,"bbox":[105,413,460,25]}
+{"kind":"textbox","id":"sh/bqtcbih0","slide":25,"text":"Progress, CQI and performance monitoring for assigned geography.","textPreview":"Progress, CQI and performance monitoring for assigned geography.","textChars":64,"textLines":1,"bbox":[105,452,460,60]}
+{"kind":"shape","id":"sh/wr2tknyl","slide":25,"bbox":[674,390,534,146]}
+{"kind":"shape","id":"sh/xsbud8z6","slide":25,"bbox":[674,390,10,146]}
+{"kind":"textbox","id":"sh/yd4vmdgb","slide":25,"text":"State administration","textPreview":"State administration","textChars":20,"textLines":1,"bbox":[707,413,460,25]}
+{"kind":"textbox","id":"sh/jedcfihw","slide":25,"text":"Statewide dashboards, certification views, assessor management, exports and reports.","textPreview":"Statewide dashboards, certification views, assessor management, exports and reports.","textChars":84,"textLines":1,"bbox":[707,452,460,60]}
+{"kind":"image","id":"im/2xsbidcb","slide":25,"name":"","alt":"SaQshi brand logo","bbox":[1142,34,88,31]}
+{"kind":"notes","id":"nt/wd9x1d","slide":25,"text":"Source: docs/user/user_guide.md."}
+{"kind":"slide","id":"sl/o3xar1","slide":26,"title":"CONTINUOUS QUALITY IMPROVEMENT","textShapes":18}
+{"kind":"shape","id":"sh/61cb6tcn","slide":26,"bbox":[60,22,212,29]}
+{"kind":"textbox","id":"sh/t4nuh8be","slide":26,"text":"CONTINUOUS QUALITY IMPROVEMENT","textPreview":"CONTINUOUS QUALITY IMPROVEMENT","textChars":30,"textLines":1,"bbox":[60,22,212,29]}
+{"kind":"textbox","id":"sh/83ut83at","slide":26,"text":"A score creates a clear next action","textPreview":"A score creates a clear next action","textChars":35,"textLines":1,"bbox":[60,57,1080,43]}
+{"kind":"shape","id":"sh/zylcbytc","slide":26,"bbox":[60,99,77,5]}
+{"kind":"textbox","id":"sh/yxcb2tcr","slide":26,"text":"SaQshi keeps the corrective-action trail connected to the assessment result rather than separating it into files.","textPreview":"SaQshi keeps the corrective-action trail connected to the assessment result rather than separating it into files.","textChars":113,"textLines":1,"bbox":[60,125,1080,28]}
+{"kind":"shape","id":"sh/l03udob2","slide":26,"bbox":[0,686,1280,34]}
+{"kind":"textbox","id":"sh/kzut4juh","slide":26,"text":"SaQshi | Open Digital Quality Improvement Platform","textPreview":"SaQshi | Open Digital Quality Improvement Platform","textChars":50,"textLines":1,"bbox":[52,690,420,18]}
+{"kind":"textbox","id":"sh/3u5cnitg","slide":26,"text":"26","textPreview":"26","textChars":2,"textLines":1,"bbox":[1200,690,30,18]}
+{"kind":"shape","id":"sh/sjqt87ah","slide":26,"bbox":[130,309,1020,3]}
+{"kind":"shape","id":"sh/tkza1crm","slide":26,"bbox":[95,267,76,76]}
+{"kind":"textbox","id":"sh/6h8b6hsb","slide":26,"text":"1","textPreview":"1","textChars":1,"textLines":1,"bbox":[95,267,76,76]}
+{"kind":"textbox","id":"sh/rihsz2tw","slide":26,"text":"Score checklist","textPreview":"Score checklist","textChars":15,"textLines":1,"bbox":[75,370,115,27]}
+{"kind":"textbox","id":"sh/4fqt47a5","slide":26,"text":"Non-compliance and partial-compliance checkpoints become gaps.","textPreview":"Non-compliance and partial-compliance checkpoints become gaps.","textChars":62,"textLines":1,"bbox":[67,407,135,63]}
+{"kind":"shape","id":"sh/5gzaxcbq","slide":26,"bbox":[377,267,76,76]}
+{"kind":"textbox","id":"sh/itob2xsz","slide":26,"text":"2","textPreview":"2","textChars":1,"textLines":1,"bbox":[377,267,76,76]}
+{"kind":"textbox","id":"sh/jehsv2tk","slide":26,"text":"Set action plan","textPreview":"Set action plan","textChars":15,"textLines":1,"bbox":[357,370,115,27]}
+{"kind":"textbox","id":"sh/wr690na9","slide":26,"text":"Assign responsible person and target date for each gap.","textPreview":"Assign responsible person and target date for each gap.","textChars":55,"textLines":1,"bbox":[349,407,135,63]}
+{"kind":"shape","id":"sh/hsfatsbu","slide":26,"bbox":[659,267,76,76]}
+{"kind":"textbox","id":"sh/xwnihkz6","slide":26,"text":"3","textPreview":"3","textChars":1,"textLines":1,"bbox":[659,267,76,76]}
+{"kind":"textbox","id":"sh/cbeh8fyl","slide":26,"text":"Add evidence","textPreview":"Add evidence","textChars":12,"textLines":1,"bbox":[639,370,115,27]}
+{"kind":"textbox","id":"sh/ba50fuh0","slide":26,"text":"Attach supporting evidence and record closure remarks.","textPreview":"Attach supporting evidence and record closure remarks.","textChars":54,"textLines":1,"bbox":[631,407,135,63]}
+{"kind":"shape","id":"sh/a9wz6pgv","slide":26,"bbox":[941,267,76,76]}
+{"kind":"textbox","id":"sh/p8nydkza","slide":26,"text":"4","textPreview":"4","textChars":1,"textLines":1,"bbox":[941,267,76,76]}
+{"kind":"textbox","id":"sh/o7eh4fyp","slide":26,"text":"Review revised score","textPreview":"Review revised score","textChars":20,"textLines":1,"bbox":[921,370,115,27]}
+{"kind":"textbox","id":"sh/365gbah4","slide":26,"text":"Use closure status and revised score in progress reports and monitoring.","textPreview":"Use closure status and revised score in progress reports and monitoring.","textChars":72,"textLines":1,"bbox":[913,407,135,63]}
+{"kind":"shape","id":"sh/25wz25gj","slide":26,"bbox":[170,545,940,63]}
+{"kind":"textbox","id":"sh/94rip4ze","slide":26,"text":"Monitoring teams can identify open, overdue and high-priority actions without changing the facility’s underlying action plan.","textPreview":"Monitoring teams can identify open, overdue and high-priority actions without changing the facility’s underlying action plan.","textChars":125,"textLines":1,"bbox":[205,563,870,25]}
+{"kind":"image","id":"im/rex4z6hg","slide":26,"name":"","alt":"SaQshi brand logo","bbox":[1142,34,88,31]}
+{"kind":"notes","id":"nt/o3xar1","slide":26,"text":"Source: docs/architecture/project_overview.md and docs/user/user_guide.md."}
+{"kind":"slide","id":"sl/ezi82f","slide":27,"title":"IMPLEMENTATION","textShapes":18}
+{"kind":"shape","id":"sh/k3mxoje9","slide":27,"bbox":[60,22,212,29]}
+{"kind":"textbox","id":"sh/j2dgvyxo","slide":27,"text":"IMPLEMENTATION","textPreview":"IMPLEMENTATION","textChars":14,"textLines":1,"bbox":[60,22,212,29]}
+{"kind":"textbox","id":"sh/y14fmtw3","slide":27,"text":"A practical path to a SaQshi rollout","textPreview":"A practical path to a SaQshi rollout","textChars":36,"textLines":1,"bbox":[60,57,1080,43]}
+{"kind":"shape","id":"sh/t8fy18fq","slide":27,"bbox":[60,99,77,5]}
+{"kind":"textbox","id":"sh/876xs3e5","slide":27,"text":"The platform supports local programme configuration. A client rollout begins by aligning its scope and operating model.","textPreview":"The platform supports local programme configuration. A client rollout begins by aligning its scope and operating model.","textChars":119,"textLines":1,"bbox":[60,125,1080,28]}
+{"kind":"shape","id":"sh/76dgzyx0","slide":27,"bbox":[0,686,1280,34]}
+{"kind":"textbox","id":"sh/654fqtwf","slide":27,"text":"SaQshi | Open Digital Quality Improvement Platform","textPreview":"SaQshi | Open Digital Quality Improvement Platform","textChars":50,"textLines":1,"bbox":[52,690,420,18]}
+{"kind":"textbox","id":"sh/9cbyp4fm","slide":27,"text":"27","textPreview":"27","textChars":2,"textLines":1,"bbox":[1200,690,30,18]}
+{"kind":"shape","id":"sh/yp4n6pg3","slide":27,"bbox":[72,181,48,48]}
+{"kind":"textbox","id":"sh/jqd4fux8","slide":27,"text":"1","textPreview":"1","textChars":1,"textLines":1,"bbox":[72,181,48,48]}
+{"kind":"textbox","id":"sh/krm58zyt","slide":27,"text":"Confirm scope","textPreview":"Confirm scope","textChars":13,"textLines":1,"bbox":[146,181,265,25]}
+{"kind":"textbox","id":"sh/lsvmh4fe","slide":27,"text":"Agree facility types, geography, framework, indicators and reporting needs.","textPreview":"Agree facility types, geography, framework, indicators and reporting needs.","textChars":75,"textLines":1,"bbox":[425,181,720,45]}
+{"kind":"shape","id":"sh/6tonapgz","slide":27,"bbox":[72,284,48,48]}
+{"kind":"textbox","id":"sh/7ux4juxk","slide":27,"text":"2","textPreview":"2","textChars":1,"textLines":1,"bbox":[72,284,48,48]}
+{"kind":"textbox","id":"sh/8v65czy5","slide":27,"text":"Configure platform","textPreview":"Configure platform","textChars":18,"textLines":1,"bbox":[146,284,265,25]}
+{"kind":"textbox","id":"sh/twfml4fq","slide":27,"text":"Set up masters, roles, workflow rules, checklist and monitoring views.","textPreview":"Set up masters, roles, workflow rules, checklist and monitoring views.","textChars":70,"textLines":1,"bbox":[425,284,720,45]}
+{"kind":"shape","id":"sh/uxone9gv","slide":27,"bbox":[72,387,48,48]}
+{"kind":"textbox","id":"sh/vyx4nexg","slide":27,"text":"3","textPreview":"3","textChars":1,"textLines":1,"bbox":[72,387,48,48]}
+{"kind":"textbox","id":"sh/r2h4bedo","slide":27,"text":"Pilot with users","textPreview":"Pilot with users","textChars":16,"textLines":1,"bbox":[146,387,265,25]}
+{"kind":"textbox","id":"sh/q18329c3","slide":27,"text":"Run a controlled pilot with facility teams and monitoring users, then refine.","textPreview":"Run a controlled pilot with facility teams and monitoring users, then refine.","textChars":77,"textLines":1,"bbox":[425,387,720,45]}
+{"kind":"shape","id":"sh/dozmdovu","slide":27,"bbox":[72,490,48,48]}
+{"kind":"textbox","id":"sh/cnql4ju9","slide":27,"text":"4","textPreview":"4","textChars":1,"textLines":1,"bbox":[72,490,48,48]}
+{"kind":"textbox","id":"sh/3yx47uds","slide":27,"text":"Scale with governance","textPreview":"Scale with governance","textChars":21,"textLines":1,"bbox":[146,490,265,25]}
+{"kind":"textbox","id":"sh/ixo3y9c7","slide":27,"text":"Use adoption support, dashboards and CQI follow-up to guide expansion.","textPreview":"Use adoption support, dashboards and CQI follow-up to guide expansion.","textChars":70,"textLines":1,"bbox":[425,490,720,45]}
+{"kind":"shape","id":"sh/p0zm94vi","slide":27,"bbox":[72,616,1060,42]}
+{"kind":"textbox","id":"sh/4z6l0zud","slide":27,"text":"Client discussion: select the first programme, facilities and users for a focused pilot.","textPreview":"Client discussion: select the first programme, facilities and users for a focused pilot.","textChars":88,"textLines":1,"bbox":[95,624,1015,24]}
+{"kind":"image","id":"im/x47yd0zm","slide":27,"name":"","alt":"SaQshi brand logo","bbox":[1142,34,88,31]}
+{"kind":"notes","id":"nt/ezi82f","slide":27,"text":"Rollout structure is a proposed approach based on SaQshi configuration and role workflows."}

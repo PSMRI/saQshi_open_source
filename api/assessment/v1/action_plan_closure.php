@@ -34,6 +34,7 @@
 
 require_once __DIR__ . '/../../auth_api.php';
 require_once __DIR__ . '/../../assets/conn/db.php';
+require_once __DIR__ . '/../../core/ApiCache.php';
 
 Security::requireMethod('POST');
 
@@ -307,6 +308,11 @@ try {
     if (!$stmt->execute()) {
         Response::serverError('Closure update failed: ' . $stmt->error);
     }
+
+    // Dashboard and Report Dashboard both obtain their table score from the
+    // assessment list. Clear its cached original total as soon as a gap's
+    // revised score changes.
+    ApiCache::forget('assessment:list:facility:' . $facId);
 
     /*
      * Important:

@@ -1,0 +1,312 @@
+{"kind":"deck","id":"pr/ehqvbl","name":"Deck"}
+{"kind":"layout","layoutId":"22bb46f6-7804-40c3-9f79-fbfd63790527","name":"Master","type":"master"}
+{"kind":"layout","layoutId":"49308400-6422-4410-b18f-4304b301f95d","name":"Title Slide","type":"title"}
+{"kind":"slide","id":"sl/3qnddh","slide":1,"title":"SaQshi","textShapes":4}
+{"kind":"shape","id":"sh/3etsb6hk","slide":1,"bbox":[0,0,700,720]}
+{"kind":"textbox","id":"sh/dkvahgzm","slide":1,"text":"SaQshi","textPreview":"SaQshi","textChars":6,"textLines":1,"bbox":[70,205,470,65]}
+{"kind":"textbox","id":"sh/sjm98bi1","slide":1,"text":"A digital platform for facility quality assessment, continuous improvement and programme monitoring","textPreview":"A digital platform for facility quality assessment, continuous improvement and programme monitoring","textChars":99,"textLines":1,"bbox":[70,290,500,112]}
+{"kind":"textbox","id":"sh/ridsf6hg","slide":1,"text":"Client proposal | Public health facilities","textPreview":"Client proposal | Public health facilities","textChars":42,"textLines":1,"bbox":[70,602,420,24]}
+{"kind":"textbox","id":"sh/qh4r610b","slide":1,"text":"Assess. Improve. Monitor. Report.","textPreview":"Assess. Improve. Monitor. Report.","textChars":33,"textLines":1,"bbox":[70,634,400,25]}
+{"kind":"image","id":"im/10z2h8z6","slide":1,"name":"","alt":"SaQshi visual","bbox":[0,0,1280,720]}
+{"kind":"image","id":"im/fehkfyh0","slide":1,"name":"","alt":"SaQshi visual","bbox":[70,56,180,56]}
+{"kind":"notes","id":"nt/3qnddh","slide":1,"text":"Source: SaQshi documentation. Cover image is illustrative."}
+{"kind":"slide","id":"sl/v65qb2","slide":2,"title":"CLIENT CONTEXT","textShapes":15}
+{"kind":"shape","id":"sh/czehwva1","slide":2,"bbox":[60,22,210,29]}
+{"kind":"textbox","id":"sh/by50nq9g","slide":2,"text":"CLIENT CONTEXT","textPreview":"CLIENT CONTEXT","textChars":14,"textLines":1,"bbox":[60,22,210,29]}
+{"kind":"textbox","id":"sh/axwzulsb","slide":2,"text":"Quality work loses momentum when the workflow breaks","textPreview":"Quality work loses momentum when the workflow breaks","textChars":52,"textLines":1,"bbox":[60,57,1095,46]}
+{"kind":"shape","id":"sh/pw3ilgrq","slide":2,"bbox":[60,100,77,5]}
+{"kind":"textbox","id":"sh/ovuhsba5","slide":2,"text":"Facility teams, assessors and programme managers often work across disconnected registers, spreadsheets and follow-up calls.","textPreview":"Facility teams, assessors and programme managers often work across disconnected registers, spreadsheets and follow-up calls.","textChars":124,"textLines":1,"bbox":[60,125,1080,32]}
+{"kind":"shape","id":"sh/nul0jq9k","slide":2,"bbox":[0,686,1280,34]}
+{"kind":"textbox","id":"sh/2tczqlsz","slide":2,"text":"SaQshi | Client proposal","textPreview":"SaQshi | Client proposal","textChars":24,"textLines":1,"bbox":[60,691,280,15]}
+{"kind":"textbox","id":"sh/9s7ixkru","slide":2,"text":"02","textPreview":"02","textChars":2,"textLines":1,"bbox":[1200,691,30,15]}
+{"kind":"shape","id":"sh/8ry14fa9","slide":2,"bbox":[72,210,356,275]}
+{"kind":"shape","id":"sh/mtgvapov","slide":2,"bbox":[96,234,50,50]}
+{"kind":"textbox","id":"sh/nupc3u5g","slide":2,"text":"1","textPreview":"1","textChars":1,"textLines":1,"bbox":[96,234,50,50]}
+{"kind":"textbox","id":"sh/8vydcz61","slide":2,"text":"Assessments are hard to track","textPreview":"Assessments are hard to track","textChars":29,"textLines":1,"bbox":[96,310,300,45]}
+{"kind":"textbox","id":"sh/9w7u54nm","slide":2,"text":"Teams need to know what started, what is incomplete and where evidence sits.","textPreview":"Teams need to know what started, what is incomplete and where evidence sits.","textChars":76,"textLines":1,"bbox":[96,370,300,80]}
+{"kind":"shape","id":"sh/y5wb6poz","slide":2,"bbox":[464,210,356,275]}
+{"kind":"shape","id":"sh/zq5czu5k","slide":2,"bbox":[488,234,50,50]}
+{"kind":"textbox","id":"sh/0red8z6p","slide":2,"text":"2","textPreview":"2","textChars":1,"textLines":1,"bbox":[488,234,50,50]}
+{"kind":"textbox","id":"sh/ls7u14na","slide":2,"text":"Gaps do not become action","textPreview":"Gaps do not become action","textChars":25,"textLines":1,"bbox":[488,310,300,45]}
+{"kind":"textbox","id":"sh/il0vi943","slide":2,"text":"A weak checkpoint needs a named action, owner, target date and closure evidence.","textPreview":"A weak checkpoint needs a named action, owner, target date and closure evidence.","textChars":80,"textLines":1,"bbox":[488,370,300,80]}
+{"kind":"shape","id":"sh/jm9cbe5o","slide":2,"bbox":[856,210,356,275]}
+{"kind":"shape","id":"sh/f61s36l0","slide":2,"bbox":[880,234,50,50]}
+{"kind":"textbox","id":"sh/e5srul4f","slide":2,"text":"3","textPreview":"3","textChars":1,"textLines":1,"bbox":[880,234,50,50]}
+{"kind":"textbox","id":"sh/18ja5g36","slide":2,"text":"Leaders lack a single view","textPreview":"Leaders lack a single view","textChars":26,"textLines":1,"bbox":[880,310,300,45]}
+{"kind":"textbox","id":"sh/g7a9wbml","slide":2,"text":"Programme teams need to see progress and risk at facility, district and state levels.","textPreview":"Programme teams need to see progress and risk at facility, district and state levels.","textChars":85,"textLines":1,"bbox":[880,370,300,80]}
+{"kind":"textbox","id":"sh/3als7qlc","slide":2,"text":"SaQshi keeps the assessment, the improvement action and the monitoring view in the same platform.","textPreview":"SaQshi keeps the assessment, the improvement action and the monitoring view in the same platform.","textChars":97,"textLines":1,"bbox":[135,566,1010,46]}
+{"kind":"notes","id":"nt/v65qb2","slide":2,"text":""}
+{"kind":"slide","id":"sl/suwaog","slide":3,"title":"THE PLATFORM","textShapes":11}
+{"kind":"shape","id":"sh/8rips3ud","slide":3,"bbox":[60,22,210,29]}
+{"kind":"textbox","id":"sh/nq9ozyds","slide":3,"text":"THE PLATFORM","textPreview":"THE PLATFORM","textChars":12,"textLines":1,"bbox":[60,22,210,29]}
+{"kind":"textbox","id":"sh/mp07qtcn","slide":3,"text":"SaQshi turns quality assessment into an operating cycle","textPreview":"SaQshi turns quality assessment into an operating cycle","textChars":55,"textLines":1,"bbox":[60,57,1095,46]}
+{"kind":"shape","id":"sh/xwb658va","slide":3,"bbox":[60,100,77,5]}
+{"kind":"textbox","id":"sh/wvipwnup","slide":3,"text":"It gives each role the right workflow and connects field-level action with programme-level oversight.","textPreview":"It gives each role the right workflow and connects field-level action with programme-level oversight.","textChars":101,"textLines":1,"bbox":[60,125,1080,32]}
+{"kind":"shape","id":"sh/vu9o3id4","slide":3,"bbox":[0,686,1280,34]}
+{"kind":"textbox","id":"sh/at07udcj","slide":3,"text":"SaQshi | Client proposal","textPreview":"SaQshi | Client proposal","textChars":24,"textLines":1,"bbox":[60,691,280,15]}
+{"kind":"textbox","id":"sh/d076tovq","slide":3,"text":"03","textPreview":"03","textChars":2,"textLines":1,"bbox":[1200,691,30,15]}
+{"kind":"shape","id":"sh/2tg72pgb","slide":3,"bbox":[72,195,575,92]}
+{"kind":"textbox","id":"sh/nupobaxw","slide":3,"text":"ASSESS","textPreview":"ASSESS","textChars":6,"textLines":1,"bbox":[96,211,140,24]}
+{"kind":"textbox","id":"sh/ovip4fyh","slide":3,"text":"Use configurable checklists to capture facility evidence and checkpoint scores.","textPreview":"Use configurable checklists to capture facility evidence and checkpoint scores.","textChars":79,"textLines":1,"bbox":[96,241,500,31]}
+{"kind":"shape","id":"sh/pwr6dkf2","slide":3,"bbox":[72,315,575,92]}
+{"kind":"textbox","id":"sh/ax076pgn","slide":3,"text":"IMPROVE","textPreview":"IMPROVE","textChars":7,"textLines":1,"bbox":[96,331,140,24]}
+{"kind":"textbox","id":"sh/by9ofux8","slide":3,"text":"Convert gaps into action plans, assign ownership and record closure evidence.","textPreview":"Convert gaps into action plans, assign ownership and record closure evidence.","textChars":77,"textLines":1,"bbox":[96,361,500,31]}
+{"kind":"shape","id":"sh/czip8zyd","slide":3,"bbox":[72,435,575,92]}
+{"kind":"textbox","id":"sh/x0r6h4fy","slide":3,"text":"MONITOR","textPreview":"MONITOR","textChars":7,"textLines":1,"bbox":[96,451,140,24]}
+{"kind":"textbox","id":"sh/y107a9gj","slide":3,"text":"Track assessment progress, overdue actions, performance and certification across geography.","textPreview":"Track assessment progress, overdue actions, performance and certification across geography.","textChars":91,"textLines":1,"bbox":[96,481,500,31]}
+{"kind":"image","id":"im/pk7ytc7u","slide":3,"name":"","alt":"SaQshi visual","bbox":[753,194,447,316]}
+{"kind":"notes","id":"nt/suwaog","slide":3,"text":""}
+{"kind":"slide","id":"sl/fygc4g","slide":4,"title":"FACILITY WORKFLOW","textShapes":18}
+{"kind":"shape","id":"sh/wv2psrex","slide":4,"bbox":[60,22,210,29]}
+{"kind":"textbox","id":"sh/vut8jmxs","slide":4,"text":"FACILITY WORKFLOW","textPreview":"FACILITY WORKFLOW","textChars":17,"textLines":1,"bbox":[60,22,210,29]}
+{"kind":"textbox","id":"sh/ut07qhw7","slide":4,"text":"One assessment record carries the team from baseline to follow-up","textPreview":"One assessment record carries the team from baseline to follow-up","textChars":65,"textLines":1,"bbox":[60,57,1095,46]}
+{"kind":"shape","id":"sh/5kbqpwfu","slide":4,"bbox":[60,100,77,5]}
+{"kind":"textbox","id":"sh/4j2pwre9","slide":4,"text":"Each step uses the same facility and assessment context, so teams can resume work and managers can trace progress.","textPreview":"Each step uses the same facility and assessment context, so teams can resume work and managers can trace progress.","textChars":114,"textLines":1,"bbox":[60,125,1080,32]}
+{"kind":"shape","id":"sh/jyt8nmxo","slide":4,"bbox":[0,686,1280,34]}
+{"kind":"textbox","id":"sh/ixk7uhw3","slide":4,"text":"SaQshi | Client proposal","textPreview":"SaQshi | Client proposal","textChars":24,"textLines":1,"bbox":[60,691,280,15]}
+{"kind":"textbox","id":"sh/lor6dsfa","slide":4,"text":"04","textPreview":"04","textChars":2,"textLines":1,"bbox":[1200,691,30,15]}
+{"kind":"shape","id":"sh/knipk7y5","slide":4,"bbox":[110,302,1060,4]}
+{"kind":"shape","id":"sh/ah8fexsn","slide":4,"bbox":[85,270,64,64]}
+{"kind":"textbox","id":"sh/vihg7298","slide":4,"text":"1","textPreview":"1","textChars":1,"textLines":1,"bbox":[85,270,64,64]}
+{"kind":"textbox","id":"sh/wjqxgnad","slide":4,"text":"Create assessment","textPreview":"Create assessment","textChars":17,"textLines":1,"bbox":[57,355,120,50]}
+{"kind":"shape","id":"sh/xkzy9sry","slide":4,"bbox":[275,270,64,64]}
+{"kind":"textbox","id":"sh/il8fixsj","slide":4,"text":"2","textPreview":"2","textChars":1,"textLines":1,"bbox":[275,270,64,64]}
+{"kind":"textbox","id":"sh/jmhgb294","slide":4,"text":"Activate departments","textPreview":"Activate departments","textChars":20,"textLines":1,"bbox":[247,355,120,50]}
+{"kind":"shape","id":"sh/knqxk7ap","slide":4,"bbox":[465,270,64,64]}
+{"kind":"textbox","id":"sh/5ojydcra","slide":4,"text":"3","textPreview":"3","textChars":1,"textLines":1,"bbox":[465,270,64,64]}
+{"kind":"textbox","id":"sh/6psfmhsv","slide":4,"text":"Record checklist scores","textPreview":"Record checklist scores","textChars":23,"textLines":1,"bbox":[437,355,120,50]}
+{"kind":"shape","id":"sh/7q1gfm9g","slide":4,"bbox":[655,270,64,64]}
+{"kind":"textbox","id":"sh/3e1w3mp8","slide":4,"text":"4","textPreview":"4","textChars":1,"textLines":1,"bbox":[655,270,64,64]}
+{"kind":"textbox","id":"sh/2dsfahon","slide":4,"text":"Review gaps","textPreview":"Review gaps","textChars":11,"textLines":1,"bbox":[627,355,120,50]}
+{"kind":"shape","id":"sh/pg3e5c7e","slide":4,"bbox":[845,270,64,64]}
+{"kind":"textbox","id":"sh/4fuxcr6t","slide":4,"text":"5","textPreview":"5","textChars":1,"textLines":1,"bbox":[845,270,64,64]}
+{"kind":"textbox","id":"sh/fq1wz2pc","slide":4,"text":"Assign actions","textPreview":"Assign actions","textChars":14,"textLines":1,"bbox":[817,355,120,50]}
+{"kind":"shape","id":"sh/upsv6xor","slide":4,"bbox":[1035,270,64,64]}
+{"kind":"textbox","id":"sh/hsje1c7i","slide":4,"text":"6","textPreview":"6","textChars":1,"textLines":1,"bbox":[1035,270,64,64]}
+{"kind":"textbox","id":"sh/grax876x","slide":4,"text":"Close gaps with evidence","textPreview":"Close gaps with evidence","textChars":24,"textLines":1,"bbox":[1007,355,120,50]}
+{"kind":"shape","id":"sh/7mhwv2p0","slide":4,"bbox":[176,500,928,66]}
+{"kind":"textbox","id":"sh/6l8v2xov","slide":4,"text":"The reported score and progress reflect the assessment responses and the CQI closure record.","textPreview":"The reported score and progress reflect the assessment responses and the CQI closure record.","textChars":92,"textLines":1,"bbox":[210,520,860,28]}
+{"kind":"notes","id":"nt/fygc4g","slide":4,"text":""}
+{"kind":"slide","id":"sl/5b3p7r","slide":5,"title":"ASSESSMENT","textShapes":17}
+{"kind":"shape","id":"sh/x8nudsjm","slide":5,"bbox":[60,22,210,29]}
+{"kind":"textbox","id":"sh/a5wbidkb","slide":5,"text":"ASSESSMENT","textPreview":"ASSESSMENT","textChars":10,"textLines":1,"bbox":[60,22,210,29]}
+{"kind":"textbox","id":"sh/b65cbi1w","slide":5,"text":"Structured assessment for real facility work","textPreview":"Structured assessment for real facility work","textChars":44,"textLines":1,"bbox":[60,57,1095,46]}
+{"kind":"shape","id":"sh/o3etg325","slide":5,"bbox":[60,100,77,5]}
+{"kind":"textbox","id":"sh/p4nu98jq","slide":5,"text":"SaQshi supports configurable frameworks and department-aware checklist entry for a disciplined, auditable assessment process.","textPreview":"SaQshi supports configurable frameworks and department-aware checklist entry for a disciplined, auditable assessment process.","textChars":125,"textLines":1,"bbox":[60,125,1080,32]}
+{"kind":"shape","id":"sh/21cbetkz","slide":5,"bbox":[0,686,1280,34]}
+{"kind":"textbox","id":"sh/n25s7ylk","slide":5,"text":"SaQshi | Client proposal","textPreview":"SaQshi | Client proposal","textChars":24,"textLines":1,"bbox":[60,691,280,15]}
+{"kind":"textbox","id":"sh/8zyts729","slide":5,"text":"05","textPreview":"05","textChars":2,"textLines":1,"bbox":[1200,691,30,15]}
+{"kind":"shape","id":"sh/907ulcju","slide":5,"bbox":[72,195,536,142]}
+{"kind":"shape","id":"sh/hwnyx836","slide":5,"bbox":[95,219,44,44]}
+{"kind":"textbox","id":"sh/gveh43ml","slide":5,"text":"1","textPreview":"1","textChars":1,"textLines":1,"bbox":[95,219,44,44]}
+{"kind":"textbox","id":"sh/vu5gvy50","slide":5,"text":"Framework and facility scope","textPreview":"Framework and facility scope","textChars":28,"textLines":1,"bbox":[160,219,400,24]}
+{"kind":"textbox","id":"sh/utwz2t4f","slide":5,"text":"Select the framework and activate only the departments that apply.","textPreview":"Select the framework and activate only the departments that apply.","textChars":66,"textLines":1,"bbox":[160,256,405,54]}
+{"kind":"shape","id":"sh/tsnytonu","slide":5,"bbox":[672,195,536,142]}
+{"kind":"shape","id":"sh/8ruh0jm9","slide":5,"bbox":[695,219,44,44]}
+{"kind":"textbox","id":"sh/7qlgre5o","slide":5,"text":"2","textPreview":"2","textChars":1,"textLines":1,"bbox":[695,219,44,44]}
+{"kind":"textbox","id":"sh/6pczyt4j","slide":5,"text":"Checkpoint-level response","textPreview":"Checkpoint-level response","textChars":25,"textLines":1,"bbox":[760,219,400,24]}
+{"kind":"textbox","id":"sh/do7i5s3y","slide":5,"text":"Record compliance at each checkpoint. In the NQAS profile: 0 non-compliance, 1 partial, 2 full.","textPreview":"Record compliance at each checkpoint. In the NQAS profile: 0 non-compliance, 1 partial, 2 full.","textChars":95,"textLines":1,"bbox":[760,256,405,54]}
+{"kind":"shape","id":"sh/snyhcnmt","slide":5,"bbox":[72,390,536,142]}
+{"kind":"shape","id":"sh/cr618rup","slide":5,"bbox":[95,414,44,44]}
+{"kind":"textbox","id":"sh/dsf21wba","slide":5,"text":"3","textPreview":"3","textChars":1,"textLines":1,"bbox":[95,414,44,44]}
+{"kind":"textbox","id":"sh/qpoj6hcz","slide":5,"text":"Pause and continue","textPreview":"Pause and continue","textChars":18,"textLines":1,"bbox":[160,414,400,24]}
+{"kind":"textbox","id":"sh/bqxkzmt4","slide":5,"text":"Teams can resume an active assessment instead of re-entering completed work.","textPreview":"Teams can resume an active assessment instead of re-entering completed work.","textChars":76,"textLines":1,"bbox":[160,451,405,54]}
+{"kind":"shape","id":"sh/o3614rut","slide":5,"bbox":[672,390,536,142]}
+{"kind":"shape","id":"sh/pof2xcbe","slide":5,"bbox":[695,414,44,44]}
+{"kind":"textbox","id":"sh/214j2hcn","slide":5,"text":"4","textPreview":"4","textChars":1,"textLines":1,"bbox":[695,414,44,44]}
+{"kind":"textbox","id":"sh/32d0vmt8","slide":5,"text":"Evidence and validation","textPreview":"Evidence and validation","textChars":23,"textLines":1,"bbox":[760,414,400,24]}
+{"kind":"textbox","id":"sh/gzm107uh","slide":5,"text":"Attach approved evidence and apply workflow rules to prevent incomplete or duplicate entry.","textPreview":"Attach approved evidence and apply workflow rules to prevent incomplete or duplicate entry.","textChars":91,"textLines":1,"bbox":[760,451,405,54]}
+{"kind":"notes","id":"nt/5b3p7r","slide":5,"text":""}
+{"kind":"slide","id":"sl/91bm96","slide":6,"title":"CONTINUOUS QUALITY IMPROVEMENT","textShapes":17}
+{"kind":"shape","id":"sh/ehczih0b","slide":6,"bbox":[60,22,210,29]}
+{"kind":"textbox","id":"sh/14nitcz2","slide":6,"text":"CONTINUOUS QUALITY IMPROVEMENT","textPreview":"CONTINUOUS QUALITY IMPROVEMENT","textChars":30,"textLines":1,"bbox":[60,22,210,29]}
+{"kind":"textbox","id":"sh/03ehkrih","slide":6,"text":"Every weak checkpoint becomes a managed improvement action","textPreview":"Every weak checkpoint becomes a managed improvement action","textChars":58,"textLines":1,"bbox":[60,57,1095,46]}
+{"kind":"shape","id":"sh/n650vmhs","slide":6,"bbox":[60,100,77,5]}
+{"kind":"textbox","id":"sh/m5wzmh07","slide":6,"text":"SaQshi maintains the corrective-action trail with the score that created it.","textPreview":"SaQshi maintains the corrective-action trail with the score that created it.","textChars":76,"textLines":1,"bbox":[60,125,1080,32]}
+{"kind":"shape","id":"sh/98nixwzy","slide":6,"bbox":[0,686,1280,34]}
+{"kind":"textbox","id":"sh/o7ehorid","slide":6,"text":"SaQshi | Client proposal","textPreview":"SaQshi | Client proposal","textChars":24,"textLines":1,"bbox":[60,691,280,15]}
+{"kind":"textbox","id":"sh/3algj21o","slide":6,"text":"06","textPreview":"06","textChars":2,"textLines":1,"bbox":[1200,691,30,15]}
+{"kind":"shape","id":"sh/29szax03","slide":6,"bbox":[130,305,1020,4]}
+{"kind":"shape","id":"sh/kbuxw3a1","slide":6,"bbox":[94,264,76,76]}
+{"kind":"textbox","id":"sh/5c3yp8rm","slide":6,"text":"1","textPreview":"1","textChars":1,"textLines":1,"bbox":[94,264,76,76]}
+{"kind":"textbox","id":"sh/i9sfudsv","slide":6,"text":"Gap analysis","textPreview":"Gap analysis","textChars":12,"textLines":1,"bbox":[74,370,116,25]}
+{"kind":"textbox","id":"sh/jalgni9g","slide":6,"text":"Non-compliance and partial-compliance checkpoints appear for review.","textPreview":"Non-compliance and partial-compliance checkpoints appear for review.","textChars":68,"textLines":1,"bbox":[66,409,135,70]}
+{"kind":"shape","id":"sh/sfuh0nax","slide":6,"bbox":[376,264,76,76]}
+{"kind":"textbox","id":"sh/t03ytsri","slide":6,"text":"2","textPreview":"2","textChars":1,"textLines":1,"bbox":[376,264,76,76]}
+{"kind":"textbox","id":"sh/6dcfydsr","slide":6,"text":"Action plan","textPreview":"Action plan","textChars":11,"textLines":1,"bbox":[356,370,116,25]}
+{"kind":"textbox","id":"sh/7elgri9c","slide":6,"text":"Capture the responsible person, target date and the corrective action.","textPreview":"Capture the responsible person, target date and the corrective action.","textChars":70,"textLines":1,"bbox":[348,409,135,70]}
+{"kind":"shape","id":"sh/8jaxojat","slide":6,"bbox":[658,264,76,76]}
+{"kind":"textbox","id":"sh/9kjyhore","slide":6,"text":"3","textPreview":"3","textChars":1,"textLines":1,"bbox":[658,264,76,76]}
+{"kind":"textbox","id":"sh/p0belk32","slide":6,"text":"Closure","textPreview":"Closure","textChars":7,"textLines":1,"bbox":[638,370,116,25]}
+{"kind":"textbox","id":"sh/oz2dsf2h","slide":6,"text":"Add closure remarks, evidence and revised score where applicable.","textPreview":"Add closure remarks, evidence and revised score where applicable.","textChars":65,"textLines":1,"bbox":[630,409,135,70]}
+{"kind":"shape","id":"sh/ny9wjalw","slide":6,"bbox":[940,264,76,76]}
+{"kind":"textbox","id":"sh/2d0vq5kb","slide":6,"text":"4","textPreview":"4","textChars":1,"textLines":1,"bbox":[940,264,76,76]}
+{"kind":"textbox","id":"sh/x4bep4je","slide":6,"text":"Follow-up","textPreview":"Follow-up","textChars":9,"textLines":1,"bbox":[920,370,116,25]}
+{"kind":"textbox","id":"sh/c32dwz2t","slide":6,"text":"Monitoring users can identify overdue, unassigned and high-priority actions.","textPreview":"Monitoring users can identify overdue, unassigned and high-priority actions.","textChars":76,"textLines":1,"bbox":[912,409,135,70]}
+{"kind":"notes","id":"nt/91bm96","slide":6,"text":""}
+{"kind":"slide","id":"sl/u1jvds","slide":7,"title":"MONITORING","textShapes":13}
+{"kind":"shape","id":"sh/3m10jqlk","slide":7,"bbox":[60,22,210,29]}
+{"kind":"textbox","id":"sh/47uhsvm5","slide":7,"text":"MONITORING","textPreview":"MONITORING","textChars":10,"textLines":1,"bbox":[60,22,210,29]}
+{"kind":"textbox","id":"sh/p83il03q","slide":7,"text":"Programme teams see where follow-up is needed","textPreview":"Programme teams see where follow-up is needed","textChars":45,"textLines":1,"bbox":[60,57,1095,46]}
+{"kind":"shape","id":"sh/uhszml43","slide":7,"bbox":[60,100,77,5]}
+{"kind":"textbox","id":"sh/fi10fqlo","slide":7,"text":"Role-based monitoring moves from an overview to the facility, department or checkpoint that needs attention.","textPreview":"Role-based monitoring moves from an overview to the facility, department or checkpoint that needs attention.","textChars":108,"textLines":1,"bbox":[60,125,1080,32]}
+{"kind":"shape","id":"sh/gjahovm9","slide":7,"bbox":[0,686,1280,34]}
+{"kind":"textbox","id":"sh/hkjih03u","slide":7,"text":"SaQshi | Client proposal","textPreview":"SaQshi | Client proposal","textChars":24,"textLines":1,"bbox":[60,691,280,15]}
+{"kind":"textbox","id":"sh/edczyp47","slide":7,"text":"07","textPreview":"07","textChars":2,"textLines":1,"bbox":[1200,691,30,15]}
+{"kind":"shape","id":"sh/ze50rals","slide":7,"bbox":[72,195,536,142]}
+{"kind":"textbox","id":"sh/zed4v6ho","slide":7,"text":"Assessment coverage","textPreview":"Assessment coverage","textChars":19,"textLines":1,"bbox":[98,219,470,27]}
+{"kind":"textbox","id":"sh/ydk32103","slide":7,"text":"Started, in-progress and completed assessment counts for the user’s geography.","textPreview":"Started, in-progress and completed assessment counts for the user’s geography.","textChars":78,"textLines":1,"bbox":[98,258,460,47]}
+{"kind":"shape","id":"sh/lgvmxgzu","slide":7,"bbox":[672,195,536,142]}
+{"kind":"textbox","id":"sh/0fm54bi9","slide":7,"text":"CQI action tracking","textPreview":"CQI action tracking","textChars":19,"textLines":1,"bbox":[698,219,470,27]}
+{"kind":"textbox","id":"sh/7id4z6h0","slide":7,"text":"Open, overdue, unassigned and soon-due actions for practical follow-up.","textPreview":"Open, overdue, unassigned and soon-due actions for practical follow-up.","textChars":71,"textLines":1,"bbox":[698,258,460,47]}
+{"kind":"shape","id":"sh/mh4n6l0f","slide":7,"bbox":[72,390,536,142]}
+{"kind":"textbox","id":"sh/9kvm1gzq","slide":7,"text":"Risk analysis","textPreview":"Risk analysis","textChars":13,"textLines":1,"bbox":[98,414,470,27]}
+{"kind":"textbox","id":"sh/8jm58bil","slide":7,"text":"Identify quality concerns affecting the greatest number of facilities, then drill down.","textPreview":"Identify quality concerns affecting the greatest number of facilities, then drill down.","textChars":87,"textLines":1,"bbox":[98,453,460,47]}
+{"kind":"shape","id":"sh/v6x43qhw","slide":7,"bbox":[672,390,536,142]}
+{"kind":"textbox","id":"sh/u5onal0b","slide":7,"text":"Facility insights","textPreview":"Facility insights","textChars":17,"textLines":1,"bbox":[698,414,470,27]}
+{"kind":"textbox","id":"sh/61872pkj","slide":7,"text":"View facility presence, certification coverage and latest assessment risk by Area of Concern.","textPreview":"View facility presence, certification coverage and latest assessment risk by Area of Concern.","textChars":93,"textLines":1,"bbox":[698,453,460,47]}
+{"kind":"notes","id":"nt/u1jvds","slide":7,"text":""}
+{"kind":"slide","id":"sl/hxddgy","slide":8,"title":"ROLE-BASED EXPERIENCE","textShapes":13}
+{"kind":"shape","id":"sh/ipczypcf","slide":8,"bbox":[60,22,210,29]}
+{"kind":"textbox","id":"sh/5sni9kv6","slide":8,"text":"ROLE-BASED EXPERIENCE","textPreview":"ROLE-BASED EXPERIENCE","textChars":21,"textLines":1,"bbox":[60,22,210,29]}
+{"kind":"textbox","id":"sh/4re10zul","slide":8,"text":"Every user works at the right level","textPreview":"Every user works at the right level","textChars":35,"textLines":1,"bbox":[60,57,1095,46]}
+{"kind":"shape","id":"sh/vml03ado","slide":8,"bbox":[60,100,77,5]}
+{"kind":"textbox","id":"sh/ulczu5cj","slide":8,"text":"The platform separates facility data entry from monitoring responsibilities while preserving one connected record.","textPreview":"The platform separates facility data entry from monitoring responsibilities while preserving one connected record.","textChars":114,"textLines":1,"bbox":[60,125,1080,32]}
+{"kind":"shape","id":"sh/ho3i5kvu","slide":8,"bbox":[0,686,1280,34]}
+{"kind":"textbox","id":"sh/gnuhwfu9","slide":8,"text":"SaQshi | Client proposal","textPreview":"SaQshi | Client proposal","textChars":24,"textLines":1,"bbox":[60,691,280,15]}
+{"kind":"textbox","id":"sh/fip0zet8","slide":8,"text":"08","textPreview":"08","textChars":2,"textLines":1,"bbox":[1200,691,30,15]}
+{"kind":"shape","id":"sh/ehwj69cn","slide":8,"bbox":[72,190,536,150]}
+{"kind":"shape","id":"sh/g7mdwvyl","slide":8,"bbox":[72,190,10,150]}
+{"kind":"textbox","id":"sh/18ve50fq","slide":8,"text":"Facility team","textPreview":"Facility team","textChars":13,"textLines":1,"bbox":[105,214,460,26]}
+{"kind":"textbox","id":"sh/e54vulgf","slide":8,"text":"Create assessments, complete checklists, manage CQI actions, enter KPI/outcome data and use facility reports.","textPreview":"Create assessments, complete checklists, manage CQI actions, enter KPI/outcome data and use facility reports.","textChars":109,"textLines":1,"bbox":[105,255,455,61]}
+{"kind":"shape","id":"sh/f6dw3qx0","slide":8,"bbox":[672,190,536,150]}
+{"kind":"shape","id":"sh/s32dsby9","slide":8,"bbox":[672,190,10,150]}
+{"kind":"textbox","id":"sh/t4be1gfu","slide":8,"text":"Assessor","textPreview":"Assessor","textChars":8,"textLines":1,"bbox":[705,214,460,26]}
+{"kind":"textbox","id":"sh/61kvqlg3","slide":8,"text":"Work only on assigned facilities and allocated departments or classes.","textPreview":"Work only on assigned facilities and allocated departments or classes.","textChars":70,"textLines":1,"bbox":[705,255,455,61]}
+{"kind":"shape","id":"sh/r2twzqxo","slide":8,"bbox":[72,386,536,150]}
+{"kind":"shape","id":"sh/4f2dobyd","slide":8,"bbox":[72,386,10,150]}
+{"kind":"textbox","id":"sh/5gbexgfi","slide":8,"text":"Block, district and division","textPreview":"Block, district and division","textChars":28,"textLines":1,"bbox":[105,410,460,26]}
+{"kind":"textbox","id":"sh/lw3ulc7m","slide":8,"text":"Monitor facility progress, CQI and performance within the assigned geography.","textPreview":"Monitor facility progress, CQI and performance within the assigned geography.","textChars":77,"textLines":1,"bbox":[105,451,455,61]}
+{"kind":"shape","id":"sh/kvuts7q1","slide":8,"bbox":[672,386,536,150]}
+{"kind":"shape","id":"sh/julcj2pg","slide":8,"bbox":[672,386,10,150]}
+{"kind":"textbox","id":"sh/y9cbqx8v","slide":8,"text":"State administration","textPreview":"State administration","textChars":20,"textLines":1,"bbox":[705,410,460,26]}
+{"kind":"textbox","id":"sh/x8juhs7a","slide":8,"text":"Monitor statewide data, certification and reports; manage assessors and users.","textPreview":"Monitor statewide data, certification and reports; manage assessors and users.","textChars":78,"textLines":1,"bbox":[705,451,455,61]}
+{"kind":"notes","id":"nt/hxddgy","slide":8,"text":""}
+{"kind":"slide","id":"sl/rpxk07","slide":9,"title":"REPORTING AND PERFORMANCE","textShapes":14}
+{"kind":"shape","id":"sh/sz2hcfa9","slide":9,"bbox":[60,22,210,29]}
+{"kind":"textbox","id":"sh/7ytg3ato","slide":9,"text":"REPORTING AND PERFORMANCE","textPreview":"REPORTING AND PERFORMANCE","textChars":25,"textLines":1,"bbox":[60,22,210,29]}
+{"kind":"textbox","id":"sh/6xkza5s3","slide":9,"text":"A client can monitor both quality activity and outcomes","textPreview":"A client can monitor both quality activity and outcomes","textChars":55,"textLines":1,"bbox":[60,57,1095,46]}
+{"kind":"shape","id":"sh/hoby9kbq","slide":9,"bbox":[60,100,77,5]}
+{"kind":"textbox","id":"sh/gn2hgfa5","slide":9,"text":"SaQshi combines assessment reporting with monthly performance monitoring and certification tracking.","textPreview":"SaQshi combines assessment reporting with monthly performance monitoring and certification tracking.","textChars":100,"textLines":1,"bbox":[60,125,1080,32]}
+{"kind":"shape","id":"sh/f2tg7at0","slide":9,"bbox":[0,686,1280,34]}
+{"kind":"textbox","id":"sh/u1kze5sf","slide":9,"text":"SaQshi | Client proposal","textPreview":"SaQshi | Client proposal","textChars":24,"textLines":1,"bbox":[60,691,280,15]}
+{"kind":"textbox","id":"sh/xsryx0bm","slide":9,"text":"09","textPreview":"09","textChars":2,"textLines":1,"bbox":[1200,691,30,15]}
+{"kind":"shape","id":"sh/w7ix4va1","slide":9,"bbox":[72,213,356,283]}
+{"kind":"shape","id":"sh/e1kbydw7","slide":9,"bbox":[98,240,56,56]}
+{"kind":"textbox","id":"sh/z2tc7ixs","slide":9,"text":"1","textPreview":"1","textChars":1,"textLines":1,"bbox":[98,240,56,56]}
+{"kind":"textbox","id":"sh/03mt0ned","slide":9,"text":"Reports","textPreview":"Reports","textChars":7,"textLines":1,"bbox":[98,324,290,35]}
+{"kind":"textbox","id":"sh/14vu9sfy","slide":9,"text":"Scorecards, progress reports, CQI reports, performance downloads and state reports.","textPreview":"Scorecards, progress reports, CQI reports, performance downloads and state reports.","textChars":83,"textLines":1,"bbox":[98,377,290,80]}
+{"kind":"shape","id":"sh/m54b2xwj","slide":9,"bbox":[464,213,356,283]}
+{"kind":"shape","id":"sh/n6dcb2xo","slide":9,"bbox":[490,240,56,56]}
+{"kind":"textbox","id":"sh/o7mt4ne9","slide":9,"text":"2","textPreview":"2","textChars":1,"textLines":1,"bbox":[490,240,56,56]}
+{"kind":"textbox","id":"sh/98vudsfu","slide":9,"text":"KPI and outcomes","textPreview":"KPI and outcomes","textChars":16,"textLines":1,"bbox":[490,324,290,35]}
+{"kind":"textbox","id":"sh/a94b6xwf","slide":9,"text":"Department-aware monthly entry, formula-based results and trend views.","textPreview":"Department-aware monthly entry, formula-based results and trend views.","textChars":70,"textLines":1,"bbox":[490,377,290,80]}
+{"kind":"shape","id":"sh/baxcf2x0","slide":9,"bbox":[856,213,356,283]}
+{"kind":"shape","id":"sh/7yxsn2d8","slide":9,"bbox":[882,240,56,56]}
+{"kind":"textbox","id":"sh/6xobuxcn","slide":9,"text":"3","textPreview":"3","textChars":1,"textLines":1,"bbox":[882,240,56,56]}
+{"kind":"textbox","id":"sh/t0fapcby","slide":9,"text":"Certification","textPreview":"Certification","textChars":13,"textLines":1,"bbox":[882,324,290,35]}
+{"kind":"textbox","id":"sh/8z6tw7ut","slide":9,"text":"State or national certification status, history, validity, expiry tracking and map view.","textPreview":"State or national certification status, history, validity, expiry tracking and map view.","textChars":88,"textLines":1,"bbox":[882,377,290,80]}
+{"kind":"notes","id":"nt/rpxk07","slide":9,"text":""}
+{"kind":"slide","id":"sl/oktggy","slide":10,"title":"GOVERNANCE","textShapes":14}
+{"kind":"shape","id":"sh/ne9wzets","slide":10,"bbox":[60,22,210,29]}
+{"kind":"textbox","id":"sh/ofixsjud","slide":10,"text":"GOVERNANCE","textPreview":"GOVERNANCE","textChars":10,"textLines":1,"bbox":[60,22,210,29]}
+{"kind":"textbox","id":"sh/pgre1oby","slide":10,"text":"Designed for facility-level quality data","textPreview":"Designed for facility-level quality data","textChars":40,"textLines":1,"bbox":[60,57,1095,46]}
+{"kind":"shape","id":"sh/epgfm9cb","slide":10,"bbox":[60,100,77,5]}
+{"kind":"textbox","id":"sh/fqpwvetg","slide":10,"text":"The deployment scope focuses on facility observations, assessment scores, CQI actions, evidence, KPI/outcome numbers and monitoring reports.","textPreview":"The deployment scope focuses on facility observations, assessment scores, CQI actions, evidence, KPI/outcome numbers and monitoring reports.","textChars":140,"textLines":1,"bbox":[60,125,1080,32]}
+{"kind":"shape","id":"sh/0ryxoju1","slide":10,"bbox":[0,686,1280,34]}
+{"kind":"textbox","id":"sh/1s7exobm","slide":10,"text":"SaQshi | Client proposal","textPreview":"SaQshi | Client proposal","textChars":24,"textLines":1,"bbox":[60,691,280,15]}
+{"kind":"textbox","id":"sh/qlgvipcz","slide":10,"text":"10","textPreview":"10","textChars":2,"textLines":1,"bbox":[1200,691,30,15]}
+{"kind":"shape","id":"sh/rmpwrutk","slide":10,"bbox":[72,213,356,282]}
+{"kind":"shape","id":"sh/be1o7ul8","slide":10,"bbox":[97,240,54,54]}
+{"kind":"textbox","id":"sh/qdsnyp4n","slide":10,"text":"1","textPreview":"1","textChars":1,"textLines":1,"bbox":[97,240,54,54]}
+{"kind":"textbox","id":"sh/dg36943e","slide":10,"text":"No patient records required","textPreview":"No patient records required","textChars":27,"textLines":1,"bbox":[97,324,300,42]}
+{"kind":"textbox","id":"sh/cfa50zmt","slide":10,"text":"SaQshi is not an electronic medical record or patient registry. It should not hold patient-level clinical information.","textPreview":"SaQshi is not an electronic medical record or patient registry. It should not hold patient-level clinical information.","textChars":118,"textLines":1,"bbox":[97,384,300,80]}
+{"kind":"shape","id":"sh/zilovelk","slide":10,"bbox":[464,213,356,282]}
+{"kind":"shape","id":"sh/yhcn294z","slide":10,"bbox":[489,240,54,54]}
+{"kind":"textbox","id":"sh/lk36xo3a","slide":10,"text":"2","textPreview":"2","textChars":1,"textLines":1,"bbox":[489,240,54,54]}
+{"kind":"textbox","id":"sh/0jup4jm5","slide":10,"text":"Configurable by design","textPreview":"Configurable by design","textChars":22,"textLines":1,"bbox":[489,324,300,42]}
+{"kind":"textbox","id":"sh/fmhoza50","slide":10,"text":"Frameworks, departments, indicators, certification rules and map settings can be configured for an approved programme.","textPreview":"Frameworks, departments, indicators, certification rules and map settings can be configured for an approved programme.","textChars":118,"textLines":1,"bbox":[489,384,300,80]}
+{"kind":"shape","id":"sh/el8nq54v","slide":10,"bbox":[856,213,356,282]}
+{"kind":"shape","id":"sh/id0zehsf","slide":10,"bbox":[881,240,54,54]}
+{"kind":"textbox","id":"sh/je90nm90","slide":10,"text":"3","textPreview":"3","textChars":1,"textLines":1,"bbox":[881,240,54,54]}
+{"kind":"textbox","id":"sh/4fihgral","slide":10,"text":"Controlled visibility","textPreview":"Controlled visibility","textChars":21,"textLines":1,"bbox":[881,324,300,42]}
+{"kind":"textbox","id":"sh/5gripwr6","slide":10,"text":"Role-based scope limits monitoring by geography and responsibility. Administrative identity fields receive protection where implemented.","textPreview":"Role-based scope limits monitoring by geography and responsibility. Administrative identity fields receive protection where implemented.","textChars":136,"textLines":1,"bbox":[881,384,300,80]}
+{"kind":"notes","id":"nt/oktggy","slide":10,"text":""}
+{"kind":"slide","id":"sl/tecv5g","slide":11,"title":"CLIENT VALUE","textShapes":14}
+{"kind":"shape","id":"sh/gv2tgfu5","slide":11,"bbox":[60,22,210,29]}
+{"kind":"textbox","id":"sh/vuts7atk","slide":11,"text":"CLIENT VALUE","textPreview":"CLIENT VALUE","textChars":12,"textLines":1,"bbox":[60,22,210,29]}
+{"kind":"textbox","id":"sh/ut0be5cz","slide":11,"text":"What changes when SaQshi becomes the operating platform","textPreview":"What changes when SaQshi becomes the operating platform","textChars":55,"textLines":1,"bbox":[60,57,1095,46]}
+{"kind":"shape","id":"sh/p0badkbm","slide":11,"bbox":[60,100,77,5]}
+{"kind":"textbox","id":"sh/4z2tkzu1","slide":11,"text":"The value is practical: clearer work for teams, faster follow-up for managers and better visibility for programme leadership.","textPreview":"The value is practical: clearer work for teams, faster follow-up for managers and better visibility for programme leadership.","textChars":125,"textLines":1,"bbox":[60,125,1080,32]}
+{"kind":"shape","id":"sh/3ytsbutg","slide":11,"bbox":[0,686,1280,34]}
+{"kind":"textbox","id":"sh/ixkbipcv","slide":11,"text":"SaQshi | Client proposal","textPreview":"SaQshi | Client proposal","textChars":24,"textLines":1,"bbox":[60,691,280,15]}
+{"kind":"textbox","id":"sh/l4ra10bi","slide":11,"text":"11","textPreview":"11","textChars":2,"textLines":1,"bbox":[1200,691,30,15]}
+{"kind":"shape","id":"sh/k3i98vux","slide":11,"bbox":[72,191,1134,108]}
+{"kind":"shape","id":"sh/qp4z6tkr","slide":11,"bbox":[96,219,52,52]}
+{"kind":"textbox","id":"sh/rqx0felc","slide":11,"text":"1","textPreview":"1","textChars":1,"textLines":1,"bbox":[96,219,52,52]}
+{"kind":"textbox","id":"sh/cr6h8j2x","slide":11,"text":"For facility teams","textPreview":"For facility teams","textChars":18,"textLines":1,"bbox":[180,211,280,25]}
+{"kind":"textbox","id":"sh/dsfiho3i","slide":11,"text":"One guided workflow replaces separate records for assessment, action planning and closure.","textPreview":"One guided workflow replaces separate records for assessment, action planning and closure.","textChars":90,"textLines":1,"bbox":[480,214,665,52]}
+{"kind":"shape","id":"sh/etojatkn","slide":11,"bbox":[72,326,1134,108]}
+{"kind":"shape","id":"sh/zux0jyl8","slide":11,"bbox":[96,354,52,52]}
+{"kind":"textbox","id":"sh/0f61c32t","slide":11,"text":"2","textPreview":"2","textChars":1,"textLines":1,"bbox":[96,354,52,52]}
+{"kind":"textbox","id":"sh/1gfil83e","slide":11,"text":"For programme managers","textPreview":"For programme managers","textChars":22,"textLines":1,"bbox":[180,346,280,25]}
+{"kind":"textbox","id":"sh/mh8jedkz","slide":11,"text":"Dashboard and report views show where coverage, action follow-up or performance needs attention.","textPreview":"Dashboard and report views show where coverage, action follow-up or performance needs attention.","textChars":96,"textLines":1,"bbox":[480,349,665,52]}
+{"kind":"shape","id":"sh/nih0nylk","slide":11,"bbox":[72,461,1134,108]}
+{"kind":"shape","id":"sh/jmh0bihc","slide":11,"bbox":[96,489,52,52]}
+{"kind":"textbox","id":"sh/yl8z2d07","slide":11,"text":"3","textPreview":"3","textChars":1,"textLines":1,"bbox":[96,489,52,52]}
+{"kind":"textbox","id":"sh/lozid8zi","slide":11,"text":"For leadership","textPreview":"For leadership","textChars":14,"textLines":1,"bbox":[180,481,280,25]}
+{"kind":"textbox","id":"sh/knqh43ix","slide":11,"text":"A consistent digital record supports accountability, reporting and future scale across facilities.","textPreview":"A consistent digital record supports accountability, reporting and future scale across facilities.","textChars":98,"textLines":1,"bbox":[480,484,665,52]}
+{"kind":"notes","id":"nt/tecv5g","slide":11,"text":""}
+{"kind":"slide","id":"sl/lblyr0","slide":12,"title":"IMPLEMENTATION","textShapes":17}
+{"kind":"shape","id":"sh/ve1gv2d0","slide":12,"bbox":[60,22,210,29]}
+{"kind":"textbox","id":"sh/wfaxo7ul","slide":12,"text":"IMPLEMENTATION","textPreview":"IMPLEMENTATION","textChars":14,"textLines":1,"bbox":[60,22,210,29]}
+{"kind":"textbox","id":"sh/hgjyxsv6","slide":12,"text":"A controlled rollout proves the model before scale","textPreview":"A controlled rollout proves the model before scale","textChars":50,"textLines":1,"bbox":[60,57,1095,46]}
+{"kind":"shape","id":"sh/mp8fidcj","slide":12,"bbox":[60,100,77,5]}
+{"kind":"textbox","id":"sh/7qhgrido","slide":12,"text":"The first implementation should focus on one agreed programme scope, a prepared user group and measurable operating outcomes.","textPreview":"The first implementation should focus on one agreed programme scope, a prepared user group and measurable operating outcomes.","textChars":125,"textLines":1,"bbox":[60,125,1080,32]}
+{"kind":"shape","id":"sh/8raxknu9","slide":12,"bbox":[0,686,1280,34]}
+{"kind":"textbox","id":"sh/9sjytsvu","slide":12,"text":"SaQshi | Client proposal","textPreview":"SaQshi | Client proposal","textChars":24,"textLines":1,"bbox":[60,691,280,15]}
+{"kind":"textbox","id":"sh/yl8fedc7","slide":12,"text":"12","textPreview":"12","textChars":2,"textLines":1,"bbox":[1200,691,30,15]}
+{"kind":"shape","id":"sh/zmhgnids","slide":12,"bbox":[72,185,48,48]}
+{"kind":"textbox","id":"sh/3ut0bil8","slide":12,"text":"1","textPreview":"1","textChars":1,"textLines":1,"bbox":[72,185,48,48]}
+{"kind":"textbox","id":"sh/itkj2d43","slide":12,"text":"Confirm programme scope","textPreview":"Confirm programme scope","textChars":23,"textLines":1,"bbox":[145,185,275,26]}
+{"kind":"textbox","id":"sh/5wbid83e","slide":12,"text":"Agree facility types, geography, framework, indicators and client reporting needs.","textPreview":"Agree facility types, geography, framework, indicators and client reporting needs.","textChars":82,"textLines":1,"bbox":[432,185,680,45]}
+{"kind":"shape","id":"sh/4v214nmt","slide":12,"bbox":[72,285,48,48]}
+{"kind":"textbox","id":"sh/ryd0filk","slide":12,"text":"2","textPreview":"2","textChars":1,"textLines":1,"bbox":[72,285,48,48]}
+{"kind":"textbox","id":"sh/qx4j6d4z","slide":12,"text":"Configure and validate","textPreview":"Configure and validate","textChars":22,"textLines":1,"bbox":[145,285,275,26]}
+{"kind":"textbox","id":"sh/dkvihs3q","slide":12,"text":"Set up master data, role mapping, workflow rules, checklists and monitoring views.","textPreview":"Set up master data, role mapping, workflow rules, checklists and monitoring views.","textChars":82,"textLines":1,"bbox":[432,285,680,45]}
+{"kind":"shape","id":"sh/szm18nm5","slide":12,"bbox":[72,385,48,48]}
+{"kind":"textbox","id":"sh/72903y50","slide":12,"text":"3","textPreview":"3","textChars":1,"textLines":1,"bbox":[72,385,48,48]}
+{"kind":"textbox","id":"sh/m10zut4v","slide":12,"text":"Pilot with real users","textPreview":"Pilot with real users","textChars":21,"textLines":1,"bbox":[145,385,275,26]}
+{"kind":"textbox","id":"sh/atsvylsf","slide":12,"text":"Run a controlled pilot with facility teams and monitoring users; refine support and reports.","textPreview":"Run a controlled pilot with facility teams and monitoring users; refine support and reports.","textChars":92,"textLines":1,"bbox":[432,385,680,45]}
+{"kind":"shape","id":"sh/bu1crq90","slide":12,"bbox":[72,485,48,48]}
+{"kind":"textbox","id":"sh/wvad0val","slide":12,"text":"4","textPreview":"4","textChars":1,"textLines":1,"bbox":[72,485,48,48]}
+{"kind":"textbox","id":"sh/xwjut0r6","slide":12,"text":"Scale with governance","textPreview":"Scale with governance","textChars":21,"textLines":1,"bbox":[145,485,275,26]}
+{"kind":"textbox","id":"sh/mp8bulsj","slide":12,"text":"Use dashboards and CQI follow-up to guide adoption and staged expansion.","textPreview":"Use dashboards and CQI follow-up to guide adoption and staged expansion.","textChars":72,"textLines":1,"bbox":[432,485,680,45]}
+{"kind":"notes","id":"nt/lblyr0","slide":12,"text":""}
+{"kind":"slide","id":"sl/73f0ou","slide":13,"title":"Let’s define the first SaQshi pilot","textShapes":11}
+{"kind":"textbox","id":"sh/9knq5srq","slide":13,"text":"Let’s define the first SaQshi pilot","textPreview":"Let’s define the first SaQshi pilot","textChars":35,"textLines":1,"bbox":[70,190,850,55]}
+{"kind":"shape","id":"sh/8jepwna5","slide":13,"bbox":[70,300,46,46]}
+{"kind":"textbox","id":"sh/zelozy9o","slide":13,"text":"1","textPreview":"1","textChars":1,"textLines":1,"bbox":[70,300,46,46]}
+{"kind":"textbox","id":"sh/ydc7qts3","slide":13,"text":"Programme and facility scope","textPreview":"Programme and facility scope","textChars":28,"textLines":1,"bbox":[142,300,300,24]}
+{"kind":"textbox","id":"sh/lgn618ru","slide":13,"text":"Which facilities and framework should form the first cohort?","textPreview":"Which facilities and framework should form the first cohort?","textChars":60,"textLines":1,"bbox":[468,300,600,42]}
+{"kind":"shape","id":"sh/kfups3a9","slide":13,"bbox":[70,394,46,46]}
+{"kind":"textbox","id":"sh/bqlovy9c","slide":13,"text":"2","textPreview":"2","textChars":1,"textLines":1,"bbox":[70,394,46,46]}
+{"kind":"textbox","id":"sh/qpc7mts7","slide":13,"text":"Client roles and reporting","textPreview":"Client roles and reporting","textChars":26,"textLines":1,"bbox":[142,394,300,24]}
+{"kind":"textbox","id":"sh/0bax4bi9","slide":13,"text":"Who will assess, act, monitor and receive programme reports?","textPreview":"Who will assess, act, monitor and receive programme reports?","textChars":60,"textLines":1,"bbox":[468,394,600,42]}
+{"kind":"shape","id":"sh/1cjydgju","slide":13,"bbox":[70,488,46,46]}
+{"kind":"textbox","id":"sh/epsf2103","slide":13,"text":"3","textPreview":"3","textChars":1,"textLines":1,"bbox":[70,488,46,46]}
+{"kind":"textbox","id":"sh/za1gb61o","slide":13,"text":"Success measures","textPreview":"Success measures","textChars":16,"textLines":1,"bbox":[142,488,300,24]}
+{"kind":"textbox","id":"sh/cnqx0rix","slide":13,"text":"Which quality, process and adoption measures will define a successful pilot?","textPreview":"Which quality, process and adoption measures will define a successful pilot?","textChars":76,"textLines":1,"bbox":[468,488,600,42]}
+{"kind":"textbox","id":"sh/dozy9wji","slide":13,"text":"tech4gov@piramalswasthya.org","textPreview":"tech4gov@piramalswasthya.org","textChars":28,"textLines":1,"bbox":[70,652,420,25]}
+{"kind":"image","id":"im/fux87q9k","slide":13,"name":"","alt":"SaQshi visual","bbox":[70,63,180,56]}
+{"kind":"notes","id":"nt/73f0ou","slide":13,"text":"Contact source: ui/help/about.html."}

@@ -18,6 +18,7 @@
 
     const API = {
         me: "/auth/v1/me.php",
+        facility: "/admin/v1/facilities.php",
         activeAssessment: "/assessment/v1/active_assessment.php",
         createAssessment: "/assessment/v1/create_assessment.php",
         cancelAssessment: "/assessment/v1/cancel_assessment.php"
@@ -327,6 +328,15 @@
                 response.data?.facility ||
                 state.user?.facility ||
                 null;
+
+            // The session endpoint deliberately contains only user/session
+            // fields. Fetch the assigned facility profile separately so the
+            // facility name and code are always available on this page.
+            const facilityResponse = await apiGet(API.facility);
+            state.facility =
+                facilityResponse?.data?.facility ||
+                facilityResponse?.facility ||
+                state.facility;
 
         } catch (error) {
             console.error(error);

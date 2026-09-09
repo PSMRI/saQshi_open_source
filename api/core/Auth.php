@@ -40,7 +40,7 @@ class Auth
     /**
      * Handles login processing for this API workflow.
      */
-    public function login(string $username, string $password): array
+    public function login(string $username, string $password, bool $rememberMe = false): array
     {
         $username = trim($username);
         $password = trim($password);
@@ -85,7 +85,7 @@ class Auth
 
         $user['password_must_change'] = $this->passwordMustChange((int)$user['u_id']);
 
-        SessionManager::login($user);
+        SessionManager::login($user, $rememberMe);
 
         return $this->success('Login successful', [
             'user' => SessionManager::user()

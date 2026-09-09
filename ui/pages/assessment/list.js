@@ -120,7 +120,6 @@
         setText("activeAssessments", Number(summary.active || 0));
         setText("completedAssessments", Number(summary.completed || 0));
         setText("cancelledAssessments", Number(summary.cancelled || 0));
-        setText("averageScore", Number(summary.average_score || 0).toFixed(2) + "%");
     }
 
     function actionButton(assessment) {

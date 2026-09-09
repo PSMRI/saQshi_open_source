@@ -220,7 +220,7 @@
                 <tr>
                     <td>
                         <div class="sq-progress-dept">
-                            <strong>Department ${escapeHtml(department.dept_id)}</strong>
+                            <strong>${escapeHtml(department.department_name || (`Department ${department.dept_id}`))}</strong>
                             <span class="sq-progress-subtext">ID ${escapeHtml(department.dept_id)}</span>
                         </div>
                     </td>

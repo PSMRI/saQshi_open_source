@@ -62,6 +62,35 @@
                 sent++;
             }
             return sent;
+        },
+        /**
+         * Send queued responses together for each assessment department.
+         * A batch is removed only once the server has accepted every response
+         * in it, so an interrupted reconnect can never lose local data.
+         */
+        async flushBatches(userId, send, batchSize = 250) {
+            const items = (await all())
+                .filter(item => Number(item.user_id) === Number(userId || 0))
+                .sort((a, b) => a.queued_at - b.queued_at);
+            const groups = new Map();
+
+            items.forEach(function (item) {
+                const payload = item.payload || {};
+                const key = [payload.assessment_id, payload.dept_id].join(":");
+                if (!groups.has(key)) groups.set(key, []);
+                groups.get(key).push(item);
+            });
+
+            let sent = 0;
+            for (const group of groups.values()) {
+                for (let start = 0; start < group.length; start += batchSize) {
+                    const batch = group.slice(start, start + batchSize);
+                    await send(batch.map(item => item.payload));
+                    for (const item of batch) await remove(item.id);
+                    sent += batch.length;
+                }
+            }
+            return sent;
         }
     };
 })(window);

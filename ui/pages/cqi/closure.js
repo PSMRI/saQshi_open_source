@@ -96,7 +96,7 @@
 
     function getUrlAssessmentId() {
         const params = new URLSearchParams(window.location.search);
-        return Number(params.get("assessment_id") || sessionStorage.getItem("sq_active_assessment_id") || 0);
+        return Number(params.get("assessment_id") || 0);
     }
 
     function setText(id, value) {

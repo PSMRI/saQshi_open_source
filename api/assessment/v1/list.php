@@ -218,11 +218,17 @@ try {
             ON dd.assessment_id = a.assessment_id
         LEFT JOIN (
             SELECT
-                assessment_id,
-                COUNT(response_id) AS answered_checkpoints,
-                ROUND(COALESCE(SUM(score), 0), 2) AS obtained_score
-            FROM assessment_response
-            GROUP BY assessment_id
+                r.assessment_id,
+                COUNT(r.response_id) AS answered_checkpoints,
+                -- A completed gap uses its revised score, matching the score
+                -- shown by the Progress and Score views.
+                ROUND(COALESCE(SUM(COALESCE(ap.revised_score, r.score)), 0), 2) AS obtained_score
+            FROM assessment_response r
+            LEFT JOIN assessment_action_plan ap
+                ON ap.assessment_id = r.assessment_id
+               AND ap.dept_id = r.dept_id
+               AND ap.checkpoint_id = r.checkpoint_id
+            GROUP BY r.assessment_id
         ) rs
             ON rs.assessment_id = a.assessment_id
         WHERE a.fac_id_fk = ?

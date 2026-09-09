@@ -26,6 +26,9 @@ class SessionManager
      */
     private const SESSION_TIMEOUT = 1800;
 
+    /** Persistent sessions are available only when explicitly requested at login. */
+    private const REMEMBER_ME_TIMEOUT = 2592000;
+
     /**
      * Regenerate session ID every 10 minutes.
      */
@@ -46,6 +49,9 @@ class SessionManager
         );
 
         self::configureStorage();
+        // Retain server-side data long enough for an opted-in persistent
+        // session. Normal sessions still expire through checkTimeout().
+        ini_set('session.gc_maxlifetime', (string)self::REMEMBER_ME_TIMEOUT);
         session_name(self::sessionName());
 
         session_set_cookie_params([
@@ -147,7 +153,7 @@ class SessionManager
     /**
      * Create login session.
      */
-    public static function login(array $user): void
+    public static function login(array $user, bool $rememberMe = false): void
     {
         self::start();
 
@@ -179,9 +185,13 @@ class SessionManager
         $_SESSION['login_time'] = time();
         $_SESSION['last_activity'] = time();
         $_SESSION['last_regenerated'] = time();
+        $_SESSION['remember_me'] = $rememberMe;
+        $_SESSION['remember_until'] = $rememberMe ? time() + self::REMEMBER_ME_TIMEOUT : 0;
 
         $_SESSION['ip_hash'] = self::hashClientIp();
         $_SESSION['user_agent_hash'] = self::hashUserAgent();
+
+        self::refreshSessionCookie($rememberMe ? (int)$_SESSION['remember_until'] : 0);
     }
 
     /**
@@ -338,12 +348,34 @@ class SessionManager
             return;
         }
 
-        if ((time() - (int)$_SESSION['last_activity']) > self::SESSION_TIMEOUT) {
+        $rememberUntil = (int)($_SESSION['remember_until'] ?? 0);
+        $isRemembered = !empty($_SESSION['remember_me']) && $rememberUntil >= time();
+        $timeout = $isRemembered ? self::REMEMBER_ME_TIMEOUT : self::SESSION_TIMEOUT;
+
+        if ((time() - (int)$_SESSION['last_activity']) > $timeout) {
             self::logout();
             self::jsonError('Session expired. Please login again.', 401);
         }
 
         $_SESSION['last_activity'] = time();
+    }
+
+    /** Reissues the session cookie with a persistent expiry when requested. */
+    private static function refreshSessionCookie(int $expiresAt): void
+    {
+        if (!ini_get('session.use_cookies')) {
+            return;
+        }
+
+        $params = session_get_cookie_params();
+        setcookie(session_name(), session_id(), [
+            'expires' => $expiresAt,
+            'path' => $params['path'] ?: '/',
+            'domain' => $params['domain'] ?? '',
+            'secure' => !empty($params['secure']),
+            'httponly' => !empty($params['httponly']),
+            'samesite' => $params['samesite'] ?? 'Strict'
+        ]);
     }
 
     /**

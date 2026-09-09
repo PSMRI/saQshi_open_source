@@ -48,7 +48,12 @@
             checkpointId: 0
         },
         answered: new Set(),
-        isLoading: false
+        isLoading: false,
+        offlineSync: {
+            running: false,
+            retryTimer: null,
+            retryDelay: 2000
+        }
     };
 
     function $(id) {
@@ -95,8 +100,13 @@
         if (!target || !SQ.offlineResponseQueue) return;
         const count = await SQ.offlineResponseQueue.count(queueUserId());
         target.hidden = count === 0 && navigator.onLine;
+        const sync = state.offlineSync;
         target.textContent = count
-            ? `${count} response${count === 1 ? "" : "s"} saved on this device. They will sync when online.`
+            ? (sync.running
+                ? `Synchronizing ${count} saved response${count === 1 ? "" : "s"}…`
+                : (navigator.onLine && sync.retryTimer
+                    ? `${count} saved response${count === 1 ? "" : "s"} are waiting to retry automatically.`
+                    : `${count} response${count === 1 ? "" : "s"} saved on this device. They will sync when online.`))
             : "You are offline. New responses will be saved on this device until connectivity returns.";
     }
 
@@ -105,17 +115,40 @@
         return !navigator.onLine || message.includes("network") || message.includes("fetch") || message.includes("timeout");
     }
 
+    function scheduleOfflineSync(delay = 0) {
+        const sync = state.offlineSync;
+        if (!SQ.offlineResponseQueue || !navigator.onLine || sync.retryTimer || sync.running) return;
+        sync.retryTimer = window.setTimeout(function () {
+            sync.retryTimer = null;
+            syncOfflineResponses();
+        }, delay);
+    }
+
     async function syncOfflineResponses() {
-        if (!navigator.onLine || !SQ.offlineResponseQueue) return;
+        const sync = state.offlineSync;
+        if (!navigator.onLine || !SQ.offlineResponseQueue || sync.running) return;
+        sync.running = true;
+        let retry = false;
         try {
-            const sent = await SQ.offlineResponseQueue.flush(queueUserId(), function (payload) {
-                return apiPost(API.saveResponse, payload);
+            const sent = await SQ.offlineResponseQueue.flushBatches(queueUserId(), function (responses) {
+                const first = responses[0] || {};
+                return apiPost(API.saveResponsesBulk, {
+                    assessment_id: first.assessment_id,
+                    dept_id: first.dept_id,
+                    responses: responses
+                });
             });
             if (sent) notify("success", `${sent} saved response${sent === 1 ? "" : "s"} synchronized.`);
+            sync.retryDelay = 2000;
         } catch (error) {
             // Keep every queued item until the server acknowledges it.
             console.warn("Offline response synchronization paused.", error);
+            retry = true;
+            sync.retryDelay = Math.min(sync.retryDelay * 2, 60000);
+        } finally {
+            sync.running = false;
         }
+        if (retry && navigator.onLine) scheduleOfflineSync(sync.retryDelay);
         await updateOfflineStatus();
     }
 
@@ -380,22 +413,34 @@
             statusLoaded = false;
         }
 
-        const activeMap = {};
-
-        getStatusRows(statusResponse).forEach(function (row) {
-            if (Number(row.is_active) === 1) {
-                activeMap[Number(row.dept_id)] = row;
-            }
-        });
-
         const allDepartments = (deptResponse?.data?.departments || [])
             .map(function (dept) {
                 const deptId = Number(dept.dept_id || dept.fac_dept_id || 0);
                 return Object.assign({}, dept, { dept_id: deptId });
             });
 
+        const departmentMap = new Map(allDepartments.map(function (department) {
+            return [Number(department.dept_id), department];
+        }));
+
+        const activatedDepartments = getStatusRows(statusResponse)
+            .filter(function (row) { return Number(row.is_active) === 1; })
+            .map(function (row) {
+                const deptId = Number(row.dept_id || row.department_id || 0);
+                const masterDepartment = departmentMap.get(deptId) || {};
+
+                // Activation status is the assessment's source of truth.  Do
+                // not drop an activated department simply because the current
+                // framework response does not include a matching master row.
+                return Object.assign({}, masterDepartment, row, {
+                    dept_id: deptId,
+                    dept_name: masterDepartment.dept_name || masterDepartment.department_name || row.dept_name || row.department_name || (`Department ${deptId}`)
+                });
+            })
+            .filter(function (department) { return department.dept_id > 0; });
+
         state.departments = statusLoaded
-            ? allDepartments.filter(function (dept) { return Boolean(activeMap[Number(dept.dept_id)]); })
+            ? activatedDepartments
             : allDepartments;
 
         setOptions(
@@ -960,6 +1005,9 @@
             response = { data: { offline_queued: true } };
             queued = true;
             await updateOfflineStatus();
+            // Some mobile networks keep navigator.onLine=true during a brief outage.
+            // Retry immediately in that case; otherwise the online event will trigger it.
+            scheduleOfflineSync();
         }
 
         state.answered.add(state.selected.checkpointId);
@@ -1075,15 +1123,40 @@
                 dept_id: state.selected.deptId
             }))?.data?.concerns || [];
             state.concerns = concerns;
-            state.concernChecklist = concerns.map(function (concern) { return { concern: concern, groups: [] }; });
+            state.concernChecklist = concerns.map(function (concern) {
+                // Totals are loaded independently from checklist details so all
+                // tabs can show their real workload before they are opened.
+                return { concern: concern, groups: [], total: null };
+            });
             state.activeConcernId = Number(concerns[0]?.concern_id || 0);
             renderConcernTabs();
+            await loadConcernTotals();
             if (state.activeConcernId) await loadConcernGroups(state.activeConcernId);
         } catch (error) {
             console.error(error);
             renderConcernMessage(error.message || "Unable to load Areas of Concern.");
             notify("error", error.message || "Unable to load Areas of Concern.");
         }
+    }
+
+    async function loadConcernTotals() {
+        await Promise.all(state.concernChecklist.map(async function (item) {
+            const concernId = Number(item.concern?.concern_id || 0);
+            if (!concernId) {
+                item.total = 0;
+                return;
+            }
+
+            const response = await apiGet(API.subtypes, {
+                framework: state.assessment.framework_code || "saqshi-nqas",
+                dept_id: state.selected.deptId,
+                concern_id: concernId
+            });
+            item.total = (response?.data?.subtypes || []).reduce(function (total, subtype) {
+                return total + Number(subtype.checkpoint_count || 0);
+            }, 0);
+        }));
+        renderConcernTabs();
     }
 
     async function loadConcernGroups(concernId) {
@@ -1133,7 +1206,10 @@
         const answered = checkpoints.filter(function (checkpoint) {
             return hasSavedResponse(checkpoint);
         }).length;
-        return { total: checkpoints.length, answered: answered };
+        return {
+            total: item.groups.length ? checkpoints.length : item.total,
+            answered: answered
+        };
     }
 
     function renderConcernTabs() {
@@ -1147,14 +1223,24 @@
             const concern = item.concern || {};
             const progress = concernProgress(item);
             const active = Number(concern.concern_id) === Number(state.activeConcernId);
-            const completed = progress.total > 0 && progress.answered === progress.total;
+            const totalKnown = Number.isFinite(progress.total);
+            const completed = totalKnown && progress.total > 0 && progress.answered === progress.total;
             return `<button type="button" class="sq-concern-tab${active ? " is-active" : ""}${completed ? " is-complete" : ""}" data-concern-tab="${escapeHtml(concern.concern_id)}">
                 <span>${escapeHtml(concern.concern_name || concern.concern_des || "Area of Concern")}</span>
-                <small>${progress.answered}/${progress.total}${progress.total && progress.answered === progress.total ? " Complete" : ""}</small>
+                <small>${totalKnown ? `${progress.answered}/${progress.total}${progress.total && progress.answered === progress.total ? " Complete" : ""}` : "Loading…"}</small>
             </button>`;
         }).join("");
         if (state.activeConcernId) {
-            renderActiveConcern();
+            const activeItem = state.concernChecklist.find(function (item) {
+                return Number(item.concern?.concern_id) === Number(state.activeConcernId);
+            });
+            if (activeItem?.groups.length) {
+                renderActiveConcern();
+            } else if ($("concernChecklistContent")) {
+                $("concernChecklistContent").innerHTML = Number(activeItem?.total) === 0
+                    ? '<div class="sq-empty-state">No checkpoints are configured for this Area of Concern.</div>'
+                    : '<div class="sq-empty-state">Loading checklist...</div>';
+            }
         } else if ($("concernChecklistContent")) {
             $("concernChecklistContent").innerHTML = `<div class="sq-empty-state">${escapeHtml(`Select a ${domainLabel("area_of_concern", "Domain")} tab to load its checklist.`)}</div>`;
         }
@@ -1280,6 +1366,8 @@
                     if (!isNetworkFailure(error) || !SQ.offlineResponseQueue) throw error;
                     for (const item of changedEntries) await SQ.offlineResponseQueue.enqueue(queueUserId(), item.request);
                     queuedCount = changedEntries.length;
+                    // The shared queue also covers Area of Concern responses.
+                    scheduleOfflineSync();
                 }
             }
             if (submit) {
@@ -1388,8 +1476,14 @@
             SQ.deployment.applyLabels(document);
         }
         bindEvents();
-        window.addEventListener("online", syncOfflineResponses);
+        window.addEventListener("online", function () {
+            state.offlineSync.retryDelay = 2000;
+            scheduleOfflineSync();
+        });
         window.addEventListener("offline", updateOfflineStatus);
+        document.addEventListener("visibilitychange", function () {
+            if (!document.hidden) scheduleOfflineSync();
+        });
         setStateMessage("Loading checklist page...");
 
         try {

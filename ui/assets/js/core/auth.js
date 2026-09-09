@@ -87,7 +87,7 @@
         };
     }
 
-    async function loginEncrypted(username, passwordEnc, captcha = "") {
+    async function loginEncrypted(username, passwordEnc, captcha = "", rememberMe = false) {
         if (!username || !passwordEnc) {
             throw {
                 status: "error",
@@ -102,7 +102,8 @@
             {
                 username: username,
                 password_enc: passwordEnc,
-                captcha: captcha
+                captcha: captcha,
+                remember_me: Boolean(rememberMe)
             },
             {
                 loaderText: "Signing in...",
