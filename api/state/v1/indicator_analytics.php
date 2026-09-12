@@ -18,6 +18,9 @@ try {
     if (in_array(($_GET['download'] ?? ''), ['zero_facilities', 'low_score_facilities'], true)) {
         StateIndicatorAnalyticsService::streamZeroFacilityList($con, (int)($_GET['checkpoint_id'] ?? 0), $_GET);
     }
+    if (($_GET['download'] ?? '') === 'capacity_building_roadmap') {
+        StateIndicatorAnalyticsService::streamCapacityBuildingRoadmap($con, $_GET);
+    }
 
     Response::success('State indicator analytics loaded', StateIndicatorAnalyticsService::analytics($con, $_GET));
 } catch (Throwable $e) {

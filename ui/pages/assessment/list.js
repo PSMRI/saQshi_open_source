@@ -137,7 +137,7 @@
         }
 
         return `
-            <button type="button" class="sq-btn sq-btn-light sq-btn-sm" data-sq-route="dashboard">
+            <button type="button" class="sq-btn sq-btn-light sq-btn-sm" data-sq-view-assessment="${Number(assessment.assessment_id || 0)}">
                 View
             </button>
         `;
@@ -258,6 +258,22 @@
     function bindEvents() {
         $("statusFilter")?.addEventListener("change", renderRows);
         $("btnRefreshAssessments")?.addEventListener("click", loadAssessments);
+
+        $("assessmentListBody")?.addEventListener("click", function (event) {
+            const button = event.target.closest("[data-sq-view-assessment]");
+            const assessmentId = Number(button?.dataset.sqViewAssessment || 0);
+
+            if (!assessmentId) {
+                return;
+            }
+
+            if (SQ.router && typeof SQ.router.navigate === "function") {
+                SQ.router.navigate("dashboard", { assessment_id: assessmentId });
+                return;
+            }
+
+            window.location.href = "/ui/dashboard.html?route=dashboard&assessment_id=" + encodeURIComponent(assessmentId);
+        });
     }
 
     async function init() {

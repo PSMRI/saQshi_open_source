@@ -30,11 +30,178 @@ class StateIndicatorAnalyticsService
                 'min_facilities' => $minFacilities
             ],
             'assessment' => self::assessmentWeakIndicators($con, $filters, $pagination, $minFacilities),
+            'capacity_building_roadmap' => self::capacityBuildingRoadmap($con, $filters),
             'areas_of_concern' => self::areaOfConcernRisks($con, $filters, $minFacilities),
             'departments' => self::departmentRisks($con, $filters, $minFacilities),
             'facility_types' => self::facilityTypeRisks($con, $filters, $minFacilities),
             'districts' => self::districtRisks($con, $filters, $minFacilities)
         ];
+    }
+
+    /** Exports every calculated roadmap theme and affected facility for the selected scope. */
+    public static function streamCapacityBuildingRoadmap(mysqli $con, array $filters = []): void
+    {
+        $roadmap = self::capacityBuildingRoadmap($con, $filters, 0);
+        $filename = 'saqshi-capacity-building-roadmap-' . date('Ymd-His') . '.csv';
+        header('Content-Type: text/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
+        header('Pragma: no-cache');
+        header('Expires: 0');
+        $out = fopen('php://output', 'w');
+        fprintf($out, chr(0xEF) . chr(0xBB) . chr(0xBF));
+        self::csvRow($out, [
+            'Priority', 'Suggested Planning Window', 'Capacity-Building Theme',
+            'Affected Facilities', 'Score 0 Facilities', 'Score 1 Only Facilities',
+            'Recurring Gap Facilities', 'Overdue CQI Facilities', 'Priority Score',
+            'Facility Name', 'Facility Code', 'District', 'Block', 'Latest Assessment ID',
+            'Facility Score 0 Responses', 'Facility Score 1 Responses', 'Recurring Gap', 'Overdue CQI Action Plan'
+        ]);
+        foreach ($roadmap['topics'] as $topic) {
+            foreach ($topic['facilities'] as $facility) {
+                self::csvRow($out, [
+                    $topic['priority'], $topic['suggested_planning_window'], $topic['theme'],
+                    $topic['affected_facilities'], $topic['score_0_facilities'], $topic['score_1_only_facilities'],
+                    $topic['recurring_gap_facilities'], $topic['overdue_action_plan_facilities'], $topic['priority_score'],
+                    $facility['fac_name'], $facility['facility_code'], $facility['district'], $facility['block'], $facility['assessment_id'],
+                    $facility['score_0_responses'], $facility['score_1_responses'], $facility['recurring_gap'] ? 'Yes' : 'No',
+                    $facility['overdue_action_plan'] ? 'Yes' : 'No'
+                ]);
+            }
+        }
+        fclose($out);
+        exit;
+    }
+
+    /**
+     * Builds a transparent, data-led capacity-building roadmap from the latest
+     * completed assessment for every facility in the selected monitoring scope.
+     * This is deliberately rule based: it identifies priority support themes;
+     * it does not diagnose individual staff or assign training.
+     */
+    private static function capacityBuildingRoadmap(mysqli $con, array $filters, int $limit = 5): array
+    {
+        $responseTable = self::responseTable($con);
+        if ($responseTable === '' || !self::tableExists($con, 'assessment_master')) {
+            return ['basis' => 'latest_completed_assessments', 'assessed_facilities' => 0, 'topics' => []];
+        }
+
+        $assessmentColumn = self::columnExists($con, $responseTable, 'assessment_id') ? 'assessment_id' : 'cycle_id';
+        $where = self::facilityWhere($filters, 'f');
+        $hasActionPlans = self::tableExists($con, 'assessment_action_plan');
+        $actionJoin = $hasActionPlans
+            ? "LEFT JOIN assessment_action_plan ap ON ap.assessment_id = a.assessment_id AND ap.dept_id = r.dept_id AND ap.checkpoint_id = r.checkpoint_id"
+            : '';
+        $actionFields = $hasActionPlans
+            ? ", ap.target_date, ap.status AS action_plan_status"
+            : ", NULL AS target_date, NULL AS action_plan_status";
+
+        $rows = self::rows($con, "
+            SELECT a.assessment_id, a.fac_id_fk, a.framework_code, r.checkpoint_id, r.score,
+                   f.fac_name, f.NIN_no, f.Dist_Name, f.Block_Name
+                   {$actionFields}
+            FROM {$responseTable} r
+            INNER JOIN assessment_master a ON a.assessment_id = r.{$assessmentColumn}
+            INNER JOIN (
+                SELECT fac_id_fk, MAX(assessment_id) AS assessment_id
+                FROM assessment_master
+                WHERE UPPER(COALESCE(status, '')) = 'COMPLETED'
+                GROUP BY fac_id_fk
+            ) latest ON latest.assessment_id = a.assessment_id
+            INNER JOIN facilities f ON f.fac_id = a.fac_id_fk
+            {$actionJoin}
+            {$where['sql']}
+              AND r.score IN (0, 1)
+        ", $where['types'], $where['params']);
+
+        $meta = self::checkpointMap();
+        $topics = [];
+        $latestByFacility = [];
+        foreach ($rows as $row) {
+            $facilityId = (int)($row['fac_id_fk'] ?? 0);
+            $checkpointId = (string)($row['checkpoint_id'] ?? '');
+            $details = $meta[(string)($row['framework_code'] ?? '') . ':' . $checkpointId] ?? $meta[$checkpointId] ?? [];
+            $theme = trim((string)($details['concern_name'] ?? '')) ?: 'Other assessment concerns';
+            $key = (string)($row['framework_code'] ?? '') . ':' . $theme;
+            $latestByFacility[$facilityId] = (int)($row['assessment_id'] ?? 0);
+            if (!isset($topics[$key])) {
+                $topics[$key] = ['theme' => $theme, 'facilities' => [], 'score_0_responses' => 0, 'score_1_responses' => 0, 'checkpoints' => []];
+            }
+            if (!isset($topics[$key]['facilities'][$facilityId])) {
+                $topics[$key]['facilities'][$facilityId] = [
+                    'fac_id' => $facilityId, 'fac_name' => (string)($row['fac_name'] ?? ''),
+                    'facility_code' => (string)($row['NIN_no'] ?? ''), 'district' => (string)($row['Dist_Name'] ?? ''),
+                    'block' => (string)($row['Block_Name'] ?? ''), 'assessment_id' => (int)($row['assessment_id'] ?? 0),
+                    'has_score_0' => false, 'score_0_responses' => 0, 'score_1_responses' => 0,
+                    'overdue_action_plan' => false, 'recurring_gap' => false
+                ];
+            }
+            $facility = &$topics[$key]['facilities'][$facilityId];
+            if ((int)$row['score'] === 0) {
+                $facility['has_score_0'] = true;
+                $facility['score_0_responses']++;
+                $topics[$key]['score_0_responses']++;
+            } else {
+                $facility['score_1_responses']++;
+                $topics[$key]['score_1_responses']++;
+            }
+            if ($hasActionPlans && !empty($row['target_date']) && strtotime((string)$row['target_date']) < strtotime('today')
+                && !in_array(strtoupper((string)($row['action_plan_status'] ?? '')), ['COMPLETED', 'CLOSED'], true)) {
+                $facility['overdue_action_plan'] = true;
+            }
+            unset($facility);
+            $topics[$key]['checkpoints'][$checkpointId] = true;
+        }
+
+        // A recurring gap means the same theme was low in an earlier completed assessment.
+        if ($topics && $latestByFacility) {
+            $facilityIds = array_keys($latestByFacility);
+            $placeholders = implode(',', array_fill(0, count($facilityIds), '?'));
+            $history = self::rows($con, "
+                SELECT a.assessment_id, a.fac_id_fk, a.framework_code, r.checkpoint_id
+                FROM {$responseTable} r
+                INNER JOIN assessment_master a ON a.assessment_id = r.{$assessmentColumn}
+                WHERE a.fac_id_fk IN ({$placeholders})
+                  AND UPPER(COALESCE(a.status, '')) = 'COMPLETED'
+                  AND r.score IN (0, 1)
+            ", str_repeat('i', count($facilityIds)), $facilityIds);
+            foreach ($history as $row) {
+                $facilityId = (int)$row['fac_id_fk'];
+                if ((int)$row['assessment_id'] >= ($latestByFacility[$facilityId] ?? PHP_INT_MAX)) continue;
+                $checkpointId = (string)($row['checkpoint_id'] ?? '');
+                $details = $meta[(string)($row['framework_code'] ?? '') . ':' . $checkpointId] ?? $meta[$checkpointId] ?? [];
+                $theme = trim((string)($details['concern_name'] ?? '')) ?: 'Other assessment concerns';
+                $key = (string)($row['framework_code'] ?? '') . ':' . $theme;
+                if (isset($topics[$key]['facilities'][$facilityId])) $topics[$key]['facilities'][$facilityId]['recurring_gap'] = true;
+            }
+        }
+
+        $result = [];
+        foreach ($topics as $topic) {
+            $facilities = array_values($topic['facilities']);
+            $scoreZeroFacilities = count(array_filter($facilities, static fn(array $f): bool => $f['has_score_0']));
+            $partialOnlyFacilities = count($facilities) - $scoreZeroFacilities;
+            $overdueFacilities = count(array_filter($facilities, static fn(array $f): bool => $f['overdue_action_plan']));
+            $recurringFacilities = count(array_filter($facilities, static fn(array $f): bool => $f['recurring_gap']));
+            $priorityScore = ($scoreZeroFacilities * 3) + $partialOnlyFacilities + ($overdueFacilities * 2) + ($recurringFacilities * 3);
+            usort($facilities, static fn(array $a, array $b): int =>
+                ((int)$b['has_score_0'] <=> (int)$a['has_score_0']) ?: ((int)$b['recurring_gap'] <=> (int)$a['recurring_gap']) ?: strcmp($a['fac_name'], $b['fac_name']));
+            $result[] = [
+                'theme' => $topic['theme'], 'affected_facilities' => count($facilities),
+                'score_0_facilities' => $scoreZeroFacilities, 'score_1_only_facilities' => $partialOnlyFacilities,
+                'overdue_action_plan_facilities' => $overdueFacilities, 'recurring_gap_facilities' => $recurringFacilities,
+                'low_score_checkpoints' => count($topic['checkpoints']), 'priority_score' => $priorityScore,
+                'facilities' => $facilities
+            ];
+        }
+        usort($result, static fn(array $a, array $b): int => ($b['priority_score'] <=> $a['priority_score']) ?: ($b['affected_facilities'] <=> $a['affected_facilities']));
+        $count = count($result);
+        foreach ($result as $index => &$topic) {
+            $band = $count <= 2 ? ($index === 0 ? 'HIGH' : 'MEDIUM') : ($index < (int)ceil($count / 3) ? 'HIGH' : ($index < (int)ceil(($count * 2) / 3) ? 'MEDIUM' : 'LOW'));
+            $topic['priority'] = $band;
+            $topic['suggested_planning_window'] = $band === 'HIGH' ? 'Next 30 days' : ($band === 'MEDIUM' ? 'Current quarter' : 'Next planning cycle');
+        }
+        unset($topic);
+        return ['basis' => 'latest_completed_assessments', 'assessed_facilities' => count($latestByFacility), 'topics' => $limit > 0 ? array_slice($result, 0, $limit) : $result];
     }
 
     /**

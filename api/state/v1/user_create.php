@@ -23,6 +23,7 @@ try {
     $email = trim((string)($input['email'] ?? ''));
     $mobile = trim((string)($input['mobile'] ?? ''));
     $facilityNin = trim((string)($input['facility_nin'] ?? ''));
+    $districtScopeId = (int)($input['district_id'] ?? 0);
     $scopeId = (int)($input['scope_id'] ?? 0);
 
     $allowedRoles = [1, 4, 5, 8];
@@ -60,10 +61,11 @@ try {
         if (!$scopeRow) Response::validation(['scope_id' => 'Selected district is not valid.']);
         $stateId = (int)$scopeRow['state_id']; $divisionId = (int)$scopeRow['division_id']; $districtId = (int)$scopeRow['dist_id'];
     } elseif ($roleId === 8) {
+        if ($districtScopeId <= 0) Response::validation(['district_id' => 'Select a district before selecting a block.']);
         if ($scopeId <= 0) Response::validation(['scope_id' => 'Select a block.']);
-        $scope = $con->prepare('SELECT state_id, division_id, dist_id, block_id FROM facilities WHERE block_id = ? LIMIT 1');
-        $scope->bind_param('i', $scopeId); $scope->execute(); $scopeRow = $scope->get_result()->fetch_assoc();
-        if (!$scopeRow) Response::validation(['scope_id' => 'Selected block is not valid.']);
+        $scope = $con->prepare('SELECT state_id, division_id, dist_id, block_id FROM facilities WHERE block_id = ? AND dist_id = ? LIMIT 1');
+        $scope->bind_param('ii', $scopeId, $districtScopeId); $scope->execute(); $scopeRow = $scope->get_result()->fetch_assoc();
+        if (!$scopeRow) Response::validation(['scope_id' => 'Selected block does not belong to the selected district.']);
         $stateId = (int)$scopeRow['state_id']; $divisionId = (int)$scopeRow['division_id']; $districtId = (int)$scopeRow['dist_id']; $blockId = (int)$scopeRow['block_id'];
     } else {
         $scopeRow = $con->query('SELECT state_id FROM facilities WHERE state_id IS NOT NULL AND state_id > 0 LIMIT 1')->fetch_assoc();

@@ -76,12 +76,14 @@
     function routeUrl(route, params = {}) {
         const name = routeName(route);
 
-        if (name === CONFIG.defaultRoute) {
-            return `${CONFIG.basePath}/dashboard.html`;
-        }
-
         const url = new URL(`${CONFIG.basePath}/dashboard.html`, window.location.origin);
-        url.searchParams.set("route", name);
+
+        // The default dashboard has no route query parameter, but it may
+        // still receive context such as assessment_id when opening an
+        // assessment-history dashboard.
+        if (name !== CONFIG.defaultRoute) {
+            url.searchParams.set("route", name);
+        }
 
         Object.keys(params || {}).forEach(function (key) {
             if (

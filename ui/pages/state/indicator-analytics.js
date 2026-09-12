@@ -163,6 +163,41 @@
         `;
     }
 
+    function renderCapacityBuildingRoadmap(data) {
+        const target = document.getElementById("stateCapacityBuildingRoadmap");
+        if (!target) return;
+        const topics = data?.topics || [];
+        if (!topics.length) {
+            target.innerHTML = `<div class="sq-state-empty">No capacity-building needs were identified from latest completed assessments in this scope.</div>`;
+            return;
+        }
+        const priorityClass = function (priority) {
+            return priority === "HIGH" ? "sq-state-danger" : (priority === "MEDIUM" ? "sq-state-warning" : "sq-state-success");
+        };
+        target.innerHTML = `
+            <p class="sq-state-roadmap-note">Based on ${esc(data.assessed_facilities || 0)} facilities with a latest completed assessment. Themes are ranked using non-compliance, unresolved overdue CQI actions, and repeated gaps.</p>
+            <div class="sq-state-list">
+                ${topics.map(topic => `
+                    <details class="sq-state-roadmap-item">
+                        <summary>
+                            <span><strong>${esc(topic.theme)}</strong><small>${esc(topic.affected_facilities)} affected facilities · ${esc(topic.low_score_checkpoints)} low-score checkpoints</small></span>
+                            <span class="sq-state-badge ${priorityClass(topic.priority)}">${esc(topic.priority)} · ${esc(topic.suggested_planning_window)}</span>
+                        </summary>
+                        <div class="sq-state-roadmap-metrics">
+                            <span><b>${esc(topic.score_0_facilities)}</b> with non-compliance</span>
+                            <span><b>${esc(topic.score_1_only_facilities)}</b> partial only</span>
+                            <span><b>${esc(topic.recurring_gap_facilities)}</b> recurring</span>
+                            <span><b>${esc(topic.overdue_action_plan_facilities)}</b> overdue CQI</span>
+                        </div>
+                        <div class="sq-state-roadmap-facilities">
+                            ${topic.facilities.map(facility => `<div><b>${esc(facility.fac_name || "Facility")}</b><span>${esc(facility.district || "-")} / ${esc(facility.block || "-")} · Score 0: ${esc(facility.score_0_responses)} · Score 1: ${esc(facility.score_1_responses)}${facility.recurring_gap ? " · Recurring" : ""}${facility.overdue_action_plan ? " · Overdue CQI" : ""}</span></div>`).join("")}
+                        </div>
+                    </details>
+                `).join("")}
+            </div>
+        `;
+    }
+
     function renderAssessment(rows) {
         if (!rows || !rows.length) {
             document.getElementById("stateAssessmentIndicators").innerHTML = `<div class="sq-state-empty">No assessment indicator analytics available.</div>`;
@@ -209,6 +244,7 @@
             });
             const data = response.data || {};
             renderSummary(data);
+            renderCapacityBuildingRoadmap(data.capacity_building_roadmap || {});
             renderAreaOfConcernRisks(data.areas_of_concern || []);
             renderDistrictRisks(data.districts || []);
             renderFacilityTypeRisks(data.facility_types || []);
@@ -218,7 +254,7 @@
         } catch (error) {
             const message = esc(error?.message || "Unable to load State risk data.");
             document.getElementById("stateIndicatorSummary").innerHTML = "";
-            ["stateAreaOfConcernRisks", "stateDistrictRisks", "stateFacilityTypeRisks", "stateDepartmentRisks", "stateAssessmentIndicators"].forEach(function (id) {
+            ["stateCapacityBuildingRoadmap", "stateAreaOfConcernRisks", "stateDistrictRisks", "stateFacilityTypeRisks", "stateDepartmentRisks", "stateAssessmentIndicators"].forEach(function (id) {
                 const target = document.getElementById(id);
                 if (target) target.innerHTML = `<div class="sq-state-empty">${message}</div>`;
             });
@@ -231,6 +267,12 @@
             download: "low_score_facilities",
             checkpoint_id: checkpointId
         }), `low-score-facilities-${checkpointId}.csv`);
+    }
+
+    async function downloadCapacityBuildingRoadmap() {
+        await SQ.api.download("/state/v1/indicator_analytics.php", Object.assign({}, params(), {
+            download: "capacity_building_roadmap"
+        }), "capacity-building-roadmap.csv");
     }
 
     async function init() {
@@ -254,6 +296,9 @@
         document.getElementById("stateIndicatorMinFacilities")?.addEventListener("change", function () {
             state.pager.reset();
             load();
+        });
+        document.getElementById("stateCapacityRoadmapDownload")?.addEventListener("click", function () {
+            downloadCapacityBuildingRoadmap();
         });
         document.getElementById("stateDepartmentRisks")?.addEventListener("click", function (event) {
             const button = event.target.closest("[data-department-risk]");

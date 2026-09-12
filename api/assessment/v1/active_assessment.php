@@ -48,9 +48,10 @@ try {
     // PENDING is an assessor-only draft used while choosing a class.  It is
     // intentionally not shown as active work on the assessor dashboard.
     // A requested assessment is being viewed from history. Permit completed
-    // assessments in that read-only context; the default remains active work.
+    // and cancelled assessments in that read-only context; the default remains
+    // active work.
     $statusSql = $requestedAssessmentId > 0
-        ? "AND status IN ('ACTIVE', 'COMPLETED')"
+        ? "AND status IN ('ACTIVE', 'COMPLETED', 'CANCELLED')"
         : ($isAssessorSession ? "AND status IN ('ACTIVE', 'PENDING')" : "AND status = 'ACTIVE'");
 
     $sql = "

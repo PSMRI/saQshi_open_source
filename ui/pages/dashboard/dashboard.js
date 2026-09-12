@@ -36,7 +36,8 @@
         score: null,
         gaps: null,
         insights: null,
-        performance: null
+        performance: null,
+        requestedAssessmentId: 0
     };
 
     function setText(id, value) {
@@ -66,8 +67,13 @@
     }
 
     async function loadActiveAssessment() {
+        state.requestedAssessmentId = Number(new URLSearchParams(window.location.search).get("assessment_id") || 0);
         const [response, assessmentsResponse] = await Promise.all([
-            SQ.api.get(API.activeAssessment, {}, { loader: false, showError: false }),
+            SQ.api.get(
+                API.activeAssessment,
+                state.requestedAssessmentId ? { assessment_id: state.requestedAssessmentId } : {},
+                { loader: false, showError: false }
+            ),
             SQ.api.get(API.assessments, {}, { loader: false, showError: false })
         ]);
 
@@ -182,6 +188,14 @@
 
         const assessment = state.activeAssessment;
         const assessorAssessment = state.assessorAssessment;
+        const historicalView = state.requestedAssessmentId > 0
+            && String(assessment?.status || "").toUpperCase() !== "ACTIVE";
+
+        setText("activeAssessmentTitle", historicalView ? "Assessment History" : "Active Assessment");
+        setText(
+            "activeAssessmentSubtitle",
+            historicalView ? "Selected assessment progress (read-only)" : "Current assessment status"
+        );
 
         if (!assessment || !assessment.assessment_id) {
             target.innerHTML = `
@@ -208,6 +222,7 @@
                         <div class="sq-assessment-meta">
                             Framework: ${escapeHtml(assessment.framework_code || "N/A")}
                         </div>
+                        ${historicalView ? `<div class="sq-text-muted sq-text-sm">Viewing assessment history (read-only)</div>` : ""}
                     </div>
                     ${badge(assessment.status)}
                 </div>
@@ -227,11 +242,11 @@
                 </div>
 
                 <div class="sq-assessment-footer">
-                    ${assessment.is_assessor_led ? `
+                    ${historicalView ? "" : (assessment.is_assessor_led ? `
                         <a href="#" data-sq-route="reports/progress" class="sq-btn sq-btn-outline-primary sq-btn-sm">View Progress</a>
                         <a href="#" data-sq-route="reports/dashboard" class="sq-btn sq-btn-light sq-btn-sm">Reports</a>` : `
                         <a href="#" data-sq-route="assessment/departments" class="sq-btn sq-btn-outline-primary sq-btn-sm">View Progress</a>
-                        <a href="#" data-sq-route="assessment/checklist" class="sq-btn sq-btn-primary sq-btn-sm">Continue Assessment</a>`}
+                        <a href="#" data-sq-route="assessment/checklist" class="sq-btn sq-btn-primary sq-btn-sm">Continue Assessment</a>`) }
                 </div>
             </div>
         ` + renderAssessorAssessment(assessorAssessment);
@@ -590,7 +605,7 @@
             const assessmentId = Number(button?.dataset.dashboardOpenAssessment || 0);
 
             if (assessmentId && SQ.router && typeof SQ.router.navigate === "function") {
-                SQ.router.navigate("assessment/departments", { assessment_id: assessmentId });
+                SQ.router.navigate("dashboard", { assessment_id: assessmentId });
             }
         });
     }

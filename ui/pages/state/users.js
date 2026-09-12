@@ -224,13 +224,14 @@
                         <div><label class="sq-form-label" for="createUserRole">Role *</label><select class="sq-form-control" id="createUserRole" required><option value="1">Facility User</option><option value="8">Block User</option><option value="4">District User</option><option value="5">Division User</option></select></div>
                         <div id="createUserIdentity"><div><label class="sq-form-label" for="createUserFirstName">First Name *</label><input class="sq-form-control" id="createUserFirstName" required maxlength="100"></div><div><label class="sq-form-label" for="createUserLastName">Last Name</label><input class="sq-form-control" id="createUserLastName" maxlength="100"></div><div><label class="sq-form-label" for="createUserUsername">Username *</label><input class="sq-form-control" id="createUserUsername" required minlength="3" maxlength="100"></div><div><label class="sq-form-label" for="createUserPassword">Temporary Password *</label><input class="sq-form-control" id="createUserPassword" type="password" required autocomplete="new-password"><small>8+ characters with upper-case, lower-case, number and special character.</small></div><div><label class="sq-form-label" for="createUserEmail">Email</label><input class="sq-form-control" id="createUserEmail" type="email" maxlength="190"></div><div><label class="sq-form-label" for="createUserMobile">Mobile</label><input class="sq-form-control" id="createUserMobile" maxlength="20"></div></div>
                         <div class="sq-state-cert-form-wide" id="createFacilityScope"><p>For a Facility User, the NIN is automatically used as the user ID and initial password. The user completes their personal details after first login.</p><label class="sq-form-label" for="createUserFacilityDistrict">District *</label><select class="sq-form-control" id="createUserFacilityDistrict"></select><label class="sq-form-label" for="createUserFacilityBlock">Block *</label><select class="sq-form-control" id="createUserFacilityBlock" disabled></select><label class="sq-form-label" for="createUserFacilityNin">Facility *</label><select class="sq-form-control" id="createUserFacilityNin" disabled></select></div>
-                        <div class="sq-state-cert-form-wide" id="createHierarchyScope" hidden><label class="sq-form-label" for="createUserScope">Assigned Scope *</label><select class="sq-form-control" id="createUserScope"></select></div>
+                        <div class="sq-state-cert-form-wide" id="createHierarchyScope" hidden><div id="createBlockDistrictScope" hidden><label class="sq-form-label" for="createUserBlockDistrict">District *</label><select class="sq-form-control" id="createUserBlockDistrict"></select></div><label class="sq-form-label" for="createUserScope" id="createUserScopeLabel">Assigned Scope *</label><select class="sq-form-control" id="createUserScope"></select></div>
                         <div class="sq-state-cert-form-wide sq-state-modal-actions"><button class="sq-btn sq-btn-primary" type="submit">Create User</button><button class="sq-btn sq-btn-light" type="button" data-user-create-close>Cancel</button></div>
                     </form>
                 </div>
             </div>`);
         document.getElementById("stateUserCreateModal")?.addEventListener("click", event => { if (event.target === event.currentTarget || event.target.closest("[data-user-create-close]")) event.currentTarget.hidden = true; });
         document.getElementById("createUserRole")?.addEventListener("change", renderCreateScope);
+        document.getElementById("createUserBlockDistrict")?.addEventListener("change", renderBlockUserBlocks);
         document.getElementById("createUserFacilityDistrict")?.addEventListener("change", renderFacilityBlocks);
         document.getElementById("createUserFacilityBlock")?.addEventListener("change", renderFacilities);
         document.getElementById("stateUserCreateForm")?.addEventListener("submit", createUser);
@@ -241,11 +242,14 @@
         const facility = document.getElementById("createFacilityScope");
         const hierarchy = document.getElementById("createHierarchyScope");
         const select = document.getElementById("createUserScope");
+        const scopeLabel = document.getElementById("createUserScopeLabel");
+        const blockDistrictScope = document.getElementById("createBlockDistrictScope");
         const identity = document.getElementById("createUserIdentity");
-        const sets = roleId === 5 ? (state.scopeOptions?.divisions || []) : roleId === 4 ? (state.scopeOptions?.districts || []) : roleId === 8 ? (state.scopeOptions?.blocks || []) : [];
+        const sets = roleId === 5 ? (state.scopeOptions?.divisions || []) : roleId === 4 ? (state.scopeOptions?.districts || []) : [];
         if (facility) facility.hidden = roleId !== 1;
         if (hierarchy) hierarchy.hidden = ![4, 5, 8].includes(roleId);
         if (identity) identity.hidden = roleId === 1;
+        if (blockDistrictScope) blockDistrictScope.hidden = roleId !== 8;
         ["createUserFirstName", "createUserUsername", "createUserPassword"].forEach(id => {
             const input = document.getElementById(id);
             if (!input) return;
@@ -254,12 +258,31 @@
         });
         if (roleId === 1) renderFacilityDistricts();
         if (!select) return;
+        if (roleId === 8) {
+            if (scopeLabel) scopeLabel.textContent = "Block *";
+            const districtSelect = document.getElementById("createUserBlockDistrict");
+            if (districtSelect) districtSelect.innerHTML = optionRows(state.scopeOptions?.districts || [], "Select district", "dist_id", "district_name");
+            select.innerHTML = '<option value="">Select district first</option>';
+            select.disabled = true;
+            return;
+        }
         const label = roleId === 5 ? "division" : roleId === 4 ? "district" : "block";
+        if (scopeLabel) scopeLabel.textContent = "Assigned Scope *";
         select.innerHTML = `<option value="">Select ${label}</option>` + sets.map(row => {
             const id = roleId === 5 ? row.division_id : roleId === 4 ? row.dist_id : row.block_id;
             const name = roleId === 5 ? row.division_name : roleId === 4 ? row.district_name : row.block_name;
             return `<option value="${esc(id)}">${esc(name)} (${esc(id)})</option>`;
         }).join("");
+        select.disabled = false;
+    }
+
+    function renderBlockUserBlocks() {
+        const districtId = Number(document.getElementById("createUserBlockDistrict")?.value || 0);
+        const select = document.getElementById("createUserScope");
+        if (!select) return;
+        const rows = (state.scopeOptions?.blocks || []).filter(row => Number(row.dist_id) === districtId);
+        select.innerHTML = optionRows(rows, districtId ? "Select block" : "Select district first", "block_id", "block_name");
+        select.disabled = !districtId;
     }
 
     function optionRows(rows, empty, idKey, nameKey) {
@@ -321,6 +344,7 @@
             email: document.getElementById("createUserEmail").value.trim(),
             mobile: document.getElementById("createUserMobile").value.trim(),
             facility_nin: document.getElementById("createUserFacilityNin").value.trim(),
+            district_id: Number(document.getElementById("createUserBlockDistrict")?.value || 0),
             scope_id: Number(document.getElementById("createUserScope").value || 0)
         };
         try {
